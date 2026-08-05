@@ -1,0 +1,1024 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pokégold Space World — Contributor Wiki</title>
+<style>
+  :root {
+    --bg: #eef1e8;
+    --surface: #f8faf2;
+    --surface-2: #e4e9d9;
+    --ink: #191e14;
+    --ink-soft: #4c553f;
+    --ink-faint: #6f7a5e;
+    --line: #ccd4bd;
+    --accent: #4e7a1e;
+    --accent-strong: #38610f;
+    --accent-wash: #dde7c8;
+    --gold: #977321;
+    --silver: #55606d;
+    --screen-bg: #0f380f;
+    --screen-ink: #9bbc0f;
+    --screen-dim: #6a8a10;
+    --screen-line: #285026;
+    --radius: 10px;
+    --mono: ui-monospace, "SF Mono", "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12150f;
+      --surface: #1a1e15;
+      --surface-2: #232a1b;
+      --ink: #e9ecdf;
+      --ink-soft: #aab393;
+      --ink-faint: #7f886c;
+      --line: #333c27;
+      --accent: #9bbc0f;
+      --accent-strong: #b8d63e;
+      --accent-wash: #24301a;
+      --gold: #d8b24a;
+      --silver: #9fabb8;
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #eef1e8; --surface: #f8faf2; --surface-2: #e4e9d9;
+    --ink: #191e14; --ink-soft: #4c553f; --ink-faint: #6f7a5e; --line: #ccd4bd;
+    --accent: #4e7a1e; --accent-strong: #38610f; --accent-wash: #dde7c8;
+    --gold: #977321; --silver: #55606d;
+  }
+  :root[data-theme="dark"] {
+    --bg: #12150f; --surface: #1a1e15; --surface-2: #232a1b;
+    --ink: #e9ecdf; --ink-soft: #aab393; --ink-faint: #7f886c; --line: #333c27;
+    --accent: #9bbc0f; --accent-strong: #b8d63e; --accent-wash: #24301a;
+    --gold: #d8b24a; --silver: #9fabb8;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---------- Layout ---------- */
+  .app { display: grid; grid-template-columns: 288px minmax(0, 1fr); min-height: 100vh; }
+  .sidebar {
+    position: sticky; top: 0; align-self: start;
+    height: 100vh; overflow-y: auto;
+    background: var(--surface);
+    border-right: 1px solid var(--line);
+    padding: 24px 18px 40px;
+  }
+  .content { padding: 56px clamp(20px, 5vw, 72px); min-width: 0; }
+  .page { display: none; max-width: 760px; animation: fade .18s ease; }
+  .page.active { display: block; }
+  @keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .page { animation: none; } }
+
+  /* ---------- Brand ---------- */
+  .brand { display: flex; align-items: center; gap: 12px; margin-bottom: 4px; text-decoration: none; }
+  .cart { flex: none; width: 40px; height: 40px; }
+  .brand-txt { display: flex; flex-direction: column; line-height: 1.15; }
+  .brand-txt b { font-family: var(--mono); font-size: .95rem; letter-spacing: .02em; color: var(--ink); }
+  .brand-txt span { font-family: var(--mono); font-size: .64rem; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-faint); }
+  .ver-line { display: flex; gap: 6px; margin: 14px 2px 20px; }
+
+  /* ---------- Nav ---------- */
+  nav { display: flex; flex-direction: column; gap: 22px; }
+  .nav-group > p {
+    margin: 0 0 7px; padding: 0 8px;
+    font-family: var(--mono); font-size: .63rem; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--ink-faint);
+  }
+  .nav-group a {
+    display: block; padding: 6px 10px; border-radius: 7px;
+    color: var(--ink-soft); text-decoration: none;
+    font-size: .87rem; border-left: 2px solid transparent;
+  }
+  .nav-group a:hover { background: var(--surface-2); color: var(--ink); }
+  .nav-group a.active {
+    background: var(--accent-wash); color: var(--accent-strong);
+    border-left-color: var(--accent); font-weight: 600;
+  }
+  :root[data-theme="dark"] .nav-group a.active,
+  @media (prefers-color-scheme: dark) { }
+  .nav-group a:focus-visible, .brand:focus-visible, .menu-btn:focus-visible {
+    outline: 2px solid var(--accent); outline-offset: 2px;
+  }
+
+  /* ---------- Typography ---------- */
+  .eyebrow {
+    font-family: var(--mono); font-size: .68rem; letter-spacing: .2em;
+    text-transform: uppercase; color: var(--accent-strong); margin: 0 0 12px;
+  }
+  h1 { font-family: var(--mono); font-size: clamp(1.7rem, 4vw, 2.4rem); line-height: 1.12;
+       letter-spacing: -.01em; margin: 0 0 16px; text-wrap: balance; }
+  h2 { font-family: var(--mono); font-size: 1.28rem; margin: 44px 0 12px;
+       padding-bottom: 8px; border-bottom: 1px solid var(--line); text-wrap: balance; }
+  h3 { font-family: var(--mono); font-size: 1.02rem; margin: 28px 0 8px; color: var(--ink); }
+  p, li { color: var(--ink-soft); }
+  .lead { font-size: 1.1rem; color: var(--ink-soft); }
+  a.inline { color: var(--accent-strong); text-decoration: underline; text-underline-offset: 2px; text-decoration-thickness: 1px; }
+  a.inline:hover { color: var(--accent); }
+  strong { color: var(--ink); }
+  ul, ol { padding-left: 22px; }
+  li { margin: 5px 0; }
+  hr { border: none; border-top: 1px solid var(--line); margin: 40px 0; }
+
+  /* ---------- Code ---------- */
+  code {
+    font-family: var(--mono); font-size: .86em;
+    background: var(--surface-2); color: var(--ink);
+    padding: .12em .38em; border-radius: 5px;
+  }
+  pre {
+    background: var(--screen-bg); color: var(--screen-ink);
+    border: 1px solid var(--screen-line); border-radius: var(--radius);
+    padding: 16px 18px; overflow-x: auto; margin: 16px 0;
+    box-shadow: inset 0 0 0 4px rgba(15,56,15,.6), inset 0 0 24px rgba(0,0,0,.35);
+  }
+  pre code { background: none; color: inherit; padding: 0; font-size: .82rem; line-height: 1.65; }
+  pre .cm { color: var(--screen-dim); }
+  pre .pr { color: #c7e04a; }
+
+  /* ---------- Components ---------- */
+  .chip {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-family: var(--mono); font-size: .66rem; letter-spacing: .06em;
+    padding: 3px 9px; border-radius: 999px; text-transform: uppercase;
+    border: 1px solid var(--line); color: var(--ink-soft); background: var(--surface);
+  }
+  .chip.gold { color: var(--gold); border-color: color-mix(in srgb, var(--gold) 45%, var(--line)); }
+  .chip.silver { color: var(--silver); border-color: color-mix(in srgb, var(--silver) 45%, var(--line)); }
+  .chip.accent { color: var(--accent-strong); border-color: var(--accent); background: var(--accent-wash); }
+
+  .callout {
+    display: flex; gap: 12px; margin: 18px 0;
+    padding: 14px 16px; border-radius: var(--radius);
+    background: var(--surface); border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+  }
+  .callout .ico { flex: none; font-family: var(--mono); font-weight: 700; color: var(--accent-strong); }
+  .callout p { margin: 0; font-size: .92rem; }
+  .callout.warn { border-left-color: var(--gold); }
+  .callout.warn .ico { color: var(--gold); }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 14px; margin: 20px 0; }
+  .card {
+    display: block; text-decoration: none; padding: 16px;
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+  .card:hover { border-color: var(--accent); transform: translateY(-2px); transition: .15s; }
+  .card b { font-family: var(--mono); font-size: .82rem; color: var(--ink); display: block; margin-bottom: 4px; }
+  .card span { font-size: .82rem; color: var(--ink-faint); }
+  .card .tag { font-family: var(--mono); font-size: .62rem; letter-spacing: .1em; text-transform: uppercase; color: var(--accent-strong); }
+
+  .tbl-wrap { overflow-x: auto; margin: 18px 0; border: 1px solid var(--line); border-radius: var(--radius); }
+  table { width: 100%; border-collapse: collapse; font-size: .87rem; }
+  th, td { text-align: left; padding: 9px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-family: var(--mono); font-size: .68rem; letter-spacing: .1em; text-transform: uppercase;
+       color: var(--ink-faint); background: var(--surface); position: sticky; top: 0; }
+  tr:last-child td { border-bottom: none; }
+  td code { font-size: .82rem; white-space: nowrap; }
+  td:first-child { white-space: nowrap; }
+
+  .steps { counter-reset: s; list-style: none; padding: 0; margin: 20px 0; }
+  .steps > li { counter-increment: s; position: relative; padding-left: 44px; margin: 20px 0; }
+  .steps > li::before {
+    content: counter(s); position: absolute; left: 0; top: 0;
+    width: 28px; height: 28px; display: grid; place-items: center;
+    font-family: var(--mono); font-size: .82rem; font-weight: 700;
+    color: var(--accent-strong); background: var(--accent-wash);
+    border: 1px solid var(--accent); border-radius: 8px;
+  }
+  .steps > li > b { display: block; color: var(--ink); font-family: var(--mono); font-size: .92rem; margin-bottom: 2px; }
+
+  .kbd-legend { display: flex; flex-wrap: wrap; gap: 16px; margin: 12px 0 4px; font-size: .82rem; }
+  .kbd-legend span { display: inline-flex; align-items: center; gap: 6px; color: var(--ink-faint); }
+  .dot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+
+  .footer-note { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--line);
+                 font-size: .8rem; color: var(--ink-faint); }
+
+  /* ---------- Mobile ---------- */
+  .topbar { display: none; }
+  .menu-btn { background: var(--surface); border: 1px solid var(--line); color: var(--ink);
+              font-family: var(--mono); font-size: .8rem; padding: 8px 12px; border-radius: 8px; cursor: pointer; }
+  @media (max-width: 860px) {
+    .app { grid-template-columns: 1fr; }
+    .topbar { display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 20;
+              padding: 12px 18px; background: var(--surface); border-bottom: 1px solid var(--line); }
+    .sidebar { position: fixed; z-index: 30; top: 0; left: 0; width: 280px; height: 100vh;
+               transform: translateX(-100%); transition: transform .2s ease; }
+    .sidebar.open { transform: none; box-shadow: 0 0 0 100vmax rgba(0,0,0,.4); }
+    .content { padding: 28px 20px 60px; }
+  }
+</style>
+</head>
+<body>
+<div class="topbar">
+  <button class="menu-btn" id="menuBtn" aria-label="Toggle navigation">☰ Menu</button>
+  <span style="font-family:var(--mono);font-size:.8rem;letter-spacing:.04em;">Space World Wiki</span>
+</div>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <a class="brand" href="#overview" data-target="overview">
+      <svg class="cart" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+        <rect x="6" y="3" width="28" height="34" rx="3" fill="var(--accent)"/>
+        <rect x="6" y="3" width="28" height="9" rx="3" fill="var(--accent-strong)"/>
+        <rect x="11" y="16" width="18" height="15" rx="2" fill="var(--screen-bg)"/>
+        <rect x="14" y="19" width="12" height="9" fill="var(--screen-ink)"/>
+        <rect x="16" y="7" width="8" height="2.5" rx="1" fill="var(--surface)"/>
+      </svg>
+      <span class="brand-txt">
+        <b>Space World '97</b>
+        <span>Contributor Wiki</span>
+      </span>
+    </a>
+    <div class="ver-line">
+      <span class="chip gold">● Gold</span>
+      <span class="chip silver">● Silver</span>
+    </div>
+
+    <nav id="nav">
+      <div class="nav-group">
+        <p>Start Here</p>
+        <a href="#overview" data-target="overview">Overview</a>
+      </div>
+      <div class="nav-group">
+        <p>Getting Started</p>
+        <a href="#gs-install" data-target="gs-install">1 · Install the toolchain</a>
+        <a href="#gs-build" data-target="gs-build">2 · Build the ROMs</a>
+        <a href="#gs-emulator" data-target="gs-emulator">3 · Test in an emulator</a>
+      </div>
+      <div class="nav-group">
+        <p>The Language</p>
+        <a href="#asm-rgbds" data-target="asm-rgbds">RGBDS &amp; the SM83 CPU</a>
+        <a href="#asm-cheatsheet" data-target="asm-cheatsheet">Assembly cheatsheet</a>
+      </div>
+      <div class="nav-group">
+        <p>Repo Anatomy</p>
+        <a href="#build-system" data-target="build-system">Build system</a>
+        <a href="#sec-home" data-target="sec-home">home/ &amp; main.asm</a>
+        <a href="#sec-engine" data-target="sec-engine">engine/</a>
+        <a href="#sec-data" data-target="sec-data">data/</a>
+        <a href="#sec-constants" data-target="sec-constants">constants/</a>
+        <a href="#sec-macros" data-target="sec-macros">macros/ &amp; scripting</a>
+        <a href="#sec-gfx" data-target="sec-gfx">gfx/</a>
+        <a href="#sec-audio" data-target="sec-audio">audio/</a>
+        <a href="#sec-maps" data-target="sec-maps">maps/</a>
+        <a href="#sec-ram" data-target="sec-ram">ram/</a>
+        <a href="#sec-garbage" data-target="sec-garbage">garbage/</a>
+        <a href="#sec-tools" data-target="sec-tools">tools/</a>
+      </div>
+      <div class="nav-group">
+        <p>Beyond the Repo</p>
+        <a href="#symbols" data-target="symbols">Symbols branch &amp; gb-asm-tools</a>
+      </div>
+    </nav>
+  </aside>
+
+  <main class="content">
+
+    <!-- ===================== OVERVIEW ===================== -->
+    <section class="page active" id="overview">
+      <p class="eyebrow">Contributor Wiki</p>
+      <h1>Pokémon Gold &amp; Silver: Space World 1997</h1>
+      <p class="lead">A disassembly of the Gold and Silver prototypes shown at Nintendo Space World 1997 — reconstructed as human-readable <strong>RGBDS Game Boy assembly</strong> that reassembles into the original ROMs, byte for byte.</p>
+
+      <div class="callout">
+        <span class="ico">!</span>
+        <p>This is a <strong>preservation project, not a game in development</strong>. The whole point is that <code>make</code> reproduces the original prototype dumps <em>exactly</em>. Every source file is checked against the real bytes — so a change that shifts even one byte breaks the build. You are documenting a ROM, not editing one.</p>
+      </div>
+
+      <h2>What you'll build</h2>
+      <p>The four <code>.asm</code> object sources compile into eight ROM files — two games × normal/debug × raw/corrected-header — each verified against a known SHA1 in <code>roms.sha1</code>:</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Output</th><th>Original name</th><th>What it is</th></tr></thead>
+          <tbody>
+            <tr><td><code>pokegold-spaceworld.gb</code></td><td>MONS2KN.COM</td><td>Gold, non-debug</td></tr>
+            <tr><td><code>pokesilver-spaceworld.gb</code></td><td>MONS2SN.COM</td><td>Silver, non-debug</td></tr>
+            <tr><td><code>pokegold-spaceworld-debug.gb</code></td><td>MONS2KD.COM</td><td>Gold, with in-game debug menus</td></tr>
+            <tr><td><code>pokesilver-spaceworld-debug.gb</code></td><td>MONS2SD.COM</td><td>Silver, with debug menus</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>The <code>-correctheader</code> variants are the same ROMs re-patched with a valid cartridge header (the prototype's own header is malformed) so they run on real hardware and flashcarts.</p>
+
+      <h2>How to use this wiki</h2>
+      <div class="cards">
+        <a class="card" href="#gs-install" data-target="gs-install"><span class="tag">Setup</span><b>Getting Started</b><span>Install RGBDS, build the ROMs, and run them in an emulator on Apple Silicon.</span></a>
+        <a class="card" href="#asm-cheatsheet" data-target="asm-cheatsheet"><span class="tag">Learn</span><b>The Language</b><span>New to assembly? Start with the SM83 + RGBDS cheatsheet.</span></a>
+        <a class="card" href="#build-system" data-target="build-system"><span class="tag">Reference</span><b>Repo Anatomy</b><span>A page per directory: what lives where and why.</span></a>
+      </div>
+
+      <div class="callout">
+        <span class="ico">→</span>
+        <p>New here and impatient? Follow the three <strong>Getting Started</strong> pages in order, then keep <strong>Assembly cheatsheet</strong> open in a second tab while you read code.</p>
+      </div>
+
+      <p class="footer-note">This guide documents a community fork of the <a class="inline" href="https://github.com/pret/pokegold-spaceworld">pret/pokegold-spaceworld</a> disassembly. pret projects live at <a class="inline" href="https://pret.github.io/">pret.github.io</a>; discussion happens on the pret Discord in <code>#prototypes-and-leaks</code>.</p>
+    </section>
+
+    <!-- ===================== INSTALL ===================== -->
+    <section class="page" id="gs-install">
+      <p class="eyebrow">Getting Started · 1 of 3</p>
+      <h1>Install the toolchain</h1>
+      <p class="lead">Instructions target <strong>Apple Silicon Macs (M1–M4)</strong>. The whole build runs natively — no Rosetta needed.</p>
+
+      <ol class="steps">
+        <li>
+          <b>Xcode Command Line Tools</b>
+          <p>Gives you <code>make</code>, a C compiler, and <code>git</code> — everything the build harness and the in-repo C tools need.</p>
+          <pre><code>xcode-select --install</code></pre>
+        </li>
+        <li>
+          <b>Homebrew</b>
+          <p>Package manager for the remaining dependencies. Skip if you already have it.</p>
+          <pre><code>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</code></pre>
+        </li>
+        <li>
+          <b>RGBDS build dependencies</b>
+          <p>RGBDS itself is compiled from source (next step); these are its build-time libraries.</p>
+          <pre><code>brew install bison libpng pkg-config</code></pre>
+        </li>
+        <li>
+          <b>RGBDS — pinned to v1.0.3</b>
+          <p>RGBDS is the Game Boy assembler toolchain. This repo assembles <strong>only</strong> with the exact version in <code>.rgbds-version</code>. A newer release can produce different bytes and fail <code>make compare</code>, so build the tagged version rather than <code>brew install rgbds</code>.</p>
+          <pre><code><span class="cm"># Bison from Homebrew must win over the old system one</span>
+export PATH="$(brew --prefix bison)/bin:$PATH"
+
+git clone https://github.com/gbdev/rgbds
+cd rgbds
+git checkout v1.0.3
+make -j"$(sysctl -n hw.ncpu)"
+sudo make install
+cd ..</code></pre>
+        </li>
+        <li>
+          <b>Verify</b>
+          <p>You should see <code>1.0.3</code>. If you see anything else, that install will shadow the correct one on your <code>PATH</code>.</p>
+          <pre><code>rgbasm --version   <span class="cm"># → rgbasm 1.0.3</span></code></pre>
+        </li>
+      </ol>
+
+      <div class="callout warn">
+        <span class="ico">▲</span>
+        <p><strong>Version matters more than convenience.</strong> Homebrew's <code>rgbds</code> formula tracks the latest release. If you install it that way and the byte comparison later fails, a version mismatch is the first thing to suspect — check <code>.rgbds-version</code> against <code>rgbasm --version</code>.</p>
+      </div>
+
+      <p style="margin-top:28px;"><a class="inline" href="#gs-build" data-target="gs-build">Next → Build the ROMs</a></p>
+    </section>
+
+    <!-- ===================== BUILD ===================== -->
+    <section class="page" id="gs-build">
+      <p class="eyebrow">Getting Started · 2 of 3</p>
+      <h1>Build the ROMs</h1>
+      <p class="lead">From the repo root, one command builds all eight ROMs and checks them against the reference hashes.</p>
+
+      <pre><code><span class="cm"># Build everything, in parallel, then verify SHA1s</span>
+make -j"$(sysctl -n hw.ncpu)"</code></pre>
+
+      <p>A clean run ends with the SHA1 comparison passing silently. <strong>That green <code>make compare</code> is the definition of a correct build</strong> — there is no other test suite. If every line reads <code>OK</code>, your sources reproduce the original prototypes.</p>
+
+      <h2>Useful targets</h2>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Command</th><th>Does</th></tr></thead>
+          <tbody>
+            <tr><td><code>make</code></td><td>Build all four ROMs + corrected-header copies, then <code>compare</code></td></tr>
+            <tr><td><code>make compare</code></td><td>Re-run the SHA1 check against <code>roms.sha1</code></td></tr>
+            <tr><td><code>make gold</code></td><td>Build just Gold (also <code>silver</code>, <code>gold_debug</code>, <code>silver_debug</code>)</td></tr>
+            <tr><td><code>make DEBUG=1</code></td><td>Also emit <code>.sym</code> / <code>.map</code> files for debugging (does <em>not</em> change ROM bytes)</td></tr>
+            <tr><td><code>make clean</code></td><td>Remove all generated files, including compiled graphics</td></tr>
+            <tr><td><code>make tidy</code></td><td>Remove generated files but keep compiled graphics (faster rebuilds)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>How one build becomes four ROMs</h2>
+      <p>The same <code>.asm</code> sources are assembled multiple times with different <code>-D</code> defines set in the <code>Makefile</code>. Guard version-specific code with these symbols:</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Define</th><th>Selects</th></tr></thead>
+          <tbody>
+            <tr><td><code>_GOLD</code> / <code>_SILVER</code></td><td>Which game the object is compiled for</td></tr>
+            <tr><td><code>_DEBUG</code></td><td>The debug build (adds the in-game debug menus)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <pre><code><span class="cm"># Typical version guard you'll see in the sources</span>
+IF DEF(_GOLD)
+    db GOLD_VALUE
+ELSE
+    db SILVER_VALUE
+ENDC</code></pre>
+
+      <div class="callout">
+        <span class="ico">i</span>
+        <p>The <code>.gb</code>, <code>.o</code>, <code>.sym</code> and compiled graphics are all in <code>.gitignore</code>. They're build products — never commit them. The only "output" you ever commit is source.</p>
+      </div>
+
+      <p style="margin-top:28px;"><a class="inline" href="#gs-emulator" data-target="gs-emulator">Next → Test in an emulator</a></p>
+    </section>
+
+    <!-- ===================== EMULATOR ===================== -->
+    <section class="page" id="gs-emulator">
+      <p class="eyebrow">Getting Started · 3 of 3</p>
+      <h1>Test the ROMs in an emulator</h1>
+      <p class="lead">All three of these run natively on Apple Silicon. For a disassembly project, pick your emulator for its <strong>debugger</strong>, not just playback.</p>
+
+      <div class="cards">
+        <a class="card" style="cursor:default">
+          <span class="tag">Recommended</span><b>SameBoy</b>
+          <span>The most accurate Game Boy / Super Game Boy emulator, native Apple Silicon app, with a built-in debugger that reads <code>.sym</code> files.</span>
+        </a>
+        <a class="card" style="cursor:default">
+          <span class="tag">Multi-system</span><b>mGBA</b>
+          <span>Plays GB / GBC / GBA, native on Apple Silicon, solid tools and memory viewer. Great everyday player.</span>
+        </a>
+        <a class="card" style="cursor:default">
+          <span class="tag">Debugger</span><b>BGB</b>
+          <span>The classic disassembly debugger. Windows-only — run it through CrossOver or Wine. Unmatched for stepping through SM83.</span>
+        </a>
+      </div>
+
+      <h2>Install &amp; run (SameBoy)</h2>
+      <ol class="steps">
+        <li><b>Install</b><pre><code>brew install --cask sameboy</code></pre></li>
+        <li><b>Open a ROM</b><p>Launch SameBoy and open <code>pokegold-spaceworld.gb</code> (or drag it onto the window). This prototype uses <strong>Super Game Boy</strong> features — SameBoy emulates SGB, so borders and palettes appear as intended.</p></li>
+        <li>
+          <b>Load symbols for debugging</b>
+          <p>Build with <code>make DEBUG=1</code> to generate a matching <code>.sym</code> next to the ROM. SameBoy's debugger (<em>View → Show Console</em>) auto-loads a same-named <code>.sym</code>, so addresses show up as real label names like <code>DelayFrame</code> instead of raw hex.</p>
+        </li>
+      </ol>
+
+      <h3>mGBA</h3>
+      <pre><code>brew install --cask mgba</code></pre>
+      <p>Then <em>File → Load ROM</em>. Good for quick playtesting; use <em>Tools → Game state views</em> for memory inspection.</p>
+
+      <h3>BGB via CrossOver / Wine</h3>
+      <p>BGB is Windows software but is the reference debugger for GB assembly work. On Apple Silicon it runs through a translation layer:</p>
+      <pre><code><span class="cm"># One option: Wine (CrossOver is the paid, more polished route)</span>
+brew install --cask --no-quarantine gcenx/wine/wine-crossover
+wine bgb.exe</code></pre>
+
+      <div class="callout warn">
+        <span class="ico">▲</span>
+        <p><strong>Emulator vs. real hardware.</strong> For an emulator, load the plain <code>*.gb</code>. For a flashcart or real Game Boy, use the <code>*-correctheader.gb</code> build — the prototype's original header is invalid and real hardware may reject it.</p>
+      </div>
+
+      <h3>The debug builds</h3>
+      <p>The <code>-debug.gb</code> ROMs expose the developers' original in-game debug menus — field, fight, sound, monster, and subgame menus (see <code>engine/debug/</code>). They're the fastest way to jump around content the prototype can't otherwise reach.</p>
+    </section>
+
+    <!-- ===================== ASM RGBDS ===================== -->
+    <section class="page" id="asm-rgbds">
+      <p class="eyebrow">The Language</p>
+      <h1>RGBDS &amp; the SM83 CPU</h1>
+      <p class="lead">This codebase is written for the Game Boy's 8-bit CPU using the RGBDS toolchain. If assembly is new to you, this page gives you the mental model; the next page is the syntax reference.</p>
+
+      <h2>The processor: Sharp SM83</h2>
+      <p>The Game Boy runs a Sharp <strong>SM83</strong> core (often labelled LR35902) — a close relative of the Zilog Z80 / Intel 8080. It's an 8-bit CPU: it works on one byte at a time, has a tiny set of registers, and no notion of functions, loops, or variables. You write the individual steps.</p>
+      <ul>
+        <li><strong>Registers are the workspace.</strong> Eight 8-bit registers — <code>a b c d e f h l</code> — that can pair up into 16-bit registers <code>af bc de hl</code>. <code>a</code> (the accumulator) is where arithmetic happens; <code>hl</code> is the usual pointer.</li>
+        <li><strong>Memory is addressed, not named.</strong> A "variable" is just a labelled address in RAM. <code>[hl]</code> means "the byte in memory that <code>hl</code> points at."</li>
+        <li><strong>Flags drive branches.</strong> An operation sets flags (zero, carry…); the next instruction can jump based on them. That's how <code>if</code> and loops are built.</li>
+      </ul>
+
+      <h2>The toolchain: RGBDS</h2>
+      <p>RGBDS is four programs. The <code>Makefile</code> orchestrates them so you rarely call them by hand, but knowing the pipeline explains what each file type is for:</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Tool</th><th>Turns</th><th>Into</th></tr></thead>
+          <tbody>
+            <tr><td><code>rgbasm</code></td><td><code>.asm</code> source</td><td><code>.o</code> object files</td></tr>
+            <tr><td><code>rgblink</code></td><td><code>.o</code> files + <code>layout.link</code></td><td>a raw <code>.gb</code> ROM (+ <code>.sym</code>/<code>.map</code>)</td></tr>
+            <tr><td><code>rgbfix</code></td><td>a raw <code>.gb</code></td><td>a ROM with a patched header + checksum</td></tr>
+            <tr><td><code>rgbgfx</code></td><td><code>.png</code> images</td><td><code>.2bpp</code>/<code>.1bpp</code> Game Boy tile data</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Banking: why <code>main.asm</code> is a list</h2>
+      <p>The cartridge is bigger than the CPU's address space, so ROM is split into 16&nbsp;KB <strong>banks</strong> that get swapped into view one at a time. <code>ROM0</code> (the <code>home/</code> code) is always visible; the numbered <code>ROMX</code> banks are paged in as needed. Because a routine in one bank can't directly call one in another, the codebase uses helper macros:</p>
+      <ul>
+        <li><code>farcall</code> — call a routine in another bank and return.</li>
+        <li><code>predef</code> — call a routine by an index from a pointer table (<code>data/predef_pointers.asm</code>), used for common cross-bank helpers.</li>
+      </ul>
+
+      <h2>Naming conventions worth memorising</h2>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Prefix / form</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td><code>wFoo</code></td><td>A label in <strong>WRAM</strong> (work RAM) — see <code>ram/wram.asm</code></td></tr>
+            <tr><td><code>hFoo</code></td><td>A label in <strong>HRAM</strong> (fast high RAM) — accessed with <code>ldh</code></td></tr>
+            <tr><td><code>vFoo</code> / <code>sFoo</code></td><td>VRAM / SRAM labels (<code>ram/vram.asm</code>, <code>ram/sram.asm</code>)</td></tr>
+            <tr><td><code>Label::</code></td><td>Exported label — visible to other files</td></tr>
+            <tr><td><code>Label:</code></td><td>File-local label</td></tr>
+            <tr><td><code>.loop</code></td><td>A <em>local</em> label scoped to the parent <code>Label</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p style="margin-top:28px;"><a class="inline" href="#asm-cheatsheet" data-target="asm-cheatsheet">Next → the full cheatsheet</a></p>
+    </section>
+
+    <!-- ===================== CHEATSHEET ===================== -->
+    <section class="page" id="asm-cheatsheet">
+      <p class="eyebrow">The Language</p>
+      <h1>Assembly cheatsheet</h1>
+      <p class="lead">A one-page reference for reading SM83 + RGBDS code. Keep it open in a second tab. Syntax is <strong>destination first</strong>: <code>ld a, b</code> copies <code>b</code> into <code>a</code>.</p>
+
+      <h2>Registers &amp; flags</h2>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Register</th><th>Role</th></tr></thead>
+          <tbody>
+            <tr><td><code>a</code></td><td>Accumulator — the target of nearly all arithmetic/logic</td></tr>
+            <tr><td><code>f</code></td><td>Flags (not used directly; set by operations)</td></tr>
+            <tr><td><code>b c d e h l</code></td><td>General-purpose 8-bit registers</td></tr>
+            <tr><td><code>af bc de hl</code></td><td>The above paired into 16-bit registers</td></tr>
+            <tr><td><code>hl</code></td><td>The go-to pointer; <code>[hl]</code> reads/writes the byte it points at</td></tr>
+            <tr><td><code>sp</code> / <code>pc</code></td><td>Stack pointer / program counter</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="kbd-legend">
+        <span><span class="dot" style="background:var(--accent)"></span> Flags set by ops:</span>
+        <span><code>z</code> zero result</span>
+        <span><code>c</code> carry / borrow</span>
+        <span><code>n</code> subtract</span>
+        <span><code>h</code> half-carry</span>
+      </div>
+      <p style="font-size:.86rem;">Conditions used by jumps: <code>z</code> (zero), <code>nz</code> (not zero), <code>c</code> (carry), <code>nc</code> (no carry).</p>
+
+      <h2>Moving data</h2>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Instruction</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td><code>ld a, b</code></td><td>Copy <code>b</code> → <code>a</code></td></tr>
+            <tr><td><code>ld a, 5</code></td><td>Load the constant 5 into <code>a</code></td></tr>
+            <tr><td><code>ld [hl], a</code></td><td>Store <code>a</code> into memory at <code>hl</code></td></tr>
+            <tr><td><code>ld a, [hli]</code></td><td>Load <code>[hl]</code> into <code>a</code>, then <code>hl++</code> (<code>hld</code> = decrement)</td></tr>
+            <tr><td><code>ldh [hFoo], a</code></td><td>Fast store to HRAM (<code>$ff00</code>–<code>$ffff</code>)</td></tr>
+            <tr><td><code>push bc</code> / <code>pop bc</code></td><td>Save / restore a 16-bit register via the stack</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Arithmetic &amp; logic</h2>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Instruction</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td><code>add a, b</code> / <code>adc</code></td><td><code>a += b</code> (<code>adc</code> also adds the carry)</td></tr>
+            <tr><td><code>sub b</code> / <code>sbc</code></td><td><code>a -= b</code> (<code>sbc</code> also subtracts carry)</td></tr>
+            <tr><td><code>inc a</code> / <code>dec a</code></td><td>Add / subtract 1</td></tr>
+            <tr><td><code>and</code> / <code>or</code> / <code>xor</code></td><td>Bitwise ops on <code>a</code>; <code>xor a</code> is the idiom for "set a = 0"</td></tr>
+            <tr><td><code>cp b</code></td><td>Compare: like <code>sub</code> but only sets flags (for branching)</td></tr>
+            <tr><td><code>srl</code> / <code>sla</code> / <code>rl</code> / <code>rr</code></td><td>Shift / rotate bits (used for ×2, ÷2, and multi-byte math)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Control flow</h2>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Instruction</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td><code>jr .loop</code></td><td>Relative jump (short range) to a label</td></tr>
+            <tr><td><code>jr nz, .loop</code></td><td>Conditional jump — only if the last result was not zero</td></tr>
+            <tr><td><code>jp Label</code></td><td>Absolute jump (any address)</td></tr>
+            <tr><td><code>call Label</code> / <code>ret</code></td><td>Call a subroutine / return from it</td></tr>
+            <tr><td><code>ret z</code></td><td>Return only if the zero flag is set</td></tr>
+            <tr><td><code>halt</code> / <code>nop</code></td><td>Sleep until interrupt / do nothing</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <pre><code><span class="cm">; A real loop from home/delay.asm — "wait c frames"</span>
+DelayFrames::
+    call DelayFrame   <span class="cm">; wait one frame</span>
+    dec c             <span class="cm">; c = c - 1  (sets the zero flag when c hits 0)</span>
+    jr nz, DelayFrames <span class="cm">; not zero yet? go again</span>
+    ret</code></pre>
+
+      <h2>RGBDS directives (assembler, not CPU)</h2>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Directive</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td><code>SECTION "x", ROMX</code></td><td>Start a block of code/data placed by <code>layout.link</code></td></tr>
+            <tr><td><code>INCLUDE "file.asm"</code></td><td>Paste another source file here</td></tr>
+            <tr><td><code>db</code> / <code>dw</code> / <code>dl</code></td><td>Emit raw bytes / 16-bit words / 32-bit longs</td></tr>
+            <tr><td><code>ds n</code></td><td>Reserve <code>n</code> bytes of space</td></tr>
+            <tr><td><code>DEF X EQU 5</code></td><td>Define a constant named <code>X</code></td></tr>
+            <tr><td><code>MACRO name … ENDM</code></td><td>Define a reusable snippet; <code>\1 \2</code> are its arguments</td></tr>
+            <tr><td><code>rept n … endr</code></td><td>Repeat a block <code>n</code> times</td></tr>
+            <tr><td><code>charmap "A", $80</code></td><td>Map a text character to a byte value (see <code>constants/charmap.asm</code>)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Project-specific macros</h2>
+      <p>These aren't CPU instructions — they're macros defined in <code>macros/</code> that you'll see constantly:</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Macro</th><th>What it expands to</th></tr></thead>
+          <tbody>
+            <tr><td><code>farcall Func</code></td><td>Call <code>Func</code> in another ROM bank and return</td></tr>
+            <tr><td><code>predef Func</code></td><td>Call a shared routine via the predef pointer table</td></tr>
+            <tr><td><code>lb bc, hi, lo</code></td><td>Load two bytes at once: <code>b = hi</code>, <code>c = lo</code></td></tr>
+            <tr><td><code>dwb</code>, <code>dbw</code>, <code>dn</code>…</td><td>Mixed byte/word data shorthands (<code>macros/data.asm</code>)</td></tr>
+            <tr><td><code>const_def</code> / <code>const NAME</code></td><td>Auto-numbering enum: each <code>const</code> is the next value</td></tr>
+            <tr><td><code>text</code>, <code>line</code>, <code>para</code>, <code>done</code></td><td>The text-script DSL (<code>macros/scripts/text.asm</code>)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout">
+        <span class="ico">i</span>
+        <p>Every one of these constants and macros is available in <em>every</em> file without an explicit include — <code>includes.asm</code> is force-fed into each source by <code>rgbasm -P</code>. See the <a class="inline" href="#build-system" data-target="build-system">Build system</a> page.</p>
+      </div>
+    </section>
+
+    <!-- ===================== BUILD SYSTEM ===================== -->
+    <section class="page" id="build-system">
+      <p class="eyebrow">Repo Anatomy</p>
+      <h1>The build system</h1>
+      <p class="lead">Four hand-written top-level <code>.asm</code> files, a linker script, and a force-included prelude — that's the whole skeleton. Everything else is <code>INCLUDE</code>d into one of them.</p>
+
+      <h2>The five roots</h2>
+      <p>Each of these becomes one object file per ROM variant (see the <code>ROM_OBJ</code> list in the <code>Makefile</code>):</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>File</th><th>Becomes</th><th>Holds</th></tr></thead>
+          <tbody>
+            <tr><td><code>home.asm</code></td><td>ROM0 (always mapped)</td><td>Core routines callable from anywhere: vblank, interrupts, text, menus, map/overworld, farcall/predef dispatch</td></tr>
+            <tr><td><code>main.asm</code></td><td>The numbered ROMX banks</td><td>The master <code>INCLUDE</code> list — it decides which engine/data file lives in which bank</td></tr>
+            <tr><td><code>audio.asm</code></td><td>Audio banks</td><td>The sound engine + music/SFX/cry data</td></tr>
+            <tr><td><code>maps.asm</code></td><td>Map banks</td><td>All the map data</td></tr>
+            <tr><td><code>ram.asm</code></td><td>(no ROM bytes)</td><td>RAM address declarations only — VRAM/WRAM/SRAM/HRAM layout</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2><code>layout.link</code> — where banks go</h2>
+      <p>rgblink needs to know the physical bank of every <code>SECTION</code>. <code>layout.link</code> is that map. When you need to know which bank a piece of code ends up in, <code>main.asm</code> (section names) plus <code>layout.link</code> (section → bank) is the answer.</p>
+
+      <h2><code>includes.asm</code> — the global prelude</h2>
+      <p>This file pulls in the charmap, every macro, and every constants file. The <code>Makefile</code> passes it via <code>rgbasm -P includes.asm</code>, which force-includes it at the top of <em>every</em> translation unit. That's why any file can use any constant or macro without importing it.</p>
+      <pre><code><span class="cm"># from the Makefile</span>
+RGBASMFLAGS += -Q8 -P includes.asm</code></pre>
+
+      <h2>The prime directive: don't move bytes</h2>
+      <div class="callout warn">
+        <span class="ico">▲</span>
+        <p>Reordering data, "tidying" a table, or changing a constant's value can shift the output and break <code>make compare</code>. After <em>any</em> edit, rebuild and confirm the SHA1 check still passes. Renaming labels and adding comments is always safe; changing emitted bytes is not.</p>
+      </div>
+
+      <h2>Continuous integration</h2>
+      <p>GitHub Actions (<code>.github/workflows/main.yml</code>) builds with <code>DEBUG=1</code> on both Ubuntu and macOS, runs <code>make compare</code>, then <code>.github/checkdiff.sh</code> — which fails the build if anything in the working tree changed (e.g. a stray regenerated file). On the upstream <code>pret</code> repo it also pushes fresh symbol files to the <a class="inline" href="#symbols" data-target="symbols">symbols branch</a>.</p>
+    </section>
+
+    <!-- ===================== HOME / MAIN ===================== -->
+    <section class="page" id="sec-home">
+      <p class="eyebrow">Repo Anatomy</p>
+      <h1><code>home/</code> &amp; <code>main.asm</code></h1>
+      <p class="lead">The always-available core, plus the index that lays out everything else.</p>
+
+      <h2><code>home/</code> → ROM0</h2>
+      <p>Bank 0 is permanently mapped into the CPU's view, so routines here are callable from any other bank without banking tricks. It holds the low-level plumbing the whole game leans on. A sampling from <code>home.asm</code>'s include list:</p>
+      <ul>
+        <li><strong>System:</strong> <code>rst.asm</code>, <code>interrupts.asm</code>, <code>vblank.asm</code>, <code>init.asm</code>, <code>serial.asm</code>, <code>joypad.asm</code></li>
+        <li><strong>Graphics &amp; text:</strong> <code>text.asm</code>, <code>vcopy.asm</code>, <code>window.asm</code>, <code>menu.asm</code>, <code>pic.asm</code>, <code>fade.asm</code></li>
+        <li><strong>World:</strong> <code>map.asm</code>, <code>overworld.asm</code>, <code>map_objects.asm</code>, <code>movement.asm</code>, <code>tileset.asm</code></li>
+        <li><strong>Cross-bank dispatch:</strong> <code>farcall.asm</code>, <code>predef.asm</code> — the machinery behind the <code>farcall</code>/<code>predef</code> macros</li>
+      </ul>
+
+      <h2><code>main.asm</code> → the ROMX banks</h2>
+      <p>This file is almost pure structure: a series of <code>SECTION "bankN", ROMX</code> blocks, each listing the engine and data files that belong in that bank. It's the table of contents for the bulk of the game and the fastest way to answer "where does feature X live, and in which bank?"</p>
+      <pre><code>SECTION "Battle Core", ROMX
+    INCLUDE "engine/battle/core.asm"
+    INCLUDE "engine/overworld/wildmons.asm"
+    INCLUDE "engine/battle/start_battle.asm"</code></pre>
+      <div class="callout">
+        <span class="ico">i</span>
+        <p>Banks are packed to fit real hardware limits. If you add code to a bank that's already full, the link step fails — that's <code>main.asm</code> and <code>layout.link</code> telling you to place it elsewhere.</p>
+      </div>
+    </section>
+
+    <!-- ===================== ENGINE ===================== -->
+    <section class="page" id="sec-engine">
+      <p class="eyebrow">Repo Anatomy</p>
+      <h1><code>engine/</code></h1>
+      <p class="lead">The game's logic — the code that <em>does</em> things — grouped by subsystem. This is where most feature work happens.</p>
+      <div class="cards">
+        <a class="card" style="cursor:default"><b>battle/</b><span>Battle core, effect commands, AI (<code>ai/</code>), trainer HUDs, start/read party</span></a>
+        <a class="card" style="cursor:default"><b>battle_anims/</b><span>Move animation engine, bg effects, helpers</span></a>
+        <a class="card" style="cursor:default"><b>overworld/</b><span>Player movement, map objects, spawn points, wild encounters</span></a>
+        <a class="card" style="cursor:default"><b>pokemon/</b><span>Stats, experience, evolution, party menu, add/move mon, Bill's PC</span></a>
+        <a class="card" style="cursor:default"><b>menu/</b><span>Main/start menus, text entry, scrolling menus, options</span></a>
+        <a class="card" style="cursor:default"><b>items/</b><span>Inventory, item effects, TM/HM, buy/sell/toss</span></a>
+        <a class="card" style="cursor:default"><b>events/</b><span>Town map, field moves, std scripts, PokéCenter PC, breeder</span></a>
+        <a class="card" style="cursor:default"><b>pokedex/</b><span>Pokédex UI and dex-entry display</span></a>
+        <a class="card" style="cursor:default"><b>games/</b><span>Minigames: slots, Pikachu, poker, fifteen-puzzle, memory, picross</span></a>
+        <a class="card" style="cursor:default"><b>movie/</b><span>Intros, title screen, Oak speech, trade animation</span></a>
+        <a class="card" style="cursor:default"><b>link/</b><span>Link-cable code and the Gen-1 time capsule</span></a>
+        <a class="card" style="cursor:default"><b>debug/</b><span>The debug menus that only ship in the <code>-debug</code> ROMs</span></a>
+      </div>
+      <p>Also here: <code>gfx/</code> (graphics loaders), <code>sprites/</code> &amp; <code>sprite_anims/</code>, <code>tilesets/</code>, <code>math/</code>, <code>trainer_gear/</code>, plus standalone <code>predef.asm</code> and <code>smallflag.asm</code>.</p>
+      <div class="callout">
+        <span class="ico">i</span>
+        <p>Files live in <code>engine/</code> but their <strong>bank placement is decided in <code>main.asm</code></strong>. To find a file's bank, search for its path there.</p>
+      </div>
+    </section>
+
+    <!-- ===================== DATA ===================== -->
+    <section class="page" id="sec-data">
+      <p class="eyebrow">Repo Anatomy</p>
+      <h1><code>data/</code></h1>
+      <p class="lead">Read-only tables the engine reads: the "what," while <code>engine/</code> is the "how." Editing these changes game content — and the output bytes — so tread carefully.</p>
+      <div class="cards">
+        <a class="card" style="cursor:default"><b>pokemon/</b><span>Base stats, names, dex entries, evolutions &amp; learnsets</span></a>
+        <a class="card" style="cursor:default"><b>moves/</b><span>Move data, names, animations, TM/HM lists</span></a>
+        <a class="card" style="cursor:default"><b>items/</b><span>Item attributes and names</span></a>
+        <a class="card" style="cursor:default"><b>trainers/</b><span>Trainer parties and attributes</span></a>
+        <a class="card" style="cursor:default"><b>maps/</b><span>Landmarks, fly/spawn points, sprite sets, scenes</span></a>
+        <a class="card" style="cursor:default"><b>wild/</b><span>Wild encounter tables</span></a>
+        <a class="card" style="cursor:default"><b>types/</b><span>Type matchup chart</span></a>
+        <a class="card" style="cursor:default"><b>text/</b><span>Dialogue and string data</span></a>
+        <a class="card" style="cursor:default"><b>sprites/</b> &amp; <b>tilesets/</b><span>Sprite/tileset metadata and pointers</span></a>
+      </div>
+      <p>Loose files include <code>growth_rates.asm</code>, <code>predef_pointers.asm</code> (the predef dispatch table), and <code>tilesets.asm</code>. Much of this data is written using the <a class="inline" href="#sec-macros" data-target="sec-macros">scripting macros</a> so it reads like structured records rather than raw bytes.</p>
+    </section>
+
+    <!-- ===================== CONSTANTS ===================== -->
+    <section class="page" id="sec-constants">
+      <p class="eyebrow">Repo Anatomy</p>
+      <h1><code>constants/</code></h1>
+      <p class="lead">Symbolic names for the magic numbers. Prefer a constant to a literal everywhere — recent history explicitly favours named hardware constants over hard-coded values.</p>
+      <p>Every file in here is included by <code>includes.asm</code>, so the names are globally available. Notable members:</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>File</th><th>Defines</th></tr></thead>
+          <tbody>
+            <tr><td><code>hardware.inc</code></td><td>Standard gbdev Game Boy hardware registers (<code>rLCDC</code>, <code>rIE</code>, …)</td></tr>
+            <tr><td><code>charmap.asm</code></td><td>Text encoding — maps characters (incl. Japanese kana) to byte values</td></tr>
+            <tr><td><code>pokemon_constants.asm</code></td><td>Species IDs; <code>move_constants.asm</code>, <code>item_constants.asm</code> similarly</td></tr>
+            <tr><td><code>map_constants.asm</code></td><td>Map IDs; plus <code>tileset_</code>, <code>collision_</code>, <code>metatile_</code> constants</td></tr>
+            <tr><td><code>*_data_constants.asm</code></td><td>Struct field offsets/sizes for the matching <code>data/</code> tables</td></tr>
+            <tr><td><code>ram_constants.asm</code></td><td>Named values used by the RAM declarations in <code>ram/</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Constants are typically built with the <code>const_def</code> / <code>const</code> auto-numbering macros, so inserting a value shifts everything after it — another reason a "harmless" edit can move bytes.</p>
+    </section>
+
+    <!-- ===================== MACROS ===================== -->
+    <section class="page" id="sec-macros">
+      <p class="eyebrow">Repo Anatomy</p>
+      <h1><code>macros/</code> &amp; the scripting DSLs</h1>
+      <p class="lead">RGBDS macros that give the assembly higher-level vocabulary. The <code>scripts/</code> subfolder defines little languages the data files are written in.</p>
+
+      <h2>Core macros</h2>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>File</th><th>Provides</th></tr></thead>
+          <tbody>
+            <tr><td><code>code.asm</code></td><td>Syntactic sugar — <code>lb</code>/<code>ln</code>, <code>jumptable</code>, <code>maskbits</code>, pixel helpers</td></tr>
+            <tr><td><code>data.asm</code></td><td>Mixed data shorthands — <code>dwb</code>, <code>dbw</code>, <code>dn</code>, <code>percent</code></td></tr>
+            <tr><td><code>const.asm</code></td><td>The <code>const_def</code>/<code>const</code> auto-numbering enum system</td></tr>
+            <tr><td><code>farcall.asm</code>, <code>predef.asm</code></td><td>The cross-bank call macros</td></tr>
+            <tr><td><code>gfx.asm</code>, <code>coords.asm</code></td><td>Graphics helpers and screen-coordinate math (<code>hlcoord</code> etc.)</td></tr>
+            <tr><td><code>asserts.asm</code></td><td>Build-time <code>assert</code>s that catch byte-layout mistakes early</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>The scripting DSLs — <code>macros/scripts/</code></h2>
+      <p>These turn raw byte tables into readable mini-languages. When you edit map events, dialogue, or move animations, you're writing in one of these — <strong>edit the macro-based source, never raw bytes.</strong></p>
+      <ul>
+        <li><code>text.asm</code> — dialogue: <code>text</code>, <code>line</code>, <code>para</code>, <code>cont</code>, <code>prompt</code>, <code>done</code></li>
+        <li><code>events.asm</code> / <code>maps.asm</code> — map scripts, warps, and object events</li>
+        <li><code>movement.asm</code> — NPC/player movement scripts</li>
+        <li><code>battle_commands.asm</code> / <code>battle_anims.asm</code> — move effects &amp; animations</li>
+        <li><code>audio.asm</code> — music &amp; sound-effect note data</li>
+        <li><code>oam_anims.asm</code> — sprite (OAM) animation sequences</li>
+      </ul>
+      <pre><code><span class="cm">; A text script reads like prose thanks to macros/scripts/text.asm</span>
+    text "HELLO WORLD"
+    line "how are you?"
+    done</code></pre>
+    </section>
+
+    <!-- ===================== GFX ===================== -->
+    <section class="page" id="sec-gfx">
+      <p class="eyebrow">Repo Anatomy</p>
+      <h1><code>gfx/</code></h1>
+      <p class="lead">Source artwork as editable <code>.png</code> files. The build converts them to Game Boy tile formats — you never hand-edit binary graphics.</p>
+
+      <h2>The graphics pipeline</h2>
+      <p>The <code>Makefile</code>'s catch-all rules run <code>rgbgfx</code> (and the in-repo <code>tools/gfx</code> post-processor) to turn PNGs into console-native data:</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>From</th><th>To</th><th>What</th></tr></thead>
+          <tbody>
+            <tr><td><code>.png</code></td><td><code>.2bpp</code></td><td>4-colour tile data (the standard Game Boy format)</td></tr>
+            <tr><td><code>.png</code></td><td><code>.1bpp</code></td><td>2-colour tile data (fonts, some UI)</td></tr>
+            <tr><td><code>.2bpp</code></td><td><code>.pic</code></td><td>Compressed Pokémon sprites (via <code>tools/pkmncompress</code>)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout">
+        <span class="ico">i</span>
+        <p>Some images need special flags (trim/interleave/remove-duplicates) to match the original bytes. Those are set <strong>per file in the <code>Makefile</code></strong> (search for <code>tools/gfx +=</code>). If you replace a PNG and the build stops matching, its flag line is the place to look.</p>
+      </div>
+
+      <h2>Where things live</h2>
+      <p>Organised by feature: <code>battle/</code>, <code>battle_anims/</code>, <code>pokemon/</code> &amp; <code>pics/</code> (mon sprites), <code>icons/</code>, <code>font/</code>, <code>title/</code>, <code>intro/</code> &amp; <code>splash/</code>, <code>minigames/</code>, <code>overworld/</code>, <code>tilesets/</code>, <code>trainer/</code> &amp; <code>trainer_card/</code>, <code>sgb/</code> (Super Game Boy borders), <code>trade/</code>, <code>pack/</code>, <code>hud/</code>, and more.</p>
+    </section>
+
+    <!-- ===================== AUDIO ===================== -->
+    <section class="page" id="sec-audio">
+      <p class="eyebrow">Repo Anatomy</p>
+      <h1><code>audio/</code></h1>
+      <p class="lead">The sound engine and all the music, sound effects, and Pokémon cries — assembled from <code>audio.asm</code> into its own banks.</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>File</th><th>Holds</th></tr></thead>
+          <tbody>
+            <tr><td><code>engine.asm</code></td><td>The sound driver — plays songs/SFX on the Game Boy's 4 audio channels</td></tr>
+            <tr><td><code>sfx.asm</code> / <code>sfx_pointers.asm</code></td><td>Sound-effect data and its lookup table</td></tr>
+            <tr><td><code>cries.asm</code> / <code>cry_pointers.asm</code></td><td>Pokémon cry data</td></tr>
+            <tr><td><code>song_header_pointers.asm</code></td><td>Music track headers</td></tr>
+            <tr><td><code>drumkits.asm</code>, <code>notes.asm</code></td><td>Percussion and note-frequency tables</td></tr>
+            <tr><td><code>intensity_overrides.asm</code>, <code>move_sfx_old.asm</code></td><td>Prototype-specific audio quirks preserved as-is</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Music and SFX are authored with the note macros in <code>macros/scripts/audio.asm</code>. Constants for song/SFX/cry IDs live in <code>constants/music_constants.asm</code>, <code>sfx_constants.asm</code>, and <code>cry_constants.asm</code>. To hear any of it in isolation, use the sound debug menu in a <code>-debug</code> ROM.</p>
+    </section>
+
+    <!-- ===================== MAPS ===================== -->
+    <section class="page" id="sec-maps">
+      <p class="eyebrow">Repo Anatomy</p>
+      <h1><code>maps/</code></h1>
+      <p class="lead">The overworld itself — hundreds of files, one set per location, assembled through <code>maps.asm</code>.</p>
+      <p>Each map bundles together its tile layout (the <code>.blk</code> block map), its object/NPC events, warps, connections, and scripts. The scripting is written with the macros in <code>macros/scripts/maps.asm</code> and <code>events.asm</code>, and it references:</p>
+      <ul>
+        <li><code>data/maps/</code> — landmarks, fly points, spawn points, sprite sets, scenes</li>
+        <li><code>constants/map_constants.asm</code> — the map IDs</li>
+        <li><code>constants/map_object_constants.asm</code> &amp; <code>collision_constants.asm</code> — object and movement rules</li>
+      </ul>
+      <div class="callout">
+        <span class="ico">i</span>
+        <p>This is a <em>prototype</em>, so its map set doesn't match the retail Gold/Silver — many areas are placeholder, unfinished, or unreachable in normal play. The debug field menu can warp you to them.</p>
+      </div>
+    </section>
+
+    <!-- ===================== RAM ===================== -->
+    <section class="page" id="sec-ram">
+      <p class="eyebrow">Repo Anatomy</p>
+      <h1><code>ram/</code></h1>
+      <p class="lead">Not code and not data — just names for memory addresses. These declarations are what let the rest of the source say <code>wPartyCount</code> instead of a bare hex address.</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>File</th><th>Region</th><th>Prefix</th></tr></thead>
+          <tbody>
+            <tr><td><code>wram.asm</code></td><td>Work RAM — the game's main variables and buffers</td><td><code>w…</code></td></tr>
+            <tr><td><code>hram.asm</code></td><td>High RAM — small, fast-access scratch (used with <code>ldh</code>)</td><td><code>h…</code></td></tr>
+            <tr><td><code>vram.asm</code></td><td>Video RAM — tiles, tilemaps, sprite attributes</td><td><code>v…</code></td></tr>
+            <tr><td><code>sram.asm</code></td><td>Save RAM — the battery-backed cartridge save</td><td><code>s…</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Assembled via <code>ram.asm</code>. Because these are addresses (via <code>SECTION … WRAM0</code> and friends, laid out with <code>ds</code>), the <em>order and size</em> of declarations sets where each variable sits — so this file has real byte-layout consequences even though it emits no ROM data. Field <em>values</em> and sizes come from <code>constants/ram_constants.asm</code>.</p>
+    </section>
+
+    <!-- ===================== GARBAGE ===================== -->
+    <section class="page" id="sec-garbage">
+      <p class="eyebrow">Repo Anatomy</p>
+      <h1><code>garbage/</code></h1>
+      <p class="lead">Leftover and padding bytes from the original ROMs, preserved verbatim. It looks like junk because it <em>is</em> junk — but it has to be byte-exact.</p>
+      <p>Real cartridge ROMs contain filler between sections, abandoned data, and uninitialised regions that happened to hold whatever was in the developers' build. To reproduce the prototype's exact SHA1, that content is captured here rather than cleaned up or zeroed out.</p>
+      <div class="callout warn">
+        <span class="ico">▲</span>
+        <p><strong>Don't "fix" it.</strong> Deleting, compacting, or reformatting anything in <code>garbage/</code> will change the ROM and break <code>make compare</code>. Its messiness is the point — it's faithful preservation, not a mistake to tidy.</p>
+      </div>
+      <p>Curious findings buried in here (recognisable graphics, unused data) are exactly the kind of thing the pret <code>#prototypes-and-leaks</code> community documents.</p>
+    </section>
+
+    <!-- ===================== TOOLS ===================== -->
+    <section class="page" id="sec-tools">
+      <p class="eyebrow">Repo Anatomy</p>
+      <h1><code>tools/</code></h1>
+      <p class="lead">Small C programs the build compiles and runs for you. They're built automatically the first time you run <code>make</code>.</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Tool</th><th>Job</th></tr></thead>
+          <tbody>
+            <tr><td><code>scan_includes.c</code></td><td>Walks <code>INCLUDE</code> directives so <code>make</code> knows which files a target depends on</td></tr>
+            <tr><td><code>gfx.c</code></td><td>Post-processes <code>rgbgfx</code> output (trim/interleave/dedupe) to hit exact original bytes</td></tr>
+            <tr><td><code>pkmncompress.c</code></td><td>Compresses <code>.2bpp</code> sprites into the <code>.pic</code> format the ROM uses</td></tr>
+            <tr><td><code>Makefile</code>, <code>common.h</code></td><td>Builds the tools; shared helpers</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout">
+        <span class="ico">i</span>
+        <p>These are the project's <em>own</em> build-time helpers. Don't confuse them with the external <code>gb-asm-tools</code> repo linked from the README — see the next page for how those differ.</p>
+      </div>
+    </section>
+
+    <!-- ===================== SYMBOLS & TOOLS REPO ===================== -->
+    <section class="page" id="symbols">
+      <p class="eyebrow">Beyond the Repo</p>
+      <h1>The symbols branch &amp; <code>gb-asm-tools</code></h1>
+      <p class="lead">The README's two "See also" links point outside your working tree. Here's what each is and how it connects back to this codebase.</p>
+
+      <h2><span class="chip accent">branch</span> The <code>symbols</code> branch</h2>
+      <p>Link: <a class="inline" href="https://github.com/pret/pokegold-spaceworld/tree/symbols">pret/pokegold-spaceworld @ symbols</a>. This is an <strong>orphan branch in the same repository</strong> that holds generated <code>.sym</code> and <code>.map</code> files — <em>not</em> source code.</p>
+      <ul>
+        <li>A <code>.sym</code> file maps every ROM address to its label name; a <code>.map</code> file describes the final bank layout.</li>
+        <li>CI regenerates them on every push to <code>master</code> and commits the fresh copies to the <code>symbols</code> branch (see the "Update symbols" step in the workflow).</li>
+        <li>They're kept on a separate branch precisely because they're build artifacts — <code>master</code> stays source-only, and <code>.sym</code>/<code>.map</code> are in <code>.gitignore</code> there.</li>
+      </ul>
+      <p><strong>How it ties in:</strong> load a <code>.sym</code> into an emulator debugger (SameBoy, BGB) and addresses become readable label names, so you can set breakpoints on <code>DelayFrame</code> instead of a hex address. You can generate your own locally with <code>make DEBUG=1</code> — the symbols branch just saves you the build, and matches the exact upstream bytes.</p>
+      <div class="callout">
+        <span class="ico">i</span>
+        <p>On a personal fork, the CI steps that push to <code>symbols</code> are gated to <code>github.repository_owner == 'pret'</code>, so they won't run for you. Use <code>make DEBUG=1</code> to produce symbols yourself.</p>
+      </div>
+
+      <h2><span class="chip accent">repo</span> <code>gb-asm-tools</code></h2>
+      <p>Link: <a class="inline" href="https://github.com/pret/gb-asm-tools">pret/gb-asm-tools</a>. A <strong>separate, shared repository</strong> of general-purpose utilities used across all of pret's Game Boy disassemblies — not required to build this project.</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th></th><th>In-repo <code>tools/</code></th><th>External <code>gb-asm-tools</code></th></tr></thead>
+          <tbody>
+            <tr><td>Scope</td><td>Just this project</td><td>Shared across many pret repos</td></tr>
+            <tr><td>Role</td><td>Required by the build (<code>make</code> runs them)</td><td>Optional developer/reverse-engineering helpers</td></tr>
+            <tr><td>Examples</td><td><code>scan_includes</code>, <code>gfx</code>, <code>pkmncompress</code></td><td>Disassembly/analysis scripts, format converters, and similar aids</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>How it ties in:</strong> you don't need it to run <code>make</code>, but when you're actively reverse-engineering unknown regions (naming <code>garbage/</code>, comparing against retail, extracting graphics), these shared tools are the community's standard kit. Think of them as the workshop around the project, whereas <code>tools/</code> is the machinery bolted onto the build itself.</p>
+
+      <h2>Where to ask</h2>
+      <p>Both links live under the <a class="inline" href="https://pret.github.io/">pret</a> umbrella. Real-time help is on the pret Discord in <code>#prototypes-and-leaks</code> (invite in the <a class="inline" href="https://github.com/pret/pokegold-spaceworld">README</a>).</p>
+
+      <p class="footer-note">You've reached the end of the wiki. From here, the best move is to <code>make DEBUG=1</code>, open a debug ROM in SameBoy with its <code>.sym</code>, and start reading <code>home/</code> alongside the <a class="inline" href="#asm-cheatsheet" data-target="asm-cheatsheet">cheatsheet</a>.</p>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  (function () {
+    var links = Array.prototype.slice.call(document.querySelectorAll('[data-target]'));
+    var pages = Array.prototype.slice.call(document.querySelectorAll('.page'));
+    var sidebar = document.getElementById('sidebar');
+
+    function show(id, push) {
+      var target = document.getElementById(id);
+      if (!target) { id = 'overview'; target = document.getElementById(id); }
+      pages.forEach(function (p) { p.classList.toggle('active', p === target); });
+      document.querySelectorAll('#nav a').forEach(function (a) {
+        a.classList.toggle('active', a.getAttribute('data-target') === id);
+      });
+      if (push && ('#' + id) !== location.hash) history.pushState(null, '', '#' + id);
+      document.querySelector('.content').scrollTo ? window.scrollTo(0, 0) : null;
+      window.scrollTo(0, 0);
+      sidebar.classList.remove('open');
+    }
+
+    links.forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        show(a.getAttribute('data-target'), true);
+      });
+    });
+
+    window.addEventListener('popstate', function () {
+      show((location.hash || '#overview').slice(1), false);
+    });
+
+    var menuBtn = document.getElementById('menuBtn');
+    if (menuBtn) menuBtn.addEventListener('click', function () { sidebar.classList.toggle('open'); });
+
+    show((location.hash || '#overview').slice(1), false);
+  })();
+</script>
+</body>
+</html>

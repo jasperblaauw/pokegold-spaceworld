@@ -14,6 +14,12 @@ It builds the following ROMs:
 - Silver_debug.sgb, with correct header `sha1: 51b78133bdb7b80e595014941bda5c20dac05967`
 
 
+## Getting started
+
+New to this disassembly? See the [**Contributor Wiki**][wiki] for toolchain setup, building and testing the ROMs on Apple Silicon, an assembly cheatsheet, and a page-by-page tour of the repo. Its source lives in [`docs/index.html`](docs/index.html) and can also be opened directly in a browser.
+
+[wiki]: https://jasperblaauw.github.io/pokegold-spaceworld/
+
 ## See also
 
 - [**Symbols**][symbols]
