@@ -208,6 +208,37 @@
   .footer-note { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--line);
                  font-size: .8rem; color: var(--ink-faint); }
 
+  /* ---------- Story: in-game quote box ---------- */
+  .quote {
+    margin: 16px 0; padding: 14px 16px 12px;
+    background: var(--screen-bg); color: var(--screen-ink);
+    border: 1px solid var(--screen-line); border-radius: var(--radius);
+    box-shadow: inset 0 0 0 4px rgba(15,56,15,.6), inset 0 0 24px rgba(0,0,0,.35);
+    font-family: var(--mono); font-size: .84rem; line-height: 1.7;
+  }
+  .quote p { margin: 0; color: var(--screen-ink); }
+  .quote p + p { margin-top: 8px; }
+  .quote .who { display: block; color: var(--screen-dim); font-size: .64rem;
+                letter-spacing: .14em; text-transform: uppercase; margin-bottom: 6px; }
+  .quote .src { display: block; margin-top: 10px; color: var(--screen-dim);
+                font-size: .62rem; letter-spacing: .03em; }
+  .spec-tag { color: var(--gold); }
+
+  /* ---------- History: vertical timeline ---------- */
+  .timeline { margin: 22px 0 8px; padding-left: 26px; border-left: 2px solid var(--line); }
+  .tl-item { position: relative; padding-bottom: 26px; }
+  .tl-item:last-child { padding-bottom: 4px; }
+  .tl-item::before {
+    content: ""; position: absolute; left: -34px; top: 4px; width: 12px; height: 12px;
+    border-radius: 50%; background: var(--surface); border: 2px solid var(--accent);
+  }
+  .tl-item.done::before { background: var(--accent); box-shadow: 0 0 0 4px var(--accent-wash); }
+  .tl-date { font-family: var(--mono); font-size: .68rem; letter-spacing: .1em;
+             text-transform: uppercase; color: var(--accent-strong); }
+  .tl-item h3 { margin: 3px 0 6px; font-size: 1rem; }
+  .tl-item p { margin: 0; color: var(--ink-soft); font-size: .92rem; }
+  .tl-item .commit { font-family: var(--mono); font-size: .8rem; color: var(--ink-faint); }
+
   /* ---------- Mobile ---------- */
   .topbar { display: none; }
   .menu-btn { background: var(--surface); border: 1px solid var(--line); color: var(--ink);
@@ -279,6 +310,14 @@
         <a href="#sec-ram" data-target="sec-ram">ram/</a>
         <a href="#sec-garbage" data-target="sec-garbage">garbage/</a>
         <a href="#sec-tools" data-target="sec-tools">tools/</a>
+      </div>
+      <div class="nav-group">
+        <p>The World</p>
+        <a href="#story" data-target="story">The story of Nihon</a>
+      </div>
+      <div class="nav-group">
+        <p>History</p>
+        <a href="#history" data-target="history">Origins &amp; timeline</a>
       </div>
       <div class="nav-group">
         <p>Beyond the Repo</p>
@@ -948,6 +987,249 @@ RGBASMFLAGS += -Q8 -P includes.asm</code></pre>
     </section>
 
     <!-- ===================== SYMBOLS & TOOLS REPO ===================== -->
+    <!-- ===================== STORY ===================== -->
+    <section class="page" id="story">
+      <p class="eyebrow">The World</p>
+      <h1>The Story of Nihon</h1>
+      <p class="lead">The prototype is set in <strong>Nihon</strong> (ニホン — literally "Japan"), the region later rebuilt into <strong>Johto</strong> for retail Gold &amp; Silver. This page reads it on three levels: the <strong>attract-mode demo</strong> you could actually play at the Space World '97 booth, the fuller <strong>Story Mode</strong> the developers left half-coded and normally unreachable in the ROM, and a <strong>speculative</strong> reading of where that unfinished story was heading.</p>
+
+      <div class="callout">
+        <span class="ico">i</span>
+        <p>Quotations and symbols here are taken straight from this repository — the map scripts under <code>maps/</code>, the sprite and trainer tables, and the reconstructed <a class="inline" href="glossary/index.html">text glossary</a>. <strong>§2</strong> describes content that is normally inaccessible (see its patch note). <strong>§3</strong> is clearly-marked <span class="spec-tag">speculation</span>, not established canon.</p>
+      </div>
+
+      <h2><span class="chip accent">§1</span> The Space World '97 demo</h2>
+      <p>What the cartridge boots into — the build shown on the floor — is not the story. It is a short, self-contained loop meant to prove a Gold &amp; Silver existed and let a passer-by hold new Pokémon in the palm of a Game Boy. So it skips every ceremony: no name entry, no professor, no gift scene. You simply begin as a Trainer who <strong>already has a Pokémon in hand</strong>, standing in a finished-looking town.</p>
+
+      <h3>A simulated run through the demo</h3>
+      <p>You start in <strong>Silent Hill</strong>, the quiet home town. Its signs read like a game that fully expects you to keep going — they even label the houses that a real save file would populate:</p>
+      <div class="quote">
+        <span class="who">Town signage · Silent Hill</span>
+        <p>This is Silent Hill — the quiet hill.</p>
+        <p>This is &lt;PLAYER&gt;'s house.  ·  This is &lt;RIVAL&gt;'s house.</p>
+        <span class="src">SilentHill:TextString3 / 4 / 5</span>
+      </div>
+      <p>The research lab on the edge of town won't open — its door and its notice board only hint at the game a full cartridge would unlock:</p>
+      <div class="quote">
+        <span class="who">The lab · Silent Hill</span>
+        <p>Huh? It's locked.</p>
+        <p>[Notice board] Tenants wanted!</p>
+        <span class="src">SilentHill:TextString1 / 2</span>
+      </div>
+      <p>Out of town, the demo pens you into the grassy <strong>training hills</strong> just beyond — the slope the finished game would name Quiet Hills. Its Trainers exist to be battled, and their chatter is really the demo's sales pitch: this is a world stuffed with creatures no one has catalogued yet.</p>
+      <div class="quote">
+        <span class="who">Trainers · the training hills</span>
+        <p>The Pokémon on this hill are weak! That's why lots of Trainers train here. Everyone loves battling, so it's a good place to test your skill.</p>
+        <p>Hey, hey, look at this! This has GOT to be a new species of Pokémon!</p>
+        <p>Rumor has it that not just new Pokémon, but new types have been found too.</p>
+        <span class="src">QuietHills:Text1 / Trainer6</span>
+      </div>
+      <p>Signposts point onward — <em>"Quiet Hill. To Old City, this way"</em> — toward a gate house that would lead to the next city. But you never reach it. As you approach, your <strong>rival</strong> appears to head you off, the screen fades… and the cartridge loops straight back to the title. No battle, no next town — just the reset. That abrupt cut <em>is</em> the demo: everything past the gate was for the show floor to imagine, not to play.</p>
+      <div class="callout">
+        <span class="ico">i</span>
+        <p>The polished interiors, the mail from "Oak," the missing-professor radio bulletin, the lab scene — none of that is part of this playable loop. It exists in the ROM, but you reach it only through the Story Mode below.</p>
+      </div>
+
+      <h2><span class="chip accent">§2</span> The unfinished Story Mode</h2>
+      <p>Buried in the same ROM is the game's real opening — a proper new-game sequence the demo build never lets you reach. The Cutting Room Floor documents how to force it: patch ROM offset <code>0x5585</code> from <code>0x8D</code> to <code>0xB9</code>, and the cartridge boots the story instead of the attract loop. It is genuinely raw — the change destabilises overworld movement in many emulators and tends to crash — and <strong>only the introduction, up to the first rival battle, is fully coded and playable</strong>. What follows is that intro, told from the scripts, NPCs and Pokémon that actually run.</p>
+
+      <h3>The rival's boast</h3>
+      <p>You leave your house and, heading for the north edge of town, your <strong>rival</strong> plants himself in your path. He has nothing to do yet but gloat — and fish for something to tease you with:</p>
+      <div class="quote">
+        <span class="who">Rival · Silent Hill</span>
+        <p>Yo. I came 'cause there's something I want to brag to you about. I got mail from that famous Oak! Huh? You got it too? Tch — how boring!</p>
+        <p>…Hmph. Well then, well then — you, what do you always call your own mother?</p>
+        <span class="src">SilentHill:TextRival1 — the game then prompts you to name your mom</span>
+      </div>
+      <p>Whatever you answer, he mocks it and storms off ahead — already, the rival is defined entirely by his head-start toward Oak:</p>
+      <div class="quote">
+        <span class="who">Rival · Silent Hill</span>
+        <p>Ehh, how uncool! Calling her something that childish — what a joke! Ahh, that cleared me up a little! Well then — I'll be heading to Oak's place a step ahead of you!</p>
+        <span class="src">SilentHill:TextRival2</span>
+      </div>
+
+      <h3>Blue's tutorial</h3>
+      <p>You barely reach the exit before someone calls you back. This is <strong>Blue</strong> — the Blue of Kanto, recast here as the professor's helper — delivering the series' standard "don't step into the grass unarmed" lesson before escorting you to the lab himself (in code, he literally leads and you follow):</p>
+      <div class="quote">
+        <span class="who">Blue · north edge of Silent Hill</span>
+        <p>Hold on! Wait! Wait, I said!</p>
+        <p>You really don't know a single thing, do you! In the tall grass, wild Pokémon leap out! If you have a Pokémon of your own, you can fight them…</p>
+        <p>Ah! Could it be that you're— …come with me a second!</p>
+        <span class="src">SilentHill:TextNorthExit / TextPokemonInGrass</span>
+      </div>
+
+      <h3>The lab: Oak, three starters, the Pokédex</h3>
+      <p>Inside, Professor <strong>Oak</strong> makes the pitch the whole generation is built on: he has moved his base to keep pace with a flood of undiscovered species, and he needs young hands to catalogue them.</p>
+      <div class="quote">
+        <span class="who">Prof. Oak · Silent Hill Lab</span>
+        <p>One year ago, in Kanto, I handed a Pokédex and Pokémon to boys like you… they succeeded in finding 150 kinds of Pokémon! But… since then, new Pokémon have been turning up one after another all across the country! So I moved my research base from Kanto here, to Silent Hill… Won't you lend your strength to Pokémon research?</p>
+        <span class="src">SilentHillLabFront:TextString6A</span>
+      </div>
+      <p>In the back room he sets three starters on the table — and here the prototype shows its age. Two of the three were scrapped before retail and survive only as demo species:</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Slot</th><th>Demo species (as stored)</th><th>What became of it</th></tr></thead>
+          <tbody>
+            <tr><td>Fire</td><td><code>DEX_HONOGUMA</code> — Honōguma, "flame-bear"</td><td>Scrapped → replaced by <strong>Cyndaquil</strong></td></tr>
+            <tr><td>Water</td><td><code>DEX_KURUSU</code> — Kurusu, "Cruise"</td><td>Scrapped → replaced by <strong>Totodile</strong></td></tr>
+            <tr><td>Grass</td><td><code>DEX_HAPPA</code> — Happa, "leaf"</td><td>Renamed → <strong>Chikorita</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="quote">
+        <span class="who">Prof. Oak · Silent Hill Lab (back room)</span>
+        <p>See, there are three Pokémon over there! Ho ho! I'll give one to each of you. …Now, choose!</p>
+        <span class="src">SilentHillLabBack:TextString1 — the rival, who calls Oak "Gramps," grabs one too</span>
+      </div>
+      <p>Oak entrusts you with the Pokédex; his granddaughter <strong>Nanami</strong> (retail's Daisy — which makes the rival Oak's grandson) catches you on the way out with the bag Oak forgot to hand over:</p>
+      <div class="quote">
+        <span class="who">Nanami · Silent Hill Lab</span>
+        <p>…he's my little brother. Which means, yes! I'm Oak's granddaughter too!… I'll give you this instead! It's the latest-model Pokémon Backpack.</p>
+        <span class="src">SilentHillLabFront:TextString23</span>
+      </div>
+
+      <h3>Where the code runs out</h3>
+      <p>Having taken whichever starter beats yours, the rival wants an immediate battle — and this is the exact point the finished world ends. His party isn't stored the way this build's battle engine expects. <code>RivalGroup</code> lists his lone Level-5 starter using the <strong>old newcomer-index format</strong> — <code>DEX_KURUSU</code> / <code>DEX_HAPPA</code> / <code>DEX_HONOGUMA</code> — instead of the <code>MON_</code> species IDs the engine reads to build a battler:</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>What the code says (<code>data/trainers/parties.asm</code>)</th><th>What the engine does with it</th></tr></thead>
+          <tbody>
+            <tr><td><code>RivalGroup:: db 5, DEX_KURUSU, 0</code> …and two more, one per starter</td><td>Reads <code>DEX_*</code> as if it were a <code>MON_*</code> species → wrong mon, wrong stats/moves → a garbled, near-unwinnable fight</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Past that broken battle there is nothing more wired up. The Story Mode simply stops — the rest of Nihon exists only as data no path ever reaches, which is what §3 is built from.</p>
+
+      <h2><span class="chip gold">§3</span> If Nihon had never become Johto <span class="spec-tag">— speculation</span></h2>
+      <div class="callout warn">
+        <span class="ico">!</span>
+        <p>From here on is an <strong>informed extrapolation</strong>, not documented canon. It braids together fragments that sit unused in the ROM — a second "evil" Oak, a phantom bird, a time machine, two rival evil teams — into the story the prototype seems to have been reaching for.</p>
+      </div>
+
+      <h3>The loose ends still in the ROM</h3>
+      <p>None of the following is reachable in play, but all of it is concrete — sitting in maps, sprite tables and dialogue the developers wrote and then abandoned. Together the fragments sketch a far larger plot than the intro ever delivers:</p>
+      <ul>
+        <li><strong>A missing professor — and a second Oak.</strong> A radio bulletin (unreachable in play) reports that <em>"Professor Oak has vanished from Kanto,"</em> yet you meet him in Silent Hill. The sprite table holds <em>two</em> Oaks: <code>SPRITE_OKIDO</code>, the professor you meet, and <code>SPRITE_EVIL_OKIDO</code> — an impostor, for whom a whole map (<code>maps/HighTechImposterOakHouse.asm</code>) was built in the distant <strong>High-Tech city</strong>.</li>
+        <li><strong>A phantom Pokémon.</strong> A letter on the lab PC, from Oak's assistant, hunts a legendary the assistant now doubts is real: <em>"that certain Pokémon you asked me to find… Maybe that thing really is a fictitious Pokémon after all."</em> The obvious candidate is newcomer #247 <strong>Hōō</strong> (Ho-Oh), a fit for Old City's sealed Five-Story Pagoda.</li>
+        <li><strong>A Time Machine.</strong> Pokémon-Center NPCs keep describing a device that can <em>"even trade Pokémon across time"</em> — the ancestor of retail's Time Capsule — but never let you touch it.</li>
+        <li><strong>New types on display.</strong> The build is mid-invention: it carries a prototype <strong>Bird</strong> type and a <strong>Metal</strong> type (later Steel), and shows off the first Dark-type like an exhibit — <em>"This is Houndoom. A type of Pokémon there's never been before."</em> Behind it sit 100 newcomers (#152–251), barely half of which reached retail intact — see the <a class="inline" href="glossary/dex.html">newcomers list</a>.</li>
+        <li><strong>Two evil teams, and a whole region.</strong> Trainer classes exist for both the proto <strong>Geruge-dan</strong> and a returning <strong>Team Rocket</strong>. The landmark table names fifteen-plus cities — Silent Hill, Old City, West, High-Tech, Font, Birdon, Newtype, Sugar, Stand, Prince, North, South — with <strong>Kanto folded in as a single city</strong> (Silph Co., a Game Corner, a wink-to-camera "Game Freak HQ"), nearly every town carrying its own gym.</li>
+      </ul>
+
+      <p>Picture Nihon left intact: a pocket-sized <strong>Japan</strong> whose towns are named for ideas rather than plants — Silent, Old, High-Tech, Newtype, Stand — with the whole of <strong>Kanto</strong> shrunk to one nostalgic city you can walk back into. It is one year after a boy from Pallet finished the first Pokédex, and the world is convulsing with new life: unfamiliar species everywhere, and rumours of new <em>types</em> entirely.</p>
+
+      <h3>The lure</h3>
+      <p>Two children in Silent Hill — you, and Oak's grandson next door — receive the same unsigned letter: <em>"there is something I simply must give you."</em> It reads like an honour. In this version it is <strong>bait</strong>. Someone needs a fresh generation of trainers scattered across Nihon, dutifully logging every new Pokémon into networked Pokédexes — because that census is the fastest way to triangulate one specific creature: the phantom the real Oak vanished chasing, the rainbow bird <strong>Ho-Oh</strong>, roosting atop Old City's sealed Five-Story Pagoda.</p>
+
+      <h3>The two Oaks</h3>
+      <p>The Oak who greets you in Silent Hill is genuine but frail — "a worn-out old man," by his own admission, running out of time. The Oak in <strong>High-Tech city</strong> is not Oak at all: <code>SPRITE_EVIL_OKIDO</code>, a double who has stolen the most trusted name in the Pokémon world and, with it, command of the region's research apparatus. The radio's careful phrasing — "vanished from Kanto… or caught up in some incident" — is the impostor's cover story doing its work. Every Pokédex the children fill in feeds <em>his</em> map, not the professor's.</p>
+      <p>The emotional charge is that the <strong>rival is Oak's grandson</strong>. Retail Gold &amp; Silver replaced him with Silver, Giovanni's son — a stranger to the professor. Here, the boy racing you to catch legendaries is chasing, without knowing it, the thing wearing his own grandfather's face. His arc bends from "I'll be the greatest trainer" toward a confrontation no eleven-year-old should have to have.</p>
+
+      <h3>The assistant, the teams, the machine</h3>
+      <p>The assistant who keeps promising "we'll meet again" is the pivot — the one insider who realises the Oak giving orders from High-Tech is fake, and who has been quietly steering you toward the truth. The muscle splits cleanly: the <strong>Geruge-dan</strong> are the impostor's private organisation, built to seize the pagoda and the phantom; the resurgent <strong>Team Rocket</strong> are the old guard from Kanto, Giovanni's remnants, chasing the same prize for their own ends. Nihon becomes a three-way scramble — you, the false Oak's Geruge-dan, and Rocket.</p>
+      <p>The <strong>Time Machine</strong> in Old City is the keystone. If Pokémon can be traded across time, then so, perhaps, can information — a way to reach back to the Kanto of Red and Blue, where the real Oak's reputation was forged, and to prove which professor is the true one. The climax writes itself: Ho-Oh atop the pagoda, the Time Machine humming below, the impostor and the genuine Oak in the same frame, and the grandson forced to choose who to believe.</p>
+
+      <h3>How it all resolves — and where the pieces actually went</h3>
+      <p>Nihon's finale would have been a march through the League buildings of every city — proto leaders named for mushrooms and toads giving way to the Kanto-carried Elite Four (Lorelei, Bruno, Lance) — while the professor mystery paid off at the pagoda. Game Freak never shipped that. When Nihon was rebuilt into Johto, its threads were cut apart and redistributed:</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Prototype thread</th><th>Where it surfaced in retail</th></tr></thead>
+          <tbody>
+            <tr><td>The impostor "evil Oak"</td><td>Dropped; the "corrupt authority" role passed to the Radio Tower takeover and the Rocket executives</td></tr>
+            <tr><td>Rival = Oak's grandson</td><td>Replaced by <strong>Silver</strong>, Giovanni's estranged son</td></tr>
+            <tr><td>Ho-Oh on Old City's Five-Story Pagoda</td><td><strong>Tin Tower / Bell Tower</strong> in Ecruteak City</td></tr>
+            <tr><td>Trade Pokémon "across time"</td><td>The <strong>Time Capsule</strong> — trading between Gen I and Gen II</td></tr>
+            <tr><td>Geruge-dan</td><td>Reabsorbed into <strong>Team Rocket</strong>'s comeback story</td></tr>
+            <tr><td>Nihon (with Kanto as one city)</td><td>Split into the full <strong>Johto + Kanto</strong> two-region map</td></tr>
+            <tr><td>Prototype Bird &amp; Metal types</td><td>Bird merged into Flying/Normal; Metal shipped as <strong>Steel</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Read that way, the prototype isn't a lesser Gold &amp; Silver — it's a different one, a moodier detective story about a stolen identity and a phantom bird, quietly disassembled and rebuilt into the adventure the world actually got.</p>
+
+      <p class="footer-note">Sources: all quotations and symbols are drawn from this repository — see <code>maps/</code>, <code>constants/sprite_constants.asm</code>, <code>data/maps/landmark_names.asm</code>, and the reconstructed <a class="inline" href="glossary/index.html">Text &amp; localization glossary</a>. §3 is interpretation offered in that spirit; corrections and better readings are welcome in the pret <code>#prototypes-and-leaks</code> channel.</p>
+    </section>
+
+    <!-- ===================== HISTORY ===================== -->
+    <section class="page" id="history">
+      <p class="eyebrow">History</p>
+      <h1>Origins &amp; History of the Disassembly</h1>
+      <p class="lead">This repository is a fork of <a class="inline" href="https://github.com/pret/pokegold-spaceworld">pret/pokegold-spaceworld</a>, a community effort that began the day the prototype cartridges were dumped and — over more than eight years — turned a raw, anonymous ROM into fully readable, fully labelled assembly. This page reconstructs that journey from the commit history of every branch.</p>
+
+      <div class="callout">
+        <span class="ico">i</span>
+        <p>Everything below is drawn from the project's own git log — first commit <code>2018-05-27</code>, most recent work <code>2026-08</code>, spanning <strong>820 commits from 38 contributors</strong> across the <code>master</code>, <code>en</code>, <code>patch</code>, and <code>symbols</code> branches.</p>
+      </div>
+
+      <h2><span class="chip accent">§1</span> Where it came from</h2>
+      <p>In May 1997, at Nintendo Space World, playable Gold &amp; Silver prototypes were shown on the show floor — a world called <strong>Nihon</strong>, dozens of Pokémon that never shipped, and a story only half-written. Those cartridges then vanished for two decades. In <strong>May 2018</strong> the demo carts were finally dumped and the ROM images released to the public.</p>
+      <p>Within days, <strong>Sanqui</strong> spun up a disassembly on a self-hosted Gitea server (<code>git.sanqui.net:3000/pret/pokegold-spaceworld</code>) — the earliest merge commits still point back to it. The first <code>README</code> is a single blunt line: <em>"WIP disassembly of the Spaceworld 1997 Gold proto."</em> The goal was the same one that defines every <a class="inline" href="https://pret.github.io/">pret</a> project: not to <em>describe</em> the ROM but to <strong>reproduce it byte-for-byte</strong> from human-readable source. The project soon moved to GitHub under the <code>pret</code> organisation, where it has lived since.</p>
+      <p>The method is reverse-engineering by reconstruction. You start with an opaque binary and a build that reassembles to <em>exactly</em> those bytes; then, one region at a time, you replace raw hex with named labels, macros, and comments — never changing the output, only your understanding of it. Early commits lean heavily on macros and constants imported wholesale from the sister projects <code>pokered</code> and <code>pokecrystal</code>, giving the anonymous prototype a vocabulary borrowed from its better-understood retail descendants.</p>
+
+      <h2><span class="chip accent">§2</span> From ROM dump to documented code</h2>
+      <p>The arc below traces that transformation — from a nameless binary to source in which every byte has a meaning.</p>
+      <div class="timeline">
+        <div class="tl-item done">
+          <span class="tl-date">May 2018 · the dump</span>
+          <h3>Two demo cartridges become public ROMs</h3>
+          <p>The Space World '97 Gold &amp; Silver prototypes are dumped and released. A raw binary <code>baserom</code> with a known checksum is the only starting point — no symbols, no source, just bytes.</p>
+        </div>
+        <div class="tl-item done">
+          <span class="tl-date">May–Jul 2018 · bootstrap</span>
+          <h3>A build that reproduces the ROM</h3>
+          <p>Sanqui, ISSOtm, Rangi, Tauwasser and others stand up the RGBDS project: a Makefile that reassembles to the original bytes, a "shim" symbol generator, and constants/macros ported from <code>pokered</code> and <code>pokecrystal</code>. <code>home.asm</code> is split out; the checksum comparison becomes the definition of "correct."</p>
+        </div>
+        <div class="tl-item done">
+          <span class="tl-date">2018 · bank by bank</span>
+          <h3>Dumping the code banks</h3>
+          <p>Pokeglitch and others work through the ROM bank by bank (<em>"began dumping bank 1"… "Finished dumping bank 1"</em>), converting hard-coded pointers into labels and extracting the first graphics and text. This is the raw, laborious middle of a disassembly.</p>
+        </div>
+        <div class="tl-item done">
+          <span class="tl-date">2019–2021 · the systems</span>
+          <h3>Maps, audio, graphics &amp; menus take shape</h3>
+          <p>Steady, distributed work identifies whole subsystems: map data and scripts, the SGB border and palette packets, the audio engine with cries and sound effects, the Pikachu minigame, and the in-game debug menus. Travis CI is swapped for GitHub Actions; both the Gold and Silver debug ROMs build.</p>
+        </div>
+        <div class="tl-item done">
+          <span class="tl-date">2022–2024 · keeping the lights on</span>
+          <h3>A quiet maintenance stretch</h3>
+          <p>Activity slows to a trickle — mostly commits that keep the project building against newer RGBDS releases (<em>"make it actually build with current RGBDS"</em>) plus partial dumps of the last stubborn banks. The disassembly is far along but not finished; large regions remain unnamed.</p>
+        </div>
+        <div class="tl-item done">
+          <span class="tl-date">2025 · the revival</span>
+          <h3>The last banks fall</h3>
+          <p>A burst of renewed effort labels and splits off the remaining banks one after another — bank 01, 03, 05, 09, 0B, 0D, 0E, 14, 23 — decompiles every battle animation, and finishes the Pokédex and sprite-animation objects. The build is upgraded to RGBDS 1.0.</p>
+        </div>
+        <div class="tl-item done">
+          <span class="tl-date">Jun–Aug 2026 · naming the last symbol</span>
+          <h3>100% documented</h3>
+          <p>A tool, <code>tools/unnamed.py</code>, is added with a webhook that reports the percentage of symbols still auto-named — turning "finish the disassembly" into a number to drive to zero. Every remaining RAM and ROM symbol is named, all leftover <code>garbage/</code> data is extracted, and on <strong>2 Aug 2026</strong> the webhook is removed with the note <em>"now that 100% of symbols are named."</em></p>
+          <p class="commit">Label all unnamed symbols (#184) · Finish extracting garbage (#182)</p>
+        </div>
+      </div>
+
+      <h2><span class="chip accent">§3</span> What "finished" means here</h2>
+      <p>Reaching 100% named symbols is a real milestone: there is no longer any anonymous <code>sub_XXXX</code> or <code>byte_XXXX</code> in the source. Every routine, table, and RAM address has a human-chosen name, the graphics live as real PNGs, and even the padding and leftover junk in the original ROMs is accounted for in <code>garbage/</code>. As documentation, the disassembly is <strong>complete</strong> — you can read this prototype the way you'd read the retail games.</p>
+      <div class="callout warn">
+        <span class="ico">!</span>
+        <p>"Finished" means the <em>ROM is fully understood and reproduced</em> — not that the <em>game</em> is finished. The prototype itself is still a half-built 1997 demo: the <a class="inline" href="#story" data-target="story">Story Mode</a> is only coded up to the first rival battle, and much of the region is placeholder. The disassembly documents exactly that unfinished state, faithfully.</p>
+      </div>
+
+      <h2><span class="chip accent">§4</span> What a completed disassembly unlocks</h2>
+      <p>A byte-perfect, fully-labelled disassembly is a foundation, not a dead end. Because the source now reads like ordinary code, it becomes a launchpad for work the raw ROM could never support:</p>
+      <div class="cards">
+        <a class="card"><span class="tag">Research</span><b>Preservation &amp; study</b><span>A permanent, human-readable record of a lost build — how 1997 Game Boy code was structured, and how features evolved on the way to retail Gold &amp; Silver.</span></a>
+        <a class="card"><span class="tag">Modding</span><b>Rom hacks &amp; restorations</b><span>Named labels make it feasible to fork the source and change it deliberately — restore cut Pokémon, re-enable dummied content, or build an original hack on the prototype's engine.</span></a>
+        <a class="card"><span class="tag">Completion</span><b>Finishing the lost game</b><span>The unfinished Story Mode could be coded forward past the first rival battle — turning the demo into the fuller adventure the scripts and maps only hint at.</span></a>
+        <a class="card"><span class="tag">Reference</span><b>Comparative disassembly</b><span>Diff against <code>pokered</code>/<code>pokecrystal</code> to trace exactly which routines survived, mutated, or were cut between the prototype and the shipped games.</span></a>
+      </div>
+      <div class="callout">
+        <span class="ico">!</span>
+        <p><strong>One caveat before you hack.</strong> This repository's own contract is byte-for-byte reproduction — <code>make compare</code> must still match the original dumps. Any change that alters the output bytes intentionally (a restoration, a new feature) belongs on a <em>fork</em> with its own goals, not on <code>master</code>. The completed disassembly is the clean base you branch <em>from</em>.</p>
+      </div>
+
+      <p class="footer-note">Reconstructed from the project's git history across all branches. The living project, issues, and contributors are at <a class="inline" href="https://github.com/pret/pokegold-spaceworld">pret/pokegold-spaceworld</a>; discussion is on the pret Discord in <code>#prototypes-and-leaks</code>.</p>
+    </section>
+
     <section class="page" id="symbols">
       <p class="eyebrow">Beyond the Repo</p>
       <h1>The symbols branch &amp; <code>gb-asm-tools</code></h1>
