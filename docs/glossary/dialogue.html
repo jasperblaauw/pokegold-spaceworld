@@ -1,0 +1,274 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Map dialogue — Space World '97 Text Glossary</title>
+<style>
+  :root {
+    --bg: #eef1e8;
+    --surface: #f8faf2;
+    --surface-2: #e4e9d9;
+    --ink: #191e14;
+    --ink-soft: #4c553f;
+    --ink-faint: #6f7a5e;
+    --line: #ccd4bd;
+    --accent: #4e7a1e;
+    --accent-strong: #38610f;
+    --accent-wash: #dde7c8;
+    --gold: #977321;
+    --silver: #55606d;
+    --screen-bg: #0f380f;
+    --screen-ink: #9bbc0f;
+    --screen-dim: #6a8a10;
+    --screen-line: #285026;
+    --radius: 10px;
+    --mono: ui-monospace, "SF Mono", "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12150f;
+      --surface: #1a1e15;
+      --surface-2: #232a1b;
+      --ink: #e9ecdf;
+      --ink-soft: #aab393;
+      --ink-faint: #7f886c;
+      --line: #333c27;
+      --accent: #9bbc0f;
+      --accent-strong: #b8d63e;
+      --accent-wash: #24301a;
+      --gold: #d8b24a;
+      --silver: #9fabb8;
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #eef1e8; --surface: #f8faf2; --surface-2: #e4e9d9;
+    --ink: #191e14; --ink-soft: #4c553f; --ink-faint: #6f7a5e; --line: #ccd4bd;
+    --accent: #4e7a1e; --accent-strong: #38610f; --accent-wash: #dde7c8;
+    --gold: #977321; --silver: #55606d;
+  }
+  :root[data-theme="dark"] {
+    --bg: #12150f; --surface: #1a1e15; --surface-2: #232a1b;
+    --ink: #e9ecdf; --ink-soft: #aab393; --ink-faint: #7f886c; --line: #333c27;
+    --accent: #9bbc0f; --accent-strong: #b8d63e; --accent-wash: #24301a;
+    --gold: #d8b24a; --silver: #9fabb8;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---------- Layout ---------- */
+  .app { display: grid; grid-template-columns: 288px minmax(0, 1fr); min-height: 100vh; }
+  .sidebar {
+    position: sticky; top: 0; align-self: start;
+    height: 100vh; overflow-y: auto;
+    background: var(--surface);
+    border-right: 1px solid var(--line);
+    padding: 24px 18px 40px;
+  }
+  .content { padding: 56px clamp(20px, 5vw, 72px); min-width: 0; }
+  .page { display: none; max-width: 760px; animation: fade .18s ease; }
+  .page.active { display: block; }
+  @keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .page { animation: none; } }
+
+  /* ---------- Brand ---------- */
+  .brand { display: flex; align-items: center; gap: 12px; margin-bottom: 4px; text-decoration: none; }
+  .cart { flex: none; width: 40px; height: 40px; }
+  .brand-txt { display: flex; flex-direction: column; line-height: 1.15; }
+  .brand-txt b { font-family: var(--mono); font-size: .95rem; letter-spacing: .02em; color: var(--ink); }
+  .brand-txt span { font-family: var(--mono); font-size: .64rem; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-faint); }
+  .ver-line { display: flex; gap: 6px; margin: 14px 2px 20px; }
+
+  /* ---------- Nav ---------- */
+  nav { display: flex; flex-direction: column; gap: 22px; }
+  .nav-group > p {
+    margin: 0 0 7px; padding: 0 8px;
+    font-family: var(--mono); font-size: .63rem; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--ink-faint);
+  }
+  .nav-group a {
+    display: block; padding: 6px 10px; border-radius: 7px;
+    color: var(--ink-soft); text-decoration: none;
+    font-size: .87rem; border-left: 2px solid transparent;
+  }
+  .nav-group a:hover { background: var(--surface-2); color: var(--ink); }
+  .nav-group a.active {
+    background: var(--accent-wash); color: var(--accent-strong);
+    border-left-color: var(--accent); font-weight: 600;
+  }
+  :root[data-theme="dark"] .nav-group a.active,
+  @media (prefers-color-scheme: dark) { }
+  .nav-group a:focus-visible, .brand:focus-visible, .menu-btn:focus-visible {
+    outline: 2px solid var(--accent); outline-offset: 2px;
+  }
+
+  /* ---------- Typography ---------- */
+  .eyebrow {
+    font-family: var(--mono); font-size: .68rem; letter-spacing: .2em;
+    text-transform: uppercase; color: var(--accent-strong); margin: 0 0 12px;
+  }
+  h1 { font-family: var(--mono); font-size: clamp(1.7rem, 4vw, 2.4rem); line-height: 1.12;
+       letter-spacing: -.01em; margin: 0 0 16px; text-wrap: balance; }
+  h2 { font-family: var(--mono); font-size: 1.28rem; margin: 44px 0 12px;
+       padding-bottom: 8px; border-bottom: 1px solid var(--line); text-wrap: balance; }
+  h3 { font-family: var(--mono); font-size: 1.02rem; margin: 28px 0 8px; color: var(--ink); }
+  p, li { color: var(--ink-soft); }
+  .lead { font-size: 1.1rem; color: var(--ink-soft); }
+  a.inline { color: var(--accent-strong); text-decoration: underline; text-underline-offset: 2px; text-decoration-thickness: 1px; }
+  a.inline:hover { color: var(--accent); }
+  strong { color: var(--ink); }
+  ul, ol { padding-left: 22px; }
+  li { margin: 5px 0; }
+  hr { border: none; border-top: 1px solid var(--line); margin: 40px 0; }
+
+  /* ---------- Code ---------- */
+  code {
+    font-family: var(--mono); font-size: .86em;
+    background: var(--surface-2); color: var(--ink);
+    padding: .12em .38em; border-radius: 5px;
+  }
+  pre {
+    background: var(--screen-bg); color: var(--screen-ink);
+    border: 1px solid var(--screen-line); border-radius: var(--radius);
+    padding: 16px 18px; overflow-x: auto; margin: 16px 0;
+    box-shadow: inset 0 0 0 4px rgba(15,56,15,.6), inset 0 0 24px rgba(0,0,0,.35);
+  }
+  pre code { background: none; color: inherit; padding: 0; font-size: .82rem; line-height: 1.65; }
+  pre .cm { color: var(--screen-dim); }
+  pre .pr { color: #c7e04a; }
+
+  /* ---------- Components ---------- */
+  .chip {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-family: var(--mono); font-size: .66rem; letter-spacing: .06em;
+    padding: 3px 9px; border-radius: 999px; text-transform: uppercase;
+    border: 1px solid var(--line); color: var(--ink-soft); background: var(--surface);
+  }
+  .chip.gold { color: var(--gold); border-color: color-mix(in srgb, var(--gold) 45%, var(--line)); }
+  .chip.silver { color: var(--silver); border-color: color-mix(in srgb, var(--silver) 45%, var(--line)); }
+  .chip.accent { color: var(--accent-strong); border-color: var(--accent); background: var(--accent-wash); }
+
+  .callout {
+    display: flex; gap: 12px; margin: 18px 0;
+    padding: 14px 16px; border-radius: var(--radius);
+    background: var(--surface); border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+  }
+  .callout .ico { flex: none; font-family: var(--mono); font-weight: 700; color: var(--accent-strong); }
+  .callout p { margin: 0; font-size: .92rem; }
+  .callout.warn { border-left-color: var(--gold); }
+  .callout.warn .ico { color: var(--gold); }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 14px; margin: 20px 0; }
+  .card {
+    display: block; text-decoration: none; padding: 16px;
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+  .card:hover { border-color: var(--accent); transform: translateY(-2px); transition: .15s; }
+  .card b { font-family: var(--mono); font-size: .82rem; color: var(--ink); display: block; margin-bottom: 4px; }
+  .card span { font-size: .82rem; color: var(--ink-faint); }
+  .card .tag { font-family: var(--mono); font-size: .62rem; letter-spacing: .1em; text-transform: uppercase; color: var(--accent-strong); }
+
+  .tbl-wrap { overflow-x: auto; margin: 18px 0; border: 1px solid var(--line); border-radius: var(--radius); }
+  table { width: 100%; border-collapse: collapse; font-size: .87rem; }
+  th, td { text-align: left; padding: 9px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-family: var(--mono); font-size: .68rem; letter-spacing: .1em; text-transform: uppercase;
+       color: var(--ink-faint); background: var(--surface); position: sticky; top: 0; }
+  tr:last-child td { border-bottom: none; }
+  td code { font-size: .82rem; white-space: nowrap; }
+  td:first-child { white-space: nowrap; }
+
+  .steps { counter-reset: s; list-style: none; padding: 0; margin: 20px 0; }
+  .steps > li { counter-increment: s; position: relative; padding-left: 44px; margin: 20px 0; }
+  .steps > li::before {
+    content: counter(s); position: absolute; left: 0; top: 0;
+    width: 28px; height: 28px; display: grid; place-items: center;
+    font-family: var(--mono); font-size: .82rem; font-weight: 700;
+    color: var(--accent-strong); background: var(--accent-wash);
+    border: 1px solid var(--accent); border-radius: 8px;
+  }
+  .steps > li > b { display: block; color: var(--ink); font-family: var(--mono); font-size: .92rem; margin-bottom: 2px; }
+
+  .kbd-legend { display: flex; flex-wrap: wrap; gap: 16px; margin: 12px 0 4px; font-size: .82rem; }
+  .kbd-legend span { display: inline-flex; align-items: center; gap: 6px; color: var(--ink-faint); }
+  .dot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+
+  .footer-note { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--line);
+                 font-size: .8rem; color: var(--ink-faint); }
+
+  /* ---------- Mobile ---------- */
+  .topbar { display: none; }
+  .menu-btn { background: var(--surface); border: 1px solid var(--line); color: var(--ink);
+              font-family: var(--mono); font-size: .8rem; padding: 8px 12px; border-radius: 8px; cursor: pointer; }
+  @media (max-width: 860px) {
+    .app { grid-template-columns: 1fr; }
+    .topbar { display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 20;
+              padding: 12px 18px; background: var(--surface); border-bottom: 1px solid var(--line); }
+    .sidebar { position: fixed; z-index: 30; top: 0; left: 0; width: 280px; height: 100vh;
+               transform: translateX(-100%); transition: transform .2s ease; }
+    .sidebar.open { transform: none; box-shadow: 0 0 0 100vmax rgba(0,0,0,.4); }
+    .content { padding: 28px 20px 60px; }
+  }
+
+
+.app { display:grid; grid-template-columns:262px minmax(0,1fr); min-height:100vh; }
+.sidebar { position:sticky; top:0; align-self:start; height:100vh; overflow-y:auto;
+  background:var(--surface); border-right:1px solid var(--line); padding:22px 16px 40px; }
+.content { padding:44px clamp(18px,4vw,60px); min-width:0; max-width:1040px; }
+.brand { display:flex; align-items:center; gap:10px; margin-bottom:16px; text-decoration:none; }
+.brand b { font-family:var(--mono); font-size:.9rem; color:var(--ink); }
+.brand span { font-family:var(--mono); font-size:.6rem; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-faint); display:block; }
+nav.side { display:flex; flex-direction:column; gap:3px; }
+nav.side .grp { margin:14px 0 3px; padding:0 8px; font-family:var(--mono); font-size:.6rem;
+  letter-spacing:.15em; text-transform:uppercase; color:var(--ink-faint); }
+nav.side a { display:flex; justify-content:space-between; gap:8px; align-items:center;
+  padding:6px 10px; border-radius:7px; color:var(--ink-soft); text-decoration:none;
+  font-size:.85rem; border-left:2px solid transparent; }
+nav.side a:hover { background:var(--surface-2); color:var(--ink); }
+nav.side a.active { background:var(--accent-wash); color:var(--accent-strong);
+  border-left-color:var(--accent); font-weight:600; }
+nav.side a .n { font-family:var(--mono); font-size:.62rem; color:var(--ink-faint); }
+.pending { font-family:var(--mono); font-size:.72rem; color:var(--gold); opacity:.85; }
+tr.demo td { background:color-mix(in srgb, var(--accent-wash) 60%, transparent); }
+.pill { font-family:var(--mono); font-size:.58rem; letter-spacing:.06em; text-transform:uppercase;
+  color:var(--accent-strong); border:1px solid var(--accent); border-radius:999px; padding:1px 6px; margin-left:6px; white-space:nowrap; }
+.jpcell { font-size:.98rem; color:var(--ink); line-height:1.5; }
+td:first-child { font-family:var(--mono); color:var(--ink-faint); white-space:nowrap; }
+.cov { font-family:var(--mono); font-size:.72rem; color:var(--ink-faint); margin:2px 0 14px; }
+.covbar { display:inline-block; width:120px; height:7px; border-radius:4px; background:var(--surface-2);
+  vertical-align:middle; overflow:hidden; margin:0 8px; border:1px solid var(--line); }
+.covbar i { display:block; height:100%; background:var(--accent); }
+.grpname { font-family:var(--mono); font-size:1.02rem; margin:30px 0 6px; color:var(--ink); }
+.menu-btn2 { display:none; }
+@media (max-width:820px){ .app{grid-template-columns:1fr;} .sidebar{position:static;height:auto;} }
+</style></head><body>
+<div class="app"><aside class="sidebar"><a class="brand" href="../index.html"><span>Space World '97</span></a>
+<a class="brand" href="index.html" style="margin-top:-8px"><b>Text Glossary</b></a>
+<nav class="side">
+<div class="grp">Start</div>
+<a href="index.html">Overview</a>
+<div class="grp">Names</div>
+<a href="pokemon.html">Pokémon<span class="n">251</span></a>
+<a href="moves.html">Moves<span class="n">250</span></a>
+<a href="items.html">Items<span class="n">~150</span></a>
+<a href="locations.html">Locations<span class="n">45</span></a>
+<a href="trainers.html">Trainers<span class="n">64</span></a>
+<a href="types.html">Types<span class="n">19</span></a>
+<div class="grp">Flavor &amp; descriptions</div>
+<a href="dex.html">Pokédex entries<span class="n">251</span></a>
+<a href="move-desc.html">Move descriptions<span class="n">251</span></a>
+<a href="item-desc.html">Item descriptions<span class="n">206</span></a>
+<div class="grp">Dialogue &amp; scripts</div>
+<a class="active" href="dialogue.html">Map dialogue<span class="n">122</span></a>
+<a href="system.html">Battle / menu / system<span class="n">733</span></a>
+</nav></aside>
+<main class="content"><p class="eyebrow">Dialogue &amp; scripts</p><h1>Map dialogue</h1><p class="lead">Every NPC line, signpost, trainer taunt and radio broadcast in the maps that carry scripts. Labels hint at the surface (…<code>TextString</code>, …<code>SignText</code>, …<code>RadioText</code>, …<code>PCText</code>). Speaker names appear inline (<span class="jpcell">ケン『</span> = “Ken:”).</p><p class="cov">Translation coverage: 122 / 122 (100%)<span class="covbar"><i style="width:100%"></i></span></p><h2 id="OldCityPokecenter2F">Old City Pokecenter 2F <span class="count">2 blocks</span></h2><div class="tbl-wrap"><table><thead><tr><th>Label</th><th>Japanese</th><th>English</th></tr></thead><tbody><tr><td><code>OldCityPokecenter2FTextString3</code></td><td><span class="jpcell">おりゃ！</span></td><td>Heave-ho!</td></tr><tr><td><code>OldCityPokecenter2FTextString4</code></td><td><span class="jpcell">うしろにあるのは<br>タイムマシンです</span></td><td>The thing behind me is a Time Machine.</td></tr></tbody></table></div><h2 id="OldCityPokecenterBattle">Old City Pokecenter Battle <span class="count">1 blocks</span></h2><div class="tbl-wrap"><table><thead><tr><th>Label</th><th>Japanese</th><th>English</th></tr></thead><tbody><tr><td><code>OldCityPokecenterBattleTextString1</code></td><td><span class="jpcell">ちょっとまってね！</span></td><td>Just a moment, please!</td></tr></tbody></table></div><h2 id="OldCityPokecenterTrade">Old City Pokecenter Trade <span class="count">1 blocks</span></h2><div class="tbl-wrap"><table><thead><tr><th>Label</th><th>Japanese</th><th>English</th></tr></thead><tbody><tr><td><code>OldCityPokecenterTradeTextString1</code></td><td><span class="jpcell">ちょっとまってね！</span></td><td>Just a moment, please!</td></tr></tbody></table></div><h2 id="PlayerHouse1F">Player&#x27;s House 1F <span class="count">1 blocks</span></h2><div class="tbl-wrap"><table><thead><tr><th>Label</th><th>Japanese</th><th>English</th></tr></thead><tbody><tr><td><code>PlayerHouse1FTextString1</code></td><td><span class="jpcell">おかあさん『えっ あなた<br>オーキドはかせに<br>ポケモンずかんを つくってくれって<br>たのまれたの？<br>すごいじゃない！<br>わたしも ポケモン きらいって<br>わけじゃないし がんばるのよ！</span></td><td>Mom: Oh? Professor Oak asked YOU to make a Pokédex for him? That&#x27;s wonderful! It&#x27;s not as if I dislike Pokémon either, so give it your best!</td></tr></tbody></table></div><h2 id="PlayerHouse2F">Player&#x27;s House 2F <span class="count">9 blocks</span></h2><div class="tbl-wrap"><table><thead><tr><th>Label</th><th>Japanese</th><th>English</th></tr></thead><tbody><tr><td><code>PlayerHouse2FTextString1</code></td><td><span class="jpcell">ケン『おっ おまえの うでで<br>ひかりかがやく そのとけいは⋯⋯<br>&lt;PLAYER&gt;も ついに<br>トレーナーギアを かったのか！<br>すごいじゃないか！<br>でも かったばかりじゃ じかんしか<br>わからないだろ？<br>あとで マップが<br>みられるように してやるよ！<br>おまえ どうせ<br>あそびに いくんだろう？<br>ざんねんながら おふくろは<br>かいものに いってるから<br>おこづかいを もらおうなんて<br>きょうは むり だぜ！</span></td><td>Ken: Oh! That watch gleaming on your wrist... &lt;PLAYER&gt;, you finally bought a Trainer Gear too! Isn&#x27;t that something! But fresh out of the box, all it tells you is the time, right? Later I&#x27;ll set it up so you can see a map too! You&#x27;re off to play anyway, aren&#x27;t you? Too bad, though: Mom&#x27;s out shopping, so there&#x27;s no way you&#x27;re getting any allowance today!</td></tr><tr><td><code>PlayerHouse2FTextString2</code></td><td><span class="jpcell">そうだ おまえの パソコンに<br>メールが とどいていたな<br>でかけるんなら<br>メールぐらい よんでおけよ</span></td><td>That&#x27;s right, there was mail waiting on your PC. If you&#x27;re heading out, at least read your mail first.</td></tr><tr><td><code>PlayerHouse2FTextString3</code></td><td><span class="jpcell">クリスマスに カントーの<br>しんせきに プレゼント<br>してもらった にんぎょうだ</span></td><td>It&#x27;s a doll my relatives in Kanto gave me as a Christmas present.</td></tr><tr><td><code>PlayerHouse2FTextString4</code></td><td><span class="jpcell">ニンテンドウ６４を してる！<br>⋯⋯ ⋯⋯ さてと！<br>そろそろ そとに あそびに<br>でかけるか！</span></td><td>I&#x27;m playing my Nintendo 64! ...... ...... Right then! Guess it&#x27;s about time I headed outside to play!</td></tr><tr><td><code>PlayerHouse2FTextString5</code></td><td><span class="jpcell">&lt;PLAYER&gt;は<br>パソコンの スイッチを いれた！<br>おや？ &lt;PLAYER&gt;あてに<br>メールが とどいている ようだ<br>よんでみる？</span></td><td>&lt;PLAYER&gt; turned on the PC! Huh? It looks like there&#x27;s mail addressed to &lt;PLAYER&gt;. Read it?</td></tr><tr><td><code>PlayerHouse2FTextString6</code></td><td><span class="jpcell">とつぜん メールを さしあげる<br>しつれいを おゆるしあれ<br>じつは きみに どうしても<br>わたしたい ものが あるのじゃが<br>うけとって もらえんかのう<br>ポケモンけんきゅうしゃ オーキド</span></td><td>Forgive me for writing to you so suddenly. The truth is, there is something I simply must give you. Could you accept it? Pokémon researcher, Oak</td></tr><tr><td><code>PlayerHouse2FTextString7</code></td><td><span class="jpcell">あとで<br>よもっと&lt;⋯⋯&gt;</span></td><td>I&#x27;ll read it later......</td></tr><tr><td><code>PlayerHouse2FTextString8</code></td><td><span class="jpcell">しんはつばい トレーナーギア！<br>ポケモントレーナーの ための<br>さいせんたんの とけい です<br>じかんが わかるのは あたりまえ<br>カセットを ついかすれば<br>ばしょも わかる！<br>でんわが かけられる！<br>とどめは<br>ラジオを きくことができる！<br>もうしこみさきは⋯⋯<br>⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯<br>シルフの ホームページだ</span></td><td>New release: the Trainer Gear! The cutting-edge watch made for Pokémon Trainers. Of course it tells the time, but add a cartridge and it shows your location too! It makes phone calls! And to top it off, you can listen to the radio! To order... .............. it&#x27;s on Silph&#x27;s homepage.</td></tr><tr><td><code>PlayerHouse2FTextString9</code></td><td><span class="jpcell">&lt;PLAYER&gt;は<br>ラジオのスイッチを おした！<br>ジェイ オー ピー エム<br>こちらは<br>ポケモン ほうそうきょく です<br>ポケモンニュースを おおくりします<br>&lt;⋯⋯&gt; ポケモンの せかいてきな<br>けんきゅうしゃ オーキドはかせが<br>カントー から<br>すがたを けしました<br>あらたな けんきゅうの ばしょを<br>もとめて いどうした との<br>みかたも ありますが<br>なんらかの じけんに まきこまれた<br>かのうせいも あり<br>かんけいしゃは とても<br>しんぱい しています<br>&lt;⋯⋯&gt;&lt;⋯⋯&gt;いじょう<br>ポケモンニュースでした<br>&lt;⋯⋯&gt;&lt;⋯⋯&gt;&lt;⋯⋯&gt;&lt;⋯⋯&gt;&lt;⋯⋯&gt;&lt;⋯⋯&gt;<br>それでは ひきつづき<br>おんがくを おたのしみ ください</span></td><td>&lt;PLAYER&gt; switched on the radio! J-O-P-M. This is Pokémon Radio, bringing you the Pokémon News. ...... The world-renowned researcher Professor Oak has vanished from Kanto. Some believe he moved on in search of a new place to do research, but there is also a chance he was caught up in some incident, and those close to him are very worried. ...... That concludes the Pokémon News. ............ And now, please enjoy the music.</td></tr></tbody></table></div><h2 id="QuietHills">Quiet Hills (route) <span class="count">33 blocks</span></h2><div class="tbl-wrap"><table><thead><tr><th>Label</th><th>Japanese</th><th>English</th></tr></thead><tbody><tr><td><code>QuietHillsTrainer6EncounterString</code></td><td><span class="jpcell">ねえ ねえ みてよ<br>これ ぜったい<br>しんしゅの ポケモン だよ！</span></td><td>Hey, hey, look at this! This has GOT to be a new species of Pokémon!</td></tr><tr><td><code>QuietHillsTrainer6EncounterString</code></td><td><span class="jpcell">まだ ポケモンの とくちょう<br>わかってないから しかたないよ</span></td><td>I still don&#x27;t know this Pokémon&#x27;s traits, so it can&#x27;t be helped.</td></tr><tr><td><code>QuietHillsTrainer6WonString</code></td><td><span class="jpcell">あたらしい ポケモンだけでなく<br>あたらしい タイプも<br>みつかったって うわさだよ</span></td><td>Rumor has it that not just new Pokémon, but new types have been found too.</td></tr><tr><td><code>QuietHillsTrainer5EncounterString</code></td><td><span class="jpcell">いい てんきねー<br>あなた ちょうしは いかが？</span></td><td>Lovely weather, isn&#x27;t it~ How are you doing?</td></tr><tr><td><code>QuietHillsTrainer5EncounterString</code></td><td><span class="jpcell">なにするニャー<br>⋯⋯なにいってるのかしら あたし</span></td><td>What was that for, meow~ ...what am I even saying?</td></tr><tr><td><code>QuietHillsTrainer5WonString</code></td><td><span class="jpcell">なんで こうなるの？<br>さんぽしてた だけなのに</span></td><td>Why did it turn out like this? I was only taking a walk...</td></tr><tr><td><code>QuietHillsTrainer4EncounterString</code></td><td><span class="jpcell">こんなところで<br>ひを ふく れんしゅう！</span></td><td>Practicing my fire-breathing out here!</td></tr><tr><td><code>QuietHillsTrainer4EncounterString</code></td><td><span class="jpcell">あちち しっぱいだー</span></td><td>Ow-ow-ow, I blew it!</td></tr><tr><td><code>QuietHillsTrainer4WonString</code></td><td><span class="jpcell">よるになると くらくなるから<br>こどもは はやく かえりなさい！<br>おれ？<br>おれは ひをふくから だいじょうぶ</span></td><td>It gets dark once night falls, so kids, hurry on home! Me? I&#x27;m fine, I breathe fire.</td></tr><tr><td><code>QuietHillsTrainer3EncounterString</code></td><td><span class="jpcell">むしポケモンの ことなら<br>だれよりも くわしいよ</span></td><td>When it comes to Bug Pokémon, I know more than anyone.</td></tr><tr><td><code>QuietHillsTrainer3EncounterString</code></td><td><span class="jpcell">パラパラー</span></td><td>Para-para~</td></tr><tr><td><code>QuietHillsTrainer3WonString</code></td><td><span class="jpcell">ポケモンずかんを つくるんだって？<br>ちょっと みせてよ<br>へー<br>タイプべつに ポケモン さがせるんだ</span></td><td>You&#x27;re making a Pokédex? Let me see it a sec. Ohh, so you can search for Pokémon by type.</td></tr><tr><td><code>QuietHillsTrainer2EncounterString</code></td><td><span class="jpcell">いっとくけど<br>きみよりも べんきょう してるから<br>きみよりも つよいよ ぜったい！</span></td><td>Just so you know, I study harder than you, so I&#x27;m definitely stronger than you!</td></tr><tr><td><code>QuietHillsTrainer2EncounterString</code></td><td><span class="jpcell">な なぜなんだ？</span></td><td>W-why...?</td></tr><tr><td><code>QuietHillsTrainer2WonString</code></td><td><span class="jpcell">おかしいよ⋯⋯<br>まいにち ポケモンの べんきょうを<br>きちんと してるのに まけるなんて</span></td><td>That&#x27;s strange... I study Pokémon properly every single day, and yet I lost...</td></tr><tr><td><code>QuietHillsTrainer6EncounterString</code></td><td><span class="jpcell">じゃーん！<br>みたことない ポケモン<br>だいはっけん</span></td><td>Ta-daa! A never-before-seen Pokémon, a huge discovery!</td></tr><tr><td><code>QuietHillsTrainer6EncounterString</code></td><td><span class="jpcell">ほかの ポケモンも<br>つかまえて おくべきだったー</span></td><td>I should have caught some other Pokémon too...</td></tr><tr><td><code>QuietHillsTrainer6WonString</code></td><td><span class="jpcell">きみの ポケモンも みたことないな<br>ね こうかん しない？</span></td><td>I&#x27;ve never seen your Pokémon either. Say, want to trade?</td></tr><tr><td><code>QuietHillsTrainer5EncounterString</code></td><td><span class="jpcell">ねーねー あたしと<br>ポケモンしょうぶ しよーよー</span></td><td>Hey, hey, let&#x27;s have a Pokémon battle, come on~</td></tr><tr><td><code>QuietHillsTrainer5EncounterString</code></td><td><span class="jpcell">やーん</span></td><td>Nooo~</td></tr><tr><td><code>QuietHillsTrainer5WonString</code></td><td><span class="jpcell">よるになると くらくなるじゃない？<br>あるいてても まわりが<br>よくわからなくて こわいわ</span></td><td>It gets dark when night falls, right? Even walking, I can&#x27;t see my surroundings well, and it&#x27;s scary.</td></tr><tr><td><code>QuietHillsTrainer4EncounterString</code></td><td><span class="jpcell">きみ！<br>おこらないから<br>いけが あるところを おしえなさい！</span></td><td>You! I won&#x27;t get mad, so tell me where there&#x27;s a pond!</td></tr><tr><td><code>QuietHillsTrainer4EncounterString</code></td><td><span class="jpcell">みずが ちかくに ないと⋯⋯</span></td><td>If there&#x27;s no water nearby...</td></tr><tr><td><code>QuietHillsTrainer4WonString</code></td><td><span class="jpcell">どうして おじさんは<br>こんなところに いるんだ？</span></td><td>Why is a grown man in a place like this?</td></tr><tr><td><code>QuietHillsTrainer3EncounterString</code></td><td><span class="jpcell">ポケモンは はじめたばかり？<br>それやったら まけへんで</span></td><td>Just started out with Pokémon? In that case I won&#x27;t lose!</td></tr><tr><td><code>QuietHillsTrainer3EncounterString</code></td><td><span class="jpcell">うわ なんでやねん</span></td><td>Whoa, what the heck?</td></tr><tr><td><code>QuietHillsTrainer3WonString</code></td><td><span class="jpcell">なんか すっげー くやしいわ</span></td><td>Man, that&#x27;s seriously frustrating.</td></tr><tr><td><code>QuietHillsTrainer2EncounterString</code></td><td><span class="jpcell">ここは ひろくて<br>トレーニングに さいてきだ<br>なんのって もちろん<br>ポケモンの トレーニングだよ！</span></td><td>This place is wide open, perfect for training. Training for what? Pokémon training, of course!</td></tr><tr><td><code>QuietHillsTrainer2EncounterString</code></td><td><span class="jpcell">れ れんしゅう ぶそくか⋯⋯</span></td><td>A-am I short on practice...?</td></tr><tr><td><code>QuietHillsTrainer2WonString</code></td><td><span class="jpcell">よーし はしる ぞー</span></td><td>Alright, time to run!</td></tr><tr><td><code>QuietHillsText1String</code></td><td><span class="jpcell">この おかの ポケモンは よわい！<br>だから ここで しゅぎょう している<br>トレーナーも おおいよ<br>みんな バトルが すきだから<br>うでだめしを するといい</span></td><td>The Pokémon on this hill are weak! That&#x27;s why lots of Trainers train here. Everyone loves battling, so it&#x27;s a good place to test your skill.</td></tr><tr><td><code>QuietHillsSignpost2String</code></td><td><span class="jpcell">しずかな おか<br>サイレントヒル は こちら</span></td><td>Quiet Hill. To Silent Hill, this way.</td></tr><tr><td><code>QuietHillsSignpost1String</code></td><td><span class="jpcell">しずかな おか<br>オールドシティ は こちら</span></td><td>Quiet Hill. To Old City, this way.</td></tr></tbody></table></div><h2 id="RivalHouse">Rival House <span class="count">7 blocks</span></h2><div class="tbl-wrap"><table><thead><tr><th>Label</th><th>Japanese</th><th>English</th></tr></thead><tbody><tr><td><code>RivalHouseTextString1</code></td><td><span class="jpcell">おや？ &lt;RIVAL&gt;あてに メールが<br>とどいている ようだ<br>よんでみる？</span></td><td>Huh? It looks like there&#x27;s mail addressed to &lt;RIVAL&gt;. Read it?</td></tr><tr><td><code>RivalHouseTextString2</code></td><td><span class="jpcell">とつぜん メールを さしあげる<br>しつれいを おゆるしあれ<br>じつは きみに どうしても<br>わたしたい ものが あるのじゃが<br>うけとって もらえんかのう<br>ポケモンけんきゅうしゃ オーキド</span></td><td>Forgive me for writing to you so suddenly. The truth is, there is something I simply must give you. Could you accept it? Pokémon researcher, Oak</td></tr><tr><td><code>RivalHouseTextString3</code></td><td><span class="jpcell">ひとのメールは<br>みちゃ いけないよな&lt;⋯⋯&gt;</span></td><td>You shouldn&#x27;t read other people&#x27;s mail......</td></tr><tr><td><code>RivalHouseTextString4</code></td><td><span class="jpcell">このまえ かわったいろの<br>ポッポを みかけたわ</span></td><td>The other day I spotted a Pidgey of an unusual color.</td></tr><tr><td><code>RivalHouseTextString5</code></td><td><span class="jpcell">ケン『ななな<br>なんだ &lt;PLAYER&gt; じゃないか！<br>おれは ちょっと あのー<br>がっこうの しゅくだいを<br>おしえに きてるんだ！<br>えっ マップ？<br>そうか そんな やくそくも してたな<br>わかった<br>トレーナーギアを かしてみな<br>スロットに マップの カセットを<br>さしこんでっと⋯⋯<br>よし これで マップが みれるぞ！</span></td><td>Ken: Wh-wh-what, if it isn&#x27;t &lt;PLAYER&gt;! I&#x27;m, uh, just here to help with some school homework! Huh? A map? Oh right, I did promise that. Got it, lend me your Trainer Gear. I&#x27;ll slot the map cartridge in... and there, now you can see the map!</td></tr><tr><td><code>RivalHouseTextString6</code></td><td><span class="jpcell">もし オールドにいくなら<br>マサキって やつに あうといい<br>おれの ともだちで<br>すごい ポケモン マニアだ！<br>きっと おまえの<br>てだすけを してくれるぜ</span></td><td>If you&#x27;re heading to Old City, you should meet a guy named Masaki. He&#x27;s a friend of mine and a huge Pokémon maniac! He&#x27;s sure to lend you a hand.</td></tr><tr><td><code>RivalHouseTextString7</code></td><td><span class="jpcell">ケン『&lt;PLAYER&gt;<br>オーキドはかせに みこまれて<br>ポケモンずかんを つくるんだって？<br>すごいじゃないか がんばれよ</span></td><td>Ken: &lt;PLAYER&gt;, I hear Professor Oak picked you to make a Pokédex? That&#x27;s amazing, good luck!</td></tr></tbody></table></div><h2 id="Route2Gate1F">Route 2Gate 1F <span class="count">2 blocks</span></h2><div class="tbl-wrap"><table><thead><tr><th>Label</th><th>Japanese</th><th>English</th></tr></thead><tbody><tr><td><code>Route2Gate1FText1String</code></td><td><span class="jpcell">このゲートを ぬけると<br>すぐに オールドシティ です</span></td><td>Go through this gate and you&#x27;ll reach Old City right away.</td></tr><tr><td><code>Route2Gate1FText2String</code></td><td><span class="jpcell">オールドシティには<br>あの ゆうめいな<br>ごじゅうのとう が あるの<br>いってみたこと ある？</span></td><td>Old City has that famous Five-Story Pagoda. Have you ever been?</td></tr></tbody></table></div><h2 id="Route2Gate2F">Route 2Gate 2F <span class="count">4 blocks</span></h2><div class="tbl-wrap"><table><thead><tr><th>Label</th><th>Japanese</th><th>English</th></tr></thead><tbody><tr><td><code>Route2Gate2FTextString1</code></td><td><span class="jpcell">ガンテツさんって しってる？<br>ガンテツさんに<br>きに いられるように なれば<br>トレーナーとして たいしたもの よ</span></td><td>Do you know Mr. Gantetsu? If you can get on his good side, you&#x27;re quite the Trainer.</td></tr><tr><td><code>Route2Gate2FTextString2</code></td><td><span class="jpcell">あなた かんこうで きたの？<br>なら ざんねんね<br>オールドシティの<br>ごじゅうのとう は<br>だれでも はいれる って<br>ものじゃないわ</span></td><td>Did you come sightseeing? Then that&#x27;s a shame. Old City&#x27;s Five-Story Pagoda isn&#x27;t a place just anyone can enter.</td></tr><tr><td><code>Route2Gate2FTextString3</code></td><td><span class="jpcell">&lt;PLAYER&gt;は<br>ぼうえんきょうを のぞいた！<br>むむむ！<br>たかーい とう が みえる！</span></td><td>&lt;PLAYER&gt; peered through the telescope! Mmm! A tall, tall tower is visible!</td></tr><tr><td><code>Route2Gate2FTextString4</code></td><td><span class="jpcell">&lt;PLAYER&gt;は<br>ぼうえんきょうを のぞいた！<br>むむ？<br>ながーい かわ が みえる</span></td><td>&lt;PLAYER&gt; peered through the telescope! Hmm? A long, long river is visible.</td></tr></tbody></table></div><h2 id="SilentHillLabBack">Silent Hill Lab Back <span class="count">20 blocks</span></h2><div class="tbl-wrap"><table><thead><tr><th>Label</th><th>Japanese</th><th>English</th></tr></thead><tbody><tr><td><code>SilentHillLabBackTextString1</code></td><td><span class="jpcell">オーキド『ほれ そこに ３びき<br>ポケモンが いる じゃろう！<br>ほっほ！<br>こいつらを きみたちに<br>いっぴき づつ やろう！<br>⋯⋯ さあ えらべ！</span></td><td>Oak: See, there are three Pokémon over there! Ho ho! I&#x27;ll give one to each of you. ...Now, choose!</td></tr><tr><td><code>SilentHillLabBackTextString2</code></td><td><span class="jpcell">オーキド『まあ<br>あわてるな &lt;RIVAL&gt;！<br>おまえも すきなものを とれ！</span></td><td>Oak: Now now, don&#x27;t rush, &lt;RIVAL&gt;! You take your favorite too!</td></tr><tr><td><code>SilentHillLabBackTextString3</code></td><td><span class="jpcell">オーキド『さあ &lt;PLAYER&gt;<br>どの ポケモンに するかね？</span></td><td>Oak: Now then, &lt;PLAYER&gt;, which Pokémon will you have?</td></tr><tr><td><code>SilentHillLabBackTextString4</code></td><td><span class="jpcell">オーキド『ほう！ ほのおのポケモン</span></td><td>Oak: Oho! The Fire Pokémon</td></tr><tr><td><code>SilentHillLabBackTextString4</code></td><td><span class="jpcell">に するんじゃな？</span></td><td>is the one for you, then?</td></tr><tr><td><code>SilentHillLabBackTextString5</code></td><td><span class="jpcell">オーキド『ふむ みずのポケモン</span></td><td>Oak: Hmm, the Water Pokémon</td></tr><tr><td><code>SilentHillLabBackTextString5</code></td><td><span class="jpcell">に きめるのじゃな？</span></td><td>is what you&#x27;ll decide on, then?</td></tr><tr><td><code>SilentHillLabBackTextString6</code></td><td><span class="jpcell">オーキド『おお！ くさのポケモン</span></td><td>Oak: Ooh! The Grass Pokémon</td></tr><tr><td><code>SilentHillLabBackTextString6</code></td><td><span class="jpcell">が いいんじゃな？</span></td><td>is the one you&#x27;d like, then?</td></tr><tr><td><code>SilentHillLabBackTextString7</code></td><td><span class="jpcell">では<br>どれに するのじゃ？</span></td><td>So, which will it be?</td></tr><tr><td><code>SilentHillLabBackTextString8</code></td><td><span class="jpcell">オーキド『この ポケモンは<br>ほんとに げんきが いいぞ！<br>&lt;PLAYER&gt;は オーキドはかせから</span></td><td>Oak: This Pokémon is really full of energy! From Professor Oak, &lt;PLAYER&gt;</td></tr><tr><td><code>SilentHillLabBackTextString8</code></td><td><span class="jpcell">を もらった！</span></td><td>received it!</td></tr><tr><td><code>SilentHillLabBackTextString9</code></td><td><span class="jpcell">オーキド『そうじゃ！<br>やせいの ポケモンが でて きても<br>そいつを たたかわせて いけば<br>となりまちへ いける！</span></td><td>Oak: That&#x27;s right! Even when wild Pokémon appear, if you have yours fight them, you&#x27;ll be able to reach the next town!</td></tr><tr><td><code>SilentHillLabBackTextString10</code></td><td><span class="jpcell">&lt;RIVAL&gt;『あッ！ おれにも！<br>じいさん おれにもくれよう！</span></td><td>&lt;RIVAL&gt;: Ah! Me too! Gramps, give me one too!</td></tr><tr><td><code>SilentHillLabBackTextString11</code></td><td><span class="jpcell">&lt;RIVAL&gt;『いいぜ &lt;PLAYER&gt;！<br>さきに えらんで！<br>おれは こころが ひろいからな</span></td><td>&lt;RIVAL&gt;: Fine, &lt;PLAYER&gt;! You choose first! I&#x27;m a generous guy, after all.</td></tr><tr><td><code>SilentHillLabBackTextString12</code></td><td><span class="jpcell">&lt;RIVAL&gt;『じゃ おれは これ！</span></td><td>&lt;RIVAL&gt;: Then I&#x27;ll take this one!</td></tr><tr><td><code>SilentHillLabBackTextString13</code></td><td><span class="jpcell">&lt;RIVAL&gt;は オーキドから</span></td><td>From Oak, &lt;RIVAL&gt;</td></tr><tr><td><code>SilentHillLabBackTextString13</code></td><td><span class="jpcell">を もらった！</span></td><td>received it!</td></tr><tr><td><code>SilentHillLabBackTextString14</code></td><td><span class="jpcell">&lt;RIVAL&gt;『&lt;PLAYER&gt;のポケモン<br>いいなあ！<br>でも おれのポケモンも<br>ちょっと いいだろ？</span></td><td>&lt;RIVAL&gt;: &lt;PLAYER&gt;&#x27;s Pokémon is nice! But mine&#x27;s pretty good too, right?</td></tr><tr><td><code>SilentHillLabBackTextString15</code></td><td><span class="jpcell">オーキド『これ！<br>よくばっちゃ いかん！</span></td><td>Oak: Hey! Don&#x27;t be greedy!</td></tr></tbody></table></div><h2 id="SilentHillLabFront">Silent Hill — Prof. Oak&#x27;s Lab (front) <span class="count">34 blocks</span></h2><div class="tbl-wrap"><table><thead><tr><th>Label</th><th>Japanese</th><th>English</th></tr></thead><tbody><tr><td><code>SilentHillLabFrontTextString1</code></td><td><span class="jpcell">パソコンを みると<br>なんと メールが きていた！<br>&lt;⋯⋯&gt; &lt;⋯⋯&gt; &lt;⋯⋯&gt;<br>オーキドはかせ！<br>あなたが ゆくえふめいに<br>なっていると せけんは<br>おおさわぎ です！<br>それは そうと<br>はかせ から みつけるように<br>たのまれた れいのポケモン<br>みつけるどころか<br>まだ てがかりも<br>つかむことが できません<br>やはり あいつは<br>かくうの ポケモンなのでは<br>ないでしょうか&lt;⋯⋯&gt;<br>&lt;⋯⋯&gt; &lt;⋯⋯&gt; &lt;⋯⋯&gt;じょしゅより</span></td><td>Looking at the PC, there was mail! ...... Professor Oak! The world is in an uproar over your going missing! By the way, that certain Pokémon you asked me to find: far from finding it, I can&#x27;t even grasp a single clue. Maybe that thing really is a fictitious Pokémon after all...... From your assistant</td></tr><tr><td><code>SilentHillLabFrontTextString2A</code></td><td><span class="jpcell">スタート ボタンを プシュ！<br>おすと メニューが ひらくなり</span></td><td>Push the START button! Press it and a menu opens up, ya know.</td></tr><tr><td><code>SilentHillLabFrontTextString2B</code></td><td><span class="jpcell">セーブするには ポケモン レポート<br>こまめに かくと いいなり</span></td><td>To save, write a Pokémon Report. Best to do it often, ya know.</td></tr><tr><td><code>SilentHillLabFrontTextString3</code></td><td><span class="jpcell">カギが かかっている</span></td><td>It&#x27;s locked.</td></tr><tr><td><code>SilentHillLabFrontTextString4</code></td><td><span class="jpcell">オーキド『ごくろうさん！</span></td><td>Oak: Good work!</td></tr><tr><td><code>SilentHillLabFrontTextString5</code></td><td><span class="jpcell">オーキド『そうとも！<br>わしが オーキドじゃ！<br>じじいで わるかったな！<br>おまえたち ふたりは<br>この オーキドが よんだのじゃ！<br>すこし わしの はなしを<br>きいては くれんか？</span></td><td>Oak: That&#x27;s right! I&#x27;m Oak! Sorry for being an old geezer! You two, I&#x27;m the one who called you here! Won&#x27;t you hear me out for a bit?</td></tr><tr><td><code>SilentHillLabFrontTextString6A</code></td><td><span class="jpcell">オーキド『いまから １ねんまえ<br>わしは カントーで<br>きみたちの ような しょうねんに<br>ポケモンの けんきゅうの ため<br>ポケモンと ずかんを わたした<br>そして かれらは<br>じつに よくやってくれた！<br>１５０しゅるいの<br>ポケモンを みつけることに<br>せいこう したのじゃ！<br>が &lt;⋯⋯&gt; &lt;⋯⋯&gt; &lt;⋯⋯&gt;<br>しかし &lt;⋯⋯&gt; &lt;⋯⋯&gt;<br>せかいは ひろいものじゃ<br>そのご ぜんこく かくちで<br>あたらしい ポケモンが ぞくぞくと<br>みつかっておる！<br>そこで わしは カントーから<br>ここ サイレントヒルに<br>けんきゅうの ばしょを うつした<br>ばしょが かわれば<br>あたらしい ポケモンにも<br>であうことが できるからな<br>&lt;⋯⋯&gt; &lt;⋯⋯&gt; &lt;⋯⋯&gt; &lt;⋯⋯&gt;<br>これからも どんどんと<br>けんきゅうを すすめるが<br>わしも ごらんのとおりの おいぼれ<br>まごや じょしゅたちも おるが<br>それでも やはり かずが たらん！<br>&lt;PLAYER&gt;！ &lt;RIVAL&gt;！<br>ポケモンけんきゅうの ために<br>ちからを かして くれんか！</span></td><td>Oak: One year ago, in Kanto, I handed a Pokédex and Pokémon to boys like you for the sake of Pokémon research. And they did a truly fine job, succeeding in finding 150 kinds of Pokémon! But............ and yet...... the world is vast. Since then, new Pokémon have been turning up one after another all across the country! So I moved my research base from Kanto here, to Silent Hill. Change the place, and you can meet new Pokémon too. ........ I&#x27;ll keep pushing my research forward, but as you can see I&#x27;m a worn-out old man. I have grandchildren and assistants, but even so, there simply aren&#x27;t enough hands! &lt;PLAYER&gt;! &lt;RIVAL&gt;! Won&#x27;t you lend your strength to Pokémon research?</td></tr><tr><td><code>SilentHillLabFrontTextString6B</code></td><td><span class="jpcell">オーキド『そうか&lt;⋯⋯&gt;<br>わしに ひとを みるめが<br>なかったと いうことじゃな&lt;⋯⋯&gt;<br>いや！<br>わしの ひとを みるめは<br>まちがっては おらんはず！<br>な？<br>わしの はなしを きいてくれるな？</span></td><td>Oak: I see...... So I had no eye for people after all...... No! My eye for people can&#x27;t be wrong! Right? You&#x27;ll hear me out, won&#x27;t you?</td></tr><tr><td><code>SilentHillLabFrontTextString7</code></td><td><span class="jpcell">オーキド『ふたりとも！<br>ちょっと わしに ついてこい！</span></td><td>Oak: You two! Come with me a moment!</td></tr><tr><td><code>SilentHillLabFrontTextString8</code></td><td><span class="jpcell">オーキド『&lt;PLAYER&gt;！&lt;RIVAL&gt;！<br>このずかんを<br>おまえたちに あずける！</span></td><td>Oak: &lt;PLAYER&gt;! &lt;RIVAL&gt;! I entrust this Pokédex to you!</td></tr><tr><td><code>SilentHillLabFrontTextString9</code></td><td><span class="jpcell">&lt;PLAYER&gt;は オーキドから<br>ポケモンずかんを もらった！</span></td><td>&lt;PLAYER&gt; received the Pokédex from Oak!</td></tr><tr><td><code>SilentHillLabFrontTextString10</code></td><td><span class="jpcell">オーキド『この せかいの すべての<br>ポケモンを きろくした<br>かんぺきな ずかんを つくること！<br>それが わしの ゆめ だった！<br>しかし しんしゅの ポケモンは<br>ぞくぞくと みつかっている！<br>わしに のこされた<br>じかんは すくない！<br>そこで おまえ たちには<br>わしの かわりに<br>ゆめを はたして ほしいのじゃ！<br>さあ ふたりとも<br>さっそく しゅっぱつ してくれい！<br>これは ポケモンの れきしに のこる<br>いだいな しごとじゃー！</span></td><td>Oak: To make a complete Pokédex recording every Pokémon in this world, that was my dream! But new species keep turning up one after another! The time left to me is short! So I want you two to fulfill my dream in my place! Now, you two, set off at once! This is a great task that will go down in Pokémon history!</td></tr><tr><td><code>SilentHillLabFrontTextString11A</code></td><td><span class="jpcell">オーキド『せかい じゅうの<br>ポケモンたちが<br>&lt;PLAYER&gt;を まって おるぞー</span></td><td>Oak: Pokémon all over the world are waiting for &lt;PLAYER&gt;!</td></tr><tr><td><code>SilentHillLabFrontTextString11B</code></td><td><span class="jpcell">オーキド『おう！ &lt;PLAYER&gt;<br>どうだ？<br>わしの あげた ポケモンは&lt;⋯⋯&gt;？<br>ほう！<br>だいぶ なついた みたいだな<br>おまえには ポケモントレーナーの<br>さいのうが あるかもしれん<br>これからも ときどきは<br>わしのところへ かおを だせ！<br>ポケモンずかんの ページが<br>きに なるからな</span></td><td>Oak: Oh! &lt;PLAYER&gt;, how&#x27;s it going? The Pokémon I gave you...? Oho! It seems quite attached to you now. You may have a talent for being a Pokémon Trainer. Keep dropping by to see me now and then, I&#x27;m curious about the pages of your Pokédex.</td></tr><tr><td><code>SilentHillLabFrontTextString12</code></td><td><span class="jpcell">オーキド『よく きたな！<br>ポケモンずかんの<br>ちょうしは どうかな？<br>どれ&lt;⋯⋯&gt; ちょっと<br>みて あげようか！</span></td><td>Oak: Welcome! How&#x27;s your Pokédex coming along? Let&#x27;s see...... shall I take a little look?</td></tr><tr><td><code>SilentHillLabFrontTextString13</code></td><td><span class="jpcell">オーキド『&lt;⋯⋯&gt; おっほんッ！<br>よくやったな &lt;PLAYER&gt;！<br>ちょっと<br>わしに ついて きなさい！<br>&lt;RIVAL&gt;は すまんが<br>そこで まっていなさい！<br>&lt;RIVAL&gt;『えー！<br>なんだよ ケチー！<br>オーキド『&lt;RIVAL&gt;は<br>でんせつの ポケモンが<br>ほしかった だけじゃないのか？<br>&lt;RIVAL&gt;『ギクッ！</span></td><td>Oak: ...... Ahem! Well done, &lt;PLAYER&gt;! Come with me a moment! &lt;RIVAL&gt;, sorry, but wait there! &lt;RIVAL&gt;: Aww! What a cheapskate! Oak: &lt;RIVAL&gt;, weren&#x27;t you just after a legendary Pokémon? &lt;RIVAL&gt;: *gulp*!</td></tr><tr><td><code>SilentHillLabFrontTextString14</code></td><td><span class="jpcell">&lt;RIVAL&gt;『なんだ<br>&lt;PLAYER&gt;じゃないか！<br>おれも ここが<br>あやしいと おもって きたんだけど<br>だれも いないみたいだな&lt;⋯⋯&gt;</span></td><td>&lt;RIVAL&gt;: What, if it isn&#x27;t &lt;PLAYER&gt;! I came because this place seemed suspicious too, but it looks like nobody&#x27;s here......</td></tr><tr><td><code>SilentHillLabFrontTextString15</code></td><td><span class="jpcell">&lt;RIVAL&gt;『よっしゃあ！<br>じいさん！ おれにまかせな！</span></td><td>&lt;RIVAL&gt;: Alright! Gramps! Leave it to me!</td></tr><tr><td><code>SilentHillLabFrontTextString16</code></td><td><span class="jpcell">&lt;RIVAL&gt;『おれが えらんだ<br>ポケモンのほうが つよそうだぜ！<br>こっちに したかったんじゃないの？</span></td><td>&lt;RIVAL&gt;: The Pokémon I picked looks stronger! You wanted this one, didn&#x27;t you?</td></tr><tr><td><code>SilentHillLabFrontTextString17</code></td><td><span class="jpcell">&lt;RIVAL&gt;『&lt;PLAYER&gt;！<br>せっかく じいさんに<br>ポケモン もらったんだから<br>&lt;⋯⋯&gt; ちょっと<br>たたかわせて みようぜ！</span></td><td>&lt;RIVAL&gt;: &lt;PLAYER&gt;! Since we got Pokémon from the old man...... let&#x27;s have them battle a bit!</td></tr><tr><td><code>SilentHillLabFrontTextString18</code></td><td><span class="jpcell">&lt;RIVAL&gt;『くっそー！<br>こんどは ぜったい まけないぞ！</span></td><td>&lt;RIVAL&gt;: Dammit! Next time I definitely won&#x27;t lose!</td></tr><tr><td><code>SilentHillLabFrontTextString19</code></td><td><span class="jpcell">&lt;RIVAL&gt;『よーし！<br>ほかの ポケモンと たたかわせて<br>もっと もっと つよくしよう！<br>そんじゃ ばいばい！</span></td><td>&lt;RIVAL&gt;: Alright! Let&#x27;s battle other Pokémon and get stronger and stronger! Well then, bye-bye!</td></tr><tr><td><code>SilentHillLabFrontTextString20</code></td><td><span class="jpcell">じいちゃん！<br>つれてきたよー！</span></td><td>Gramps! I brought them along!</td></tr><tr><td><code>SilentHillLabFrontTextString21</code></td><td><span class="jpcell">ぼくは かつて<br>ポケモントレーナーの ちょうてんを<br>めざしたことが あるんだ<br>そのとき いいきに なっていた<br>ぼくの てんぐのはなを<br>へしおった やつに<br>きみは どことなく にている<br>あいつの おかげで ぼくは<br>こころを いれかえて<br>じいさんの けんきゅうを<br>てつだうように なったのさ<br>&lt;⋯⋯&gt; &lt;⋯⋯&gt; &lt;⋯⋯&gt; &lt;⋯⋯&gt; &lt;⋯⋯&gt;<br>さあ！<br>これが ポケモンずかんだ！<br>みつけた ポケモンの データが<br>じどうてきに かきこまれて<br>ページが ふえて いく という<br>とても ハイテクな ずかん だよ！</span></td><td>I once aimed to reach the very top as a Pokémon Trainer. Back then I was full of myself, until someone knocked me down a peg. You remind me a little of that guy. Thanks to him, I turned over a new leaf and began helping with the old man&#x27;s research. ............ Now! This is the Pokédex! When you find a Pokémon, its data is written in automatically and the pages keep growing, a very high-tech Pokédex!</td></tr><tr><td><code>SilentHillLabFrontTextString22</code></td><td><span class="jpcell">ぼくも むかし やったけど<br>なかなか たいへんだよ&lt;⋯⋯&gt;<br>がんばってね！</span></td><td>I did it long ago too, and it&#x27;s quite a challenge...... Good luck!</td></tr><tr><td><code>SilentHillLabFrontTextString23</code></td><td><span class="jpcell">ナナミ『さっき あなたを<br>つれてきた わかい おとこのこ&lt;⋯⋯&gt;<br>あれは わたしの おとうとなの<br>&lt;⋯⋯&gt;ということは つまり<br>そう！<br>わたしも オーキドの まご なの！<br>おじいちゃんは りっぱな<br>ポケモンけんきゅうしゃよ<br>わたしは おてつだい できることが<br>とっても うれしいの！<br>あっ こんなこと しられたら<br>おじいちゃん ちょうしに のるから<br>ないしょに しておいてね！<br>&lt;⋯⋯&gt;おじいちゃん すっかり<br>わすれている みたいだから<br>わたしが かわりに これを あげる！<br>さいしんがた ポケモンリュックよ<br>&lt;PLAYER&gt;は<br>ポケモンリュックを もらった！<br>ナナミ『この リュックには<br>モンスターボールを<br>まとめて いれられる<br>ボールホルダと<br>わざマシンを まとめて いれられる<br>わざマシンホルダが ついているの<br>モンスターボール ６こと<br>わざマシンひとつは オマケしておくわ<br>ホルダに なんにも はいってないと<br>さびしいもんね！<br>ねえ &lt;PLAYER&gt;くン<br>あなたの おかあさんが<br>しんぱいすると いけないから<br>このまちを でるまえに<br>かおを みせに いってあげてね<br>&lt;⋯⋯&gt;あなたの かつやく<br>いのっているわ</span></td><td>Nanami: That young boy who brought you here earlier...... he&#x27;s my little brother. Which means, yes! I&#x27;m Oak&#x27;s granddaughter too! Grandpa is a fine Pokémon researcher, and I&#x27;m so happy I can help out! Oh, if he found out I said that, Grandpa would get carried away, so keep it a secret! ...... Grandpa seems to have completely forgotten, so I&#x27;ll give you this instead! It&#x27;s the latest-model Pokémon Backpack. &lt;PLAYER&gt; received the Pokémon Backpack! Nanami: This backpack has a Ball Holder that stores Poké Balls together, and a TM Holder that stores TMs together. I&#x27;ll throw in 6 Poké Balls and one TM as a bonus, an empty holder is lonely after all! Say, &lt;PLAYER&gt;, your mom will worry, so before you leave town, go show her your face. ...... I&#x27;m praying for your success.</td></tr><tr><td><code>SilentHillLabFrontTextString24</code></td><td><span class="jpcell">&lt;⋯⋯&gt;あなたの かつやく<br>いのってるわ</span></td><td>...... I&#x27;m praying for your success.</td></tr><tr><td><code>SilentHillLabFrontTextString25</code></td><td><span class="jpcell">わたしは<br>はかせの じょしゅ です<br>わたしは もちろん<br>はかせを ソンケー しております<br>あなた とは また どこかで<br>おあい することに<br>なるような きがします</span></td><td>I&#x27;m the Professor&#x27;s assistant. Of course, I hold the Professor in deep respect. I have a feeling you and I will meet again somewhere.</td></tr><tr><td><code>SilentHillLabFrontTextString26</code></td><td><span class="jpcell">わたしは<br>はかせの じょしゅ です<br>わたしは もちろん<br>はかせを ソンケー しております<br>あなた とは また どこかで<br>おあい することに<br>なるような きがします</span></td><td>I&#x27;m the Professor&#x27;s assistant. Of course, I hold the Professor in deep respect. I have a feeling you and I will meet again somewhere.</td></tr><tr><td><code>SilentHillLabFrontTextString27</code></td><td><span class="jpcell">なんだろう？<br>でんし てちょう かな？</span></td><td>What&#x27;s this? An electronic organizer, maybe?</td></tr><tr><td><code>SilentHillLabFrontTextString28</code></td><td><span class="jpcell">&lt;RIVAL&gt;『あのメールを くれた<br>オーキドって こんな じじい&lt;⋯⋯&gt;<br>あっ ゴメン<br>こんな じいさん なのか？<br>ほんもの はじめて みたよ！</span></td><td>&lt;RIVAL&gt;: So that Oak who sent the mail is this old geezer...... oh, sorry, this old man? It&#x27;s my first time seeing the real thing!</td></tr><tr><td><code>SilentHillLabFrontTextString29</code></td><td><span class="jpcell">&lt;RIVAL&gt;『&lt;PLAYER&gt;！<br>なんだか<br>おもしろく なってきたな！</span></td><td>&lt;RIVAL&gt;: &lt;PLAYER&gt;! Somehow this is starting to get fun!</td></tr><tr><td><code>SilentHillLabFrontTextString30</code></td><td><span class="jpcell">わたしは<br>はかせの じょしゅ です<br>あなた とは また どこかで<br>おあい することに<br>なるような きがします</span></td><td>I&#x27;m the Professor&#x27;s assistant. I have a feeling you and I will meet again somewhere.</td></tr><tr><td><code>SilentHillLabFrontTextString31</code></td><td><span class="jpcell">わたしは<br>はかせの じょしゅ です<br>あなた とは また どこかで<br>おあい することに<br>なるような きがします</span></td><td>I&#x27;m the Professor&#x27;s assistant. I have a feeling you and I will meet again somewhere.</td></tr></tbody></table></div><h2 id="SilentHillPokecenter">Silent Hill — Pokémon Center <span class="count">6 blocks</span></h2><div class="tbl-wrap"><table><thead><tr><th>Label</th><th>Japanese</th><th>English</th></tr></thead><tbody><tr><td><code>SilentHillPokecenterTextString1</code></td><td><span class="jpcell">げんざい ちょうせいちゅうです</span></td><td>Currently under adjustment.</td></tr><tr><td><code>SilentHillPokecenterTextString2</code></td><td><span class="jpcell">もうしわけありませんが<br>ただいま しゅうりちゅう でして<br>かいふくは できません<br>まちから でるときは<br>じゅうぶんに おきをつけ ください</span></td><td>I&#x27;m very sorry, but we&#x27;re under repair right now, so we can&#x27;t heal your Pokémon. Please take plenty of care when you leave town.</td></tr><tr><td><code>SilentHillPokecenterTextString3</code></td><td><span class="jpcell">あそこに ある パソコンは<br>トレーナー だったら<br>いつでも むりょうで<br>つかうことが できるよ<br>きが きいてるよな！</span></td><td>That PC over there can be used free of charge anytime, as long as you&#x27;re a Trainer. Handy, huh!</td></tr><tr><td><code>SilentHillPokecenterTextString4</code></td><td><span class="jpcell">いま じゅんびちゅうの<br>きかいは すごいらしいよ<br>なんでも ときを こえて<br>ポケモンが こうかん できるって！<br>ほんとかな？</span></td><td>That machine they&#x27;re preparing now is supposedly amazing. They say it can even trade Pokémon across time! Is that really true?</td></tr><tr><td><code>SilentHillPokecenterTextString5</code></td><td><span class="jpcell">こいつ ヘルガー<br>いままでにない タイプの ポケモンさ</span></td><td>This is Houndoom. A type of Pokémon there&#x27;s never been before.</td></tr><tr><td><code>SilentHillPokecenterTextString6</code></td><td><span class="jpcell">ヘルガー『ぐるるうー</span></td><td>Houndoom: Grrrrr!</td></tr></tbody></table></div><h2 id="UnusedGen1Colosseum">Unused Gen 1Colosseum <span class="count">1 blocks</span></h2><div class="tbl-wrap"><table><thead><tr><th>Label</th><th>Japanese</th><th>English</th></tr></thead><tbody><tr><td><code>UnusedGen1ColosseumText1</code></td><td><span class="jpcell">！</span></td><td>!</td></tr></tbody></table></div><h2 id="UnusedGen1TradeCenter">Unused Gen 1Trade Center <span class="count">1 blocks</span></h2><div class="tbl-wrap"><table><thead><tr><th>Label</th><th>Japanese</th><th>English</th></tr></thead><tbody><tr><td><code>UnusedGen1TradeCenterText1</code></td><td><span class="jpcell">！</span></td><td>!</td></tr></tbody></table></div></main></div></body></html>

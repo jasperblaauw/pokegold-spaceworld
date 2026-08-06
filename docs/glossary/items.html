@@ -1,0 +1,274 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Item names — Space World '97 Text Glossary</title>
+<style>
+  :root {
+    --bg: #eef1e8;
+    --surface: #f8faf2;
+    --surface-2: #e4e9d9;
+    --ink: #191e14;
+    --ink-soft: #4c553f;
+    --ink-faint: #6f7a5e;
+    --line: #ccd4bd;
+    --accent: #4e7a1e;
+    --accent-strong: #38610f;
+    --accent-wash: #dde7c8;
+    --gold: #977321;
+    --silver: #55606d;
+    --screen-bg: #0f380f;
+    --screen-ink: #9bbc0f;
+    --screen-dim: #6a8a10;
+    --screen-line: #285026;
+    --radius: 10px;
+    --mono: ui-monospace, "SF Mono", "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12150f;
+      --surface: #1a1e15;
+      --surface-2: #232a1b;
+      --ink: #e9ecdf;
+      --ink-soft: #aab393;
+      --ink-faint: #7f886c;
+      --line: #333c27;
+      --accent: #9bbc0f;
+      --accent-strong: #b8d63e;
+      --accent-wash: #24301a;
+      --gold: #d8b24a;
+      --silver: #9fabb8;
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #eef1e8; --surface: #f8faf2; --surface-2: #e4e9d9;
+    --ink: #191e14; --ink-soft: #4c553f; --ink-faint: #6f7a5e; --line: #ccd4bd;
+    --accent: #4e7a1e; --accent-strong: #38610f; --accent-wash: #dde7c8;
+    --gold: #977321; --silver: #55606d;
+  }
+  :root[data-theme="dark"] {
+    --bg: #12150f; --surface: #1a1e15; --surface-2: #232a1b;
+    --ink: #e9ecdf; --ink-soft: #aab393; --ink-faint: #7f886c; --line: #333c27;
+    --accent: #9bbc0f; --accent-strong: #b8d63e; --accent-wash: #24301a;
+    --gold: #d8b24a; --silver: #9fabb8;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---------- Layout ---------- */
+  .app { display: grid; grid-template-columns: 288px minmax(0, 1fr); min-height: 100vh; }
+  .sidebar {
+    position: sticky; top: 0; align-self: start;
+    height: 100vh; overflow-y: auto;
+    background: var(--surface);
+    border-right: 1px solid var(--line);
+    padding: 24px 18px 40px;
+  }
+  .content { padding: 56px clamp(20px, 5vw, 72px); min-width: 0; }
+  .page { display: none; max-width: 760px; animation: fade .18s ease; }
+  .page.active { display: block; }
+  @keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .page { animation: none; } }
+
+  /* ---------- Brand ---------- */
+  .brand { display: flex; align-items: center; gap: 12px; margin-bottom: 4px; text-decoration: none; }
+  .cart { flex: none; width: 40px; height: 40px; }
+  .brand-txt { display: flex; flex-direction: column; line-height: 1.15; }
+  .brand-txt b { font-family: var(--mono); font-size: .95rem; letter-spacing: .02em; color: var(--ink); }
+  .brand-txt span { font-family: var(--mono); font-size: .64rem; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-faint); }
+  .ver-line { display: flex; gap: 6px; margin: 14px 2px 20px; }
+
+  /* ---------- Nav ---------- */
+  nav { display: flex; flex-direction: column; gap: 22px; }
+  .nav-group > p {
+    margin: 0 0 7px; padding: 0 8px;
+    font-family: var(--mono); font-size: .63rem; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--ink-faint);
+  }
+  .nav-group a {
+    display: block; padding: 6px 10px; border-radius: 7px;
+    color: var(--ink-soft); text-decoration: none;
+    font-size: .87rem; border-left: 2px solid transparent;
+  }
+  .nav-group a:hover { background: var(--surface-2); color: var(--ink); }
+  .nav-group a.active {
+    background: var(--accent-wash); color: var(--accent-strong);
+    border-left-color: var(--accent); font-weight: 600;
+  }
+  :root[data-theme="dark"] .nav-group a.active,
+  @media (prefers-color-scheme: dark) { }
+  .nav-group a:focus-visible, .brand:focus-visible, .menu-btn:focus-visible {
+    outline: 2px solid var(--accent); outline-offset: 2px;
+  }
+
+  /* ---------- Typography ---------- */
+  .eyebrow {
+    font-family: var(--mono); font-size: .68rem; letter-spacing: .2em;
+    text-transform: uppercase; color: var(--accent-strong); margin: 0 0 12px;
+  }
+  h1 { font-family: var(--mono); font-size: clamp(1.7rem, 4vw, 2.4rem); line-height: 1.12;
+       letter-spacing: -.01em; margin: 0 0 16px; text-wrap: balance; }
+  h2 { font-family: var(--mono); font-size: 1.28rem; margin: 44px 0 12px;
+       padding-bottom: 8px; border-bottom: 1px solid var(--line); text-wrap: balance; }
+  h3 { font-family: var(--mono); font-size: 1.02rem; margin: 28px 0 8px; color: var(--ink); }
+  p, li { color: var(--ink-soft); }
+  .lead { font-size: 1.1rem; color: var(--ink-soft); }
+  a.inline { color: var(--accent-strong); text-decoration: underline; text-underline-offset: 2px; text-decoration-thickness: 1px; }
+  a.inline:hover { color: var(--accent); }
+  strong { color: var(--ink); }
+  ul, ol { padding-left: 22px; }
+  li { margin: 5px 0; }
+  hr { border: none; border-top: 1px solid var(--line); margin: 40px 0; }
+
+  /* ---------- Code ---------- */
+  code {
+    font-family: var(--mono); font-size: .86em;
+    background: var(--surface-2); color: var(--ink);
+    padding: .12em .38em; border-radius: 5px;
+  }
+  pre {
+    background: var(--screen-bg); color: var(--screen-ink);
+    border: 1px solid var(--screen-line); border-radius: var(--radius);
+    padding: 16px 18px; overflow-x: auto; margin: 16px 0;
+    box-shadow: inset 0 0 0 4px rgba(15,56,15,.6), inset 0 0 24px rgba(0,0,0,.35);
+  }
+  pre code { background: none; color: inherit; padding: 0; font-size: .82rem; line-height: 1.65; }
+  pre .cm { color: var(--screen-dim); }
+  pre .pr { color: #c7e04a; }
+
+  /* ---------- Components ---------- */
+  .chip {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-family: var(--mono); font-size: .66rem; letter-spacing: .06em;
+    padding: 3px 9px; border-radius: 999px; text-transform: uppercase;
+    border: 1px solid var(--line); color: var(--ink-soft); background: var(--surface);
+  }
+  .chip.gold { color: var(--gold); border-color: color-mix(in srgb, var(--gold) 45%, var(--line)); }
+  .chip.silver { color: var(--silver); border-color: color-mix(in srgb, var(--silver) 45%, var(--line)); }
+  .chip.accent { color: var(--accent-strong); border-color: var(--accent); background: var(--accent-wash); }
+
+  .callout {
+    display: flex; gap: 12px; margin: 18px 0;
+    padding: 14px 16px; border-radius: var(--radius);
+    background: var(--surface); border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+  }
+  .callout .ico { flex: none; font-family: var(--mono); font-weight: 700; color: var(--accent-strong); }
+  .callout p { margin: 0; font-size: .92rem; }
+  .callout.warn { border-left-color: var(--gold); }
+  .callout.warn .ico { color: var(--gold); }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 14px; margin: 20px 0; }
+  .card {
+    display: block; text-decoration: none; padding: 16px;
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+  .card:hover { border-color: var(--accent); transform: translateY(-2px); transition: .15s; }
+  .card b { font-family: var(--mono); font-size: .82rem; color: var(--ink); display: block; margin-bottom: 4px; }
+  .card span { font-size: .82rem; color: var(--ink-faint); }
+  .card .tag { font-family: var(--mono); font-size: .62rem; letter-spacing: .1em; text-transform: uppercase; color: var(--accent-strong); }
+
+  .tbl-wrap { overflow-x: auto; margin: 18px 0; border: 1px solid var(--line); border-radius: var(--radius); }
+  table { width: 100%; border-collapse: collapse; font-size: .87rem; }
+  th, td { text-align: left; padding: 9px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-family: var(--mono); font-size: .68rem; letter-spacing: .1em; text-transform: uppercase;
+       color: var(--ink-faint); background: var(--surface); position: sticky; top: 0; }
+  tr:last-child td { border-bottom: none; }
+  td code { font-size: .82rem; white-space: nowrap; }
+  td:first-child { white-space: nowrap; }
+
+  .steps { counter-reset: s; list-style: none; padding: 0; margin: 20px 0; }
+  .steps > li { counter-increment: s; position: relative; padding-left: 44px; margin: 20px 0; }
+  .steps > li::before {
+    content: counter(s); position: absolute; left: 0; top: 0;
+    width: 28px; height: 28px; display: grid; place-items: center;
+    font-family: var(--mono); font-size: .82rem; font-weight: 700;
+    color: var(--accent-strong); background: var(--accent-wash);
+    border: 1px solid var(--accent); border-radius: 8px;
+  }
+  .steps > li > b { display: block; color: var(--ink); font-family: var(--mono); font-size: .92rem; margin-bottom: 2px; }
+
+  .kbd-legend { display: flex; flex-wrap: wrap; gap: 16px; margin: 12px 0 4px; font-size: .82rem; }
+  .kbd-legend span { display: inline-flex; align-items: center; gap: 6px; color: var(--ink-faint); }
+  .dot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+
+  .footer-note { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--line);
+                 font-size: .8rem; color: var(--ink-faint); }
+
+  /* ---------- Mobile ---------- */
+  .topbar { display: none; }
+  .menu-btn { background: var(--surface); border: 1px solid var(--line); color: var(--ink);
+              font-family: var(--mono); font-size: .8rem; padding: 8px 12px; border-radius: 8px; cursor: pointer; }
+  @media (max-width: 860px) {
+    .app { grid-template-columns: 1fr; }
+    .topbar { display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 20;
+              padding: 12px 18px; background: var(--surface); border-bottom: 1px solid var(--line); }
+    .sidebar { position: fixed; z-index: 30; top: 0; left: 0; width: 280px; height: 100vh;
+               transform: translateX(-100%); transition: transform .2s ease; }
+    .sidebar.open { transform: none; box-shadow: 0 0 0 100vmax rgba(0,0,0,.4); }
+    .content { padding: 28px 20px 60px; }
+  }
+
+
+.app { display:grid; grid-template-columns:262px minmax(0,1fr); min-height:100vh; }
+.sidebar { position:sticky; top:0; align-self:start; height:100vh; overflow-y:auto;
+  background:var(--surface); border-right:1px solid var(--line); padding:22px 16px 40px; }
+.content { padding:44px clamp(18px,4vw,60px); min-width:0; max-width:1040px; }
+.brand { display:flex; align-items:center; gap:10px; margin-bottom:16px; text-decoration:none; }
+.brand b { font-family:var(--mono); font-size:.9rem; color:var(--ink); }
+.brand span { font-family:var(--mono); font-size:.6rem; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-faint); display:block; }
+nav.side { display:flex; flex-direction:column; gap:3px; }
+nav.side .grp { margin:14px 0 3px; padding:0 8px; font-family:var(--mono); font-size:.6rem;
+  letter-spacing:.15em; text-transform:uppercase; color:var(--ink-faint); }
+nav.side a { display:flex; justify-content:space-between; gap:8px; align-items:center;
+  padding:6px 10px; border-radius:7px; color:var(--ink-soft); text-decoration:none;
+  font-size:.85rem; border-left:2px solid transparent; }
+nav.side a:hover { background:var(--surface-2); color:var(--ink); }
+nav.side a.active { background:var(--accent-wash); color:var(--accent-strong);
+  border-left-color:var(--accent); font-weight:600; }
+nav.side a .n { font-family:var(--mono); font-size:.62rem; color:var(--ink-faint); }
+.pending { font-family:var(--mono); font-size:.72rem; color:var(--gold); opacity:.85; }
+tr.demo td { background:color-mix(in srgb, var(--accent-wash) 60%, transparent); }
+.pill { font-family:var(--mono); font-size:.58rem; letter-spacing:.06em; text-transform:uppercase;
+  color:var(--accent-strong); border:1px solid var(--accent); border-radius:999px; padding:1px 6px; margin-left:6px; white-space:nowrap; }
+.jpcell { font-size:.98rem; color:var(--ink); line-height:1.5; }
+td:first-child { font-family:var(--mono); color:var(--ink-faint); white-space:nowrap; }
+.cov { font-family:var(--mono); font-size:.72rem; color:var(--ink-faint); margin:2px 0 14px; }
+.covbar { display:inline-block; width:120px; height:7px; border-radius:4px; background:var(--surface-2);
+  vertical-align:middle; overflow:hidden; margin:0 8px; border:1px solid var(--line); }
+.covbar i { display:block; height:100%; background:var(--accent); }
+.grpname { font-family:var(--mono); font-size:1.02rem; margin:30px 0 6px; color:var(--ink); }
+.menu-btn2 { display:none; }
+@media (max-width:820px){ .app{grid-template-columns:1fr;} .sidebar{position:static;height:auto;} }
+</style></head><body>
+<div class="app"><aside class="sidebar"><a class="brand" href="../index.html"><span>Space World '97</span></a>
+<a class="brand" href="index.html" style="margin-top:-8px"><b>Text Glossary</b></a>
+<nav class="side">
+<div class="grp">Start</div>
+<a href="index.html">Overview</a>
+<div class="grp">Names</div>
+<a href="pokemon.html">Pokémon<span class="n">251</span></a>
+<a href="moves.html">Moves<span class="n">250</span></a>
+<a class="active" href="items.html">Items<span class="n">~150</span></a>
+<a href="locations.html">Locations<span class="n">45</span></a>
+<a href="trainers.html">Trainers<span class="n">64</span></a>
+<a href="types.html">Types<span class="n">19</span></a>
+<div class="grp">Flavor &amp; descriptions</div>
+<a href="dex.html">Pokédex entries<span class="n">251</span></a>
+<a href="move-desc.html">Move descriptions<span class="n">251</span></a>
+<a href="item-desc.html">Item descriptions<span class="n">206</span></a>
+<div class="grp">Dialogue &amp; scripts</div>
+<a href="dialogue.html">Map dialogue<span class="n">122</span></a>
+<a href="system.html">Battle / menu / system<span class="n">733</span></a>
+</nav></aside>
+<main class="content"><p class="eyebrow">Names</p><h1>Item names</h1><p class="lead">Bag / PC item names, by item ID. Many slots are placeholders (しようきんし “usage forbidden”, みしよう “unused”). Note the many prototype-only hold items and stones.</p><div class="tbl-wrap"><table><thead><tr><th>ID</th><th>Japanese</th><th>English</th></tr></thead><tbody><tr><td>$01</td><td><span class="jpcell">マスターボール</span></td><td>Master Ball</td></tr><tr><td>$02</td><td><span class="jpcell">ハイパーボール</span></td><td>Ultra Ball</td></tr><tr><td>$03</td><td><span class="jpcell">しようきんし</span></td><td>(disabled — 使用禁止 “usage forbidden”)</td></tr><tr><td>$04</td><td><span class="jpcell">スーパーボール</span></td><td>Great Ball</td></tr><tr><td>$05</td><td><span class="jpcell">モンスターボール</span></td><td>Poké Ball</td></tr><tr><td>$06</td><td><span class="jpcell">タウンマップ</span></td><td>Town Map</td></tr><tr><td>$07</td><td><span class="jpcell">じてんしゃ</span></td><td>Bicycle</td></tr><tr><td>$08</td><td><span class="jpcell">つきのいし</span></td><td>Moon Stone</td></tr><tr><td>$09</td><td><span class="jpcell">どくけし</span></td><td>Antidote</td></tr><tr><td>$0A</td><td><span class="jpcell">やけどなおし</span></td><td>Burn Heal</td></tr><tr><td>$0B</td><td><span class="jpcell">こおりなおし</span></td><td>Ice Heal</td></tr><tr><td>$0C</td><td><span class="jpcell">ねむけざまし</span></td><td>Awakening</td></tr><tr><td>$0D</td><td><span class="jpcell">まひなおし</span></td><td>Parlyz Heal</td></tr><tr><td>$0E</td><td><span class="jpcell">かいふくのくすり</span></td><td>Full Restore</td></tr><tr><td>$0F</td><td><span class="jpcell">まんたんのくすり</span></td><td>Max Potion</td></tr><tr><td>$10</td><td><span class="jpcell">すごいキズぐすり</span></td><td>Hyper Potion</td></tr><tr><td>$11</td><td><span class="jpcell">いいキズぐすり</span></td><td>Super Potion</td></tr><tr><td>$12</td><td><span class="jpcell">キズぐすり</span></td><td>Potion</td></tr><tr><td>$13</td><td><span class="jpcell">あなぬけのヒモ</span></td><td>Escape Rope</td></tr><tr><td>$14</td><td><span class="jpcell">むしよけスプレー</span></td><td>Repel</td></tr><tr><td>$15</td><td><span class="jpcell">ピーピーマックス</span></td><td>Max Elixer</td></tr><tr><td>$16</td><td><span class="jpcell">ほのおのいし</span></td><td>Fire Stone</td></tr><tr><td>$17</td><td><span class="jpcell">かみなりのいし</span></td><td>Thunderstone</td></tr><tr><td>$18</td><td><span class="jpcell">みずのいし</span></td><td>Water Stone</td></tr><tr><td>$19</td><td><span class="jpcell">しようきんし</span></td><td>(disabled — 使用禁止 “usage forbidden”)</td></tr><tr><td>$1A</td><td><span class="jpcell">マックスアップ</span></td><td>HP Up</td></tr><tr><td>$1B</td><td><span class="jpcell">タウリン</span></td><td>Protein</td></tr><tr><td>$1C</td><td><span class="jpcell">ブロムヘキシン</span></td><td>Iron</td></tr><tr><td>$1D</td><td><span class="jpcell">インドメタシン</span></td><td>Carbos</td></tr><tr><td>$1E</td><td><span class="jpcell">しようきんし</span></td><td>(disabled — 使用禁止 “usage forbidden”)</td></tr><tr><td>$1F</td><td><span class="jpcell">リゾチウム</span></td><td>Calcium</td></tr><tr><td>$20</td><td><span class="jpcell">ふしぎなアメ</span></td><td>Rare Candy</td></tr><tr><td>$21</td><td><span class="jpcell">ヨクアタール</span></td><td>X Accuracy</td></tr><tr><td>$22</td><td><span class="jpcell">リーフのいし</span></td><td>Leaf Stone</td></tr><tr><td>$23</td><td><span class="jpcell">しようきんし</span></td><td>(disabled — 使用禁止 “usage forbidden”)</td></tr><tr><td>$24</td><td><span class="jpcell">きんのたま</span></td><td>Nugget</td></tr><tr><td>$25</td><td><span class="jpcell">ピッピにんぎょう</span></td><td>Poké Doll</td></tr><tr><td>$26</td><td><span class="jpcell">なんでもなおし</span></td><td>Full Heal</td></tr><tr><td>$27</td><td><span class="jpcell">げんきのかけら</span></td><td>Revive</td></tr><tr><td>$28</td><td><span class="jpcell">げんきのかたまり</span></td><td>Max Revive</td></tr><tr><td>$29</td><td><span class="jpcell">エフェクトガード</span></td><td>Guard Spec</td></tr><tr><td>$2A</td><td><span class="jpcell">シルバースプレー</span></td><td>Super Repel</td></tr><tr><td>$2B</td><td><span class="jpcell">ゴールドスプレー</span></td><td>Max Repel</td></tr><tr><td>$2C</td><td><span class="jpcell">クリィテカッター</span></td><td>Dire Hit</td></tr><tr><td>$2D</td><td><span class="jpcell">しようきんし</span></td><td>(disabled — 使用禁止 “usage forbidden”)</td></tr><tr><td>$2E</td><td><span class="jpcell">おいしいみず</span></td><td>Fresh Water</td></tr><tr><td>$2F</td><td><span class="jpcell">サイコソーダ</span></td><td>Soda Pop</td></tr><tr><td>$30</td><td><span class="jpcell">ミックスオレ</span></td><td>Lemonade</td></tr><tr><td>$31</td><td><span class="jpcell">プラスパワー</span></td><td>X Attack</td></tr><tr><td>$32</td><td><span class="jpcell">しようきんし</span></td><td>(disabled — 使用禁止 “usage forbidden”)</td></tr><tr><td>$33</td><td><span class="jpcell">ディフェンダー</span></td><td>X Defend</td></tr><tr><td>$34</td><td><span class="jpcell">スピーダー</span></td><td>X Speed</td></tr><tr><td>$35</td><td><span class="jpcell">スペシャルアップ</span></td><td>X Special</td></tr><tr><td>$36</td><td><span class="jpcell">コインケース</span></td><td>Coin Case</td></tr><tr><td>$37</td><td><span class="jpcell">ダウジングマシン</span></td><td>Itemfinder</td></tr><tr><td>$38</td><td><span class="jpcell">ポケモンのふえ</span></td><td>Poké Flute</td></tr><tr><td>$39</td><td><span class="jpcell">がくしゅうそうち</span></td><td>Exp. Share</td></tr><tr><td>$3A</td><td><span class="jpcell">ボロのつりざお</span></td><td>Old Rod</td></tr><tr><td>$3B</td><td><span class="jpcell">いいつりざお</span></td><td>Good Rod</td></tr><tr><td>$3C</td><td><span class="jpcell">しようきんし</span></td><td>(disabled — 使用禁止 “usage forbidden”)</td></tr><tr><td>$3D</td><td><span class="jpcell">すごいつりざお</span></td><td>Super Rod</td></tr><tr><td>$3E</td><td><span class="jpcell">ポイントアップ</span></td><td>PP Up</td></tr><tr><td>$3F</td><td><span class="jpcell">ピーピーエイド</span></td><td>Ether</td></tr><tr><td>$40</td><td><span class="jpcell">ピーピーリカバー</span></td><td>Max Ether</td></tr><tr><td>$41</td><td><span class="jpcell">ピーピーエイダー</span></td><td>Elixer</td></tr><tr><td>$42</td><td><span class="jpcell">しんぴのはなびら</span></td><td>Mystic Petal</td></tr><tr><td>$43</td><td><span class="jpcell">しろいハネ</span></td><td>White Feather</td></tr><tr><td>$44</td><td><span class="jpcell">どさくさのツメ</span></td><td>Confuse Claw</td></tr><tr><td>$45</td><td><span class="jpcell">ちしきのたま</span></td><td>Wisdom Orb</td></tr><tr><td>$46</td><td><span class="jpcell">はがねのこうら</span></td><td>Steel Shell</td></tr><tr><td>$47</td><td><span class="jpcell">アップグレード</span></td><td>Up Grade</td></tr><tr><td>$48</td><td><span class="jpcell">ふしぎないと</span></td><td>Strange Thread</td></tr><tr><td>$49</td><td><span class="jpcell">おっきなはっぱ</span></td><td>Big Leaf</td></tr><tr><td>$4A</td><td><span class="jpcell">せんせいのハリ</span></td><td>Quick Needle</td></tr><tr><td>$4B</td><td><span class="jpcell">しようきんし</span></td><td>(disabled — 使用禁止 “usage forbidden”)</td></tr><tr><td>$4C</td><td><span class="jpcell">とがったいし</span></td><td>Sharp Stone</td></tr><tr><td>$4D</td><td><span class="jpcell">くろいハネ</span></td><td>Black Feather</td></tr><tr><td>$4E</td><td><span class="jpcell">とがったまえば</span></td><td>Sharp Fang</td></tr><tr><td>$4F</td><td><span class="jpcell">ヘビのぬけがら</span></td><td>Snakeskin</td></tr><tr><td>$50</td><td><span class="jpcell">でんきぶくろ</span></td><td>Electric Pouch</td></tr><tr><td>$51</td><td><span class="jpcell">もうどくバリ</span></td><td>Toxic Needle</td></tr><tr><td>$52</td><td><span class="jpcell">おうじゃのしるし</span></td><td>Kings Rock</td></tr><tr><td>$53</td><td><span class="jpcell">ふしぎなちから</span></td><td>Strange Power</td></tr><tr><td>$54</td><td><span class="jpcell">いのちのおふだ</span></td><td>Life Tag</td></tr><tr><td>$55</td><td><span class="jpcell">どくのキバ</span></td><td>Poison Fang</td></tr><tr><td>$56</td><td><span class="jpcell">とうちゅうかそう</span></td><td>Cordyceps</td></tr><tr><td>$57</td><td><span class="jpcell">りゅうのキバ</span></td><td>Dragon Fang</td></tr><tr><td>$58</td><td><span class="jpcell">ぎんのこな</span></td><td>Silverpowder</td></tr><tr><td>$59</td><td><span class="jpcell">あなほりのツメ</span></td><td>Digging Claw</td></tr><tr><td>$5A</td><td><span class="jpcell">しようきんし</span></td><td>(disabled — 使用禁止 “usage forbidden”)</td></tr><tr><td>$5B</td><td><span class="jpcell">おまもりこばん</span></td><td>Amulet Coin</td></tr><tr><td>$5C</td><td><span class="jpcell">ずつうのタネ</span></td><td>Migraine Seed</td></tr><tr><td>$5D</td><td><span class="jpcell">はんげきのうでわ</span></td><td>Counter Cuff</td></tr><tr><td>$5E</td><td><span class="jpcell">まよけのおふだ</span></td><td>Talisman Tag</td></tr><tr><td>$5F</td><td><span class="jpcell">ふしぎなみず</span></td><td>Strange Water</td></tr><tr><td>$60</td><td><span class="jpcell">まがったスプーン</span></td><td>Twistedspoon</td></tr><tr><td>$61</td><td><span class="jpcell">こうげきバリ</span></td><td>Attack Needle</td></tr><tr><td>$62</td><td><span class="jpcell">パワーリスト</span></td><td>Power Bracer</td></tr><tr><td>$63</td><td><span class="jpcell">かたいいし</span></td><td>Hard Stone</td></tr><tr><td>$64</td><td><span class="jpcell">しようきんし</span></td><td>(disabled — 使用禁止 “usage forbidden”)</td></tr><tr><td>$65</td><td><span class="jpcell">ぷよぷよふうせん</span></td><td>Jiggling Balloon</td></tr><tr><td>$66</td><td><span class="jpcell">ほのおのたてがみ</span></td><td>Fire Mane</td></tr><tr><td>$67</td><td><span class="jpcell">おいしいシッポ</span></td><td>Slowpoke Tail</td></tr><tr><td>$68</td><td><span class="jpcell">アース</span></td><td>Earth</td></tr><tr><td>$69</td><td><span class="jpcell">ながねぎ</span></td><td>Stick</td></tr><tr><td>$6A</td><td><span class="jpcell">にげあしのハネ</span></td><td>Flee Feather</td></tr><tr><td>$6B</td><td><span class="jpcell">こおりのキバ</span></td><td>Ice Fang</td></tr><tr><td>$6C</td><td><span class="jpcell">かせきのかけら</span></td><td>Fossil Shard</td></tr><tr><td>$6D</td><td><span class="jpcell">きたないゴミ</span></td><td>Gross Garbage</td></tr><tr><td>$6E</td><td><span class="jpcell">おっきなしんじゅ</span></td><td>Big Pearl</td></tr><tr><td>$6F</td><td><span class="jpcell">おうじゃのベルト</span></td><td>Champion Belt</td></tr><tr><td>$70</td><td><span class="jpcell">おふだ</span></td><td>Tag</td></tr><tr><td>$71</td><td><span class="jpcell">のろいのおふだ</span></td><td>Spell Tag</td></tr><tr><td>$72</td><td><span class="jpcell">５えんだま</span></td><td>5-Yen Coin</td></tr><tr><td>$73</td><td><span class="jpcell">まもりのいと</span></td><td>Guard Thread</td></tr><tr><td>$74</td><td><span class="jpcell">しげきだま</span></td><td>Stimulus Orb</td></tr><tr><td>$75</td><td><span class="jpcell">おちつきのみ</span></td><td>Calm Berry</td></tr><tr><td>$76</td><td><span class="jpcell">ふといホネ</span></td><td>Thick Club</td></tr><tr><td>$77</td><td><span class="jpcell">きあいだま</span></td><td>Focus Orb</td></tr><tr><td>$78</td><td><span class="jpcell">しようきんし</span></td><td>(disabled — 使用禁止 “usage forbidden”)</td></tr><tr><td>$79</td><td><span class="jpcell">みきりだま</span></td><td>Detect Orb</td></tr><tr><td>$7A</td><td><span class="jpcell">ながいした</span></td><td>Long Tongue</td></tr><tr><td>$7B</td><td><span class="jpcell">ふくびきけん</span></td><td>Lotto Ticket</td></tr><tr><td>$7C</td><td><span class="jpcell">かわらずのいし</span></td><td>Everstone</td></tr><tr><td>$7D</td><td><span class="jpcell">とがったツノ</span></td><td>Sharp Horn</td></tr><tr><td>$7E</td><td><span class="jpcell">しあわせタマゴ</span></td><td>Lucky Egg</td></tr><tr><td>$7F</td><td><span class="jpcell">ながいツタ</span></td><td>Long Vine</td></tr><tr><td>$80</td><td><span class="jpcell">ははのあい</span></td><td>Moms Love</td></tr><tr><td>$81</td><td><span class="jpcell">えんまく</span></td><td>Smokescreen</td></tr><tr><td>$82</td><td><span class="jpcell">しめったツノ</span></td><td>Wet Horn</td></tr><tr><td>$83</td><td><span class="jpcell">スケボー</span></td><td>Skateboard</td></tr><tr><td>$84</td><td><span class="jpcell">まっかなほうせき</span></td><td>Crimson Jewel</td></tr><tr><td>$85</td><td><span class="jpcell">みえないカべ</span></td><td>Invisible Wall</td></tr><tr><td>$86</td><td><span class="jpcell">するどいカマ</span></td><td>Sharp Scythe</td></tr><tr><td>$87</td><td><span class="jpcell">しようきんし</span></td><td>(disabled — 使用禁止 “usage forbidden”)</td></tr><tr><td>$88</td><td><span class="jpcell">こおりのビキニ</span></td><td>Ice Bikini</td></tr><tr><td>$89</td><td><span class="jpcell">いかずちのキバ</span></td><td>Thunder Fang</td></tr><tr><td>$8A</td><td><span class="jpcell">ほのおのツメ</span></td><td>Fire Claw</td></tr><tr><td>$8B</td><td><span class="jpcell">２ほんのツノ</span></td><td>Twin Horns</td></tr><tr><td>$8C</td><td><span class="jpcell">ごすんくぎ</span></td><td>Spike</td></tr><tr><td>$8D</td><td><span class="jpcell">きのみ</span></td><td>Berry</td></tr><tr><td>$8E</td><td><span class="jpcell">リンゴ</span></td><td>Apple</td></tr><tr><td>$8F</td><td><span class="jpcell">メタルコート</span></td><td>Metal Coat</td></tr><tr><td>$90</td><td><span class="jpcell">きれいなシッポ</span></td><td>Pretty Tail</td></tr><tr><td>$91</td><td><span class="jpcell">みずのシッポ</span></td><td>Water Tail</td></tr><tr><td>$92</td><td><span class="jpcell">たべのこし</span></td><td>Leftovers</td></tr><tr><td>$93</td><td><span class="jpcell">こおりのつばさ</span></td><td>Ice Wing</td></tr><tr><td>$94</td><td><span class="jpcell">かみなりのつばさ</span></td><td>Thunder Wing</td></tr><tr><td>$95</td><td><span class="jpcell">ほのおのつばさ</span></td><td>Fire Wing</td></tr><tr><td>$96</td><td><span class="jpcell">しようきんし</span></td><td>(disabled — 使用禁止 “usage forbidden”)</td></tr><tr><td>$97</td><td><span class="jpcell">りゅうのウロコ</span></td><td>Dragon Scale</td></tr><tr><td>$98</td><td><span class="jpcell">はかいのいでんし</span></td><td>Berserk Gene</td></tr><tr><td>$99</td><td><span class="jpcell">こころのいし</span></td><td>Heart Stone</td></tr><tr><td>$9A</td><td><span class="jpcell">ほのおのシッポ</span></td><td>Fire Tail</td></tr><tr><td>$9B</td><td><span class="jpcell">かみなりのシッポ</span></td><td>Thunder Tail</td></tr><tr><td>$9C</td><td><span class="jpcell">せいなるはい</span></td><td>Sacred Ash</td></tr><tr><td>$9D</td><td><span class="jpcell">わざマシンホルダ</span></td><td>TM Holder</td></tr><tr><td>$9E</td><td><span class="jpcell">メール</span></td><td>Mail</td></tr><tr><td>$9F</td><td><span class="jpcell">ボールホルダ</span></td><td>Ball Holder</td></tr><tr><td>$A0</td><td><span class="jpcell">どうぐ</span></td><td>Bag</td></tr><tr><td>$A1</td><td><span class="jpcell">だいじなどうぐ</span></td><td>Important Bag</td></tr><tr><td>$A2</td><td><span class="jpcell">どくのいし</span></td><td>Poison Stone</td></tr><tr><td>$A3</td><td><span class="jpcell">みしよう</span></td><td>(unused — 未使用)</td></tr><tr><td>$A4</td><td><span class="jpcell">みしよう</span></td><td>(unused — 未使用)</td></tr><tr><td>$A5</td><td><span class="jpcell">みしよう</span></td><td>(unused — 未使用)</td></tr><tr><td>$A6</td><td><span class="jpcell">みしよう</span></td><td>(unused — 未使用)</td></tr><tr><td>$A7</td><td><span class="jpcell">みしよう</span></td><td>(unused — 未使用)</td></tr><tr><td>$A8</td><td><span class="jpcell">みしよう</span></td><td>(unused — 未使用)</td></tr><tr><td>$A9</td><td><span class="jpcell">みしよう</span></td><td>(unused — 未使用)</td></tr><tr><td>$AA</td><td><span class="jpcell">しようきんし</span></td><td>(disabled — 使用禁止 “usage forbidden”)</td></tr><tr><td>$AB</td><td><span class="jpcell">みしよう</span></td><td>(unused — 未使用)</td></tr><tr><td>$AC</td><td><span class="jpcell">みしよう</span></td><td>(unused — 未使用)</td></tr><tr><td>$AD</td><td><span class="jpcell">みしよう</span></td><td>(unused — 未使用)</td></tr><tr><td>$AE</td><td><span class="jpcell">みしよう</span></td><td>(unused — 未使用)</td></tr><tr><td>$AF</td><td><span class="jpcell">みしよう</span></td><td>(unused — 未使用)</td></tr><tr><td>$B0</td><td><span class="jpcell">みしよう</span></td><td>(unused — 未使用)</td></tr><tr><td>$B1</td><td><span class="jpcell">みしよう</span></td><td>(unused — 未使用)</td></tr><tr><td>$B2</td><td><span class="jpcell">みしよう</span></td><td>(unused — 未使用)</td></tr><tr><td>$B3</td><td><span class="jpcell">みしよう</span></td><td>(unused — 未使用)</td></tr><tr><td>$B4</td><td><span class="jpcell">しようきんし</span></td><td>(disabled — 使用禁止 “usage forbidden”)</td></tr><tr><td>$B5</td><td><span class="jpcell">みしよう</span></td><td>(unused — 未使用)</td></tr><tr><td>$B6</td><td><span class="jpcell">みしよう</span></td><td>(unused — 未使用)</td></tr><tr><td>$B7</td><td><span class="jpcell">みしよう</span></td><td>(unused — 未使用)</td></tr><tr><td>$B8</td><td><span class="jpcell">みしよう</span></td><td>(unused — 未使用)</td></tr><tr><td>$B9</td><td><span class="jpcell">みしよう</span></td><td>(unused — 未使用)</td></tr><tr><td>$BA</td><td><span class="jpcell">みしよう</span></td><td>(unused — 未使用)</td></tr><tr><td>$BB</td><td><span class="jpcell">みしよう</span></td><td>(unused — 未使用)</td></tr><tr><td>$BC</td><td><span class="jpcell">みしよう</span></td><td>(unused — 未使用)</td></tr><tr><td>$BD</td><td><span class="jpcell">みしよう</span></td><td>(unused — 未使用)</td></tr><tr><td>$BE</td><td><span class="jpcell">しようきんし</span></td><td>(disabled — 使用禁止 “usage forbidden”)</td></tr><tr><td>$BF</td><td><span class="jpcell">みしよう</span></td><td>(unused — 未使用)</td></tr><tr><td>$C0</td><td><span class="jpcell">みしよう</span></td><td>(unused — 未使用)</td></tr><tr><td>$C1</td><td><span class="jpcell">みしよう</span></td><td>(unused — 未使用)</td></tr><tr><td>$C2</td><td><span class="jpcell">みしよう</span></td><td>(unused — 未使用)</td></tr><tr><td>$C3</td><td><span class="jpcell">みしよう</span></td><td>(unused — 未使用)</td></tr><tr><td>$C4</td><td><span class="jpcell">わざマシン０１</span></td><td>TM01</td></tr><tr><td>$C5</td><td><span class="jpcell">わざマシン０２</span></td><td>TM02</td></tr><tr><td>$C6</td><td><span class="jpcell">わざマシン０３</span></td><td>TM03</td></tr><tr><td>$C7</td><td><span class="jpcell">わざマシン０４</span></td><td>TM04</td></tr><tr><td>$C8</td><td><span class="jpcell">しようきんし</span></td><td>(disabled — 使用禁止 “usage forbidden”)</td></tr><tr><td>$C9</td><td><span class="jpcell">わざマシン０５</span></td><td>TM05</td></tr><tr><td>$CA</td><td><span class="jpcell">わざマシン０６</span></td><td>TM06</td></tr><tr><td>$CB</td><td><span class="jpcell">わざマシン０７</span></td><td>TM07</td></tr><tr><td>$CC</td><td><span class="jpcell">わざマシン０８</span></td><td>TM08</td></tr><tr><td>$CD</td><td><span class="jpcell">わざマシン０９</span></td><td>TM09</td></tr><tr><td>$CE</td><td><span class="jpcell">わざマシン１０</span></td><td>TM10</td></tr><tr><td>$CF</td><td><span class="jpcell">わざマシン１１</span></td><td>TM11</td></tr><tr><td>$D0</td><td><span class="jpcell">わざマシン１２</span></td><td>TM12</td></tr><tr><td>$D1</td><td><span class="jpcell">わざマシン１３</span></td><td>TM13</td></tr><tr><td>$D2</td><td><span class="jpcell">わざマシン１４</span></td><td>TM14</td></tr><tr><td>$D3</td><td><span class="jpcell">わざマシン１５</span></td><td>TM15</td></tr><tr><td>$D4</td><td><span class="jpcell">わざマシン１６</span></td><td>TM16</td></tr><tr><td>$D5</td><td><span class="jpcell">わざマシン１７</span></td><td>TM17</td></tr><tr><td>$D6</td><td><span class="jpcell">わざマシン１８</span></td><td>TM18</td></tr><tr><td>$D7</td><td><span class="jpcell">わざマシン１９</span></td><td>TM19</td></tr><tr><td>$D8</td><td><span class="jpcell">わざマシン２０</span></td><td>TM20</td></tr><tr><td>$D9</td><td><span class="jpcell">わざマシン２１</span></td><td>TM21</td></tr><tr><td>$DA</td><td><span class="jpcell">わざマシン２２</span></td><td>TM22</td></tr><tr><td>$DB</td><td><span class="jpcell">わざマシン２３</span></td><td>TM23</td></tr><tr><td>$DC</td><td><span class="jpcell">わざマシン２４</span></td><td>TM24</td></tr><tr><td>$DD</td><td><span class="jpcell">わざマシン２５</span></td><td>TM25</td></tr><tr><td>$DE</td><td><span class="jpcell">わざマシン２６</span></td><td>TM26</td></tr><tr><td>$DF</td><td><span class="jpcell">わざマシン２７</span></td><td>TM27</td></tr><tr><td>$E0</td><td><span class="jpcell">わざマシン２８</span></td><td>TM28</td></tr><tr><td>$E1</td><td><span class="jpcell">しようきんし</span></td><td>(disabled — 使用禁止 “usage forbidden”)</td></tr><tr><td>$E2</td><td><span class="jpcell">わざマシン２９</span></td><td>TM29</td></tr><tr><td>$E3</td><td><span class="jpcell">わざマシン３０</span></td><td>TM30</td></tr><tr><td>$E4</td><td><span class="jpcell">わざマシン３１</span></td><td>TM31</td></tr><tr><td>$E5</td><td><span class="jpcell">わざマシン３２</span></td><td>TM32</td></tr><tr><td>$E6</td><td><span class="jpcell">わざマシン３３</span></td><td>TM33</td></tr><tr><td>$E7</td><td><span class="jpcell">わざマシン３４</span></td><td>TM34</td></tr><tr><td>$E8</td><td><span class="jpcell">わざマシン３５</span></td><td>TM35</td></tr><tr><td>$E9</td><td><span class="jpcell">わざマシン３６</span></td><td>TM36</td></tr><tr><td>$EA</td><td><span class="jpcell">わざマシン３７</span></td><td>TM37</td></tr><tr><td>$EB</td><td><span class="jpcell">わざマシン３８</span></td><td>TM38</td></tr><tr><td>$EC</td><td><span class="jpcell">わざマシン３９</span></td><td>TM39</td></tr><tr><td>$ED</td><td><span class="jpcell">わざマシン４０</span></td><td>TM40</td></tr><tr><td>$EE</td><td><span class="jpcell">わざマシン４１</span></td><td>TM41</td></tr><tr><td>$EF</td><td><span class="jpcell">わざマシン４２</span></td><td>TM42</td></tr><tr><td>$F0</td><td><span class="jpcell">わざマシン４３</span></td><td>TM43</td></tr><tr><td>$F1</td><td><span class="jpcell">わざマシン４４</span></td><td>TM44</td></tr><tr><td>$F2</td><td><span class="jpcell">わざマシン４５</span></td><td>TM45</td></tr><tr><td>$F3</td><td><span class="jpcell">わざマシン４６</span></td><td>TM46</td></tr><tr><td>$F4</td><td><span class="jpcell">わざマシン４７</span></td><td>TM47</td></tr><tr><td>$F5</td><td><span class="jpcell">わざマシン４８</span></td><td>TM48</td></tr><tr><td>$F6</td><td><span class="jpcell">わざマシン４９</span></td><td>TM49</td></tr><tr><td>$F7</td><td><span class="jpcell">わざマシン５０</span></td><td>TM50</td></tr><tr><td>$F8</td><td><span class="jpcell">ひでんマシン０１</span></td><td>HM01</td></tr><tr><td>$F9</td><td><span class="jpcell">ひでんマシン０２</span></td><td>HM02</td></tr><tr><td>$FA</td><td><span class="jpcell">ひでんマシン０３</span></td><td>HM03</td></tr><tr><td>$FB</td><td><span class="jpcell">ひでんマシン０４</span></td><td>HM04</td></tr><tr><td>$FC</td><td><span class="jpcell">ひでんマシン０５</span></td><td>HM05</td></tr><tr><td>$FD</td><td><span class="jpcell">ひでんマシン０６</span></td><td>HM06</td></tr><tr><td>$FE</td><td><span class="jpcell">ひでんマシン０７</span></td><td>HM07</td></tr><tr><td>$FF</td><td><span class="jpcell">しようきんし</span></td><td>(disabled — 使用禁止 “usage forbidden”)</td></tr></tbody></table></div></main></div></body></html>

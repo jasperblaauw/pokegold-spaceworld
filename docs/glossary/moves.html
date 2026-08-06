@@ -1,0 +1,274 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Move names — Space World '97 Text Glossary</title>
+<style>
+  :root {
+    --bg: #eef1e8;
+    --surface: #f8faf2;
+    --surface-2: #e4e9d9;
+    --ink: #191e14;
+    --ink-soft: #4c553f;
+    --ink-faint: #6f7a5e;
+    --line: #ccd4bd;
+    --accent: #4e7a1e;
+    --accent-strong: #38610f;
+    --accent-wash: #dde7c8;
+    --gold: #977321;
+    --silver: #55606d;
+    --screen-bg: #0f380f;
+    --screen-ink: #9bbc0f;
+    --screen-dim: #6a8a10;
+    --screen-line: #285026;
+    --radius: 10px;
+    --mono: ui-monospace, "SF Mono", "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12150f;
+      --surface: #1a1e15;
+      --surface-2: #232a1b;
+      --ink: #e9ecdf;
+      --ink-soft: #aab393;
+      --ink-faint: #7f886c;
+      --line: #333c27;
+      --accent: #9bbc0f;
+      --accent-strong: #b8d63e;
+      --accent-wash: #24301a;
+      --gold: #d8b24a;
+      --silver: #9fabb8;
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #eef1e8; --surface: #f8faf2; --surface-2: #e4e9d9;
+    --ink: #191e14; --ink-soft: #4c553f; --ink-faint: #6f7a5e; --line: #ccd4bd;
+    --accent: #4e7a1e; --accent-strong: #38610f; --accent-wash: #dde7c8;
+    --gold: #977321; --silver: #55606d;
+  }
+  :root[data-theme="dark"] {
+    --bg: #12150f; --surface: #1a1e15; --surface-2: #232a1b;
+    --ink: #e9ecdf; --ink-soft: #aab393; --ink-faint: #7f886c; --line: #333c27;
+    --accent: #9bbc0f; --accent-strong: #b8d63e; --accent-wash: #24301a;
+    --gold: #d8b24a; --silver: #9fabb8;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---------- Layout ---------- */
+  .app { display: grid; grid-template-columns: 288px minmax(0, 1fr); min-height: 100vh; }
+  .sidebar {
+    position: sticky; top: 0; align-self: start;
+    height: 100vh; overflow-y: auto;
+    background: var(--surface);
+    border-right: 1px solid var(--line);
+    padding: 24px 18px 40px;
+  }
+  .content { padding: 56px clamp(20px, 5vw, 72px); min-width: 0; }
+  .page { display: none; max-width: 760px; animation: fade .18s ease; }
+  .page.active { display: block; }
+  @keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .page { animation: none; } }
+
+  /* ---------- Brand ---------- */
+  .brand { display: flex; align-items: center; gap: 12px; margin-bottom: 4px; text-decoration: none; }
+  .cart { flex: none; width: 40px; height: 40px; }
+  .brand-txt { display: flex; flex-direction: column; line-height: 1.15; }
+  .brand-txt b { font-family: var(--mono); font-size: .95rem; letter-spacing: .02em; color: var(--ink); }
+  .brand-txt span { font-family: var(--mono); font-size: .64rem; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-faint); }
+  .ver-line { display: flex; gap: 6px; margin: 14px 2px 20px; }
+
+  /* ---------- Nav ---------- */
+  nav { display: flex; flex-direction: column; gap: 22px; }
+  .nav-group > p {
+    margin: 0 0 7px; padding: 0 8px;
+    font-family: var(--mono); font-size: .63rem; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--ink-faint);
+  }
+  .nav-group a {
+    display: block; padding: 6px 10px; border-radius: 7px;
+    color: var(--ink-soft); text-decoration: none;
+    font-size: .87rem; border-left: 2px solid transparent;
+  }
+  .nav-group a:hover { background: var(--surface-2); color: var(--ink); }
+  .nav-group a.active {
+    background: var(--accent-wash); color: var(--accent-strong);
+    border-left-color: var(--accent); font-weight: 600;
+  }
+  :root[data-theme="dark"] .nav-group a.active,
+  @media (prefers-color-scheme: dark) { }
+  .nav-group a:focus-visible, .brand:focus-visible, .menu-btn:focus-visible {
+    outline: 2px solid var(--accent); outline-offset: 2px;
+  }
+
+  /* ---------- Typography ---------- */
+  .eyebrow {
+    font-family: var(--mono); font-size: .68rem; letter-spacing: .2em;
+    text-transform: uppercase; color: var(--accent-strong); margin: 0 0 12px;
+  }
+  h1 { font-family: var(--mono); font-size: clamp(1.7rem, 4vw, 2.4rem); line-height: 1.12;
+       letter-spacing: -.01em; margin: 0 0 16px; text-wrap: balance; }
+  h2 { font-family: var(--mono); font-size: 1.28rem; margin: 44px 0 12px;
+       padding-bottom: 8px; border-bottom: 1px solid var(--line); text-wrap: balance; }
+  h3 { font-family: var(--mono); font-size: 1.02rem; margin: 28px 0 8px; color: var(--ink); }
+  p, li { color: var(--ink-soft); }
+  .lead { font-size: 1.1rem; color: var(--ink-soft); }
+  a.inline { color: var(--accent-strong); text-decoration: underline; text-underline-offset: 2px; text-decoration-thickness: 1px; }
+  a.inline:hover { color: var(--accent); }
+  strong { color: var(--ink); }
+  ul, ol { padding-left: 22px; }
+  li { margin: 5px 0; }
+  hr { border: none; border-top: 1px solid var(--line); margin: 40px 0; }
+
+  /* ---------- Code ---------- */
+  code {
+    font-family: var(--mono); font-size: .86em;
+    background: var(--surface-2); color: var(--ink);
+    padding: .12em .38em; border-radius: 5px;
+  }
+  pre {
+    background: var(--screen-bg); color: var(--screen-ink);
+    border: 1px solid var(--screen-line); border-radius: var(--radius);
+    padding: 16px 18px; overflow-x: auto; margin: 16px 0;
+    box-shadow: inset 0 0 0 4px rgba(15,56,15,.6), inset 0 0 24px rgba(0,0,0,.35);
+  }
+  pre code { background: none; color: inherit; padding: 0; font-size: .82rem; line-height: 1.65; }
+  pre .cm { color: var(--screen-dim); }
+  pre .pr { color: #c7e04a; }
+
+  /* ---------- Components ---------- */
+  .chip {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-family: var(--mono); font-size: .66rem; letter-spacing: .06em;
+    padding: 3px 9px; border-radius: 999px; text-transform: uppercase;
+    border: 1px solid var(--line); color: var(--ink-soft); background: var(--surface);
+  }
+  .chip.gold { color: var(--gold); border-color: color-mix(in srgb, var(--gold) 45%, var(--line)); }
+  .chip.silver { color: var(--silver); border-color: color-mix(in srgb, var(--silver) 45%, var(--line)); }
+  .chip.accent { color: var(--accent-strong); border-color: var(--accent); background: var(--accent-wash); }
+
+  .callout {
+    display: flex; gap: 12px; margin: 18px 0;
+    padding: 14px 16px; border-radius: var(--radius);
+    background: var(--surface); border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+  }
+  .callout .ico { flex: none; font-family: var(--mono); font-weight: 700; color: var(--accent-strong); }
+  .callout p { margin: 0; font-size: .92rem; }
+  .callout.warn { border-left-color: var(--gold); }
+  .callout.warn .ico { color: var(--gold); }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 14px; margin: 20px 0; }
+  .card {
+    display: block; text-decoration: none; padding: 16px;
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+  .card:hover { border-color: var(--accent); transform: translateY(-2px); transition: .15s; }
+  .card b { font-family: var(--mono); font-size: .82rem; color: var(--ink); display: block; margin-bottom: 4px; }
+  .card span { font-size: .82rem; color: var(--ink-faint); }
+  .card .tag { font-family: var(--mono); font-size: .62rem; letter-spacing: .1em; text-transform: uppercase; color: var(--accent-strong); }
+
+  .tbl-wrap { overflow-x: auto; margin: 18px 0; border: 1px solid var(--line); border-radius: var(--radius); }
+  table { width: 100%; border-collapse: collapse; font-size: .87rem; }
+  th, td { text-align: left; padding: 9px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-family: var(--mono); font-size: .68rem; letter-spacing: .1em; text-transform: uppercase;
+       color: var(--ink-faint); background: var(--surface); position: sticky; top: 0; }
+  tr:last-child td { border-bottom: none; }
+  td code { font-size: .82rem; white-space: nowrap; }
+  td:first-child { white-space: nowrap; }
+
+  .steps { counter-reset: s; list-style: none; padding: 0; margin: 20px 0; }
+  .steps > li { counter-increment: s; position: relative; padding-left: 44px; margin: 20px 0; }
+  .steps > li::before {
+    content: counter(s); position: absolute; left: 0; top: 0;
+    width: 28px; height: 28px; display: grid; place-items: center;
+    font-family: var(--mono); font-size: .82rem; font-weight: 700;
+    color: var(--accent-strong); background: var(--accent-wash);
+    border: 1px solid var(--accent); border-radius: 8px;
+  }
+  .steps > li > b { display: block; color: var(--ink); font-family: var(--mono); font-size: .92rem; margin-bottom: 2px; }
+
+  .kbd-legend { display: flex; flex-wrap: wrap; gap: 16px; margin: 12px 0 4px; font-size: .82rem; }
+  .kbd-legend span { display: inline-flex; align-items: center; gap: 6px; color: var(--ink-faint); }
+  .dot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+
+  .footer-note { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--line);
+                 font-size: .8rem; color: var(--ink-faint); }
+
+  /* ---------- Mobile ---------- */
+  .topbar { display: none; }
+  .menu-btn { background: var(--surface); border: 1px solid var(--line); color: var(--ink);
+              font-family: var(--mono); font-size: .8rem; padding: 8px 12px; border-radius: 8px; cursor: pointer; }
+  @media (max-width: 860px) {
+    .app { grid-template-columns: 1fr; }
+    .topbar { display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 20;
+              padding: 12px 18px; background: var(--surface); border-bottom: 1px solid var(--line); }
+    .sidebar { position: fixed; z-index: 30; top: 0; left: 0; width: 280px; height: 100vh;
+               transform: translateX(-100%); transition: transform .2s ease; }
+    .sidebar.open { transform: none; box-shadow: 0 0 0 100vmax rgba(0,0,0,.4); }
+    .content { padding: 28px 20px 60px; }
+  }
+
+
+.app { display:grid; grid-template-columns:262px minmax(0,1fr); min-height:100vh; }
+.sidebar { position:sticky; top:0; align-self:start; height:100vh; overflow-y:auto;
+  background:var(--surface); border-right:1px solid var(--line); padding:22px 16px 40px; }
+.content { padding:44px clamp(18px,4vw,60px); min-width:0; max-width:1040px; }
+.brand { display:flex; align-items:center; gap:10px; margin-bottom:16px; text-decoration:none; }
+.brand b { font-family:var(--mono); font-size:.9rem; color:var(--ink); }
+.brand span { font-family:var(--mono); font-size:.6rem; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-faint); display:block; }
+nav.side { display:flex; flex-direction:column; gap:3px; }
+nav.side .grp { margin:14px 0 3px; padding:0 8px; font-family:var(--mono); font-size:.6rem;
+  letter-spacing:.15em; text-transform:uppercase; color:var(--ink-faint); }
+nav.side a { display:flex; justify-content:space-between; gap:8px; align-items:center;
+  padding:6px 10px; border-radius:7px; color:var(--ink-soft); text-decoration:none;
+  font-size:.85rem; border-left:2px solid transparent; }
+nav.side a:hover { background:var(--surface-2); color:var(--ink); }
+nav.side a.active { background:var(--accent-wash); color:var(--accent-strong);
+  border-left-color:var(--accent); font-weight:600; }
+nav.side a .n { font-family:var(--mono); font-size:.62rem; color:var(--ink-faint); }
+.pending { font-family:var(--mono); font-size:.72rem; color:var(--gold); opacity:.85; }
+tr.demo td { background:color-mix(in srgb, var(--accent-wash) 60%, transparent); }
+.pill { font-family:var(--mono); font-size:.58rem; letter-spacing:.06em; text-transform:uppercase;
+  color:var(--accent-strong); border:1px solid var(--accent); border-radius:999px; padding:1px 6px; margin-left:6px; white-space:nowrap; }
+.jpcell { font-size:.98rem; color:var(--ink); line-height:1.5; }
+td:first-child { font-family:var(--mono); color:var(--ink-faint); white-space:nowrap; }
+.cov { font-family:var(--mono); font-size:.72rem; color:var(--ink-faint); margin:2px 0 14px; }
+.covbar { display:inline-block; width:120px; height:7px; border-radius:4px; background:var(--surface-2);
+  vertical-align:middle; overflow:hidden; margin:0 8px; border:1px solid var(--line); }
+.covbar i { display:block; height:100%; background:var(--accent); }
+.grpname { font-family:var(--mono); font-size:1.02rem; margin:30px 0 6px; color:var(--ink); }
+.menu-btn2 { display:none; }
+@media (max-width:820px){ .app{grid-template-columns:1fr;} .sidebar{position:static;height:auto;} }
+</style></head><body>
+<div class="app"><aside class="sidebar"><a class="brand" href="../index.html"><span>Space World '97</span></a>
+<a class="brand" href="index.html" style="margin-top:-8px"><b>Text Glossary</b></a>
+<nav class="side">
+<div class="grp">Start</div>
+<a href="index.html">Overview</a>
+<div class="grp">Names</div>
+<a href="pokemon.html">Pokémon<span class="n">251</span></a>
+<a class="active" href="moves.html">Moves<span class="n">250</span></a>
+<a href="items.html">Items<span class="n">~150</span></a>
+<a href="locations.html">Locations<span class="n">45</span></a>
+<a href="trainers.html">Trainers<span class="n">64</span></a>
+<a href="types.html">Types<span class="n">19</span></a>
+<div class="grp">Flavor &amp; descriptions</div>
+<a href="dex.html">Pokédex entries<span class="n">251</span></a>
+<a href="move-desc.html">Move descriptions<span class="n">251</span></a>
+<a href="item-desc.html">Item descriptions<span class="n">206</span></a>
+<div class="grp">Dialogue &amp; scripts</div>
+<a href="dialogue.html">Map dialogue<span class="n">122</span></a>
+<a href="system.html">Battle / menu / system<span class="n">733</span></a>
+</nav></aside>
+<main class="content"><p class="eyebrow">Names</p><h1>Move names</h1><p class="lead">Shown in battle and the summary screen. Most match their official English names; prototype-exclusive moves are rendered literally and tagged “beta”.</p><div class="tbl-wrap"><table><thead><tr><th>#</th><th>Japanese</th><th>English</th></tr></thead><tbody><tr><td>1</td><td><span class="jpcell">はたく</span></td><td>Pound</td></tr><tr><td>2</td><td><span class="jpcell">からてチョップ</span></td><td>Karate Chop</td></tr><tr><td>3</td><td><span class="jpcell">おうふくビンタ</span></td><td>DoubleSlap</td></tr><tr><td>4</td><td><span class="jpcell">れんぞくパンチ</span></td><td>Comet Punch</td></tr><tr><td>5</td><td><span class="jpcell">メガトンパンチ</span></td><td>Mega Punch</td></tr><tr><td>6</td><td><span class="jpcell">ねこにこばん</span></td><td>Pay Day</td></tr><tr><td>7</td><td><span class="jpcell">ほのおのパンチ</span></td><td>Fire Punch</td></tr><tr><td>8</td><td><span class="jpcell">れいとうパンチ</span></td><td>Ice Punch</td></tr><tr><td>9</td><td><span class="jpcell">かみなりパンチ</span></td><td>ThunderPunch</td></tr><tr><td>10</td><td><span class="jpcell">ひっかく</span></td><td>Scratch</td></tr><tr><td>11</td><td><span class="jpcell">はさむ</span></td><td>ViceGrip</td></tr><tr><td>12</td><td><span class="jpcell">ハサミギロチン</span></td><td>Guillotine</td></tr><tr><td>13</td><td><span class="jpcell">かまいたち</span></td><td>Razor Wind</td></tr><tr><td>14</td><td><span class="jpcell">つるぎのまい</span></td><td>Swords Dance</td></tr><tr><td>15</td><td><span class="jpcell">いあいぎり</span></td><td>Cut</td></tr><tr><td>16</td><td><span class="jpcell">かぜおこし</span></td><td>Gust</td></tr><tr><td>17</td><td><span class="jpcell">つばさでうつ</span></td><td>Wing Attack</td></tr><tr><td>18</td><td><span class="jpcell">ふきとばし</span></td><td>Whirlwind</td></tr><tr><td>19</td><td><span class="jpcell">そらをとぶ</span></td><td>Fly</td></tr><tr><td>20</td><td><span class="jpcell">しめつける</span></td><td>Bind</td></tr><tr><td>21</td><td><span class="jpcell">たたきつける</span></td><td>Slam</td></tr><tr><td>22</td><td><span class="jpcell">つるのムチ</span></td><td>Vine Whip</td></tr><tr><td>23</td><td><span class="jpcell">ふみつけ</span></td><td>Stomp</td></tr><tr><td>24</td><td><span class="jpcell">にどげり</span></td><td>Double Kick</td></tr><tr><td>25</td><td><span class="jpcell">メガトンキック</span></td><td>Mega Kick</td></tr><tr><td>26</td><td><span class="jpcell">とびげり</span></td><td>Jump Kick</td></tr><tr><td>27</td><td><span class="jpcell">まわしげり</span></td><td>Rolling Kick</td></tr><tr><td>28</td><td><span class="jpcell">すなかけ</span></td><td>Sand Attack</td></tr><tr><td>29</td><td><span class="jpcell">ずつき</span></td><td>Headbutt</td></tr><tr><td>30</td><td><span class="jpcell">つのでつく</span></td><td>Horn Attack</td></tr><tr><td>31</td><td><span class="jpcell">みだれづき</span></td><td>Fury Attack</td></tr><tr><td>32</td><td><span class="jpcell">つのドリル</span></td><td>Horn Drill</td></tr><tr><td>33</td><td><span class="jpcell">たいあたり</span></td><td>Tackle</td></tr><tr><td>34</td><td><span class="jpcell">のしかかり</span></td><td>Body Slam</td></tr><tr><td>35</td><td><span class="jpcell">まきつく</span></td><td>Wrap</td></tr><tr><td>36</td><td><span class="jpcell">とっしん</span></td><td>Take Down</td></tr><tr><td>37</td><td><span class="jpcell">あばれる</span></td><td>Thrash</td></tr><tr><td>38</td><td><span class="jpcell">すてみタックル</span></td><td>Double-Edge</td></tr><tr><td>39</td><td><span class="jpcell">しっぽをふる</span></td><td>Tail Whip</td></tr><tr><td>40</td><td><span class="jpcell">どくばり</span></td><td>Poison Sting</td></tr><tr><td>41</td><td><span class="jpcell">ダブルニードル</span></td><td>Twineedle</td></tr><tr><td>42</td><td><span class="jpcell">ミサイルばり</span></td><td>Pin Missile</td></tr><tr><td>43</td><td><span class="jpcell">にらみつける</span></td><td>Leer</td></tr><tr><td>44</td><td><span class="jpcell">かみつく</span></td><td>Bite</td></tr><tr><td>45</td><td><span class="jpcell">なきごえ</span></td><td>Growl</td></tr><tr><td>46</td><td><span class="jpcell">ほえる</span></td><td>Roar</td></tr><tr><td>47</td><td><span class="jpcell">うたう</span></td><td>Sing</td></tr><tr><td>48</td><td><span class="jpcell">ちょうおんぱ</span></td><td>Supersonic</td></tr><tr><td>49</td><td><span class="jpcell">ソニックブーム</span></td><td>SonicBoom</td></tr><tr><td>50</td><td><span class="jpcell">かなしばり</span></td><td>Disable</td></tr><tr><td>51</td><td><span class="jpcell">ようかいえき</span></td><td>Acid</td></tr><tr><td>52</td><td><span class="jpcell">ひのこ</span></td><td>Ember</td></tr><tr><td>53</td><td><span class="jpcell">かえんほうしゃ</span></td><td>Flamethrower</td></tr><tr><td>54</td><td><span class="jpcell">しろいきり</span></td><td>Mist</td></tr><tr><td>55</td><td><span class="jpcell">みずでっぽう</span></td><td>Water Gun</td></tr><tr><td>56</td><td><span class="jpcell">ハイドロポンプ</span></td><td>Hydro Pump</td></tr><tr><td>57</td><td><span class="jpcell">なみのり</span></td><td>Surf</td></tr><tr><td>58</td><td><span class="jpcell">れいとうビーム</span></td><td>Ice Beam</td></tr><tr><td>59</td><td><span class="jpcell">ふぶき</span></td><td>Blizzard</td></tr><tr><td>60</td><td><span class="jpcell">サイケこうせん</span></td><td>Psybeam</td></tr><tr><td>61</td><td><span class="jpcell">バブルこうせん</span></td><td>BubbleBeam</td></tr><tr><td>62</td><td><span class="jpcell">オーロラビーム</span></td><td>Aurora Beam</td></tr><tr><td>63</td><td><span class="jpcell">はかいこうせん</span></td><td>Hyper Beam</td></tr><tr><td>64</td><td><span class="jpcell">つつく</span></td><td>Peck</td></tr><tr><td>65</td><td><span class="jpcell">ドリルくちばし</span></td><td>Drill Peck</td></tr><tr><td>66</td><td><span class="jpcell">じごくぐるま</span></td><td>Submission</td></tr><tr><td>67</td><td><span class="jpcell">けたぐり</span></td><td>Low Kick</td></tr><tr><td>68</td><td><span class="jpcell">カウンター</span></td><td>Counter</td></tr><tr><td>69</td><td><span class="jpcell">ちきゅうなげ</span></td><td>Seismic Toss</td></tr><tr><td>70</td><td><span class="jpcell">かいりき</span></td><td>Strength</td></tr><tr><td>71</td><td><span class="jpcell">すいとる</span></td><td>Absorb</td></tr><tr><td>72</td><td><span class="jpcell">メガドレイン</span></td><td>Mega Drain</td></tr><tr><td>73</td><td><span class="jpcell">やどりぎのタネ</span></td><td>Leech Seed</td></tr><tr><td>74</td><td><span class="jpcell">せいちょう</span></td><td>Growth</td></tr><tr><td>75</td><td><span class="jpcell">はっぱカッター</span></td><td>Razor Leaf</td></tr><tr><td>76</td><td><span class="jpcell">ソーラービーム</span></td><td>SolarBeam</td></tr><tr><td>77</td><td><span class="jpcell">どくのこな</span></td><td>PoisonPowder</td></tr><tr><td>78</td><td><span class="jpcell">しびれごな</span></td><td>Stun Spore</td></tr><tr><td>79</td><td><span class="jpcell">ねむりごな</span></td><td>Sleep Powder</td></tr><tr><td>80</td><td><span class="jpcell">はなびらのまい</span></td><td>Petal Dance</td></tr><tr><td>81</td><td><span class="jpcell">いとをはく</span></td><td>String Shot</td></tr><tr><td>82</td><td><span class="jpcell">りゅうのいかり</span></td><td>Dragon Rage</td></tr><tr><td>83</td><td><span class="jpcell">ほのおのうず</span></td><td>Fire Spin</td></tr><tr><td>84</td><td><span class="jpcell">でんきショック</span></td><td>ThunderShock</td></tr><tr><td>85</td><td><span class="jpcell">１０まんボルト</span></td><td>Thunderbolt</td></tr><tr><td>86</td><td><span class="jpcell">でんじは</span></td><td>Thunder Wave</td></tr><tr><td>87</td><td><span class="jpcell">かみなり</span></td><td>Thunder</td></tr><tr><td>88</td><td><span class="jpcell">いわおとし</span></td><td>Rock Throw</td></tr><tr><td>89</td><td><span class="jpcell">じしん</span></td><td>Earthquake</td></tr><tr><td>90</td><td><span class="jpcell">じわれ</span></td><td>Fissure</td></tr><tr><td>91</td><td><span class="jpcell">あなをほる</span></td><td>Dig</td></tr><tr><td>92</td><td><span class="jpcell">どくどく</span></td><td>Toxic</td></tr><tr><td>93</td><td><span class="jpcell">ねんりき</span></td><td>Confusion</td></tr><tr><td>94</td><td><span class="jpcell">サイコキネシス</span></td><td>Psychic</td></tr><tr><td>95</td><td><span class="jpcell">さいみんじゅつ</span></td><td>Hypnosis</td></tr><tr><td>96</td><td><span class="jpcell">ヨガのポーズ</span></td><td>Meditate</td></tr><tr><td>97</td><td><span class="jpcell">こうそくいどう</span></td><td>Agility</td></tr><tr><td>98</td><td><span class="jpcell">でんこうせっか</span></td><td>Quick Attack</td></tr><tr><td>99</td><td><span class="jpcell">いかり</span></td><td>Rage</td></tr><tr><td>100</td><td><span class="jpcell">テレポート</span></td><td>Teleport</td></tr><tr><td>101</td><td><span class="jpcell">ナイトヘッド</span></td><td>Night Shade</td></tr><tr><td>102</td><td><span class="jpcell">ものまね</span></td><td>Mimic</td></tr><tr><td>103</td><td><span class="jpcell">いやなおと</span></td><td>Screech</td></tr><tr><td>104</td><td><span class="jpcell">かげぶんしん</span></td><td>Double Team</td></tr><tr><td>105</td><td><span class="jpcell">じこさいせい</span></td><td>Recover</td></tr><tr><td>106</td><td><span class="jpcell">かたくなる</span></td><td>Harden</td></tr><tr><td>107</td><td><span class="jpcell">ちいさくなる</span></td><td>Minimize</td></tr><tr><td>108</td><td><span class="jpcell">えんまく</span></td><td>Smokescreen</td></tr><tr><td>109</td><td><span class="jpcell">あやしいひかり</span></td><td>Confuse Ray</td></tr><tr><td>110</td><td><span class="jpcell">からにこもる</span></td><td>Withdraw</td></tr><tr><td>111</td><td><span class="jpcell">まるくなる</span></td><td>Defense Curl</td></tr><tr><td>112</td><td><span class="jpcell">バリアー</span></td><td>Barrier</td></tr><tr><td>113</td><td><span class="jpcell">ひかりのかべ</span></td><td>Light Screen</td></tr><tr><td>114</td><td><span class="jpcell">くろいきり</span></td><td>Haze</td></tr><tr><td>115</td><td><span class="jpcell">リフレクター</span></td><td>Reflect</td></tr><tr><td>116</td><td><span class="jpcell">きあいだめ</span></td><td>Focus Energy</td></tr><tr><td>117</td><td><span class="jpcell">がまん</span></td><td>Bide</td></tr><tr><td>118</td><td><span class="jpcell">ゆびをふる</span></td><td>Metronome</td></tr><tr><td>119</td><td><span class="jpcell">オウムがえし</span></td><td>Mirror Move</td></tr><tr><td>120</td><td><span class="jpcell">じばく</span></td><td>Selfdestruct</td></tr><tr><td>121</td><td><span class="jpcell">タマゴばくだん</span></td><td>Egg Bomb</td></tr><tr><td>122</td><td><span class="jpcell">したでなめる</span></td><td>Lick</td></tr><tr><td>123</td><td><span class="jpcell">スモッグ</span></td><td>Smog</td></tr><tr><td>124</td><td><span class="jpcell">ヘドロこうげき</span></td><td>Sludge</td></tr><tr><td>125</td><td><span class="jpcell">ホネこんぼう</span></td><td>Bone Club</td></tr><tr><td>126</td><td><span class="jpcell">だいもんじ</span></td><td>Fire Blast</td></tr><tr><td>127</td><td><span class="jpcell">たきのぼり</span></td><td>Waterfall</td></tr><tr><td>128</td><td><span class="jpcell">からではさむ</span></td><td>Clamp</td></tr><tr><td>129</td><td><span class="jpcell">スピードスター</span></td><td>Swift</td></tr><tr><td>130</td><td><span class="jpcell">ロケットずつき</span></td><td>Skull Bash</td></tr><tr><td>131</td><td><span class="jpcell">とげキャノン</span></td><td>Spike Cannon</td></tr><tr><td>132</td><td><span class="jpcell">からみつく</span></td><td>Constrict</td></tr><tr><td>133</td><td><span class="jpcell">ドわすれ</span></td><td>Amnesia</td></tr><tr><td>134</td><td><span class="jpcell">スプーンまげ</span></td><td>Kinesis</td></tr><tr><td>135</td><td><span class="jpcell">タマゴうみ</span></td><td>Softboiled</td></tr><tr><td>136</td><td><span class="jpcell">とびひざげり</span></td><td>Hi Jump Kick</td></tr><tr><td>137</td><td><span class="jpcell">へびにらみ</span></td><td>Glare</td></tr><tr><td>138</td><td><span class="jpcell">ゆめくい</span></td><td>Dream Eater</td></tr><tr><td>139</td><td><span class="jpcell">どくガス</span></td><td>Poison Gas</td></tr><tr><td>140</td><td><span class="jpcell">たまなげ</span></td><td>Barrage</td></tr><tr><td>141</td><td><span class="jpcell">きゅうけつ</span></td><td>Leech Life</td></tr><tr><td>142</td><td><span class="jpcell">あくまのキッス</span></td><td>Lovely Kiss</td></tr><tr><td>143</td><td><span class="jpcell">ゴッドバード</span></td><td>Sky Attack</td></tr><tr><td>144</td><td><span class="jpcell">へんしん</span></td><td>Transform</td></tr><tr><td>145</td><td><span class="jpcell">あわ</span></td><td>Bubble</td></tr><tr><td>146</td><td><span class="jpcell">ピヨピヨパンチ</span></td><td>Dizzy Punch</td></tr><tr><td>147</td><td><span class="jpcell">キノコのほうし</span></td><td>Spore</td></tr><tr><td>148</td><td><span class="jpcell">フラッシュ</span></td><td>Flash</td></tr><tr><td>149</td><td><span class="jpcell">サイコウェーブ</span></td><td>Psywave</td></tr><tr><td>150</td><td><span class="jpcell">はねる</span></td><td>Splash</td></tr><tr><td>151</td><td><span class="jpcell">とける</span></td><td>Acid Armor</td></tr><tr><td>152</td><td><span class="jpcell">クラブハンマー</span></td><td>Crabhammer</td></tr><tr><td>153</td><td><span class="jpcell">だいばくはつ</span></td><td>Explosion</td></tr><tr><td>154</td><td><span class="jpcell">みだれひっかき</span></td><td>Fury Swipes</td></tr><tr><td>155</td><td><span class="jpcell">ホネブーメラン</span></td><td>Bonemerang</td></tr><tr><td>156</td><td><span class="jpcell">ねむる</span></td><td>Rest</td></tr><tr><td>157</td><td><span class="jpcell">いわなだれ</span></td><td>Rock Slide</td></tr><tr><td>158</td><td><span class="jpcell">ひっさつまえば</span></td><td>Hyper Fang</td></tr><tr><td>159</td><td><span class="jpcell">かくばる</span></td><td>Sharpen</td></tr><tr><td>160</td><td><span class="jpcell">テクスチャー</span></td><td>Conversion</td></tr><tr><td>161</td><td><span class="jpcell">トライアタック</span></td><td>Tri Attack</td></tr><tr><td>162</td><td><span class="jpcell">いかりのまえば</span></td><td>Super Fang</td></tr><tr><td>163</td><td><span class="jpcell">きりさく</span></td><td>Slash</td></tr><tr><td>164</td><td><span class="jpcell">みがわり</span></td><td>Substitute</td></tr><tr><td>165</td><td><span class="jpcell">わるあがき</span></td><td>Struggle</td></tr><tr><td>166</td><td><span class="jpcell">スケッチ</span></td><td>Sketch</td></tr><tr><td>167</td><td><span class="jpcell">トリプルキック</span></td><td>Triple Kick</td></tr><tr><td>168</td><td><span class="jpcell">どろぼう</span></td><td>Thief</td></tr><tr><td>169</td><td><span class="jpcell">クモのす</span></td><td>Spider Web</td></tr><tr><td>170</td><td><span class="jpcell">こころのめ</span></td><td>Mind Reader</td></tr><tr><td>171</td><td><span class="jpcell">あくむ</span></td><td>Nightmare</td></tr><tr><td>172</td><td><span class="jpcell">かえんぐるま</span></td><td>Flame Wheel</td></tr><tr><td>173</td><td><span class="jpcell">いびき</span></td><td>Snore</td></tr><tr><td>174</td><td><span class="jpcell">クギをうつ</span></td><td>Nail Down — くぎをうつ “drive a nail” (beta; precursor to Curse)</td></tr><tr><td>175</td><td><span class="jpcell">じたばた</span></td><td>Flail</td></tr><tr><td>176</td><td><span class="jpcell">テクスチャー２</span></td><td>Conversion2</td></tr><tr><td>177</td><td><span class="jpcell">こばんなげ</span></td><td>Coin Hurl — こばんなげ “coin throw” (beta)</td></tr><tr><td>178</td><td><span class="jpcell">わたほうし</span></td><td>Cotton Spore</td></tr><tr><td>179</td><td><span class="jpcell">きしかいせい</span></td><td>Reversal</td></tr><tr><td>180</td><td><span class="jpcell">うらみ</span></td><td>Spite</td></tr><tr><td>181</td><td><span class="jpcell">こなゆき</span></td><td>Powder Snow</td></tr><tr><td>182</td><td><span class="jpcell">まもる</span></td><td>Protect</td></tr><tr><td>183</td><td><span class="jpcell">マッハパンチ</span></td><td>Mach Punch</td></tr><tr><td>184</td><td><span class="jpcell">こわいかお</span></td><td>Scary Face</td></tr><tr><td>185</td><td><span class="jpcell">だましうち</span></td><td>Faint Attack</td></tr><tr><td>186</td><td><span class="jpcell">てんしのキッス</span></td><td>Sweet Kiss</td></tr><tr><td>187</td><td><span class="jpcell">はらだいこ</span></td><td>Belly Drum</td></tr><tr><td>188</td><td><span class="jpcell">ヘドロばくだん</span></td><td>Sludge Bomb</td></tr><tr><td>189</td><td><span class="jpcell">どろかけ</span></td><td>Mud Slap</td></tr><tr><td>190</td><td><span class="jpcell">オクタンほう</span></td><td>Octazooka</td></tr><tr><td>191</td><td><span class="jpcell">まきびし</span></td><td>Spikes</td></tr><tr><td>192</td><td><span class="jpcell">でんじほう</span></td><td>Zap Cannon</td></tr><tr><td>193</td><td><span class="jpcell">みやぶる</span></td><td>Foresight</td></tr><tr><td>194</td><td><span class="jpcell">みちづれ</span></td><td>Destiny Bond</td></tr><tr><td>195</td><td><span class="jpcell">ほろびのうた</span></td><td>Perish Song</td></tr><tr><td>196</td><td><span class="jpcell">シンクロ</span></td><td>Synchronize</td></tr><tr><td>197</td><td><span class="jpcell">みきり</span></td><td>Detect</td></tr><tr><td>198</td><td><span class="jpcell">ホネホネロック</span></td><td>Bone Lock — ホネホネロック (beta)</td></tr><tr><td>199</td><td><span class="jpcell">ロックオン</span></td><td>Lock On</td></tr><tr><td>200</td><td><span class="jpcell">げきりん</span></td><td>Outrage</td></tr><tr><td>201</td><td><span class="jpcell">すなあらし</span></td><td>Sandstorm</td></tr><tr><td>202</td><td><span class="jpcell">ギガドレイン</span></td><td>Giga Drain</td></tr><tr><td>203</td><td><span class="jpcell">こらえる</span></td><td>Endure</td></tr><tr><td>204</td><td><span class="jpcell">あまえる</span></td><td>Charm</td></tr><tr><td>205</td><td><span class="jpcell">ころがる</span></td><td>Rollout</td></tr><tr><td>206</td><td><span class="jpcell">みねうち</span></td><td>False Swipe</td></tr><tr><td>207</td><td><span class="jpcell">いばる</span></td><td>Swagger</td></tr><tr><td>208</td><td><span class="jpcell">ミルクのみ</span></td><td>Milk Drink</td></tr><tr><td>209</td><td><span class="jpcell">スパーク</span></td><td>Spark</td></tr><tr><td>210</td><td><span class="jpcell">れんぞくぎり</span></td><td>Fury Cutter</td></tr><tr><td>211</td><td><span class="jpcell">はがねのつばさ</span></td><td>Steel Wing</td></tr><tr><td>212</td><td><span class="jpcell">ストーカー</span></td><td>Stalker — ストーカー (beta)</td></tr><tr><td>213</td><td><span class="jpcell">メロメロ</span></td><td>Attract</td></tr><tr><td>214</td><td><span class="jpcell">ねごと</span></td><td>Sleep Talk</td></tr><tr><td>215</td><td><span class="jpcell">すずのおと</span></td><td>Bell Chime — すずのおと “bell sound” (beta)</td></tr><tr><td>216</td><td><span class="jpcell">おんがえし</span></td><td>Return</td></tr><tr><td>217</td><td><span class="jpcell">プレゼント</span></td><td>Present</td></tr><tr><td>218</td><td><span class="jpcell">やつあたり</span></td><td>Frustration</td></tr><tr><td>219</td><td><span class="jpcell">しんぴのまもり</span></td><td>Safeguard</td></tr><tr><td>220</td><td><span class="jpcell">いたみわけ</span></td><td>Pain Split</td></tr><tr><td>221</td><td><span class="jpcell">せいなるほのお</span></td><td>Sacred Fire</td></tr><tr><td>222</td><td><span class="jpcell">マグニチュード</span></td><td>Magnitude</td></tr><tr><td>223</td><td><span class="jpcell">ばくれつパンチ</span></td><td>DynamicPunch</td></tr><tr><td>224</td><td><span class="jpcell">メガホーン</span></td><td>Megahorn (メガホーン)</td></tr><tr><td>225</td><td><span class="jpcell">りゅうのいぶき</span></td><td>DragonBreath</td></tr><tr><td>226</td><td><span class="jpcell">バトンタッチ</span></td><td>Baton Pass</td></tr><tr><td>227</td><td><span class="jpcell">アンコール</span></td><td>Encore</td></tr><tr><td>228</td><td><span class="jpcell">おいうち</span></td><td>Pursuit</td></tr><tr><td>229</td><td><span class="jpcell">こうそくスピン</span></td><td>Rapid Spin</td></tr><tr><td>230</td><td><span class="jpcell">えさをまく</span></td><td>Tempt — えさをまく “scatter bait” (beta)</td></tr><tr><td>231</td><td><span class="jpcell">アイアンテール</span></td><td>Iron Tail</td></tr><tr><td>232</td><td><span class="jpcell">いしあたま</span></td><td>Rock Head</td></tr><tr><td>233</td><td><span class="jpcell">あてみなげ</span></td><td>Vital Throw</td></tr><tr><td>234</td><td><span class="jpcell">あさのひざし</span></td><td>Morning Sun</td></tr><tr><td>235</td><td><span class="jpcell">こうごうせい</span></td><td>Synthesis</td></tr><tr><td>236</td><td><span class="jpcell">つきのひかり</span></td><td>Moonlight</td></tr><tr><td>237</td><td><span class="jpcell">めざめるパワー</span></td><td>Hidden Power</td></tr><tr><td>238</td><td><span class="jpcell">クロスカッター</span></td><td>Cross Cutter — クロスカッター (beta)</td></tr><tr><td>239</td><td><span class="jpcell">たつまき</span></td><td>Twister</td></tr><tr><td>240</td><td><span class="jpcell">あまごい</span></td><td>Rain Dance</td></tr><tr><td>241</td><td><span class="jpcell">にほんばれ</span></td><td>Sunny Day</td></tr><tr><td>242</td><td><span class="jpcell">？</span></td><td>— (blank ？ slot)</td></tr><tr><td>243</td><td><span class="jpcell">？</span></td><td>— (blank ？ slot)</td></tr><tr><td>244</td><td><span class="jpcell">？</span></td><td>— (blank ？ slot)</td></tr><tr><td>245</td><td><span class="jpcell">ひっこぬく</span></td><td>Uproot — ひっこぬく “pull out” (beta)</td></tr><tr><td>246</td><td><span class="jpcell">かぜにのる</span></td><td>Wind Ride — かぜにのる “ride the wind” (beta)</td></tr><tr><td>247</td><td><span class="jpcell">みずあそび</span></td><td>Water Sport — みずあそび “water play” (beta)</td></tr><tr><td>248</td><td><span class="jpcell">てつわん</span></td><td>Strong Arm — てつわん “iron arm” (beta)</td></tr><tr><td>249</td><td><span class="jpcell">ひかりゴケ</span></td><td>Bright Moss — ひかりゴケ “glowing moss” (beta)</td></tr><tr><td>250</td><td><span class="jpcell">うずしお</span></td><td>Whirlpool</td></tr><tr><td>251</td><td><span class="jpcell">とびはねる</span></td><td>Bounce</td></tr></tbody></table></div></main></div></body></html>

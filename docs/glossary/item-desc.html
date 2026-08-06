@@ -1,0 +1,274 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Item descriptions — Space World '97 Text Glossary</title>
+<style>
+  :root {
+    --bg: #eef1e8;
+    --surface: #f8faf2;
+    --surface-2: #e4e9d9;
+    --ink: #191e14;
+    --ink-soft: #4c553f;
+    --ink-faint: #6f7a5e;
+    --line: #ccd4bd;
+    --accent: #4e7a1e;
+    --accent-strong: #38610f;
+    --accent-wash: #dde7c8;
+    --gold: #977321;
+    --silver: #55606d;
+    --screen-bg: #0f380f;
+    --screen-ink: #9bbc0f;
+    --screen-dim: #6a8a10;
+    --screen-line: #285026;
+    --radius: 10px;
+    --mono: ui-monospace, "SF Mono", "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12150f;
+      --surface: #1a1e15;
+      --surface-2: #232a1b;
+      --ink: #e9ecdf;
+      --ink-soft: #aab393;
+      --ink-faint: #7f886c;
+      --line: #333c27;
+      --accent: #9bbc0f;
+      --accent-strong: #b8d63e;
+      --accent-wash: #24301a;
+      --gold: #d8b24a;
+      --silver: #9fabb8;
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #eef1e8; --surface: #f8faf2; --surface-2: #e4e9d9;
+    --ink: #191e14; --ink-soft: #4c553f; --ink-faint: #6f7a5e; --line: #ccd4bd;
+    --accent: #4e7a1e; --accent-strong: #38610f; --accent-wash: #dde7c8;
+    --gold: #977321; --silver: #55606d;
+  }
+  :root[data-theme="dark"] {
+    --bg: #12150f; --surface: #1a1e15; --surface-2: #232a1b;
+    --ink: #e9ecdf; --ink-soft: #aab393; --ink-faint: #7f886c; --line: #333c27;
+    --accent: #9bbc0f; --accent-strong: #b8d63e; --accent-wash: #24301a;
+    --gold: #d8b24a; --silver: #9fabb8;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---------- Layout ---------- */
+  .app { display: grid; grid-template-columns: 288px minmax(0, 1fr); min-height: 100vh; }
+  .sidebar {
+    position: sticky; top: 0; align-self: start;
+    height: 100vh; overflow-y: auto;
+    background: var(--surface);
+    border-right: 1px solid var(--line);
+    padding: 24px 18px 40px;
+  }
+  .content { padding: 56px clamp(20px, 5vw, 72px); min-width: 0; }
+  .page { display: none; max-width: 760px; animation: fade .18s ease; }
+  .page.active { display: block; }
+  @keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .page { animation: none; } }
+
+  /* ---------- Brand ---------- */
+  .brand { display: flex; align-items: center; gap: 12px; margin-bottom: 4px; text-decoration: none; }
+  .cart { flex: none; width: 40px; height: 40px; }
+  .brand-txt { display: flex; flex-direction: column; line-height: 1.15; }
+  .brand-txt b { font-family: var(--mono); font-size: .95rem; letter-spacing: .02em; color: var(--ink); }
+  .brand-txt span { font-family: var(--mono); font-size: .64rem; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-faint); }
+  .ver-line { display: flex; gap: 6px; margin: 14px 2px 20px; }
+
+  /* ---------- Nav ---------- */
+  nav { display: flex; flex-direction: column; gap: 22px; }
+  .nav-group > p {
+    margin: 0 0 7px; padding: 0 8px;
+    font-family: var(--mono); font-size: .63rem; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--ink-faint);
+  }
+  .nav-group a {
+    display: block; padding: 6px 10px; border-radius: 7px;
+    color: var(--ink-soft); text-decoration: none;
+    font-size: .87rem; border-left: 2px solid transparent;
+  }
+  .nav-group a:hover { background: var(--surface-2); color: var(--ink); }
+  .nav-group a.active {
+    background: var(--accent-wash); color: var(--accent-strong);
+    border-left-color: var(--accent); font-weight: 600;
+  }
+  :root[data-theme="dark"] .nav-group a.active,
+  @media (prefers-color-scheme: dark) { }
+  .nav-group a:focus-visible, .brand:focus-visible, .menu-btn:focus-visible {
+    outline: 2px solid var(--accent); outline-offset: 2px;
+  }
+
+  /* ---------- Typography ---------- */
+  .eyebrow {
+    font-family: var(--mono); font-size: .68rem; letter-spacing: .2em;
+    text-transform: uppercase; color: var(--accent-strong); margin: 0 0 12px;
+  }
+  h1 { font-family: var(--mono); font-size: clamp(1.7rem, 4vw, 2.4rem); line-height: 1.12;
+       letter-spacing: -.01em; margin: 0 0 16px; text-wrap: balance; }
+  h2 { font-family: var(--mono); font-size: 1.28rem; margin: 44px 0 12px;
+       padding-bottom: 8px; border-bottom: 1px solid var(--line); text-wrap: balance; }
+  h3 { font-family: var(--mono); font-size: 1.02rem; margin: 28px 0 8px; color: var(--ink); }
+  p, li { color: var(--ink-soft); }
+  .lead { font-size: 1.1rem; color: var(--ink-soft); }
+  a.inline { color: var(--accent-strong); text-decoration: underline; text-underline-offset: 2px; text-decoration-thickness: 1px; }
+  a.inline:hover { color: var(--accent); }
+  strong { color: var(--ink); }
+  ul, ol { padding-left: 22px; }
+  li { margin: 5px 0; }
+  hr { border: none; border-top: 1px solid var(--line); margin: 40px 0; }
+
+  /* ---------- Code ---------- */
+  code {
+    font-family: var(--mono); font-size: .86em;
+    background: var(--surface-2); color: var(--ink);
+    padding: .12em .38em; border-radius: 5px;
+  }
+  pre {
+    background: var(--screen-bg); color: var(--screen-ink);
+    border: 1px solid var(--screen-line); border-radius: var(--radius);
+    padding: 16px 18px; overflow-x: auto; margin: 16px 0;
+    box-shadow: inset 0 0 0 4px rgba(15,56,15,.6), inset 0 0 24px rgba(0,0,0,.35);
+  }
+  pre code { background: none; color: inherit; padding: 0; font-size: .82rem; line-height: 1.65; }
+  pre .cm { color: var(--screen-dim); }
+  pre .pr { color: #c7e04a; }
+
+  /* ---------- Components ---------- */
+  .chip {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-family: var(--mono); font-size: .66rem; letter-spacing: .06em;
+    padding: 3px 9px; border-radius: 999px; text-transform: uppercase;
+    border: 1px solid var(--line); color: var(--ink-soft); background: var(--surface);
+  }
+  .chip.gold { color: var(--gold); border-color: color-mix(in srgb, var(--gold) 45%, var(--line)); }
+  .chip.silver { color: var(--silver); border-color: color-mix(in srgb, var(--silver) 45%, var(--line)); }
+  .chip.accent { color: var(--accent-strong); border-color: var(--accent); background: var(--accent-wash); }
+
+  .callout {
+    display: flex; gap: 12px; margin: 18px 0;
+    padding: 14px 16px; border-radius: var(--radius);
+    background: var(--surface); border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+  }
+  .callout .ico { flex: none; font-family: var(--mono); font-weight: 700; color: var(--accent-strong); }
+  .callout p { margin: 0; font-size: .92rem; }
+  .callout.warn { border-left-color: var(--gold); }
+  .callout.warn .ico { color: var(--gold); }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 14px; margin: 20px 0; }
+  .card {
+    display: block; text-decoration: none; padding: 16px;
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+  .card:hover { border-color: var(--accent); transform: translateY(-2px); transition: .15s; }
+  .card b { font-family: var(--mono); font-size: .82rem; color: var(--ink); display: block; margin-bottom: 4px; }
+  .card span { font-size: .82rem; color: var(--ink-faint); }
+  .card .tag { font-family: var(--mono); font-size: .62rem; letter-spacing: .1em; text-transform: uppercase; color: var(--accent-strong); }
+
+  .tbl-wrap { overflow-x: auto; margin: 18px 0; border: 1px solid var(--line); border-radius: var(--radius); }
+  table { width: 100%; border-collapse: collapse; font-size: .87rem; }
+  th, td { text-align: left; padding: 9px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-family: var(--mono); font-size: .68rem; letter-spacing: .1em; text-transform: uppercase;
+       color: var(--ink-faint); background: var(--surface); position: sticky; top: 0; }
+  tr:last-child td { border-bottom: none; }
+  td code { font-size: .82rem; white-space: nowrap; }
+  td:first-child { white-space: nowrap; }
+
+  .steps { counter-reset: s; list-style: none; padding: 0; margin: 20px 0; }
+  .steps > li { counter-increment: s; position: relative; padding-left: 44px; margin: 20px 0; }
+  .steps > li::before {
+    content: counter(s); position: absolute; left: 0; top: 0;
+    width: 28px; height: 28px; display: grid; place-items: center;
+    font-family: var(--mono); font-size: .82rem; font-weight: 700;
+    color: var(--accent-strong); background: var(--accent-wash);
+    border: 1px solid var(--accent); border-radius: 8px;
+  }
+  .steps > li > b { display: block; color: var(--ink); font-family: var(--mono); font-size: .92rem; margin-bottom: 2px; }
+
+  .kbd-legend { display: flex; flex-wrap: wrap; gap: 16px; margin: 12px 0 4px; font-size: .82rem; }
+  .kbd-legend span { display: inline-flex; align-items: center; gap: 6px; color: var(--ink-faint); }
+  .dot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+
+  .footer-note { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--line);
+                 font-size: .8rem; color: var(--ink-faint); }
+
+  /* ---------- Mobile ---------- */
+  .topbar { display: none; }
+  .menu-btn { background: var(--surface); border: 1px solid var(--line); color: var(--ink);
+              font-family: var(--mono); font-size: .8rem; padding: 8px 12px; border-radius: 8px; cursor: pointer; }
+  @media (max-width: 860px) {
+    .app { grid-template-columns: 1fr; }
+    .topbar { display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 20;
+              padding: 12px 18px; background: var(--surface); border-bottom: 1px solid var(--line); }
+    .sidebar { position: fixed; z-index: 30; top: 0; left: 0; width: 280px; height: 100vh;
+               transform: translateX(-100%); transition: transform .2s ease; }
+    .sidebar.open { transform: none; box-shadow: 0 0 0 100vmax rgba(0,0,0,.4); }
+    .content { padding: 28px 20px 60px; }
+  }
+
+
+.app { display:grid; grid-template-columns:262px minmax(0,1fr); min-height:100vh; }
+.sidebar { position:sticky; top:0; align-self:start; height:100vh; overflow-y:auto;
+  background:var(--surface); border-right:1px solid var(--line); padding:22px 16px 40px; }
+.content { padding:44px clamp(18px,4vw,60px); min-width:0; max-width:1040px; }
+.brand { display:flex; align-items:center; gap:10px; margin-bottom:16px; text-decoration:none; }
+.brand b { font-family:var(--mono); font-size:.9rem; color:var(--ink); }
+.brand span { font-family:var(--mono); font-size:.6rem; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-faint); display:block; }
+nav.side { display:flex; flex-direction:column; gap:3px; }
+nav.side .grp { margin:14px 0 3px; padding:0 8px; font-family:var(--mono); font-size:.6rem;
+  letter-spacing:.15em; text-transform:uppercase; color:var(--ink-faint); }
+nav.side a { display:flex; justify-content:space-between; gap:8px; align-items:center;
+  padding:6px 10px; border-radius:7px; color:var(--ink-soft); text-decoration:none;
+  font-size:.85rem; border-left:2px solid transparent; }
+nav.side a:hover { background:var(--surface-2); color:var(--ink); }
+nav.side a.active { background:var(--accent-wash); color:var(--accent-strong);
+  border-left-color:var(--accent); font-weight:600; }
+nav.side a .n { font-family:var(--mono); font-size:.62rem; color:var(--ink-faint); }
+.pending { font-family:var(--mono); font-size:.72rem; color:var(--gold); opacity:.85; }
+tr.demo td { background:color-mix(in srgb, var(--accent-wash) 60%, transparent); }
+.pill { font-family:var(--mono); font-size:.58rem; letter-spacing:.06em; text-transform:uppercase;
+  color:var(--accent-strong); border:1px solid var(--accent); border-radius:999px; padding:1px 6px; margin-left:6px; white-space:nowrap; }
+.jpcell { font-size:.98rem; color:var(--ink); line-height:1.5; }
+td:first-child { font-family:var(--mono); color:var(--ink-faint); white-space:nowrap; }
+.cov { font-family:var(--mono); font-size:.72rem; color:var(--ink-faint); margin:2px 0 14px; }
+.covbar { display:inline-block; width:120px; height:7px; border-radius:4px; background:var(--surface-2);
+  vertical-align:middle; overflow:hidden; margin:0 8px; border:1px solid var(--line); }
+.covbar i { display:block; height:100%; background:var(--accent); }
+.grpname { font-family:var(--mono); font-size:1.02rem; margin:30px 0 6px; color:var(--ink); }
+.menu-btn2 { display:none; }
+@media (max-width:820px){ .app{grid-template-columns:1fr;} .sidebar{position:static;height:auto;} }
+</style></head><body>
+<div class="app"><aside class="sidebar"><a class="brand" href="../index.html"><span>Space World '97</span></a>
+<a class="brand" href="index.html" style="margin-top:-8px"><b>Text Glossary</b></a>
+<nav class="side">
+<div class="grp">Start</div>
+<a href="index.html">Overview</a>
+<div class="grp">Names</div>
+<a href="pokemon.html">Pokémon<span class="n">251</span></a>
+<a href="moves.html">Moves<span class="n">250</span></a>
+<a href="items.html">Items<span class="n">~150</span></a>
+<a href="locations.html">Locations<span class="n">45</span></a>
+<a href="trainers.html">Trainers<span class="n">64</span></a>
+<a href="types.html">Types<span class="n">19</span></a>
+<div class="grp">Flavor &amp; descriptions</div>
+<a href="dex.html">Pokédex entries<span class="n">251</span></a>
+<a href="move-desc.html">Move descriptions<span class="n">251</span></a>
+<a class="active" href="item-desc.html">Item descriptions<span class="n">206</span></a>
+<div class="grp">Dialogue &amp; scripts</div>
+<a href="dialogue.html">Map dialogue<span class="n">122</span></a>
+<a href="system.html">Battle / menu / system<span class="n">733</span></a>
+</nav></aside>
+<main class="content"><p class="eyebrow">Flavor &amp; descriptions</p><h1>Item descriptions</h1><p class="lead">Item descriptions from the bag (<code>data/items/descriptions.asm</code>). 49 slots are the placeholder <span class="jpcell">？</span>.</p><p class="cov">Translation coverage: 206 / 206 (100%)<span class="covbar"><i style="width:100%"></i></span></p><div class="tbl-wrap"><table><thead><tr><th>#</th><th>Name</th><th>Japanese</th><th>English</th></tr></thead><tbody><tr><td>1</td><td><b>Master Ball</b></td><td><span class="jpcell">ポケモンを つかまえることが できる</span></td><td>Used to catch wild Pokemon.</td></tr><tr><td>2</td><td><b>Ultra Ball</b></td><td><span class="jpcell">ポケモンを つかまえることが できる</span></td><td>Used to catch wild Pokemon.</td></tr><tr><td>3</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>4</td><td><b>Great Ball</b></td><td><span class="jpcell">ポケモンを つかまえることが できる</span></td><td>Used to catch wild Pokemon.</td></tr><tr><td>5</td><td><b>Poké Ball</b></td><td><span class="jpcell">ポケモンを つかまえることが できる</span></td><td>Used to catch wild Pokemon.</td></tr><tr><td>6</td><td><b>Town Map</b></td><td><span class="jpcell">マップを みることが できる</span></td><td>Lets you view the Town Map.</td></tr><tr><td>7</td><td><b>Bicycle</b></td><td><span class="jpcell">２ばいの はやさで いどうできる<br>しつないでは のることが できない</span></td><td>Lets you move at double speed. Can&#x27;t be used indoors.</td></tr><tr><td>8</td><td><b>Moon Stone</b></td><td><span class="jpcell">とくていの ポケモンを しんかさせる</span></td><td>Evolves certain Pokemon.</td></tr><tr><td>9</td><td><b>Antidote</b></td><td><span class="jpcell">どく じょうたいから かいふくする</span></td><td>Cures poison.</td></tr><tr><td>10</td><td><b>Burn Heal</b></td><td><span class="jpcell">やけど じょうたいから かいふくする</span></td><td>Cures burns.</td></tr><tr><td>11</td><td><b>Ice Heal</b></td><td><span class="jpcell">こおり じょうたいから かいふくする</span></td><td>Cures freezing.</td></tr><tr><td>12</td><td><b>Awakening</b></td><td><span class="jpcell">ねむり じょうたいから かいふくする</span></td><td>Cures sleep.</td></tr><tr><td>13</td><td><b>Parlyz Heal</b></td><td><span class="jpcell">マヒ じょうたいから かいふくする</span></td><td>Cures paralysis.</td></tr><tr><td>14</td><td><b>Full Restore</b></td><td><span class="jpcell">すべての ステータスいじょうと<br>たいりょくを ぜんかいふくする</span></td><td>Fully restores HP and cures all status.</td></tr><tr><td>15</td><td><b>Max Potion</b></td><td><span class="jpcell">たいりょくを ぜんかいふくする</span></td><td>Fully restores HP.</td></tr><tr><td>16</td><td><b>Hyper Potion</b></td><td><span class="jpcell">たいりょくを２００ かいふくする</span></td><td>Restores 200 HP.</td></tr><tr><td>17</td><td><b>Super Potion</b></td><td><span class="jpcell">たいりょくを５０ かいふくする</span></td><td>Restores 50 HP.</td></tr><tr><td>18</td><td><b>Potion</b></td><td><span class="jpcell">たいりょくを２０ かいふくする</span></td><td>Restores 20 HP.</td></tr><tr><td>19</td><td><b>Escape Rope</b></td><td><span class="jpcell">ダンジョンから ぬけだす</span></td><td>Escapes instantly from a dungeon.</td></tr><tr><td>20</td><td><b>Repel</b></td><td><span class="jpcell">１００ぽのあいだ よわい ポケモンと<br>エンカウントしなくなる</span></td><td>Keeps weak Pokemon away for 100 steps.</td></tr><tr><td>21</td><td><b>Max Elixer</b></td><td><span class="jpcell">ポケモン １たいの<br>ピーピー すべてを ぜんかいふくする</span></td><td>Fully restores a Pokemon&#x27;s PP.</td></tr><tr><td>22</td><td><b>Fire Stone</b></td><td><span class="jpcell">とくていの ポケモンを しんかさせる</span></td><td>Evolves certain Pokemon.</td></tr><tr><td>23</td><td><b>Thunderstone</b></td><td><span class="jpcell">とくていの ポケモンを しんかさせる</span></td><td>Evolves certain Pokemon.</td></tr><tr><td>24</td><td><b>Water Stone</b></td><td><span class="jpcell">とくていの ポケモンを しんかさせる</span></td><td>Evolves certain Pokemon.</td></tr><tr><td>25</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>26</td><td><b>HP Up</b></td><td><span class="jpcell">たいりょくの さいだいちを ふやす</span></td><td>Raises a Pokemon&#x27;s maximum HP.</td></tr><tr><td>27</td><td><b>Protein</b></td><td><span class="jpcell">こうげきの きそポイントを あげる</span></td><td>Raises a Pokemon&#x27;s ATTACK base points.</td></tr><tr><td>28</td><td><b>Iron</b></td><td><span class="jpcell">ぼうぎょの きそポイントを あげる</span></td><td>Raises a Pokemon&#x27;s DEFENSE base points.</td></tr><tr><td>29</td><td><b>Carbos</b></td><td><span class="jpcell">すばやさの きそポイントを あげる</span></td><td>Raises a Pokemon&#x27;s SPEED base points.</td></tr><tr><td>30</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>31</td><td><b>Calcium</b></td><td><span class="jpcell">とくしゅの きそポイントを あげる</span></td><td>Raises a Pokemon&#x27;s SPECIAL base points.</td></tr><tr><td>32</td><td><b>Rare Candy</b></td><td><span class="jpcell">ポケモンの レベルを １つあげる</span></td><td>Raises a Pokemon&#x27;s level by one.</td></tr><tr><td>33</td><td><b>X Accuracy</b></td><td><span class="jpcell">しようした せんとうちゅうだけ<br>めいちゅうりつが あがる</span></td><td>Raises accuracy for the current battle only.</td></tr><tr><td>34</td><td><b>Leaf Stone</b></td><td><span class="jpcell">とくていの ポケモンを しんかさせる</span></td><td>Evolves certain Pokemon.</td></tr><tr><td>35</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>36</td><td><b>Nugget</b></td><td><span class="jpcell">きんで できた タマ<br>たかく うれる</span></td><td>A ball of gold. Sells for a high price.</td></tr><tr><td>37</td><td><b>Poké Doll</b></td><td><span class="jpcell">エンカウントした ポケモンから<br>かならず にげられる</span></td><td>Guarantees escape from a wild Pokemon.</td></tr><tr><td>38</td><td><b>Full Heal</b></td><td><span class="jpcell">すべての ステータスいじょうの<br>じょうたいから かいふくする</span></td><td>Cures all status problems.</td></tr><tr><td>39</td><td><b>Revive</b></td><td><span class="jpcell">たいりょくが はんぶんで<br>ひんしじょうたいから かいふくする</span></td><td>Revives a fainted Pokemon with half HP.</td></tr><tr><td>40</td><td><b>Max Revive</b></td><td><span class="jpcell">たいりょくが ぜんかいで<br>ひんしじょうたいから かいふくする</span></td><td>Revives a fainted Pokemon with full HP.</td></tr><tr><td>41</td><td><b>Guard Spec</b></td><td><span class="jpcell">しようした せんとうちゅうだけ<br>とくしゅぼうぎょが あがる</span></td><td>Raises SP.DEF for the current battle only.</td></tr><tr><td>42</td><td><b>Super Repel</b></td><td><span class="jpcell">２００ぽのあいだ よわい ポケモンと<br>エンカウントしなくなる</span></td><td>Keeps weak Pokemon away for 200 steps.</td></tr><tr><td>43</td><td><b>Max Repel</b></td><td><span class="jpcell">２５０ぽのあいだ よわい ポケモンと<br>エンカウントしなくなる</span></td><td>Keeps weak Pokemon away for 250 steps.</td></tr><tr><td>44</td><td><b>Dire Hit</b></td><td><span class="jpcell">しようした せんとうちゅうだけ<br>クリティカルりつが あがる</span></td><td>Raises the critical-hit rate for the current battle only.</td></tr><tr><td>45</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>46</td><td><b>Fresh Water</b></td><td><span class="jpcell">たいりょくを５０ かいふくする</span></td><td>Restores 50 HP.</td></tr><tr><td>47</td><td><b>Soda Pop</b></td><td><span class="jpcell">たいりょくを６０ かいふくする</span></td><td>Restores 60 HP.</td></tr><tr><td>48</td><td><b>Lemonade</b></td><td><span class="jpcell">たいりょくを８０ かいふくする</span></td><td>Restores 80 HP.</td></tr><tr><td>49</td><td><b>X Attack</b></td><td><span class="jpcell">しようした せんとうちゅうだけ<br>こうげきが あがる</span></td><td>Raises ATTACK for the current battle only.</td></tr><tr><td>50</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>51</td><td><b>X Defend</b></td><td><span class="jpcell">しようした せんとうちゅうだけ<br>ぼうぎょが あがる</span></td><td>Raises DEFENSE for the current battle only.</td></tr><tr><td>52</td><td><b>X Speed</b></td><td><span class="jpcell">しようした せんとうちゅうだけ<br>すばやさが あがる</span></td><td>Raises SPEED for the current battle only.</td></tr><tr><td>53</td><td><b>X Special</b></td><td><span class="jpcell">しようした せんとうちゅうだけ<br>とくしゅこうげきが あがる</span></td><td>Raises SP.ATK for the current battle only.</td></tr><tr><td>54</td><td><b>Coin Case</b></td><td><span class="jpcell">もっていると コインを<br>９９９９まいまで もつことが できる</span></td><td>Holds up to 9999 coins.</td></tr><tr><td>55</td><td><b>Itemfinder</b></td><td><span class="jpcell">かくされた どうぐが<br>がめんないにあると おとがなる</span></td><td>Sounds when a hidden item is nearby on screen.</td></tr><tr><td>56</td><td><b>Poké Flute</b></td><td><span class="jpcell">ねむっている ポケモンを おこす</span></td><td>Wakes a sleeping Pokemon.</td></tr><tr><td>57</td><td><b>Exp. Share</b></td><td><span class="jpcell">たたかわなかった ポケモンにも<br>けいけんちが ふりわけられる</span></td><td>Shares EXP with Pokemon that didn&#x27;t battle.</td></tr><tr><td>58</td><td><b>Old Rod</b></td><td><span class="jpcell">ポケモンが つれる</span></td><td>Used to fish for Pokemon.</td></tr><tr><td>59</td><td><b>Good Rod</b></td><td><span class="jpcell">ポケモンが つれる</span></td><td>Used to fish for Pokemon.</td></tr><tr><td>60</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>61</td><td><b>Super Rod</b></td><td><span class="jpcell">ポケモンが つれる</span></td><td>Used to fish for Pokemon.</td></tr><tr><td>62</td><td><b>PP Up</b></td><td><span class="jpcell">わざポイントの さいだいちが あがる</span></td><td>Raises a move&#x27;s maximum PP.</td></tr><tr><td>63</td><td><b>Ether</b></td><td><span class="jpcell">ポケモン１たいの １つの<br>わざポイントを １０かいふくする</span></td><td>Restores 10 PP to one of a Pokemon&#x27;s moves.</td></tr><tr><td>64</td><td><b>Max Ether</b></td><td><span class="jpcell">ポケモン１たいの １つの<br>わざポイントを ぜんかいふくする</span></td><td>Fully restores one of a Pokemon&#x27;s moves&#x27; PP.</td></tr><tr><td>65</td><td><b>Elixer</b></td><td><span class="jpcell">ポケモン１たいの すべての<br>わざポイントを １０かいふくする</span></td><td>Restores 10 PP to all of a Pokemon&#x27;s moves.</td></tr><tr><td>66</td><td><b>Mystic Petal</b></td><td><span class="jpcell">そうびすると くさタイプの<br>わざのいりょくを よわめられる</span></td><td>Held item: weakens damage taken from Grass-type moves.</td></tr><tr><td>67</td><td><b>White Feather</b></td><td><span class="jpcell">そうびすると ひこうタイプの<br>わざのいりょくを よわめられる</span></td><td>Held item: weakens damage taken from Flying-type moves.</td></tr><tr><td>68</td><td><b>Confuse Claw</b></td><td><span class="jpcell">そうびすると せんとうの まえに<br>てきに ダメージを あたえる</span></td><td>Held item: damages the foe before battle begins.</td></tr><tr><td>69</td><td><b>Wisdom Orb</b></td><td><span class="jpcell">そうびすると<br>とくしゅぼうぎょが １０あがる</span></td><td>Held item: raises SP.DEF by 10.</td></tr><tr><td>70</td><td><b>Steel Shell</b></td><td><span class="jpcell">そうびすると<br>ぼうぎょが １０あがる</span></td><td>Held item: raises DEFENSE by 10.</td></tr><tr><td>71</td><td><b>Up Grade</b></td><td><span class="jpcell">そうびすると<br>すべての のうりょくが ５あがる</span></td><td>Held item: raises all stats by 5.</td></tr><tr><td>72</td><td><b>Strange Thread</b></td><td><span class="jpcell">そうびすると<br>てきの こうげきを よけることがある</span></td><td>Held item: may dodge the foe&#x27;s attack.</td></tr><tr><td>73</td><td><b>Big Leaf</b></td><td><span class="jpcell">そうびすると くさタイプの<br>わざのいりょくが あがる</span></td><td>Held item: boosts the power of Grass-type moves.</td></tr><tr><td>74</td><td><b>Quick Needle</b></td><td><span class="jpcell">そうびすると<br>せんせいこうげき することがある</span></td><td>Held item: may let the holder move first.</td></tr><tr><td>75</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>76</td><td><b>Sharp Stone</b></td><td><span class="jpcell">そうびすると いわタイプの<br>わざのいりょくが あがる</span></td><td>Held item: boosts the power of Rock-type moves.</td></tr><tr><td>77</td><td><b>Black Feather</b></td><td><span class="jpcell">そうびすると ひこうタイプの<br>わざのいりょくが あがる</span></td><td>Held item: boosts the power of Flying-type moves.</td></tr><tr><td>78</td><td><b>Sharp Fang</b></td><td><span class="jpcell">そうびすると ノーマルタイプの<br>わざのいりょくが あがる</span></td><td>Held item: boosts the power of Normal-type moves.</td></tr><tr><td>79</td><td><b>Snakeskin</b></td><td><span class="jpcell">そうびすると<br>どく じょうたいに ならない</span></td><td>Held item: prevents the holder from being poisoned.</td></tr><tr><td>80</td><td><b>Electric Pouch</b></td><td><span class="jpcell">そうびすると でんきタイプの<br>わざのいりょくを よわめられる</span></td><td>Held item: weakens damage taken from Electric-type moves.</td></tr><tr><td>81</td><td><b>Toxic Needle</b></td><td><span class="jpcell">そうびすると どくタイプの<br>わざのいりょくが あがる</span></td><td>Held item: boosts the power of Poison-type moves.</td></tr><tr><td>82</td><td><b>Kings Rock</b></td><td><span class="jpcell">そうびすると<br>たまに てきが ひるむことがある</span></td><td>Held item: the foe may flinch.</td></tr><tr><td>83</td><td><b>Strange Power</b></td><td><span class="jpcell">そうびすると<br>すべての タイプこうかが むこう</span></td><td>Held item: nullifies all type effectiveness.</td></tr><tr><td>84</td><td><b>Life Tag</b></td><td><span class="jpcell">そうびすると せんとうごに<br>ひんし じょうたいから かいふくする</span></td><td>Held item: revives from fainting after battle.</td></tr><tr><td>85</td><td><b>Poison Fang</b></td><td><span class="jpcell">そうびすると どくタイプの<br>わざのいりょくが あがる</span></td><td>Held item: boosts the power of Poison-type moves.</td></tr><tr><td>86</td><td><b>Cordyceps</b></td><td><span class="jpcell">りっぱな キノコ<br>たかく うれる</span></td><td>A fine mushroom. Sells for a high price.</td></tr><tr><td>87</td><td><b>Dragon Fang</b></td><td><span class="jpcell">そうびすると ドラゴンタイプの<br>わざのいりょくが あがる</span></td><td>Held item: boosts the power of Dragon-type moves.</td></tr><tr><td>88</td><td><b>Silverpowder</b></td><td><span class="jpcell">そうびすると むしタイプの<br>わざのいりょくを よわめられる</span></td><td>Held item: weakens damage taken from Bug-type moves.</td></tr><tr><td>89</td><td><b>Digging Claw</b></td><td><span class="jpcell">そうびすると せんとういがいで<br>あなをほるが つかえるようになる</span></td><td>Held item: lets Dig be used outside battle.</td></tr><tr><td>90</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>91</td><td><b>Amulet Coin</b></td><td><span class="jpcell">そうびすると<br>もらえる おかねが ２ばい</span></td><td>Held item: doubles prize money.</td></tr><tr><td>92</td><td><b>Migraine Seed</b></td><td><span class="jpcell">そうびすると エスパータイプの<br>わざのいりょくが あがる</span></td><td>Held item: boosts the power of Psychic-type moves.</td></tr><tr><td>93</td><td><b>Counter Cuff</b></td><td><span class="jpcell">そうびすると ４ぶんの１で<br>てきに はんげきする</span></td><td>Held item: strikes back with 1/4 damage.</td></tr><tr><td>94</td><td><b>Talisman Tag</b></td><td><span class="jpcell">そうびすると<br>エンカウント しにくくなる</span></td><td>Held item: makes wild encounters rarer.</td></tr><tr><td>95</td><td><b>Strange Water</b></td><td><span class="jpcell">そうびすると みずタイプの<br>わざのいりょくを よわめられる</span></td><td>Held item: weakens damage taken from Water-type moves.</td></tr><tr><td>96</td><td><b>Twistedspoon</b></td><td><span class="jpcell">そうびすると エスパータイプの<br>わざのいりょくを よわめられる</span></td><td>Held item: weakens damage taken from Psychic-type moves.</td></tr><tr><td>97</td><td><b>Attack Needle</b></td><td><span class="jpcell">そうびすると むしタイプの<br>わざのいりょくが あがる</span></td><td>Held item: boosts the power of Bug-type moves.</td></tr><tr><td>98</td><td><b>Power Bracer</b></td><td><span class="jpcell">そうびすると かくとうタイプの<br>わざのいりょくが あがる</span></td><td>Held item: boosts the power of Fighting-type moves.</td></tr><tr><td>99</td><td><b>Hard Stone</b></td><td><span class="jpcell">そうびすると いわタイプの<br>わざのいりょくを よわめられる</span></td><td>Held item: weakens damage taken from Rock-type moves.</td></tr><tr><td>100</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>101</td><td><b>Jiggling Balloon</b></td><td><span class="jpcell">そうびすると ノーマルタイプの<br>わざのいりょくを よわめられる</span></td><td>Held item: weakens damage taken from Normal-type moves.</td></tr><tr><td>102</td><td><b>Fire Mane</b></td><td><span class="jpcell">そうびすると ほのおタイプの<br>わざのいりょくを よわめられる</span></td><td>Held item: weakens damage taken from Fire-type moves.</td></tr><tr><td>103</td><td><b>Slowpoke Tail</b></td><td><span class="jpcell">とても おいしい<br>たかく うれる</span></td><td>A very tasty tail. Sells for a high price.</td></tr><tr><td>104</td><td><b>Earth</b></td><td><span class="jpcell">そうびすると<br>マヒ じょうたいに ならない</span></td><td>Held item: prevents the holder from being paralyzed.</td></tr><tr><td>105</td><td><b>Stick</b></td><td><span class="jpcell">そうびすると ノーマルタイプの<br>わざのいりょくが あがる</span></td><td>Held item: boosts the power of Normal-type moves.</td></tr><tr><td>106</td><td><b>Flee Feather</b></td><td><span class="jpcell">そうびすると １ターン かけないで<br>ほかの ポケモンと こうたいできる</span></td><td>Held item: switch out without using a turn.</td></tr><tr><td>107</td><td><b>Ice Fang</b></td><td><span class="jpcell">そうびすると こおりタイプの<br>わざのいりょくが あがる</span></td><td>Held item: boosts the power of Ice-type moves.</td></tr><tr><td>108</td><td><b>Fossil Shard</b></td><td><span class="jpcell">そうびすると じめんタイプの<br>わざのいりょくを よわめられる</span></td><td>Held item: weakens damage taken from Ground-type moves.</td></tr><tr><td>109</td><td><b>Gross Garbage</b></td><td><span class="jpcell">そうびすると どくタイプの<br>わざのいりょくを よわめられる</span></td><td>Held item: weakens damage taken from Poison-type moves.</td></tr><tr><td>110</td><td><b>Big Pearl</b></td><td><span class="jpcell">きれいな しんじゅ<br>たかく うれる</span></td><td>A lovely pearl. Sells for a high price.</td></tr><tr><td>111</td><td><b>Champion Belt</b></td><td><span class="jpcell">そうびすると かくとうタイプの<br>わざのいりょくを よわめられる</span></td><td>Held item: weakens damage taken from Fighting-type moves.</td></tr><tr><td>112</td><td><b>Tag</b></td><td><span class="jpcell">そうびすると ゴーストタイプの<br>わざのいりょくを よわめられる</span></td><td>Held item: weakens damage taken from Ghost-type moves.</td></tr><tr><td>113</td><td><b>Spell Tag</b></td><td><span class="jpcell">そうびすると<br>エンカウント しやすくなる</span></td><td>Held item: makes wild encounters more common.</td></tr><tr><td>114</td><td><b>5-Yen Coin</b></td><td><span class="jpcell">そうびすると エスパータイプの<br>わざのいりょくを よわめられる</span></td><td>Held item: weakens damage taken from Psychic-type moves.</td></tr><tr><td>115</td><td><b>Guard Thread</b></td><td><span class="jpcell">そうびすると むしタイプの<br>わざのいりょくを よわめられる</span></td><td>Held item: weakens damage taken from Bug-type moves.</td></tr><tr><td>116</td><td><b>Stimulus Orb</b></td><td><span class="jpcell">そうびすると<br>ねむり じょうたいに ならない</span></td><td>Held item: prevents the holder from sleeping.</td></tr><tr><td>117</td><td><b>Calm Berry</b></td><td><span class="jpcell">そうびすると<br>こんらん じょうたいに ならない</span></td><td>Held item: prevents confusion.</td></tr><tr><td>118</td><td><b>Thick Club</b></td><td><span class="jpcell">そうびすると じめんタイプの<br>わざのいりょくが あがる</span></td><td>Held item: boosts the power of Ground-type moves.</td></tr><tr><td>119</td><td><b>Focus Orb</b></td><td><span class="jpcell">そうびすると<br>きぜつ しないで たえることがある</span></td><td>Held item: may endure a hit without fainting.</td></tr><tr><td>120</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>121</td><td><b>Detect Orb</b></td><td><span class="jpcell">そうびすると<br>てきの こうげきを よけることがある</span></td><td>Held item: may dodge the foe&#x27;s attack.</td></tr><tr><td>122</td><td><b>Long Tongue</b></td><td><span class="jpcell">そうびすると<br>ポケモンの ほかくりつが あがる</span></td><td>Held item: raises the catch rate for Pokemon.</td></tr><tr><td>123</td><td><b>Lotto Ticket</b></td><td><span class="jpcell">ふくびきが できる</span></td><td>Lets you enter the lottery.</td></tr><tr><td>124</td><td><b>Everstone</b></td><td><span class="jpcell">そうびすると<br>ポケモンが しんか しなくなる</span></td><td>Held item: stops the holder from evolving.</td></tr><tr><td>125</td><td><b>Sharp Horn</b></td><td><span class="jpcell">そうびすると<br>こうげきが １０あがる</span></td><td>Held item: raises ATTACK by 10.</td></tr><tr><td>126</td><td><b>Lucky Egg</b></td><td><span class="jpcell">そうびすると<br>もらえる けいけんちが ２ばい</span></td><td>Held item: doubles EXP gained.</td></tr><tr><td>127</td><td><b>Long Vine</b></td><td><span class="jpcell">そうびすると<br>ポケモンの ほかくりつが あがる</span></td><td>Held item: raises the catch rate for Pokemon.</td></tr><tr><td>128</td><td><b>Moms Love</b></td><td><span class="jpcell">そうびすると あるくたびに<br>たいりょくが１ かいふくする</span></td><td>Held item: restores 1 HP with each step.</td></tr><tr><td>129</td><td><b>Smokescreen</b></td><td><span class="jpcell">そうびすると<br>エンカウントしたてきから にげられる</span></td><td>Held item: lets you flee any wild Pokemon.</td></tr><tr><td>130</td><td><b>Wet Horn</b></td><td><span class="jpcell">そうびすると みずタイプの<br>わざのいりょくが あがる</span></td><td>Held item: boosts the power of Water-type moves.</td></tr><tr><td>131</td><td><b>Skateboard</b></td><td><span class="jpcell">２ばいの はやさで いどうできる<br>しつないでも のることが できる</span></td><td>Lets you move at double speed. Can be used indoors.</td></tr><tr><td>132</td><td><b>Crimson Jewel</b></td><td><span class="jpcell">あかい ほうせき<br>たかく うれる</span></td><td>A red gem. Sells for a high price.</td></tr><tr><td>133</td><td><b>Invisible Wall</b></td><td><span class="jpcell">そうびすると とくしゅこうげきの<br>ダメージが はんぶんになる</span></td><td>Held item: halves special-attack damage taken.</td></tr><tr><td>134</td><td><b>Sharp Scythe</b></td><td><span class="jpcell">そうびすると<br>クリティカルが でやすくなる</span></td><td>Held item: raises the critical-hit rate.</td></tr><tr><td>135</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>136</td><td><b>Ice Bikini</b></td><td><span class="jpcell">そうびすると こおりタイプの<br>わざのいりょくを よわめられる</span></td><td>Held item: weakens damage taken from Ice-type moves.</td></tr><tr><td>137</td><td><b>Thunder Fang</b></td><td><span class="jpcell">そうびすると でんきタイプの<br>わざのいりょくが あがる</span></td><td>Held item: boosts the power of Electric-type moves.</td></tr><tr><td>138</td><td><b>Fire Claw</b></td><td><span class="jpcell">そうびすると ほのおタイプの<br>わざのいりょくが あがる</span></td><td>Held item: boosts the power of Fire-type moves.</td></tr><tr><td>139</td><td><b>Twin Horns</b></td><td><span class="jpcell">そうびすると<br>こうげきが １０あがる</span></td><td>Held item: raises ATTACK by 10.</td></tr><tr><td>140</td><td><b>Spike</b></td><td><span class="jpcell">そうびすると ゴーストタイプの<br>わざのいりょくが あがる</span></td><td>Held item: boosts the power of Ghost-type moves.</td></tr><tr><td>141</td><td><b>Berry</b></td><td><span class="jpcell">たいりょくを２０ かいふくする</span></td><td>Restores 20 HP.</td></tr><tr><td>142</td><td><b>Apple</b></td><td><span class="jpcell">たいりょくを５０ かいふくする</span></td><td>Restores 50 HP.</td></tr><tr><td>143</td><td><b>Metal Coat</b></td><td><span class="jpcell">そうびすると ふつうこうげきの<br>ダメージが はんぶんになる</span></td><td>Held item: halves physical-attack damage taken.</td></tr><tr><td>144</td><td><b>Pretty Tail</b></td><td><span class="jpcell">そうびすると<br>どく じょうたいに ならない</span></td><td>Held item: prevents the holder from being poisoned.</td></tr><tr><td>145</td><td><b>Water Tail</b></td><td><span class="jpcell">そうびすると<br>やけど じょうたいに ならない</span></td><td>Held item: prevents the holder from being burned.</td></tr><tr><td>146</td><td><b>Leftovers</b></td><td><span class="jpcell">そうびすると １ターンごとに<br>たいりょくが３０ かいふくする</span></td><td>Held item: restores 30 HP each turn.</td></tr><tr><td>147</td><td><b>Ice Wing</b></td><td><span class="jpcell">そうびすると<br>とくしゅぼうぎょが １０あがる</span></td><td>Held item: raises SP.DEF by 10.</td></tr><tr><td>148</td><td><b>Thunder Wing</b></td><td><span class="jpcell">そうびすると<br>すばやさが １０あがる</span></td><td>Held item: raises SPEED by 10.</td></tr><tr><td>149</td><td><b>Fire Wing</b></td><td><span class="jpcell">そうびすると<br>とくしゅこうげきが １０あがる</span></td><td>Held item: raises SP.ATK by 10.</td></tr><tr><td>150</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>151</td><td><b>Dragon Scale</b></td><td><span class="jpcell">そうびすると ドラゴンタイプの<br>わざのいりょくを よわめられる</span></td><td>Held item: weakens damage taken from Dragon-type moves.</td></tr><tr><td>152</td><td><b>Berserk Gene</b></td><td><span class="jpcell">そうびすると<br>すべての のうりょくが １０あがる</span></td><td>Held item: raises all stats by 10.</td></tr><tr><td>153</td><td><b>Heart Stone</b></td><td><span class="jpcell">とくていの ポケモンを しんかさせる</span></td><td>Evolves certain Pokemon.</td></tr><tr><td>154</td><td><b>Fire Tail</b></td><td><span class="jpcell">そうびすると<br>こおり じょうたいに ならない</span></td><td>Held item: prevents the holder from being frozen.</td></tr><tr><td>155</td><td><b>Thunder Tail</b></td><td><span class="jpcell">そうびすると<br>マヒ じょうたいに ならない</span></td><td>Held item: prevents the holder from being paralyzed.</td></tr><tr><td>156</td><td><b>Sacred Ash</b></td><td><span class="jpcell">すべてのポケモンを たいりょく１で<br>ひんし じょうたいから かいふくする</span></td><td>Revives all fainted Pokemon with 1 HP.</td></tr><tr><td>157</td><td><b>TM Holder</b></td><td><span class="jpcell">わざマシンを しまう ホルダ</span></td><td>A holder for storing TMs.</td></tr><tr><td>158</td><td><b>Mail</b></td><td><span class="jpcell">とくしゅ アイテム</span></td><td>A special item.</td></tr><tr><td>159</td><td><b>Ball Holder</b></td><td><span class="jpcell">とくしゅ アイテム</span></td><td>A special item.</td></tr><tr><td>160</td><td><b>Bag</b></td><td><span class="jpcell">ふつうの どうぐを しまう ホルダ</span></td><td>A holder for storing ordinary items.</td></tr><tr><td>161</td><td><b>Important Bag</b></td><td><span class="jpcell">だいじな どうぐを しまう ホルダ</span></td><td>A holder for storing important items.</td></tr><tr><td>162</td><td><b>Poison Stone</b></td><td><span class="jpcell">とくていの ポケモンを しんかさせる</span></td><td>Evolves certain Pokemon.</td></tr><tr><td>163</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>164</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>165</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>166</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>167</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>168</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>169</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>170</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>171</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>172</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>173</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>174</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>175</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>176</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>177</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>178</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>179</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>180</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>181</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>182</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>183</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>184</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>185</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>186</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>187</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>188</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>189</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>190</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>191</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>192</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>193</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>194</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>195</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>196</td><td><b>TM01</b></td><td><span class="jpcell">わざマシン０１</span></td><td>TM01 - a Technical Machine.</td></tr><tr><td>197</td><td><b>TM02</b></td><td><span class="jpcell">わざマシン０２</span></td><td>TM02 - a Technical Machine.</td></tr><tr><td>198</td><td><b>TM03</b></td><td><span class="jpcell">わざマシン０３</span></td><td>TM03 - a Technical Machine.</td></tr><tr><td>199</td><td><b>TM04</b></td><td><span class="jpcell">わざマシン０４</span></td><td>TM04 - a Technical Machine.</td></tr><tr><td>200</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>201</td><td><b>TM05</b></td><td><span class="jpcell">わざマシン０５</span></td><td>TM05 - a Technical Machine.</td></tr><tr><td>202</td><td><b>TM06</b></td><td><span class="jpcell">わざマシン０６</span></td><td>TM06 - a Technical Machine.</td></tr><tr><td>203</td><td><b>TM07</b></td><td><span class="jpcell">わざマシン０７</span></td><td>TM07 - a Technical Machine.</td></tr><tr><td>204</td><td><b>TM08</b></td><td><span class="jpcell">わざマシン０８</span></td><td>TM08 - a Technical Machine.</td></tr><tr><td>205</td><td><b>TM09</b></td><td><span class="jpcell">わざマシン０９</span></td><td>TM09 - a Technical Machine.</td></tr><tr><td>206</td><td><b>TM10</b></td><td><span class="jpcell">わざマシン１０</span></td><td>TM10 - a Technical Machine.</td></tr><tr><td>207</td><td><b>TM11</b></td><td><span class="jpcell">わざマシン１１</span></td><td>TM11 - a Technical Machine.</td></tr><tr><td>208</td><td><b>TM12</b></td><td><span class="jpcell">わざマシン１２</span></td><td>TM12 - a Technical Machine.</td></tr><tr><td>209</td><td><b>TM13</b></td><td><span class="jpcell">わざマシン１３</span></td><td>TM13 - a Technical Machine.</td></tr><tr><td>210</td><td><b>TM14</b></td><td><span class="jpcell">わざマシン１４</span></td><td>TM14 - a Technical Machine.</td></tr><tr><td>211</td><td><b>TM15</b></td><td><span class="jpcell">わざマシン１５</span></td><td>TM15 - a Technical Machine.</td></tr><tr><td>212</td><td><b>TM16</b></td><td><span class="jpcell">わざマシン１６</span></td><td>TM16 - a Technical Machine.</td></tr><tr><td>213</td><td><b>TM17</b></td><td><span class="jpcell">わざマシン１７</span></td><td>TM17 - a Technical Machine.</td></tr><tr><td>214</td><td><b>TM18</b></td><td><span class="jpcell">わざマシン１８</span></td><td>TM18 - a Technical Machine.</td></tr><tr><td>215</td><td><b>TM19</b></td><td><span class="jpcell">わざマシン１９</span></td><td>TM19 - a Technical Machine.</td></tr><tr><td>216</td><td><b>TM20</b></td><td><span class="jpcell">わざマシン２０</span></td><td>TM20 - a Technical Machine.</td></tr><tr><td>217</td><td><b>TM21</b></td><td><span class="jpcell">わざマシン２１</span></td><td>TM21 - a Technical Machine.</td></tr><tr><td>218</td><td><b>TM22</b></td><td><span class="jpcell">わざマシン２２</span></td><td>TM22 - a Technical Machine.</td></tr><tr><td>219</td><td><b>TM23</b></td><td><span class="jpcell">わざマシン２３</span></td><td>TM23 - a Technical Machine.</td></tr><tr><td>220</td><td><b>TM24</b></td><td><span class="jpcell">わざマシン２４</span></td><td>TM24 - a Technical Machine.</td></tr><tr><td>221</td><td><b>TM25</b></td><td><span class="jpcell">わざマシン２５</span></td><td>TM25 - a Technical Machine.</td></tr><tr><td>222</td><td><b>TM26</b></td><td><span class="jpcell">わざマシン２６</span></td><td>TM26 - a Technical Machine.</td></tr><tr><td>223</td><td><b>TM27</b></td><td><span class="jpcell">わざマシン２７</span></td><td>TM27 - a Technical Machine.</td></tr><tr><td>224</td><td><b>TM28</b></td><td><span class="jpcell">わざマシン２８</span></td><td>TM28 - a Technical Machine.</td></tr><tr><td>225</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr><tr><td>226</td><td><b>TM29</b></td><td><span class="jpcell">わざマシン２９</span></td><td>TM29 - a Technical Machine.</td></tr><tr><td>227</td><td><b>TM30</b></td><td><span class="jpcell">わざマシン３０</span></td><td>TM30 - a Technical Machine.</td></tr><tr><td>228</td><td><b>TM31</b></td><td><span class="jpcell">わざマシン３１</span></td><td>TM31 - a Technical Machine.</td></tr><tr><td>229</td><td><b>TM32</b></td><td><span class="jpcell">わざマシン３２</span></td><td>TM32 - a Technical Machine.</td></tr><tr><td>230</td><td><b>TM33</b></td><td><span class="jpcell">わざマシン３３</span></td><td>TM33 - a Technical Machine.</td></tr><tr><td>231</td><td><b>TM34</b></td><td><span class="jpcell">わざマシン３４</span></td><td>TM34 - a Technical Machine.</td></tr><tr><td>232</td><td><b>TM35</b></td><td><span class="jpcell">わざマシン３５</span></td><td>TM35 - a Technical Machine.</td></tr><tr><td>233</td><td><b>TM36</b></td><td><span class="jpcell">わざマシン３６</span></td><td>TM36 - a Technical Machine.</td></tr><tr><td>234</td><td><b>TM37</b></td><td><span class="jpcell">わざマシン３７</span></td><td>TM37 - a Technical Machine.</td></tr><tr><td>235</td><td><b>TM38</b></td><td><span class="jpcell">わざマシン３８</span></td><td>TM38 - a Technical Machine.</td></tr><tr><td>236</td><td><b>TM39</b></td><td><span class="jpcell">わざマシン３９</span></td><td>TM39 - a Technical Machine.</td></tr><tr><td>237</td><td><b>TM40</b></td><td><span class="jpcell">わざマシン４０</span></td><td>TM40 - a Technical Machine.</td></tr><tr><td>238</td><td><b>TM41</b></td><td><span class="jpcell">わざマシン４１</span></td><td>TM41 - a Technical Machine.</td></tr><tr><td>239</td><td><b>TM42</b></td><td><span class="jpcell">わざマシン４２</span></td><td>TM42 - a Technical Machine.</td></tr><tr><td>240</td><td><b>TM43</b></td><td><span class="jpcell">わざマシン４３</span></td><td>TM43 - a Technical Machine.</td></tr><tr><td>241</td><td><b>TM44</b></td><td><span class="jpcell">わざマシン４４</span></td><td>TM44 - a Technical Machine.</td></tr><tr><td>242</td><td><b>TM45</b></td><td><span class="jpcell">わざマシン４５</span></td><td>TM45 - a Technical Machine.</td></tr><tr><td>243</td><td><b>TM46</b></td><td><span class="jpcell">わざマシン４６</span></td><td>TM46 - a Technical Machine.</td></tr><tr><td>244</td><td><b>TM47</b></td><td><span class="jpcell">わざマシン４７</span></td><td>TM47 - a Technical Machine.</td></tr><tr><td>245</td><td><b>TM48</b></td><td><span class="jpcell">わざマシン４８</span></td><td>TM48 - a Technical Machine.</td></tr><tr><td>246</td><td><b>TM49</b></td><td><span class="jpcell">わざマシン４９</span></td><td>TM49 - a Technical Machine.</td></tr><tr><td>247</td><td><b>TM50</b></td><td><span class="jpcell">わざマシン５０</span></td><td>TM50 - a Technical Machine.</td></tr><tr><td>248</td><td><b>HM01</b></td><td><span class="jpcell">ひでんマシン０１</span></td><td>HM01 - a Hidden Machine.</td></tr><tr><td>249</td><td><b>HM02</b></td><td><span class="jpcell">ひでんマシン０２</span></td><td>HM02 - a Hidden Machine.</td></tr><tr><td>250</td><td><b>HM03</b></td><td><span class="jpcell">ひでんマシン０３</span></td><td>HM03 - a Hidden Machine.</td></tr><tr><td>251</td><td><b>HM04</b></td><td><span class="jpcell">ひでんマシン０４</span></td><td>HM04 - a Hidden Machine.</td></tr><tr><td>252</td><td><b>HM05</b></td><td><span class="jpcell">ひでんマシン０５</span></td><td>HM05 - a Hidden Machine.</td></tr><tr><td>253</td><td><b>HM06</b></td><td><span class="jpcell">ひでんマシン０６</span></td><td>HM06 - a Hidden Machine.</td></tr><tr><td>254</td><td><b>HM07</b></td><td><span class="jpcell">ひでんマシン０７</span></td><td>HM07 - a Hidden Machine.</td></tr><tr><td>255</td><td><b>(unused/disabled slot)</b></td><td><span class="jpcell">？<br>？</span></td><td>—</td></tr></tbody></table></div></main></div></body></html>
