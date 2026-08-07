@@ -1,65 +1,65 @@
 TrainerClassNames::
-	db "ハヤト@" ; HAYATO
-	db "アカネ@" ; AKANE
-	db "ツクシ@" ; TSUKISHI
-	db "エノキ@" ; ENOKI
-	db "オケラ@" ; OKERA
-	db "ミカン@" ; MIKAN
-	db "ブルー@" ; BLUE
-	db "ガマ@" ; GAMA
-	db "ライバル@" ; RIVAL
-	db "オーキドはかせ@" ; OKIDO
-	db "サカキ@" ; SAKAKI
-	db "しゅじんこう@" ; PROTAGONIST
-	db "シバ@" ; SIBA
-	db "カスミ@" ; KASUMI
-	db "カンナ@" ; KANNA
-	db "ワタル@" ; WATARU
-	db "ゲルゲだんいん♂@" ; GERUGE_MEMBER_M
-	db "さんにんしゅう@" ; TRIO_1
-	db "さんにんしゅう@" ; TRIO_2
-	db "さんにんしゅう@" ; TRIO_3
-	db "ロケットだんいん♀@" ; ROCKET_F
-	db "たんパンこぞう@" ; YOUNGSTER
-	db "じゅくがえり@" ; SCHOOLBOY
-	db "ひよっこ@" ; FLEDGLING
-	db "ミニスカート@" ; LASS
-	db "てんさい@" ; PRODIGY
-	db "プロフェッショナル♂@" ; PROFESSIONAL_M
-	db "プロフェッショナル♀@" ; PROFESSIONAL_F
-	db "おとなのおねえさん@" ; BEAUTY
-	db "かいじゅうマニア@" ; POKEMANIAC
-	db "ロケットだんいん♂@" ; ROCKET_M
-	db "ジェントルマン@" ; GENTLEMAN
-	db "せんせい♂@" ; TEACHER_M
-	db "せんせい♀@" ; TEACHER_F
-	db "とっちゃんぼうや@" ; MANCHILD
-	db "むしとりしょうねん@" ; BUG_CATCHER_BOY
-	db "つりびと@" ; FISHER
-	db "かいパンやろう@" ; SWIMMER_F
-	db "ビキニのおねえさん@" ; SWIMMER_M
-	db "ふなのり@" ; SAILOR
-	db "りかけいのおとこ@" ; SUPER_NERD
-	db "でんきやのオヤジ@" ; ENGINEER
-	db "でんきグループ@" ; ROCKER
-	db "やまおとこ@" ; HIKER
-	db "ぼうそうぞく@" ; BIKER
-	db "ロッククライマー@" ; ROCK_CLIMBER
-	db "かじばどろぼう@" ; BURGLAR
-	db "ひふきやろう@" ; FIREBREATHER
-	db "ジプシージャグラー@" ; JUGGLER
-	db "からておう@" ; BLACKBELT
-	db "スポーツマン@" ; SPORTSMAN
-	db "ちょうのうりょくしゃ@" ; PSYCHIC
-	db "カンフーマスター@" ; KUNG_FU_MASTER
-	db "うらないし@" ; FORTUNE_TELLER
-	db "ふりょう@" ; HOOLIGAN
-	db "ぼうず@" ; SAGE
-	db "イタコ@" ; MEDIUM
-	db "へいし@" ; SOLDIER
-	db "ゲルゲだんいん♀@" ; GERUGE_MEMBER_F
-	db "まいこはん@" ; KIMONO_GIRL
-	db "ふたごちゃん@" ; TWINS
-	db "ゲルゲだんいん♂@" ; GERUGE_MEMBER_M_2
-	db "してんのう♂@" ; ELITE_FOUR_M
-	db "してんのう♀@" ; ELITE_FOUR_F
+	db "FALKNER@" ; HAYATO
+	db "WHITNEY@" ; AKANE
+	db "BUGSY@" ; TSUKISHI
+	db "ENOKI@" ; ENOKI
+	db "OKERA@" ; OKERA
+	db "JASMINE@" ; MIKAN
+	db "BLUE@" ; BLUE
+	db "GAMA@" ; GAMA
+	db "RIVAL@" ; RIVAL
+	db "PROF. OAK@" ; OKIDO
+	db "GIOVANNI@" ; SAKAKI
+	db "PROTAGONIST@" ; PROTAGONIST
+	db "BRUNO@" ; SIBA
+	db "MISTY@" ; KASUMI
+	db "LORELEI@" ; KANNA
+	db "LANCE@" ; WATARU
+	db "GERUGE-DAN G@" ; GERUGE_MEMBER_M
+	db "TRIO MEMBER@" ; TRIO_1
+	db "TRIO MEMBER@" ; TRIO_2
+	db "TRIO MEMBER@" ; TRIO_3
+	db "TEAM ROCKET @" ; ROCKET_F
+	db "YOUNGSTER@" ; YOUNGSTER
+	db "SCHOOLBOY@" ; SCHOOLBOY
+	db "FLEDGLING@" ; FLEDGLING
+	db "LASS@" ; LASS
+	db "PRODIGY@" ; PRODIGY
+	db "PROFESSIONAL@" ; PROFESSIONAL_M
+	db "PROFESSIONAL@" ; PROFESSIONAL_F
+	db "BEAUTY@" ; BEAUTY
+	db "POKé MANIAC@" ; POKEMANIAC
+	db "TEAM ROCKET @" ; ROCKET_M
+	db "GENTLEMAN@" ; GENTLEMAN
+	db "TEACHER ♂@" ; TEACHER_M
+	db "TEACHER ♀@" ; TEACHER_F
+	db "MANCHILD@" ; MANCHILD
+	db "BUG CATCHER@" ; BUG_CATCHER_BOY
+	db "FISHER@" ; FISHER
+	db "SWIMMER  @" ; SWIMMER_F
+	db "SWIMMER  @" ; SWIMMER_M
+	db "SAILOR@" ; SAILOR
+	db "SUPER NERD@" ; SUPER_NERD
+	db "ENGINEER@" ; ENGINEER
+	db "ROCKER@" ; ROCKER
+	db "HIKER@" ; HIKER
+	db "BIKER@" ; BIKER
+	db "ROCK CLIMBER@" ; ROCK_CLIMBER
+	db "BURGLAR@" ; BURGLAR
+	db "FIRE BREATHE@" ; FIREBREATHER
+	db "JUGGLER@" ; JUGGLER
+	db "BLACK BELT@" ; BLACKBELT
+	db "SPORTSMAN@" ; SPORTSMAN
+	db "PSYCHIC@" ; PSYCHIC
+	db "KUNG-FU MAST@" ; KUNG_FU_MASTER
+	db "FORTUNE TELL@" ; FORTUNE_TELLER
+	db "HOOLIGAN@" ; HOOLIGAN
+	db "SAGE@" ; SAGE
+	db "MEDIUM@" ; MEDIUM
+	db "SOLDIER@" ; SOLDIER
+	db "GERUGE-DAN G@" ; GERUGE_MEMBER_F
+	db "KIMONO GIRL@" ; KIMONO_GIRL
+	db "TWINS@" ; TWINS
+	db "GERUGE-DAN G@" ; GERUGE_MEMBER_M_2
+	db "ELITE FOUR ♂@" ; ELITE_FOUR_M
+	db "ELITE FOUR ♀@" ; ELITE_FOUR_F

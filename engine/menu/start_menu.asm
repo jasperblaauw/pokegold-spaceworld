@@ -60,7 +60,7 @@ DisplayStartMenu::
 
 .StartMenuHeader:
 	db MENU_BACKUP_TILES
-	menu_coords $0C, 00, $13, $11
+	menu_coords $0A, 00, $13, $11 ; widened left (was $0C) to fit 7-char English names/items
 	dw .MenuData
 	db 1 ; default option
 
@@ -72,15 +72,15 @@ DisplayStartMenu::
 	dw .Strings
 
 .Strings:
-	db "ずかん@"
-	db "ポケモン@"
-	db "リュック@"
+	db "POKEDEX@"
+	db "POKEMON@"
+	db "PACK@"
 	db "<PLAYER>@"
-	db "レポート@"
-	db "せってい@"
-	db "とじる@"
-	db "わくせん@"
-	db "リセット@"
+	db "SAVE@"
+	db "OPTION@"
+	db "EXIT@"
+	db "FRAME@"
+	db "RESET@"
 
 StartMenuJumpTable:
 	dw StartMenu_Pokedex

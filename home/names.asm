@@ -94,15 +94,18 @@ GetPokemonName::
 	ld a, BANK(PokemonNames)
 	call Bankswitch
 
-	; Each name is five characters
+	; Each name is MON_NAME_LENGTH - 1 characters (English width; was 5 for kana).
+	; Loop instead of `rept` to keep this home routine small.
 	ld a, [wNamedObjectIndexBuffer]
 	dec a
 	ld hl, PokemonNames
 	ld e, a
 	ld d, 0
-rept 5
+	ld b, MON_NAME_LENGTH - 1
+.stride
 	add hl, de
-endr
+	dec b
+	jr nz, .stride
 
 	; Terminator
 	ld de, wStringBuffer1

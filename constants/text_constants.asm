@@ -1,12 +1,21 @@
 ; name lengths
 DEF NAME_LENGTH          EQU 11 ; English
-DEF PLAYER_NAME_LENGTH   EQU 6 ; Japanese
+DEF PLAYER_NAME_LENGTH   EQU 8 ; English: 7 usable + terminator (was 6, JP)
+DEF NAME_LENGTH_JAPANESE EQU 6 ; original prototype width (5 usable + terminator)
 DEF BOX_NAME_LENGTH      EQU 9
-DEF MON_NAME_LENGTH      EQU 6
+DEF MON_NAME_LENGTH      EQU 11 ; English: 10 usable + terminator (was 6, JP)
+; PC box storage (wBox in WRAM, sBox in SRAM) deliberately stays at the original
+; Japanese name width. Flat 8KB WRAM (no CGB WRAM banking here) has no room for a
+; full 30-mon box at English widths, and box save/persistence is deferred anyway
+; (M1e: Dummy_SaveBox is stubbed, boxes are unreachable in the current slice).
+; When M1e implements boxes, widen these AND solve the WRAM/SRAM budget (ideally
+; load one box at a time like retail) and the deposit/withdraw copy lengths.
+DEF BOX_MON_NAME_LENGTH  EQU NAME_LENGTH_JAPANESE ; boxed-mon nickname width
+DEF BOX_MON_OT_LENGTH    EQU NAME_LENGTH_JAPANESE ; boxed-mon OT-name width
 DEF TYPE_NAME_LENGTH     EQU 5
-DEF MOVE_NAME_LENGTH     EQU 8
-DEF ITEM_NAME_LENGTH     EQU 11
-DEF TRAINER_CLASS_NAME_LENGTH EQU 11
+DEF MOVE_NAME_LENGTH     EQU 13 ; English (was 8); 12 usable + terminator
+DEF ITEM_NAME_LENGTH     EQU 13 ; English (was 11); also the generic GetName copy width
+DEF TRAINER_CLASS_NAME_LENGTH EQU 13 ; English (was 11)
 
 ; GetName types (see home/names.asm)
 	const_def 1

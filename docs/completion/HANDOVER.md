@@ -160,6 +160,190 @@ M2 West + Gym #2 + assistant NPC + first Geruge-dan grunt → M3 Old City pagoda
 
 ---
 
+## Localization (English) — in progress
+
+Turning the JP prototype English, reusing retail Gold/Silver's localization design.
+Full plan: `~/.claude/plans/continuing-from-docs-completion-handover-compiled-trinket.md`.
+Scope = **playable slice**: build the English infrastructure game-wide, translate all
+name tables + system/battle/menu text + dialogue for **implemented** maps only; defer
+Pokédex flavor & long descriptions. Insertion = script-assisted for fixed tables,
+hand-authored for dialogue/fragments. Source of English strings: `docs/_glossary/`.
+
+**Transition trick:** Latin charmap entries are aliased onto the SAME bytes as the kana
+(retail's approach), so untranslated JP `db "…"` still assembles — it renders as Latin
+gibberish until translated. Build stays green section by section.
+
+### L0 — Font + charmap + name widths ✅ (BUILD-VERIFIED, playtest-pending)
+- `gfx/font/font.png` swapped to retail pokegold's Latin tilesheet (same 128-tile/1bpp
+  geometry; `LoadFontGraphics` base = byte `$80`).
+- `constants/charmap.asm`: added `A–Z`→`$80`, `a–z`→`$a0`, ASCII space→`$7f`, punctuation
+  (`' - ? ! . & / ,` etc.) at retail byte slots, all aliased over the kana.
+- Name widths: `PLAYER_NAME_LENGTH` 6→8, `MON_NAME_LENGTH` 6→11 (retail), `STRING_BUFFER_LENGTH`
+  10→13; `wPlayerName/wMomsName/wRivalName` now use the constant.
+- **WRAM crunch (important):** this proto has flat 8KB WRAM, **no CGB WRAM banking** — widening
+  overflowed WRAM by 79B. Fixes: (a) PC box (`wBox`/`sBox`) kept at JP width via new
+  `BOX_MON_NAME_LENGTH`/`BOX_MON_OT_LENGTH` (`= NAME_LENGTH_JAPANESE`) since boxes are deferred
+  (M1e); (b) the dormant 1352B `wBox` moved into a UNION arm overlapping `wOverworldMapBlocks`
+  in the "Map Buffer" section (retail-style overlap; mutually exclusive with box access) — frees
+  ~1.3KB. **M1e must** widen box widths AND verify the overworld map reloads on PC exit.
+  **Crash fix (playtest round 1):** moving `wBox` out of the Party tail made
+  `InitializeNewGameWRAM`'s 2nd ByteFill (`wBoxMonNicknamesEnd - wPlayerName`) go **negative**
+  → runaway fill wiped the stack → "Illegal Opcode. Halting." at New Game. Fixed to clear
+  `wPokemonDataEnd - wPlayerName` (Game Data + Party, contiguous); `wBox` is still zeroed by the
+  1st ByteFill (`wShadowOAM..wNewGameWRAMEnd` covers the Map Buffer). Lesson: a buffer moved out
+  of either clear range must not make those label subtractions negative.
+- Reclaimed 10B Bank 0a garbage; fixed a picross `-Wcharmap-redef` warning (`newcharmap`).
+
+### L1 — English naming keyboards ✅ (BUILD-VERIFIED, playtest-pending)
+- `data/text/text_input_chars.asm` `TextEntryChars`: kana grid → **English UPPERCASE** 5-row
+  keyboard (kept the existing 15-col×row geometry, so cursor tables/`GetLastCharacter` are
+  unchanged). **Lowercase page + SELECT toggle added** (playtest round 2): `TextEntryCharsLower`,
+  `wNamingScreenLetterCase` flag, `NamingScreen_PlaceKeyboard` (picks the page; InitText falls
+  through to it), and a `.jumpselect` handler in `.ReadButtons` that flips case and redraws.
+- `engine/menu/text_entry.asm`: grid row count 8→5 (`InitText` + cursor up/down clamps);
+  prompts → English (`YOUR NAME?`, `RIVAL'S NAME?`, `MOTHER'S NAME?`, `BOX NAME?`, `NICKNAME?`);
+  per-type max length split into `.StoreMonIconParams` (10, from `MON_NAME_LENGTH-1`),
+  `.StoreSpriteIconParams` (7), `.StoreBoxIconParams` (8).
+- Preset name menus English: `constants/player_constants.asm` (GOLD/SATOSHI/JACK, SILVER/SHIGERU/JOHN,
+  MOM/MAMA/MOMMY) + `data/names/{player,rival,mom}_names.asm` ("NEW NAME"/"NAME").
+- Reclaimed 8B Bank 01 garbage (prompts) + 81B Bank 04 garbage (lowercase page/toggle code).
+- **START menu fix (playtest round 2):** the field/START menu lists the player name as an item;
+  its box (`start_menu.asm` `.StartMenuHeader`) was 5 text cols wide, so a 6-char name overran
+  the right border. Widened `menu_coords $0C→$0A` (7 text cols) and translated the items
+  (POKEDEX/POKEMON/PACK/<PLAYER>/SAVE/OPTION/EXIT/FRAME/RESET). This is the general cascade:
+  **any name/text box sized for 5-char JP names may overflow with 7-char English names** — widen
+  per-box as they surface in playtest.
+- **Known cosmetic (verify in playtest):** the on-screen END key is byte `$F0` → renders as `¥`
+  in the Latin font (START also confirms); name-entry field placeholders are bytes `♂`/`♀`
+  — confirm they still look like blanks; nickname prompt now on its own line (row 4).
+
+**PLAYTEST (first real font check — do this before the big text translation):** on
+`*-debug-correctheader.gb`, New Game → the name menu shows **NEW NAME + GOLD/SATOSHI/JACK**,
+pick NEW NAME → **English A–Z keyboard**, type a name (B deletes, START confirms), then rival
+& mom the same. Confirm letters render crisply (validates the font/charmap). NOTE: surrounding
+text (main menu, Oak's speech) is still Japanese → **gibberish for now** (that's L-system/L-dialogue,
+next). If the keyboard letters look correct, the whole foundation is proven.
+
+### L2 — Name tables ✅ (BUILD-VERIFIED, playtest-pending)
+Script-generated from each table's existing iid comment (scripts in scratchpad):
+- **Pokémon** (`data/pokemon/names.asm`): 251 fixed **10-wide** `@`-padded entries. 1-151 use the
+  iid = official English name (4 fixups: NIDORAN♀/♂, FARFETCH'D, MR.MIME); 152-251 use the demo
+  romaji iid. `GetPokemonName` stride changed `rept 5` → a loop of `MON_NAME_LENGTH-1` (kept the
+  home routine small). +1255B reclaimed from Bank 14 garbage (+40 more for type names).
+- **Moves/Items/Trainer classes** (`@`-terminated, width 12): English via the glossary's
+  `pretty()`/`MOVE_OVERRIDES`/`ITEM_OVERRIDES`/`TRN` (uppercased; trainer notes like "(proto…)" /
+  "/ Green" stripped). Reclaimed Bank 10 +896 (moves), Bank 0e +161 (trainers), Bank 01 +116 (items).
+  Unused/disabled item slots render as `?`.
+- **Types** (`data/types/names.asm`): English strings (メタル→STEEL, とり→BIRD proto-only).
+- **Length constants** bumped: MOVE/ITEM/TRAINER_CLASS `→13`. (TYPE_NAME_LENGTH still 5 — long type
+  names like FIGHTING may clip in a narrow display column; verify/ widen if it shows in playtest.)
+- **Inline engine name-strings** (`home/text.asm`): `#`→"POKéMON", <TRAINER>→"TRAINER", <PC>→"PC",
+  <TM>→"TM", <ROCKET>→"ROCKET", EnemyText→"Enemy ", <GA> particle→" ".
+- **Still JP (minor, deferred):** `data/maps/landmark_names.asm` (Town Map locations),
+  `data/battle/stat_names.asm`.
+
+**PLAYTEST:** get the starter → PARTY shows English mon name; battle → English move names (FIGHT),
+enemy/own mon names, types; BAG → English item names; a route trainer → English class name. Watch
+for **name overflow in party/battle/summary layouts** (boxes sized for 5-char JP names).
+
+### L3a — Title / main menu + options menu ✅ (BUILD-VERIFIED, playtest-pending)
+- **Main menu** (`main_menu.asm`): CONTINUE / NEW GAME / OPTION / PLAY # (=POKéMON) / SET TIME;
+  widened `menu_coords` x2 13→14 for "PLAY POKéMON".
+- **Options menu** (`options_menu.asm`): TEXT SPEED (FAST/NORMAL/SLOW), BATTLE SCENE (ON/OFF),
+  BATTLE STYLE (SHIFT/SET), MONO/STEREO, EXIT, FRAME. **Column-critical:** the ▷ cursor X's are
+  hardcoded (text speed 1/8/15; on-off 1/10), so each option word is placed one column right of its
+  arrow — verified against the JP columns. Keep those columns if editing.
+- **Continue save-info** (`DisplaySaveInfoOnContinue`/`PlayerInfoText`): PLAYER / BADGES / POKéDEX /
+  TIME. Known follow-up: the player-name field (col 13) can overflow this box for a 7-char name
+  (pre-existing tight layout) — widen the box if it shows.
+
+### Playtest-round bugs — FIXED ✅ (PLAYTEST-VERIFIED by user 2026-08-07, round 8)
+All 4 traced back to the widened name lengths (MON_NAME_LENGTH 6→11) exposing hardcoded
+5-char-name assumptions (#1, #3) or an undersized WRAM buffer left at the old width (#2, #4 —
+the same root cause). Took 4 rounds of playtest+fix (rounds 5-8, all same session) to land —
+see the round-by-round breakdown in the session log below for what each pass actually fixed vs.
+regressed. User confirmed all clean as of round 8.
+
+1. **Party screen: level tag overwrote the name, then the HP number, then wasn't right-aligned
+   with the bar (3 rounds).** Round 6 moved status/HP-bar/level all to the row below the name
+   (matching retail: line 1 = name + HP text, line 2 = level + bar) but didn't account for
+   `mon_stats.asm` `DrawHP`'s *own* internal offset — it unconditionally prints the HP current/max
+   text 1 row *below* whatever `hl` (the bar position) it's given, so once the bar moved to the row
+   below the name, the text landed a further row down (into the *next* mon's name row), not on the
+   name's own row as intended. **Round 7 fix:** changed `DrawHP`'s text offset from `bccoord 1,1,0`
+   (+1 row) to `-SCREEN_WIDTH+1` (-1 row, i.e. back onto the bar's row *above* — which, now that the
+   bar itself sits one row below the name, is the name's own row). `DrawHP` has exactly one caller
+   (the party screen) so this is safe to repoint outright. Also swapped status ↔ level columns on
+   the bar row: status moved to col 3 (under the name/cursor), level moved to col 8, immediately
+   left of the bar (col 11) with no gap, so level+bar now read as one right-aligned unit as
+   described. Final layout per mon: row *N* = name (col 3) + HP text (col 12); row *N*+1 = status
+   (col 3) + level (col 8) + HP bar (col 11–19).
+
+2. **Enemy (rival) mon nickname overran into the player's own nickname.** Two independent bugs,
+   both needed fixing:
+   - **Source never filled:** `TryAddMonToParty` (`engine/pokemon/move_mon.asm`) only initialized
+     the nickname for `wMonType == PARTYMON`, explicitly skipping OT/trainer party mons (comment:
+     "Only initialize the nickname for party mon") — because it always wrote to the hardcoded
+     `wPartyMonNicknames` destination, which would be wrong for an OT mon. So `wOTPartyMonNicknames`
+     was **never written at all** for any trainer's auto-filled mon (species-default nickname) and
+     stayed as leftover WRAM. Route trainers with explicit data happened to look fine by luck; the
+     rival (auto-filled) read garbage. Fixed: mirrored the existing OT-name pattern — pick
+     `wPartyMonNicknames` vs `wOTPartyMonNicknames` by `wMonType` and always fill both cases with
+     the species default name via `GetPokemonName`. +4B reclaimed from `Bank 03 Garbage`.
+   - **Destination undersized:** `ram/wram.asm` still had `wEnemyMonNickname:: ds 6` and
+     `wBattleMonNickname:: ds 6` — never widened to `MON_NAME_LENGTH` (11) during L0, even though
+     every write site copies a full `MON_NAME_LENGTH`-byte string in. `wBattleMonNickname` sits
+     directly before the `wBattleMon` struct (Species/Item/Moves…) in WRAM, so the 11-byte copy
+     overflowed 5 bytes into it — this was **also the root cause of bug #4 below**. Fixed both to
+     `ds MON_NAME_LENGTH`.
+
+3. **Battle menu "Pokémon" option now uses the real `Pk`/`Mn` ligature tiles.** Found them in the
+   retail font sheet (`gfx/font/font.png`) at tile row 6, cols 1–2 (bytes `$e1`/`$e2` — previously
+   an unmapped gap between `'` at `$e0` and `-` at `$e3`); visually confirmed by cropping/rendering
+   the tiles. Added `charmap "<PK>", $e1` / `charmap "<MN>", $e2` to `constants/charmap.asm`.
+   Translated the battle bottom menu in `engine/battle/menu.asm` (FIGHT / PACK / `<PK><MN>` / RUN)
+   and `core.asm`'s "no will to fight" message. +3B `Bank 09 Garbage`, +3B `Bank 0f Garbage`.
+   (The separate `gfx/font/font_battle_extra.png` asset is unused/not wired into the build — turned
+   out to be unrelated HP-bar/HUD graphics, not the ligature.)
+   **Round 6 follow-up:** initial word ORDER was wrong (FIGHT/PACK/`<PK><MN>`/RUN top-left→bottom-
+   right), which put the two widest words FIGHT+PACK on the same row → "FIGHT" (exactly 5 chars)
+   filled its whole column pitch (`wMenuData_2DMenuSpacing` = 5, unchanged) with zero gap, so PACK's
+   text ran on immediately after and its last letter spilled past the box's right border. **Fixed
+   per user-supplied retail ordering:** top-left FIGHT, top-right `<PK><MN>`, bottom-left PACK,
+   bottom-right RUN (`.MenuData` list is row-major, so this is just item-list order).
+   **Round 7 follow-up:** even in the correct order, FIGHT (exactly 5 chars) still fully consumed
+   the 5-col pitch with zero gap before `<PK><MN>`, so the cursor arrow (drawn 1 col left of each
+   item, i.e. right where the gap should be) landed on top of FIGHT's last letter when `<PK><MN>`
+   was selected. Per user ("retail's box is one tile wider"): widened `BattleMenuHeader`'s box left
+   edge from col 9 to col 8 (`menu_coords 8,12,19,17`) and bumped the column pitch (`wMenuData_
+   2DMenuSpacing`, the `db` right after `dn 2,2`) from 5 to 6 — both needed together: wider pitch
+   alone would push the right column past the box's right border; the extra column of box width is
+   exactly what the wider pitch needs to still fit RUN (3 chars) in the bottom-right cell without
+   crossing the border. Hand-verified column math for both rows before building.
+
+4. **Moves displayed as all "PETAL DANCE" with impossible PP (30/20) — root cause was bug #2's
+   undersized `wBattleMonNickname`.** Traced end-to-end: `LoadBattleMonFromParty`
+   (`engine/battle/core.asm`) copies Species/Item/Moves into `wBattleMon` *first*, then copies the
+   11-byte nickname into `wBattleMonNickname` *last* — and since that buffer was only 6 bytes, the
+   trailing 5 bytes of the nickname (species names are `@`-padded to a fixed width, so a short name
+   like "HONOGUMA" is followed by `@@@` padding/terminator bytes = `$50`) spilled into
+   `wBattleMon`'s Species/Item/Move0-2 fields, overwriting them with `$50` — which happens to equal
+   `MOVE_PETAL_DANCE`. Fixed by the same `ds MON_NAME_LENGTH` widening in bug #2. Honoguma's
+   `evos_attacks.asm` data and the generic move-name lookup were both verified correct in the
+   compiled ROM (byte-for-byte) — not the issue.
+   **Round 6 follow-up:** fixing the move data surfaced a display-only bug in the same info box —
+   the move's **type name** (e.g. "NORMAL") is printed via `predef PrintMoveType` at
+   `engine/battle/core.asm` `MoveInfoBox`, previously `hlcoord 15, 16` inside a box whose interior
+   only spans cols 10–18 (from `hlcoord 9,12 / ld b,4 / ld c,9 / call DrawTextBox`) — col 15 left
+   only 4 columns before the right border, and `PlaceString` has no wrapping of its own, so text
+   past col 19 just continued into the next tilemap row raw (explains the user's garbled
+   "wraps mid-word, spills to bottom-left" report — that's the tilemap address wrapping around, not
+   an intentional line break). Fixed: moved the print column to `hlcoord 10, 16`, directly under the
+   (still-JP) "わざタイプ" label on the row above, giving the full 9-column interior width — fits
+   the longest type names (FIGHTING/ELECTRIC, 8 chars) with no overflow.
+
+### Next: PLAYTEST-VERIFIED as of round 8 (2026-08-07) → continue L-system rest (battle text, party/bag/summary), then L-dialogue.
+
 ## Session log
 - **2026-08-06** — M0 (boot GameStart, byte-verified), M1a (rival party fix), M1f (evolutions restored + 32B garbage reclaim). All build-verified, all playtest-pending. M1e investigated & deferred (unsafe blind). Established gotcha: **must test the `-correctheader` (MBC3/RTC) debug ROM on SameBoy** — the base MBC1 ROM doesn't run. First SameBoy test also surfaced the main-menu label bug (only showed "Play Pokemon") → fixed to show real New Game / Continue. Remaining: M1b/c/d content (playtest-led), then M1e.
 - **2026-08-07** — Playtest round 1 feedback (3 lab bugs). Fixed **rival battle** properly (M1a rewrite: real trainer format + `DEX_` species, byte-verified; my earlier MON_ attempt was wrong) and by analysis the **loss-reset** (bug #3, was a garbage-battler side effect). Also fixed the **main-menu** to show real New Game/Continue. Still open: **bug #1** (chosen Poké Ball doesn't vanish in lab-back) — cosmetic, needs playtest to confirm intended behavior. Reclaimed 6B from `Bank 0e Garbage` for the reformatted rival party. _Next: user re-tests the rival battle (win AND lose) on `pokegold-spaceworld-debug-correctheader.gb`; if good, fix bug #1 then proceed to M1c/M1d._
@@ -172,3 +356,25 @@ M2 West + Gym #2 + assistant NPC + first Geruge-dan grunt → M3 Old City pagoda
 - **2026-08-07 (round 4)** — Fixed **bug #1 / M1-bug1** (lab-back Poké Balls now vanish when taken; player's on confirm, rival's when he picks; third ball stays; persists on re-entry). All 4 ROMs build warning-clean; +35B reclaimed from `Bank 34 Garbage`. Build-verified, playtest-pending (see M1-bug1 checklist). Two side notes for the user:
   - **SGB border question (Gengar → Gold):** *not* a code change on this branch — nothing under `gfx/sgb`, `engine/gfx/sgb_layouts.asm`, `options_menu.asm`, or `load_options.asm` was touched. The border is a **user toggle** (SELECT in Options) stored in `sOptions` bit `SGB_BORDER`, read on boot by `LoadSGBBorderOptions`. `sgb_border_alt` = the "Pocket Monsters" **Gengar** border (bit clear), `sgb_border_gold` = the **Pokémon Gold** version border (bit set). Default follows raw SRAM: a brand-new/untouched `.sav` is `$ff` → bit set → **Gold** border; after the game's own `EmptyAllSRAMBanks`/`InitOptions` zero-fill (SRAM-clear menu) it's `0` → **Gengar**. So the observed flip is a `.sav`/SRAM-state artifact, not our edits; toggle back with SELECT in Options anytime.
   - **Save-then-reset showed no Continue (user, not reproducible):** had a valid post-rival save, started New Game, progressed to the starter-pick point, saved (overwrote), heard the jingle, `Cmd+R` reset → title showed **New Game only**. Could not reproduce afterward. Most likely a SameBoy `.sav`-flush timing artifact on soft-reset rather than a logic bug (a save at the pre-starter point *should* checksum-validate and show Continue via the M1-bug3 `CheckIfSaveFileExists`). **Watch item:** if it recurs, capture exact steps + whether a *hard* reset / clean quit (which forces a `.sav` write) also loses Continue; if so, investigate `SaveMenu`/`SavePokemonData` vs. the inlined checksum in `CheckIfSaveFileExists` for a region/ordering mismatch.
+
+- **2026-08-07 — English localization started (big multi-session effort; see the "Localization (English)" section above and the plan `~/.claude/plans/continuing-from-docs-completion-handover-compiled-trinket.md`).** Scope = playable slice; strings sourced from `docs/_glossary/`. Completed & BUILD-VERIFIED this session (all 8 ROMs warning-clean): **L0** font+charmap+name-widths (incl. the flat-WRAM `wBox`→Map-Buffer-union overlap + `InitializeNewGameWRAM` ByteFill fix that resolved an early New-Game crash), **L1** English UPPER/lower naming keyboards (SELECT toggles case; START menu widened + items translated), **L2** name tables (Pokémon/moves/items/trainers/types + inline `#`/TRAINER/PC/TM/ROCKET strings; lots of garbage reclaimed across banks 01/0e/10/14), **L3a** title main menu + full options menu + Continue save-info labels. **PLAYTEST-VERIFIED by user:** English keyboards, lowercase toggle, START menu, title/main menu. **4 OPEN BUGS from playtest** (party level overwrites name; rival enemy-nickname overrun; battle Pokémon menu needs `<PK><MN>`; starter moves show all "PETAL DANCE" w/ bad PP) — full diagnoses + file:line leads in the **"OPEN BUGS"** subsection of the Localization section above. _Next session: fix those 4, then continue Phase 3 (battle/party/bag/summary system text) → Phase 4 (dialogue for implemented maps)._ Two minor name tables still JP: `data/maps/landmark_names.asm`, `data/battle/stat_names.asm`.
+- **2026-08-07 (round 5)** — Fixed all 4 playtest-round localization bugs from the previous session (see "Playtest-round bugs — FIXED" in the Localization section above for full diagnoses). All 4 ROMs build warning-clean throughout.
+  1. **Party level tag** (`party_menu.asm` `.PrintLevel`): moved from `name_start+5` to `+10` columns, clear of the widened 10-char name field.
+  2. **Rival enemy nickname overrun** — two bugs: (a) `TryAddMonToParty` never filled the nickname for OT/trainer party mons at all (only player-party mons) — fixed to fill both, picking the right destination table by `wMonType`, mirroring the existing OT-name pattern (+4B `Bank 03 Garbage`); (b) `wEnemyMonNickname`/`wBattleMonNickname` in `ram/wram.asm` were still `ds 6`, never widened to `MON_NAME_LENGTH` during L0 — fixed to `ds MON_NAME_LENGTH`.
+  3. **Battle menu `<PK><MN>` ligature** — found the actual tiles in `gfx/font/font.png` (row 6, cols 1–2; confirmed by cropping/rendering), added `charmap "<PK>"`/`"<MN>"` at `$e1`/`$e2`, translated the battle bottom menu (FIGHT/PACK/`<PK><MN>`/RUN) and the "no will to fight" message. +3B `Bank 09 Garbage`, +3B `Bank 0f Garbage`.
+  4. **Starter moves all "PETAL DANCE" w/ bad PP** — traced to the *same* undersized `wBattleMonNickname` from bug #2: it sits directly before the `wBattleMon` struct in WRAM, so the 11-byte nickname copy overflowed 5 bytes into Species/Item/Move0-2, and the nickname's `@`-padding tail (byte `$50`) happens to equal `MOVE_PETAL_DANCE`. Fixed by the same widening; no separate change needed. Verified Honoguma's `evos_attacks.asm` data and the generic move-name lookup were both byte-correct in the compiled ROM before concluding this — the bug was purely the WRAM buffer overflow.
+  - _Next: user playtests round 5 on `*-debug-correctheader.gb`: party screen with a full name (level shouldn't overlap), the rival battle (its name shouldn't run into the player's, and the player's own name shouldn't show corruption from a subsequent enemy encounter), the battle FIGHT menu's `Pk`/`Mn` option (should render as the two-line ligature, not gibberish or the full word), and the starter's FIGHT menu (should show real moves — SCRATCH/LEER for a level-5 Honoguma — with sane PP, not "PETAL DANCE" x4). If clean, continue Phase 3 (battle/party/bag/summary system text) → Phase 4 (dialogue)._
+- **2026-08-07 (round 6)** — Playtest round 5 found #2 and #4 clean, but #1 and #3 needed follow-up fixes (see "Playtest-round bugs" section above for full diagnoses); all 4 ROMs build warning-clean throughout.
+  1. **Party level tag, take 2:** landed on the HP current/max text (`:L5/ 20`) — turns out `mon_stats.asm` `DrawHP` prints the HP fraction on the *name's own row*, not the bar's row. Matched retail's real layout per user correction (name+HP on line 1, level+bar on line 2 below): swapped the status/HP-bar block to the row *below* the name instead of above, moved level there too. Each mon's block now spans rows `[2i+1, 2i+2]` instead of `[2i, 2i+1]` (row 0 goes unused) — icon position is index-driven, unaffected.
+  3. **Battle menu order:** initial FIGHT/PACK/`<PK><MN>`/RUN ordering put the two widest words (FIGHT, PACK) on the same row, exactly filling the 5-column pitch with zero gap → "FIGHTPACK" concatenation and PACK's last letter spilling past the border. Fixed to retail's actual order (user-supplied): FIGHT top-left, `<PK><MN>` top-right, PACK bottom-left, RUN bottom-right — pairs each wide word with the 2-tile ligature instead of another wide word; fits the box's ~8-column interior with the pitch unchanged.
+  4. **Move type overflow (found while fixing #4 last round):** `MoveInfoBox`'s type-name print (`hlcoord 15, 16`) only had 4 columns before the box's right border — `PlaceString` doesn't wrap, so long names ("NORMAL", "ELECTRIC") ran off the tilemap row and reappeared mid-word on the row below. Moved to `hlcoord 10, 16` (under the "わざタイプ" label), giving the full 9-column interior.
+  - _Next: user re-playtests rounds 5+6 together. If clean, continue Phase 3 (battle/party/bag/summary system text) → Phase 4 (dialogue)._
+- **2026-08-07 (round 7)** — Playtest of round 6 found #2 and #4 fully fixed; #1 and #3 needed one more pass each (see "Playtest-round bugs" section above for full diagnoses). All 4 ROMs build warning-clean.
+  1. **Party level tag, take 3:** round 6 moved the bar/level to the row below the name but didn't account for `mon_stats.asm` `DrawHP` printing its HP-fraction text a further row below *whatever row the bar is on* — so once the bar moved down, the text landed on the *next mon's* name row instead of staying on *this* mon's name row. Fixed `DrawHP`'s offset from `bccoord 1,1,0` to `-SCREEN_WIDTH+1` (`DrawHP` has exactly one caller, so safe to repoint). Also swapped status↔level columns on the bar row so level sits immediately left of the bar (col 8) with no gap, reading as one right-aligned unit; status moved to col 3.
+  3. **Battle menu cursor overlap:** even with the correct word order, FIGHT (exactly 5 chars) still fully consumed the 5-col pitch, so the cursor arrow for the next item landed on FIGHT's last letter. Per user ("retail's box is one tile wider"): widened `BattleMenuHeader`'s box by 1 col (`menu_coords 8,12,19,17`) and bumped the column pitch 5→6 — both needed together, since a wider pitch alone would push the bottom-right RUN past the border; the extra box width is exactly what makes RUN still fit.
+  - _Next: user re-playtests rounds 5–7 together. If clean, continue Phase 3 (battle/party/bag/summary system text) → Phase 4 (dialogue)._
+- **2026-08-07 (round 8)** — Playtest of round 7 found: `DrawHP`'s repointed offset (round 7 fix #1) also broke the **battle HUD** (name overwritten) — `DrawHP` isn't party-screen-only, it's shared by `DrawPlayerHP` (battle HUD **and** stats screen) and `DrawEnemyHP` (party screen only); round 7 changed the shared code path instead of just the party one. Also found the **battle menu PKMN/PACK actions swapped** (a leftover from the round-6 text reorder), and the **party screen HP bar/sprite rendering grayscale** instead of colored. All fixed, all 4 ROMs build warning-clean (+10B reclaimed from `Bank 14 Garbage` for the `DrawHP` branch).
+  1. **`DrawHP` battle-HUD regression:** made the offset conditional on `wWhichHPBar` (already set to 1 by `DrawPlayerHP`, 2 by `DrawEnemyHP` — the one piece of state that already distinguished the two callers). `wWhichHPBar==1` (battle/stats) keeps the original `+SCREEN_WIDTH+1`; `wWhichHPBar==2` (party) uses the round-7 `-SCREEN_WIDTH+1`.
+  2. **Battle menu PKMN↔PACK swap:** `BattleMenu`'s dispatch (`engine/battle/core.asm`, ~line 3218) reads `wStartmenuCursor`/`wMenuCursorPosition` (a 1-indexed row-major position: TL=1,TR=2,BL=3,BR=4 — verified via `Battle_2DMenu`'s `cursorX + (cursorY-1)*numRows` math) and still branched `cp 2 → Pack, cp 3 → PKMN`, matching the *original* JP order (FIGHT/ITEM/POKe/RUN) rather than the round-6 reordered display (FIGHT/`<PK><MN>`/PACK/RUN). Swapped to `cp 2 → PKMN, cp 3 → Pack` to match the display.
+  3. **Party screen grayscale HP bar/sprite:** traced to `data/sgb/blk_packets.asm` `BlkPacket_PartyMenu`, the SGB color-region table for the party screen — unrelated to any DMG/CGB palette code, this project's only in-game colorization is via SGB ATTR_BLK packets. Two bugs found: (a) the 6 per-mon HP-color rects' Y-coordinates were never updated for the round-6/7 row swap (still `12,2i` / `18,2i+1`, one row too high — same category of bug as #1 above, just in SGB data instead of code); (b) their region mask was `%010` (SGB "line/border only" — the *interior* of the rect, where the bar/text actually render, was never recolored, matching "only a hair of color" symptom), should be `%011` (line+inside) matching the *exact* same pattern already used successfully by `BlkPacket_Battle`'s equivalent small HP-color rects (region mask `%011`, palette bytes `\2=\3=`health color`, \4=0` — identical structure to what `SGB_ApplyPartyMenuHPPals` already writes into the party packet's palette byte, confirming the mask was the only thing wrong). Also widened the icon-column block's Y-range (`02,12`→`02,15`) since icons are 2 tiles tall and mon 5's (index 5) icon pixel position works out to tile rows 13–15, past the old bottom edge — **this one is a lower-confidence fix** (reasoned from the icon Y-position formula in `mon_icons.asm`, not cross-checked against a known-working reference like the HP-bar fix was) and may need another look if sprites are still off after this.
+  - **User confirmed all clean** — battle HUD, battle menu actions, and party screen colors (bar + icon) all correct. Localization Phase 1/2/L0-L3a + the M1b playtest-round bugs are now fully closed out. _Next: continue Phase 3 (battle/party/bag/summary system text) → Phase 4 (dialogue for implemented maps)._

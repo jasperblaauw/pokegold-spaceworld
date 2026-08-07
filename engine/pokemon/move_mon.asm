@@ -47,14 +47,20 @@ TryAddMonToParty::
 	ld hl, wPlayerName
 	ld bc, PLAYER_NAME_LENGTH
 	call CopyBytes
-	; Only initialize the nickname for party mon
-	ld a, [wMonType]
-	and a
-	jr nz, .skipnickname
+
+	; Initialize the nickname to the species name by default (both for the
+	; player's own party and OT/trainer parties, whose nickname slots are
+	; otherwise left uninitialized and read as garbage in battle).
 	ld a, [wCurPartySpecies]
 	ld [wNamedObjectIndexBuffer], a
 	call GetPokemonName
 	ld hl, wPartyMonNicknames
+	ld a, [wMonType]
+	and $f
+	jr z, .loadnickname
+	ld hl, wOTPartyMonNicknames
+
+.loadnickname
 	ldh a, [hMoveMon]
 	dec a
 	call SkipNames
@@ -64,7 +70,6 @@ TryAddMonToParty::
 	ld bc, MON_NAME_LENGTH
 	call CopyBytes
 
-.skipnickname
 	ld hl, wPartyMon1
 	ld a, [wMonType]
 	and $f

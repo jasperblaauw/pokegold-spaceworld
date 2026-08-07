@@ -60,7 +60,16 @@ DrawHP:
 	pop hl
 
 ; Print HP
-	bccoord 1, 1, 0
+; Battle HUD / stats screen (wWhichHPBar 1, via DrawPlayerHP) want the HP text
+; 1 row below the bar, as originally. The party screen (wWhichHPBar 2, via
+; DrawEnemyHP) draws the bar on the row below the name and wants the HP text on
+; the name's own row instead, i.e. 1 row above the bar.
+	ld a, [wWhichHPBar]
+	cp 2
+	ld bc, SCREEN_WIDTH + 1
+	jr nz, .not_party_hp
+	ld bc, -SCREEN_WIDTH + 1
+.not_party_hp
 	add hl, bc
 	ld de, wTempMonHP
 	ld a, [wMonType]

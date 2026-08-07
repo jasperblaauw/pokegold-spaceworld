@@ -1,252 +1,252 @@
 MoveNames::
-	db "はたく@" ; POUND
-	db "からてチョップ@" ; KARATE_CHOP
-	db "おうふくビンタ@" ; DOUBLESLAP
-	db "れんぞくパンチ@" ; COMET_PUNCH
-	db "メガトンパンチ@" ; MEGA_PUNCH
-	db "ねこにこばん@" ; PAY_DAY
-	db "ほのおのパンチ@" ; FIRE_PUNCH
-	db "れいとうパンチ@" ; ICE_PUNCH
-	db "かみなりパンチ@" ; THUNDERPUNCH
-	db "ひっかく@" ; SCRATCH
-	db "はさむ@" ; VICEGRIP
-	db "ハサミギロチン@" ; GUILLOTINE
-	db "かまいたち@" ; RAZOR_WIND
-	db "つるぎのまい@" ; SWORDS_DANCE
-	db "いあいぎり@" ; CUT
-	db "かぜおこし@" ; GUST
-	db "つばさでうつ@" ; WING_ATTACK
-	db "ふきとばし@" ; WHIRLWIND
-	db "そらをとぶ@" ; FLY
-	db "しめつける@" ; BIND
-	db "たたきつける@" ; SLAM
-	db "つるのムチ@" ; VINE_WHIP
-	db "ふみつけ@" ; STOMP
-	db "にどげり@" ; DOUBLE_KICK
-	db "メガトンキック@" ; MEGA_KICK
-	db "とびげり@" ; JUMP_KICK
-	db "まわしげり@" ; ROLLING_KICK
-	db "すなかけ@" ; SAND_ATTACK
-	db "ずつき@" ; HEADBUTT
-	db "つのでつく@" ; HORN_ATTACK
-	db "みだれづき@" ; FURY_ATTACK
-	db "つのドリル@" ; HORN_DRILL
-	db "たいあたり@" ; TACKLE
-	db "のしかかり@" ; BODY_SLAM
-	db "まきつく@" ; WRAP
-	db "とっしん@" ; TAKE_DOWN
-	db "あばれる@" ; THRASH
-	db "すてみタックル@" ; DOUBLE_EDGE
-	db "しっぽをふる@" ; TAIL_WHIP
-	db "どくばり@" ; POISON_STING
-	db "ダブルニードル@" ; TWINEEDLE
-	db "ミサイルばり@" ; PIN_MISSILE
-	db "にらみつける@" ; LEER
-	db "かみつく@" ; BITE
-	db "なきごえ@" ; GROWL
-	db "ほえる@" ; ROAR
-	db "うたう@" ; SING
-	db "ちょうおんぱ@" ; SUPERSONIC
-	db "ソニックブーム@" ; SONICBOOM
-	db "かなしばり@" ; DISABLE
-	db "ようかいえき@" ; ACID
-	db "ひのこ@" ; EMBER
-	db "かえんほうしゃ@" ; FLAMETHROWER
-	db "しろいきり@" ; MIST
-	db "みずでっぽう@" ; WATER_GUN
-	db "ハイドロポンプ@" ; HYDRO_PUMP
-	db "なみのり@" ; SURF
-	db "れいとうビーム@" ; ICE_BEAM
-	db "ふぶき@" ; BLIZZARD
-	db "サイケこうせん@" ; PSYBEAM
-	db "バブルこうせん@" ; BUBBLEBEAM
-	db "オーロラビーム@" ; AURORA_BEAM
-	db "はかいこうせん@" ; HYPER_BEAM
-	db "つつく@" ; PECK
-	db "ドリルくちばし@" ; DRILL_PECK
-	db "じごくぐるま@" ; SUBMISSION
-	db "けたぐり@" ; LOW_KICK
-	db "カウンター@" ; COUNTER
-	db "ちきゅうなげ@" ; SEISMIC_TOSS
-	db "かいりき@" ; STRENGTH
-	db "すいとる@" ; ABSORB
-	db "メガドレイン@" ; MEGA_DRAIN
-	db "やどりぎのタネ@" ; LEECH_SEED
-	db "せいちょう@" ; GROWTH
-	db "はっぱカッター@" ; RAZOR_LEAF
-	db "ソーラービーム@" ; SOLARBEAM
-	db "どくのこな@" ; POISONPOWDER
-	db "しびれごな@" ; STUN_SPORE
-	db "ねむりごな@" ; SLEEP_POWDER
-	db "はなびらのまい@" ; PETAL_DANCE
-	db "いとをはく@" ; STRING_SHOT
-	db "りゅうのいかり@" ; DRAGON_RAGE
-	db "ほのおのうず@" ; FIRE_SPIN
-	db "でんきショック@" ; THUNDERSHOCK
-	db "１０まんボルト@" ; THUNDERBOLT
-	db "でんじは@" ; THUNDER_WAVE
-	db "かみなり@" ; THUNDER
-	db "いわおとし@" ; ROCK_THROW
-	db "じしん@" ; EARTHQUAKE
-	db "じわれ@" ; FISSURE
-	db "あなをほる@" ; DIG
-	db "どくどく@" ; TOXIC
-	db "ねんりき@" ; CONFUSION
-	db "サイコキネシス@" ; PSYCHIC_M
-	db "さいみんじゅつ@" ; HYPNOSIS
-	db "ヨガのポーズ@" ; MEDITATE
-	db "こうそくいどう@" ; AGILITY
-	db "でんこうせっか@" ; QUICK_ATTACK
-	db "いかり@" ; RAGE
-	db "テレポート@" ; TELEPORT
-	db "ナイトヘッド@" ; NIGHT_SHADE
-	db "ものまね@" ; MIMIC
-	db "いやなおと@" ; SCREECH
-	db "かげぶんしん@" ; DOUBLE_TEAM
-	db "じこさいせい@" ; RECOVER
-	db "かたくなる@" ; HARDEN
-	db "ちいさくなる@" ; MINIMIZE
-	db "えんまく@" ; SMOKESCREEN
-	db "あやしいひかり@" ; CONFUSE_RAY
-	db "からにこもる@" ; WITHDRAW
-	db "まるくなる@" ; DEFENSE_CURL
-	db "バリアー@" ; BARRIER
-	db "ひかりのかべ@" ; LIGHT_SCREEN
-	db "くろいきり@" ; HAZE
-	db "リフレクター@" ; REFLECT
-	db "きあいだめ@" ; FOCUS_ENERGY
-	db "がまん@" ; BIDE
-	db "ゆびをふる@" ; METRONOME
-	db "オウムがえし@" ; MIRROR_MOVE
-	db "じばく@" ; SELFDESTRUCT
-	db "タマゴばくだん@" ; EGG_BOMB
-	db "したでなめる@" ; LICK
-	db "スモッグ@" ; SMOG
-	db "ヘドロこうげき@" ; SLUDGE
-	db "ホネこんぼう@" ; BONE_CLUB
-	db "だいもんじ@" ; FIRE_BLAST
-	db "たきのぼり@" ; WATERFALL
-	db "からではさむ@" ; CLAMP
-	db "スピードスター@" ; SWIFT
-	db "ロケットずつき@" ; SKULL_BASH
-	db "とげキャノン@" ; SPIKE_CANNON
-	db "からみつく@" ; CONSTRICT
-	db "ドわすれ@" ; AMNESIA
-	db "スプーンまげ@" ; KINESIS
-	db "タマゴうみ@" ; SOFTBOILED
-	db "とびひざげり@" ; HI_JUMP_KICK
-	db "へびにらみ@" ; GLARE
-	db "ゆめくい@" ; DREAM_EATER
-	db "どくガス@" ; POISON_GAS
-	db "たまなげ@" ; BARRAGE
-	db "きゅうけつ@" ; LEECH_LIFE
-	db "あくまのキッス@" ; LOVELY_KISS
-	db "ゴッドバード@" ; SKY_ATTACK
-	db "へんしん@" ; TRANSFORM
-	db "あわ@" ; BUBBLE
-	db "ピヨピヨパンチ@" ; DIZZY_PUNCH
-	db "キノコのほうし@" ; SPORE
-	db "フラッシュ@" ; FLASH
-	db "サイコウェーブ@" ; PSYWAVE
-	db "はねる@" ; SPLASH
-	db "とける@" ; ACID_ARMOR
-	db "クラブハンマー@" ; CRABHAMMER
-	db "だいばくはつ@" ; EXPLOSION
-	db "みだれひっかき@" ; FURY_SWIPES
-	db "ホネブーメラン@" ; BONEMERANG
-	db "ねむる@" ; REST
-	db "いわなだれ@" ; ROCK_SLIDE
-	db "ひっさつまえば@" ; HYPER_FANG
-	db "かくばる@" ; SHARPEN
-	db "テクスチャー@" ; CONVERSION
-	db "トライアタック@" ; TRI_ATTACK
-	db "いかりのまえば@" ; SUPER_FANG
-	db "きりさく@" ; SLASH
-	db "みがわり@" ; SUBSTITUTE
-	db "わるあがき@" ; STRUGGLE
-	db "スケッチ@" ; SKETCH
-	db "トリプルキック@" ; TRIPLE_KICK
-	db "どろぼう@" ; THIEF
-	db "クモのす@" ; SPIDER_WEB
-	db "こころのめ@" ; MIND_READER
-	db "あくむ@" ; NIGHTMARE
-	db "かえんぐるま@" ; FLAME_WHEEL
-	db "いびき@" ; SNORE
-	db "クギをうつ@" ; NAIL_DOWN
-	db "じたばた@" ; FLAIL
-	db "テクスチャー２@" ; CONVERSION2
-	db "こばんなげ@" ; COIN_HURL
-	db "わたほうし@" ; COTTON_SPORE
-	db "きしかいせい@" ; REVERSAL
-	db "うらみ@" ; SPITE
-	db "こなゆき@" ; POWDER_SNOW
-	db "まもる@" ; PROTECT
-	db "マッハパンチ@" ; MACH_PUNCH
-	db "こわいかお@" ; SCARY_FACE
-	db "だましうち@" ; FAINT_ATTACK
-	db "てんしのキッス@" ; SWEET_KISS
-	db "はらだいこ@" ; BELLY_DRUM
-	db "ヘドロばくだん@" ; SLUDGE_BOMB
-	db "どろかけ@" ; MUD_SLAP
-	db "オクタンほう@" ; OCTAZOOKA
-	db "まきびし@" ; SPIKES
-	db "でんじほう@" ; ZAP_CANNON
-	db "みやぶる@" ; FORESIGHT
-	db "みちづれ@" ; DESTINY_BOND
-	db "ほろびのうた@" ; PERISH_SONG
-	db "シンクロ@" ; SYNCHRONIZE
-	db "みきり@" ; DETECT
-	db "ホネホネロック@" ; BONE_LOCK
-	db "ロックオン@" ; LOCK_ON
-	db "げきりん@" ; OUTRAGE
-	db "すなあらし@" ; SANDSTORM
-	db "ギガドレイン@" ; GIGA_DRAIN
-	db "こらえる@" ; ENDURE
-	db "あまえる@" ; CHARM
-	db "ころがる@" ; ROLLOUT
-	db "みねうち@" ; FALSE_SWIPE
-	db "いばる@" ; SWAGGER
-	db "ミルクのみ@" ; MILK_DRINK
-	db "スパーク@" ; SPARK
-	db "れんぞくぎり@" ; FURY_CUTTER
-	db "はがねのつばさ@" ; STEEL_WING
-	db "ストーカー@" ; STALKER
-	db "メロメロ@" ; ATTRACT
-	db "ねごと@" ; SLEEP_TALK
-	db "すずのおと@" ; BELL_CHIME
-	db "おんがえし@" ; RETURN
-	db "プレゼント@" ; PRESENT
-	db "やつあたり@" ; FRUSTRATION
-	db "しんぴのまもり@" ; SAFEGUARD
-	db "いたみわけ@" ; PAIN_SPLIT
-	db "せいなるほのお@" ; SACRED_FIRE
-	db "マグニチュード@" ; MAGNITUDE
-	db "ばくれつパンチ@" ; DYNAMICPUNCH
-	db "メガホーン@" ; MEGAPHONE
-	db "りゅうのいぶき@" ; DRAGONBREATH
-	db "バトンタッチ@" ; BATON_PASS
-	db "アンコール@" ; ENCORE
-	db "おいうち@" ; PURSUIT
-	db "こうそくスピン@" ; RAPID_SPIN
-	db "えさをまく@" ; TEMPT
-	db "アイアンテール@" ; IRON_TAIL
-	db "いしあたま@" ; ROCK_HEAD
-	db "あてみなげ@" ; VITAL_THROW
-	db "あさのひざし@" ; MORNING_SUN
-	db "こうごうせい@" ; SYNTHESIS
-	db "つきのひかり@" ; MOONLIGHT
-	db "めざめるパワー@" ; HIDDEN_POWER
-	db "クロスカッター@" ; CROSS_CUTTER
-	db "たつまき@" ; TWISTER
-	db "あまごい@" ; RAIN_DANCE
-	db "にほんばれ@" ; SUNNY_DAY
-	db "？@" ; F2
-	db "？@" ; F3
-	db "？@" ; F4
-	db "ひっこぬく@" ; UPROOT
-	db "かぜにのる@" ; WIND_RIDE
-	db "みずあそび@" ; WATER_SPORT
-	db "てつわん@" ; STRONG_ARM
-	db "ひかりゴケ@" ; BRIGHT_MOSS
-	db "うずしお@" ; WHIRLPOOL
-	db "とびはねる@" ; BOUNCE
+	db "POUND@" ; POUND
+	db "KARATE CHOP@" ; KARATE_CHOP
+	db "DOUBLESLAP@" ; DOUBLESLAP
+	db "COMET PUNCH@" ; COMET_PUNCH
+	db "MEGA PUNCH@" ; MEGA_PUNCH
+	db "PAY DAY@" ; PAY_DAY
+	db "FIRE PUNCH@" ; FIRE_PUNCH
+	db "ICE PUNCH@" ; ICE_PUNCH
+	db "THUNDERPUNCH@" ; THUNDERPUNCH
+	db "SCRATCH@" ; SCRATCH
+	db "VICEGRIP@" ; VICEGRIP
+	db "GUILLOTINE@" ; GUILLOTINE
+	db "RAZOR WIND@" ; RAZOR_WIND
+	db "SWORDS DANCE@" ; SWORDS_DANCE
+	db "CUT@" ; CUT
+	db "GUST@" ; GUST
+	db "WING ATTACK@" ; WING_ATTACK
+	db "WHIRLWIND@" ; WHIRLWIND
+	db "FLY@" ; FLY
+	db "BIND@" ; BIND
+	db "SLAM@" ; SLAM
+	db "VINE WHIP@" ; VINE_WHIP
+	db "STOMP@" ; STOMP
+	db "DOUBLE KICK@" ; DOUBLE_KICK
+	db "MEGA KICK@" ; MEGA_KICK
+	db "JUMP KICK@" ; JUMP_KICK
+	db "ROLLING KICK@" ; ROLLING_KICK
+	db "SAND ATTACK@" ; SAND_ATTACK
+	db "HEADBUTT@" ; HEADBUTT
+	db "HORN ATTACK@" ; HORN_ATTACK
+	db "FURY ATTACK@" ; FURY_ATTACK
+	db "HORN DRILL@" ; HORN_DRILL
+	db "TACKLE@" ; TACKLE
+	db "BODY SLAM@" ; BODY_SLAM
+	db "WRAP@" ; WRAP
+	db "TAKE DOWN@" ; TAKE_DOWN
+	db "THRASH@" ; THRASH
+	db "DOUBLE-EDGE@" ; DOUBLE_EDGE
+	db "TAIL WHIP@" ; TAIL_WHIP
+	db "POISON STING@" ; POISON_STING
+	db "TWINEEDLE@" ; TWINEEDLE
+	db "PIN MISSILE@" ; PIN_MISSILE
+	db "LEER@" ; LEER
+	db "BITE@" ; BITE
+	db "GROWL@" ; GROWL
+	db "ROAR@" ; ROAR
+	db "SING@" ; SING
+	db "SUPERSONIC@" ; SUPERSONIC
+	db "SONICBOOM@" ; SONICBOOM
+	db "DISABLE@" ; DISABLE
+	db "ACID@" ; ACID
+	db "EMBER@" ; EMBER
+	db "FLAMETHROWER@" ; FLAMETHROWER
+	db "MIST@" ; MIST
+	db "WATER GUN@" ; WATER_GUN
+	db "HYDRO PUMP@" ; HYDRO_PUMP
+	db "SURF@" ; SURF
+	db "ICE BEAM@" ; ICE_BEAM
+	db "BLIZZARD@" ; BLIZZARD
+	db "PSYBEAM@" ; PSYBEAM
+	db "BUBBLEBEAM@" ; BUBBLEBEAM
+	db "AURORA BEAM@" ; AURORA_BEAM
+	db "HYPER BEAM@" ; HYPER_BEAM
+	db "PECK@" ; PECK
+	db "DRILL PECK@" ; DRILL_PECK
+	db "SUBMISSION@" ; SUBMISSION
+	db "LOW KICK@" ; LOW_KICK
+	db "COUNTER@" ; COUNTER
+	db "SEISMIC TOSS@" ; SEISMIC_TOSS
+	db "STRENGTH@" ; STRENGTH
+	db "ABSORB@" ; ABSORB
+	db "MEGA DRAIN@" ; MEGA_DRAIN
+	db "LEECH SEED@" ; LEECH_SEED
+	db "GROWTH@" ; GROWTH
+	db "RAZOR LEAF@" ; RAZOR_LEAF
+	db "SOLARBEAM@" ; SOLARBEAM
+	db "POISONPOWDER@" ; POISONPOWDER
+	db "STUN SPORE@" ; STUN_SPORE
+	db "SLEEP POWDER@" ; SLEEP_POWDER
+	db "PETAL DANCE@" ; PETAL_DANCE
+	db "STRING SHOT@" ; STRING_SHOT
+	db "DRAGON RAGE@" ; DRAGON_RAGE
+	db "FIRE SPIN@" ; FIRE_SPIN
+	db "THUNDERSHOCK@" ; THUNDERSHOCK
+	db "THUNDERBOLT@" ; THUNDERBOLT
+	db "THUNDER WAVE@" ; THUNDER_WAVE
+	db "THUNDER@" ; THUNDER
+	db "ROCK THROW@" ; ROCK_THROW
+	db "EARTHQUAKE@" ; EARTHQUAKE
+	db "FISSURE@" ; FISSURE
+	db "DIG@" ; DIG
+	db "TOXIC@" ; TOXIC
+	db "CONFUSION@" ; CONFUSION
+	db "PSYCHIC@" ; PSYCHIC_M
+	db "HYPNOSIS@" ; HYPNOSIS
+	db "MEDITATE@" ; MEDITATE
+	db "AGILITY@" ; AGILITY
+	db "QUICK ATTACK@" ; QUICK_ATTACK
+	db "RAGE@" ; RAGE
+	db "TELEPORT@" ; TELEPORT
+	db "NIGHT SHADE@" ; NIGHT_SHADE
+	db "MIMIC@" ; MIMIC
+	db "SCREECH@" ; SCREECH
+	db "DOUBLE TEAM@" ; DOUBLE_TEAM
+	db "RECOVER@" ; RECOVER
+	db "HARDEN@" ; HARDEN
+	db "MINIMIZE@" ; MINIMIZE
+	db "SMOKESCREEN@" ; SMOKESCREEN
+	db "CONFUSE RAY@" ; CONFUSE_RAY
+	db "WITHDRAW@" ; WITHDRAW
+	db "DEFENSE CURL@" ; DEFENSE_CURL
+	db "BARRIER@" ; BARRIER
+	db "LIGHT SCREEN@" ; LIGHT_SCREEN
+	db "HAZE@" ; HAZE
+	db "REFLECT@" ; REFLECT
+	db "FOCUS ENERGY@" ; FOCUS_ENERGY
+	db "BIDE@" ; BIDE
+	db "METRONOME@" ; METRONOME
+	db "MIRROR MOVE@" ; MIRROR_MOVE
+	db "SELFDESTRUCT@" ; SELFDESTRUCT
+	db "EGG BOMB@" ; EGG_BOMB
+	db "LICK@" ; LICK
+	db "SMOG@" ; SMOG
+	db "SLUDGE@" ; SLUDGE
+	db "BONE CLUB@" ; BONE_CLUB
+	db "FIRE BLAST@" ; FIRE_BLAST
+	db "WATERFALL@" ; WATERFALL
+	db "CLAMP@" ; CLAMP
+	db "SWIFT@" ; SWIFT
+	db "SKULL BASH@" ; SKULL_BASH
+	db "SPIKE CANNON@" ; SPIKE_CANNON
+	db "CONSTRICT@" ; CONSTRICT
+	db "AMNESIA@" ; AMNESIA
+	db "KINESIS@" ; KINESIS
+	db "SOFTBOILED@" ; SOFTBOILED
+	db "HI JUMP KICK@" ; HI_JUMP_KICK
+	db "GLARE@" ; GLARE
+	db "DREAM EATER@" ; DREAM_EATER
+	db "POISON GAS@" ; POISON_GAS
+	db "BARRAGE@" ; BARRAGE
+	db "LEECH LIFE@" ; LEECH_LIFE
+	db "LOVELY KISS@" ; LOVELY_KISS
+	db "SKY ATTACK@" ; SKY_ATTACK
+	db "TRANSFORM@" ; TRANSFORM
+	db "BUBBLE@" ; BUBBLE
+	db "DIZZY PUNCH@" ; DIZZY_PUNCH
+	db "SPORE@" ; SPORE
+	db "FLASH@" ; FLASH
+	db "PSYWAVE@" ; PSYWAVE
+	db "SPLASH@" ; SPLASH
+	db "ACID ARMOR@" ; ACID_ARMOR
+	db "CRABHAMMER@" ; CRABHAMMER
+	db "EXPLOSION@" ; EXPLOSION
+	db "FURY SWIPES@" ; FURY_SWIPES
+	db "BONEMERANG@" ; BONEMERANG
+	db "REST@" ; REST
+	db "ROCK SLIDE@" ; ROCK_SLIDE
+	db "HYPER FANG@" ; HYPER_FANG
+	db "SHARPEN@" ; SHARPEN
+	db "CONVERSION@" ; CONVERSION
+	db "TRI ATTACK@" ; TRI_ATTACK
+	db "SUPER FANG@" ; SUPER_FANG
+	db "SLASH@" ; SLASH
+	db "SUBSTITUTE@" ; SUBSTITUTE
+	db "STRUGGLE@" ; STRUGGLE
+	db "SKETCH@" ; SKETCH
+	db "TRIPLE KICK@" ; TRIPLE_KICK
+	db "THIEF@" ; THIEF
+	db "SPIDER WEB@" ; SPIDER_WEB
+	db "MIND READER@" ; MIND_READER
+	db "NIGHTMARE@" ; NIGHTMARE
+	db "FLAME WHEEL@" ; FLAME_WHEEL
+	db "SNORE@" ; SNORE
+	db "NAIL DOWN   @" ; NAIL_DOWN
+	db "FLAIL@" ; FLAIL
+	db "CONVERSION2@" ; CONVERSION2
+	db "COIN HURL   @" ; COIN_HURL
+	db "COTTON SPORE@" ; COTTON_SPORE
+	db "REVERSAL@" ; REVERSAL
+	db "SPITE@" ; SPITE
+	db "POWDER SNOW@" ; POWDER_SNOW
+	db "PROTECT@" ; PROTECT
+	db "MACH PUNCH@" ; MACH_PUNCH
+	db "SCARY FACE@" ; SCARY_FACE
+	db "FAINT ATTACK@" ; FAINT_ATTACK
+	db "SWEET KISS@" ; SWEET_KISS
+	db "BELLY DRUM@" ; BELLY_DRUM
+	db "SLUDGE BOMB@" ; SLUDGE_BOMB
+	db "MUD SLAP@" ; MUD_SLAP
+	db "OCTAZOOKA@" ; OCTAZOOKA
+	db "SPIKES@" ; SPIKES
+	db "ZAP CANNON@" ; ZAP_CANNON
+	db "FORESIGHT@" ; FORESIGHT
+	db "DESTINY BOND@" ; DESTINY_BOND
+	db "PERISH SONG@" ; PERISH_SONG
+	db "SYNCHRONIZE@" ; SYNCHRONIZE
+	db "DETECT@" ; DETECT
+	db "BONE LOCK   @" ; BONE_LOCK
+	db "LOCK ON@" ; LOCK_ON
+	db "OUTRAGE@" ; OUTRAGE
+	db "SANDSTORM@" ; SANDSTORM
+	db "GIGA DRAIN@" ; GIGA_DRAIN
+	db "ENDURE@" ; ENDURE
+	db "CHARM@" ; CHARM
+	db "ROLLOUT@" ; ROLLOUT
+	db "FALSE SWIPE@" ; FALSE_SWIPE
+	db "SWAGGER@" ; SWAGGER
+	db "MILK DRINK@" ; MILK_DRINK
+	db "SPARK@" ; SPARK
+	db "FURY CUTTER@" ; FURY_CUTTER
+	db "STEEL WING@" ; STEEL_WING
+	db "STALKER   (B@" ; STALKER
+	db "ATTRACT@" ; ATTRACT
+	db "SLEEP TALK@" ; SLEEP_TALK
+	db "BELL CHIME  @" ; BELL_CHIME
+	db "RETURN@" ; RETURN
+	db "PRESENT@" ; PRESENT
+	db "FRUSTRATION@" ; FRUSTRATION
+	db "SAFEGUARD@" ; SAFEGUARD
+	db "PAIN SPLIT@" ; PAIN_SPLIT
+	db "SACRED FIRE@" ; SACRED_FIRE
+	db "MAGNITUDE@" ; MAGNITUDE
+	db "DYNAMICPUNCH@" ; DYNAMICPUNCH
+	db "MEGAHORN ()@" ; MEGAPHONE
+	db "DRAGONBREATH@" ; DRAGONBREATH
+	db "BATON PASS@" ; BATON_PASS
+	db "ENCORE@" ; ENCORE
+	db "PURSUIT@" ; PURSUIT
+	db "RAPID SPIN@" ; RAPID_SPIN
+	db "TEMPT   SCAT@" ; TEMPT
+	db "IRON TAIL@" ; IRON_TAIL
+	db "ROCK HEAD@" ; ROCK_HEAD
+	db "VITAL THROW@" ; VITAL_THROW
+	db "MORNING SUN@" ; MORNING_SUN
+	db "SYNTHESIS@" ; SYNTHESIS
+	db "MOONLIGHT@" ; MOONLIGHT
+	db "HIDDEN POWER@" ; HIDDEN_POWER
+	db "CROSS CUTTER@" ; CROSS_CUTTER
+	db "TWISTER@" ; TWISTER
+	db "RAIN DANCE@" ; RAIN_DANCE
+	db "SUNNY DAY@" ; SUNNY_DAY
+	db " (BLANK  SLO@" ; F2
+	db " (BLANK  SLO@" ; F3
+	db " (BLANK  SLO@" ; F4
+	db "UPROOT   PUL@" ; UPROOT
+	db "WIND RIDE   @" ; WIND_RIDE
+	db "WATER SPORT @" ; WATER_SPORT
+	db "STRONG ARM  @" ; STRONG_ARM
+	db "BRIGHT MOSS @" ; BRIGHT_MOSS
+	db "WHIRLPOOL@" ; WHIRLPOOL
+	db "BOUNCE@" ; BOUNCE

@@ -282,14 +282,14 @@ PlaceCommandCharacter:
 	inc de
 	jp PlaceNextChar
 
-TMCharText::      db "わざマシン@"
-TrainerCharText:: db "トレーナー@"
-PCCharText::      db "パソコン@"
-RocketCharText::  db "ロケットだん@"
-POKeCharText::    db "ポケモン@"
+TMCharText::      db "TM@"
+TrainerCharText:: db "TRAINER@"
+PCCharText::      db "PC@"
+RocketCharText::  db "ROCKET@"
+POKeCharText::    db "POKéMON@"
 SixDotsCharText:: db "⋯⋯@"
-EnemyText::       db "てきの　@"
-GaCharacterTExt:: db "が　@"
+EnemyText::       db "Enemy @"
+GaCharacterTExt:: db " @"
 
 ContText::
 	push de

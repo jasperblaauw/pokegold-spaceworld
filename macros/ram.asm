@@ -110,12 +110,12 @@ MACRO box
 \1MonOTs::
 	; \1Mon1OT - \1Mon30OT
 	for n, 1, MONS_PER_BOX + 1
-	\1Mon{d:n}OT:: ds PLAYER_NAME_LENGTH
+	\1Mon{d:n}OT:: ds BOX_MON_OT_LENGTH
 	endr
 \1MonNicknames::
 	; \1Mon1Nickname - \1Mon30Nickname
 	for n, 1, MONS_PER_BOX + 1
-	\1Mon{d:n}Nickname:: ds MON_NAME_LENGTH
+	\1Mon{d:n}Nickname:: ds BOX_MON_NAME_LENGTH
 	endr
 \1MonNicknamesEnd::
 \1End::

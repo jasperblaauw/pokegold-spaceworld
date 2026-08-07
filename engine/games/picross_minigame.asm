@@ -463,6 +463,7 @@ PicrossMinigame:
 
 .ErrorBitmap:
 	pushc
+	newcharmap picross_bitmap ; fresh charmap so " " isn't a redef of the global space
 	charmap " ", 0
 	charmap "█", 1
 	db " ██ ██  ██  ███ ██  "

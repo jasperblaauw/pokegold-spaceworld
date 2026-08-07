@@ -246,13 +246,13 @@ PlacePartyMember::
 	cp PARTYMENUACTION_GIVE_MON_FEMALE
 	jp z, .PlacePartyMonGender
 	push hl
-	ld bc, -15
+	ld bc, SCREEN_WIDTH ; row below the name, col 3
 	add hl, bc
 	ld de, wTempMonStatus
 	call PlaceStatusString
 	pop hl
 	push hl
-	ld bc, -12
+	ld bc, SCREEN_WIDTH + 8 ; row below the name (with the level/status), col 11
 	add hl, bc
 	ld b, 0
 	call DrawEnemyHP
@@ -278,7 +278,7 @@ PlacePartyMember::
 	call PlaceString
 	pop hl
 .PrintLevel
-	ld bc, 5
+	ld bc, SCREEN_WIDTH + 5 ; row below the name, col 8 (right against the HP bar at col 11)
 	add hl, bc
 	push de
 	call PrintLevel

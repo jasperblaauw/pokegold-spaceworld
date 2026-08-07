@@ -423,17 +423,17 @@ SECTION "Bank 01 Garbage", ROMX
 
 if DEF(_DEBUG)
 	if DEF(_GOLD)
-	ds 939, $39, $00 ; feature/completion: reclaimed 43 bytes for CheckIfSaveFileExists
+	ds 815, $39, $00 ; feature/completion: reclaimed 43 + 8 + 116 (English item names) bytes
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/debug/bank01_silver.2bpp", 85 ; feature/completion: 42 + 43 reclaimed
+INCBIN "garbage/debug/bank01_silver.2bpp", 209 ; feature/completion: 42 + 43 + 8 + 116 (English items) reclaimed
 	endc
 else
 	if DEF(_GOLD)
-INCBIN "garbage/bank01_gold.2bpp", 82 ; feature/completion: 39 + 43 reclaimed
+INCBIN "garbage/bank01_gold.2bpp", 206 ; feature/completion: 39 + 43 + 8 + 116 (English items) reclaimed
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/bank01_silver.2bpp", 82 ; feature/completion: 39 + 43 reclaimed
+INCBIN "garbage/bank01_silver.2bpp", 206 ; feature/completion: 39 + 43 + 8 + 116 (English items) reclaimed
 	endc
 endc
 
@@ -513,17 +513,17 @@ Unreferenced_Corrupt_KnowsMove:
 	prompt
 
 if DEF(_GOLD)
-INCBIN "garbage/debug/bank03_gold.2bpp", 35
+INCBIN "garbage/debug/bank03_gold.2bpp", 39 ; feature/completion: +4 for OT-party nickname default fill
 endc
 if DEF(_SILVER)
-INCBIN "garbage/debug/bank03_silver.2bpp", 35
+INCBIN "garbage/debug/bank03_silver.2bpp", 39 ; feature/completion: +4 for OT-party nickname default fill
 endc
 else
 if DEF(_GOLD)
-INCBIN "garbage/bank03_gold.2bpp", 200
+INCBIN "garbage/bank03_gold.2bpp", 204 ; feature/completion: +4 for OT-party nickname default fill
 endc
 if DEF(_SILVER)
-INCBIN "garbage/bank03_silver.2bpp", 200
+INCBIN "garbage/bank03_silver.2bpp", 204 ; feature/completion: +4 for OT-party nickname default fill
 endc
 endc
 
@@ -534,17 +534,17 @@ if DEF(_DEBUG)
 	db $18, $00 ; leftover of previous graphics
 Unreferenced_UnusedLeaderNameGFX:: INCBIN "gfx/trainer_card/unused_leader_name.2bpp"
 	if DEF(_GOLD)
-INCBIN "garbage/debug/bank04_gold.2bpp", 227
+INCBIN "garbage/debug/bank04_gold.2bpp", 308 ; feature/completion: +81 for English lowercase keyboard
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/debug/bank04_silver.2bpp", 227
+INCBIN "garbage/debug/bank04_silver.2bpp", 308 ; feature/completion: +81 for English lowercase keyboard
 	endc
 else
 	if DEF(_GOLD)
-INCBIN "garbage/bank04_gold.2bpp", 161
+INCBIN "garbage/bank04_gold.2bpp", 242 ; feature/completion: +81 for English lowercase keyboard
 endc
 	if DEF(_SILVER)
-INCBIN "garbage/bank04_silver.2bpp", 161
+INCBIN "garbage/bank04_silver.2bpp", 242 ; feature/completion: +81 for English lowercase keyboard
 	endc
 endc
 
@@ -591,17 +591,17 @@ SECTION "Bank 09 Garbage", ROMX
 
 if DEF(_DEBUG)
 	if DEF(_GOLD)
-INCBIN "garbage/debug/bank09_gold.2bpp", 116
+INCBIN "garbage/debug/bank09_gold.2bpp", 119 ; feature/completion: +3 for battle menu translation
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/debug/bank09_silver.2bpp", 116
+INCBIN "garbage/debug/bank09_silver.2bpp", 119 ; feature/completion: +3 for battle menu translation
 	endc
 else
 	if DEF(_GOLD)
-INCBIN "garbage/bank09_gold.2bpp", 116
+INCBIN "garbage/bank09_gold.2bpp", 119 ; feature/completion: +3 for battle menu translation
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/bank09_silver.2bpp", 116
+INCBIN "garbage/bank09_silver.2bpp", 119 ; feature/completion: +3 for battle menu translation
 	endc
 endc
 
@@ -610,17 +610,17 @@ SECTION "Bank 0a Garbage", ROMX
 
 if DEF(_DEBUG)
 	if DEF(_GOLD)
-INCBIN "garbage/debug/bank0a_gold.2bpp", 62
+INCBIN "garbage/debug/bank0a_gold.2bpp", 72
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/debug/bank0a_silver.2bpp", 62
+INCBIN "garbage/debug/bank0a_silver.2bpp", 72
 	endc
 else
 	if DEF(_GOLD)
-INCBIN "garbage/bank0a_gold.2bpp", 62
+INCBIN "garbage/bank0a_gold.2bpp", 72
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/bank0a_silver.2bpp", 62
+INCBIN "garbage/bank0a_silver.2bpp", 72
 	endc
 endc
 
@@ -686,7 +686,7 @@ SECTION "Bank 0e Garbage", ROMX
 
 if DEF(_DEBUG)
 	if DEF(_GOLD)
-INCBIN "garbage/debug/bank0e_gold.2bpp", 194 ; feature/completion: -6B for reformatted rival party
+INCBIN "garbage/debug/bank0e_gold.2bpp", 355 ; feature/completion: +161 for English trainer names
 	endc
 	if DEF(_SILVER)
 	db -1 ; end
@@ -695,14 +695,14 @@ INCBIN "garbage/debug/bank0e_gold.2bpp", 194 ; feature/completion: -6B for refor
 	db "こうめ@", TRAINERTYPE_ITEM_MOVES
 	db  8, DEX_CLEFAIRY, ITEM_NONE
 	db -1 ; end
-INCBIN "garbage/debug/bank0e_silver.2bpp", 191 ; feature/completion: -6B for reformatted rival party
+INCBIN "garbage/debug/bank0e_silver.2bpp", 352 ; feature/completion: +161 for English trainer names
 	endc
 else
 	if DEF(_GOLD)
-INCBIN "garbage/bank0e_gold.2bpp", 194 ; feature/completion: -6B for reformatted rival party
+INCBIN "garbage/bank0e_gold.2bpp", 355 ; feature/completion: +161 for English trainer names
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/bank0e_silver.2bpp", 181 ; feature/completion: -6B for reformatted rival party
+INCBIN "garbage/bank0e_silver.2bpp", 342 ; feature/completion: +161 for English trainer names
 	endc
 endc
 
@@ -711,17 +711,17 @@ SECTION "Bank 0f Garbage", ROMX
 
 if DEF(_DEBUG)
 	if DEF(_GOLD)
-INCBIN "garbage/debug/bank0f_gold.2bpp", 83 ; feature/completion: 75 + 8 reclaimed (wBattleLossContinues)
+INCBIN "garbage/debug/bank0f_gold.2bpp", 86 ; feature/completion: 75 + 8 (wBattleLossContinues) + 3 ("no will to fight" translation)
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/debug/bank0f_silver.2bpp", 83 ; feature/completion: 75 + 8 reclaimed
+INCBIN "garbage/debug/bank0f_silver.2bpp", 86 ; feature/completion: 75 + 8 + 3
 	endc
 else
 	if DEF(_GOLD)
-INCBIN "garbage/bank0f_gold.2bpp", 83 ; feature/completion: 75 + 8 reclaimed
+INCBIN "garbage/bank0f_gold.2bpp", 86 ; feature/completion: 75 + 8 + 3
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/bank0f_silver.2bpp", 83 ; feature/completion: 75 + 8 reclaimed
+INCBIN "garbage/bank0f_silver.2bpp", 86 ; feature/completion: 75 + 8 + 3
 	endc
 endc
 
@@ -799,12 +799,12 @@ Unreferenced_Corrupt_LeafyEvosAttacks4:
 if DEF(_GOLD)
 	db $E6, $6D, $C3, $FF ; garbage
 
-INCBIN "garbage/debug/bank10_gold.2bpp", 32 ; feature/completion: -32B for restored evolutions
+INCBIN "garbage/debug/bank10_gold.2bpp", 928 ; feature/completion: +896 for English move names
 endc
 if DEF(_SILVER)
 	db 0, 0, 0, 0 ; garbage
 
-INCBIN "garbage/debug/bank10_silver.2bpp", 32 ; feature/completion: -32B for restored evolutions
+INCBIN "garbage/debug/bank10_silver.2bpp", 928 ; feature/completion: +896 for English move names
 endc
 else
 	if DEF(_GOLD)
@@ -849,10 +849,10 @@ else
 	db 63, MOVE_SOLARBEAM
 	db 0 ; no more level-up moves
 	db $1E, $DF, $90, $F6 ; garbage
-	INCBIN "garbage/bank10_gold.2bpp", 32 ; feature/completion: -32B for restored evolutions
+	INCBIN "garbage/bank10_gold.2bpp", 928 ; feature/completion: +896 for English move names
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/bank10_silver.2bpp", 218 ; feature/completion: +32B skipped for restored evolutions
+INCBIN "garbage/bank10_silver.2bpp", 1114 ; feature/completion: +896 for English move names
 	endc
 endc
 
@@ -916,17 +916,17 @@ SECTION "Bank 14 Garbage", ROMX
 
 if DEF(_DEBUG)
 	if DEF(_GOLD)
-	INCBIN "garbage/debug/bank14_gold.2bpp", 116
+	INCBIN "garbage/debug/bank14_gold.2bpp", 1421 ; feature/completion: +1255 for English Pokémon names, +10 for SGB party menu HP-bar fix
 	endc
 	if DEF(_SILVER)
-	INCBIN "garbage/debug/bank14_silver.2bpp", 116
+	INCBIN "garbage/debug/bank14_silver.2bpp", 1421 ; feature/completion: +1255 for English Pokémon names, +10 for SGB party menu HP-bar fix
 	endc
 else
 	if DEF(_GOLD)
-	INCBIN "garbage/bank14_gold.2bpp", 116
+	INCBIN "garbage/bank14_gold.2bpp", 1421 ; feature/completion: +1255 for English Pokémon names, +10 for SGB party menu HP-bar fix
 	endc
 	if DEF(_SILVER)
-	INCBIN "garbage/bank14_silver.2bpp", 116
+	INCBIN "garbage/bank14_silver.2bpp", 1421 ; feature/completion: +1255 for English Pokémon names, +10 for SGB party menu HP-bar fix
 	endc
 endc
 

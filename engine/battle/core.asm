@@ -2311,7 +2311,7 @@ CheckIfCurPartyMonIsFitToFight:
 	ret
 
 BattleText_TheresNoWillToBattle:
-	text "たたかう　きりょくが　ない！"
+	text "No will to fight!"
 	prompt
 
 TryToRunAwayFromBattle:
@@ -3219,9 +3219,9 @@ BattleMenu:
 	cp 1
 	jp z, BattleMenu_Fight
 	cp 2
-	jp z, BattleMenu_Pack
-	cp 3
 	jp z, BattleMenu_PKMN
+	cp 3
+	jp z, BattleMenu_Pack
 	cp 4
 	jp z, BattleMenu_Run
 	jr .loop
@@ -4117,7 +4117,7 @@ MoveInfoBox:
 	callfar UpdateMoveData
 	ld a, [wPlayerMoveStruct]
 	ld b, a
-	hlcoord 15, 16
+	hlcoord 10, 16
 	predef PrintMoveType
 
 .done

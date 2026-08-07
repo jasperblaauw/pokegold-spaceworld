@@ -51,14 +51,22 @@ BlkPacket_SlotMachine:
 	attr_blk_data %011, 0,0,0, 00,12, 19,17
 
 BlkPacket_PartyMenu:
+; feature/completion: the per-mon HP-color blocks below shifted down 1 row
+; (y1/y2 +1) to match the English-layout row swap in party_menu.asm (the HP
+; bar/text now sit 1 row lower than the JP layout). Also fixed their region
+; mask %010 (line/border only, so the bar interior was never colored — SGB_
+; ApplyPartyMenuHPPals only ever pokes the palette byte, not this mask) to
+; %011, matching BlkPacket_Battle's identical pattern (palette values \2=\3=
+; health color, \4=0, mask=%011) for the same kind of small filled HP-color
+; rect.
 	attr_blk 7
-	attr_blk_data %111, 0,0,1, 00,00, 02,12
-	attr_blk_data %010, 0,0,0, 12,00, 18,01
-	attr_blk_data %010, 0,0,0, 12,02, 18,03
-	attr_blk_data %010, 0,0,0, 12,04, 18,05
-	attr_blk_data %010, 0,0,0, 12,06, 18,07
-	attr_blk_data %010, 0,0,0, 12,08, 18,09
-	attr_blk_data %010, 0,0,0, 12,10, 18,11
+	attr_blk_data %111, 0,0,1, 00,00, 02,15 ; widened to row 15: icons are 2 tiles tall, so mon 5's (index*16+26 px) spans tile rows 13-15, past the old y2=12
+	attr_blk_data %011, 0,0,0, 12,01, 18,02
+	attr_blk_data %011, 0,0,0, 12,03, 18,04
+	attr_blk_data %011, 0,0,0, 12,05, 18,06
+	attr_blk_data %011, 0,0,0, 12,07, 18,08
+	attr_blk_data %011, 0,0,0, 12,09, 18,10
+	attr_blk_data %011, 0,0,0, 12,11, 18,12
 	ds 4
 
 BlkPacket_TrainerGear:

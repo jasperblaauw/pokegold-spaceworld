@@ -18,18 +18,18 @@ CommonBattleMenu:
 
 BattleMenuHeader:
 	db MENU_BACKUP_TILES
-	menu_coords 9, 12, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1
+	menu_coords 8, 12, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1 ; one tile wider than JP, like retail: room for FIGHT/PACK without the cursor overlapping the next column
 	dw .MenuData
 	db 1
 
 .MenuData:
 	db STATICMENU_CURSOR
 	dn 2, 2
-	db 5
-	db "たたかう@" ; "FIGHT"
-	db "どうぐ@"   ; "ITEM"
-	db "#@"       ; "<PK><MN>"
-	db "にげる@"   ; "RUN"
+	db 6 ; column pitch: widest word (FIGHT/PACK) + 1 gap col before the next column
+	db "FIGHT@"
+	db "<PK><MN>@"
+	db "PACK@"
+	db "RUN@"
 
 SafariBattleMenuHeader:
 	db MENU_BACKUP_TILES

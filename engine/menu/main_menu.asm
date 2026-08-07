@@ -23,7 +23,10 @@ InitializeNewGameWRAM:
 	call ByteFill
 
 	ld hl, wPlayerName
-	ld bc, wBoxMonNicknamesEnd - wPlayerName
+	; Clears the contiguous Game Data + Party block. wBox is no longer at the end
+	; of this block (it moved into the Map Buffer union to save WRAM) but is still
+	; zeroed by the wShadowOAM..wNewGameWRAMEnd ByteFill above.
+	ld bc, wPokemonDataEnd - wPlayerName
 	xor a
 	call ByteFill
 
@@ -211,7 +214,7 @@ MainMenu::
 
 MainMenuHeader:
 	db MENU_BACKUP_TILES
-	menu_coords 0, 0, 13, 7
+	menu_coords 0, 0, 14, 7 ; widened (was 13) for the English "PLAY POKéMON" item
 	dw .MenuData
 	db 1 ; default option
 
@@ -223,11 +226,11 @@ MainMenuHeader:
 	dw .Strings
 
 .Strings:
-	db "つづきから　はじめる@"
-	db "さいしょから　はじめる@"
-	db "せっていを　かえる@"
-	db "#を　あそぶ@"
-	db "じかんセット@"
+	db "CONTINUE@"
+	db "NEW GAME@"
+	db "OPTION@"
+	db "PLAY #@"
+	db "SET TIME@"
 
 MainMenuJumptable:
 	dw Continue
@@ -354,10 +357,12 @@ PrintPlayTime::
 	jp PrintNumber
 
 PlayerInfoText:
-	db   "しゅじんこう"
-	next "もっているバッジ　　　　こ"
-	next "#ずかん　　　　ひき"
-	next "プレイじかん"
+; Numbers/name are placed separately at fixed columns (name col13, badges col14,
+; dex col13, time col12); keep these labels short so they don't collide.
+	db   "PLAYER"
+	next "BADGES"
+	next "POKéDEX"
+	next "TIME"
 	text_end
 
 NewGame::

@@ -197,6 +197,7 @@ wNamingScreenCursorObjectPointer:: dw
 wNamingScreenLastCharacter:: db
 wNamingScreenStringEntryCoordY:: db
 wNamingScreenStringEntryCoordX:: db
+wNamingScreenLetterCase:: db ; 0 = UPPER, 1 = lower (toggled with SELECT)
 
 NEXTU
 ds 200
@@ -328,6 +329,20 @@ wLinkData::
 wOverworldMapBlocks:: ds 1300
 wLinkDataEnd::
 wOverworldMapBlocksEnd::
+
+NEXTU
+
+; The PC box (wBox) overlaps the overworld map buffer / link data. All arms of
+; this union are mutually exclusive with box access: the box is only touched
+; inside Bill's/Someone's PC, during which the overworld isn't running and its
+; map is reloaded from ROM on exit. This frees ~1.3KB from the fully-packed flat
+; WRAM (no CGB WRAM banking here) so the English-width party/battle/OT name
+; buffers fit. wBox is inside InitializeNewGameWRAM's first ByteFill range
+; (wShadowOAM..wNewGameWRAMEnd), so it is still zeroed on New Game.
+; NOTE for M1e (box implementation): verify the overworld map is reloaded when
+; the PC closes (the blocks here are clobbered while a box is open) and that link
+; transfer and box access never run at the same time.
+wBox:: box wBox
 
 NEXTU
 	ds 700
@@ -548,8 +563,8 @@ wBattle::
 wEnemyMoveStruct:: move_struct wEnemyMoveStruct
 wPlayerMoveStruct:: move_struct wPlayerMoveStruct
 
-wEnemyMonNickname:: ds 6
-wBattleMonNickname:: ds 6
+wEnemyMonNickname:: ds MON_NAME_LENGTH
+wBattleMonNickname:: ds MON_NAME_LENGTH
 
 UNION
 ; battle mon
@@ -1493,9 +1508,9 @@ wOptionsEnd::
 SECTION "Game Data", WRAM0
 
 wGameData::
-wPlayerName:: ds 6
+wPlayerName:: ds PLAYER_NAME_LENGTH
 
-wMomsName:: ds 6
+wMomsName:: ds PLAYER_NAME_LENGTH
 
 wPlayerID:: dw
 
@@ -1603,7 +1618,7 @@ wPCItems:: ds MAX_PC_ITEMS * 2 + 1
 
 wRegisteredItem:: db
 wRegisteredItemQuantity:: db
-wRivalName:: ds 6
+wRivalName:: ds PLAYER_NAME_LENGTH
 	ds 6
 
 wPlayerState:: db
@@ -1891,7 +1906,8 @@ ENDU
 
 wPokemonDataEnd::
 
-wBox:: box wBox
+; wBox lives in the "Map Buffer" WRAM section (overlaps wOverworldMapBlocks) to
+; save space in this packed flat WRAM — see the note there.
 
 
 SECTION "Stack Bottom", WRAM0

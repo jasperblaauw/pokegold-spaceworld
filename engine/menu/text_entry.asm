@@ -87,15 +87,14 @@ GetNamingScreenSetup:
 	call GetPokemonName
 	hlcoord 5, 2
 	call PlaceString
-	ld l, c
-	ld h, b
+	hlcoord 2, 4
 	ld de, .NicknameText
 	call PlaceString
-	call .StoreSpriteIconParams
+	call .StoreMonIconParams
 	ret
 
 .NicknameText
-	db "のニックネームは？@"
+	db "NICKNAME?@"
 
 .Player:
 	ld de, GoldSpriteGFX
@@ -107,7 +106,7 @@ GetNamingScreenSetup:
 	ret
 
 .NameText:
-	db "あなた　の　なまえは？@"
+	db "YOUR NAME?@"
 
 .Rival:
 	ld de, SilverSpriteGFX
@@ -120,7 +119,7 @@ GetNamingScreenSetup:
 
 .RivalText:
 ; the ret just preceeding this would make the first word Rival.
-	db "ライバル　の　なまえは？@"
+	db "RIVAL'S NAME?@"
 
 .Mom:
 	ld de, MomSpriteGFX
@@ -132,7 +131,7 @@ GetNamingScreenSetup:
 	ret
 
 .MomText:
-	db "ははおや　の　なまえは？@"
+	db "MOTHER'S NAME?@"
 
 .Box:
 	ld de, PokeBallSpriteGFX
@@ -156,7 +155,7 @@ GetNamingScreenSetup:
 	ret
 
 .BoxText:
-	db "バンク　の　なまえは？@"
+	db "BOX NAME?@"
 
 .LoadSprite:
 ; copies the walking sprite at de into the top of VRAM
@@ -181,8 +180,13 @@ GetNamingScreenSetup:
 	call InitSpriteAnimStruct
 	ret
 
+.StoreMonIconParams:
+	ld a, MON_NAME_LENGTH - 1 ; 10 usable characters
+	jr .storeicon
+
 .StoreSpriteIconParams:
-	ld a, $05
+	ld a, PLAYER_NAME_LENGTH - 1 ; 7 usable characters
+.storeicon:
 	ld [wNamingScreenMaxNameLength], a
 	hlcoord 6, 5
 	ld a, l
@@ -192,7 +196,7 @@ GetNamingScreenSetup:
 	ret
 
 .StoreBoxIconParams:
-	ld a, $08
+	ld a, BOX_NAME_LENGTH - 1 ; 8 usable characters
 	ld [wNamingScreenMaxNameLength], a
 	hlcoord 5, 5
 	ld a, l
@@ -215,9 +219,20 @@ NamingScreen_InitText:
 	hlcoord 1, 9
 	lb bc, $08, $12
 	call ClearBox
-	hlcoord 2, 9
+	; fall through to place the keyboard
+
+NamingScreen_PlaceKeyboard:
+; Draws the on-screen keyboard, choosing the UPPER or lower page from
+; wNamingScreenLetterCase. Called on setup and whenever SELECT toggles case.
+; English keyboard is 5 rows of 17 tiles (was 8 for the kana grid).
 	ld de, TextEntryChars
-	ld b, $08
+	ld a, [wNamingScreenLetterCase]
+	and a
+	jr z, .gotpage
+	ld de, TextEntryCharsLower
+.gotpage
+	hlcoord 2, 9
+	ld b, $05
 
 .outerloop
 	ld c, $11
@@ -319,6 +334,9 @@ NamingScreenJoypadLoop:
 	ld a, [hl]
 	and PAD_START
 	jr nz, .jumpstart
+	ld a, [hl]
+	and PAD_SELECT
+	jr nz, .jumpselect
 	ret
 
 .jumpa
@@ -340,6 +358,20 @@ NamingScreenJoypadLoop:
 	call NamingScreenStoreEntry
 	ld hl, wJumptableIndex
 	set 7, [hl]
+	ret
+
+.jumpselect
+; toggle UPPER <-> lower and redraw the keyboard
+	ld a, [wNamingScreenLetterCase]
+	xor 1
+	ld [wNamingScreenLetterCase], a
+	xor a
+	ldh [hBGMapMode], a
+	call NamingScreen_PlaceKeyboard
+	ld a, $01
+	ldh [hBGMapMode], a
+	xor a
+	ldh [hJoypadSum], a
 	ret
 
 NamingScreen_AnimateCursor:
@@ -387,7 +419,7 @@ NamingScreen_AnimateCursor:
 	ld hl, SPRITEANIMSTRUCT_VAR2
 	add hl, bc
 	ld a, [hl]
-	cp $07
+	cp $04 ; 5 keyboard rows (0-4)
 	jr nc, .skip3
 	inc [hl]
 	jr .escape
@@ -404,7 +436,7 @@ NamingScreen_AnimateCursor:
 	dec [hl]
 	jr .escape
 .skip4
-	ld [hl], $07
+	ld [hl], $04 ; wrap to bottom keyboard row (5 rows: 0-4)
 	jr .escape
 .escape
 	ld hl, SPRITEANIMSTRUCT_VAR1
@@ -657,6 +689,7 @@ LoadNamingScreenGFX:
 	ld [wJumptableIndex], a
 	ldh [hBGMapMode], a
 	ld [wNamingScreenCurNameLength], a
+	ld [wNamingScreenLetterCase], a ; start in UPPER case
 	ldh [hJoypadSum], a
 	ld a, $07
 	ldh [hWX], a

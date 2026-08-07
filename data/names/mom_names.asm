@@ -7,7 +7,7 @@ MomNameMenuHeader:
 .Names:
 	db STATICMENU_CURSOR | STATICMENU_PLACE_TITLE | STATICMENU_DISABLE_B
 	db NUM_PLAYER_NAMES + 1 ; items
-	db "じぶんで　きめる@"
+	db "NEW NAME@"
 
 	list_start PLAYER_NAME_LENGTH - 1
 FOR n, 1, NUM_PLAYER_NAMES + 1
@@ -15,4 +15,4 @@ FOR n, 1, NUM_PLAYER_NAMES + 1
 ENDR
 	assert_list_length NUM_PLAYER_NAMES
 	db 3 ; x offset for the title string
-	db "なまえこうほ@"
+	db "NAME@"

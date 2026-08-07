@@ -404,31 +404,34 @@ DisplayOptionsMenu:
 	ld [hl], a
 	ret
 
+; The option words are column-aligned to the hardcoded cursor X positions
+; (text speed 1/8/15; on-off options 1/10) — each word starts one column right of
+; its arrow. Keep these columns if editing.
 .OptionsText_TextSpeed:
-	db "はなしの　はやさ"
-	next "　はやい　　　　ふつう　　　　おそい"
+	db "TEXT SPEED"
+	next " FAST   NORMAL SLOW"
 	text_end
 
 .OptionsText_BattleScene:
-	db "せんとう　アニメーション"
-	next "　じっくり　みる　　とばして　みる"
+	db "BATTLE SCENE"
+	next " ON       OFF"
 	text_end
 
 .OptionsText_BattleStyle:
-	db "しあいの　ルール"
-	next "　いれかえタイプ　　かちぬきタイプ"
+	db "BATTLE STYLE"
+	next " SHIFT    SET"
 	text_end
 
 .OptionsText_Sound:
-	db "　モノラル　　　　　ステレオ"
+	db " MONO     STEREO"
 	text_end
 
 .OptionsText_Cancel:
-	db "　おわり"
+	db " EXIT"
 	text_end
 
 .OptionsText_FrameType:
-	db "　わく　を　かえる　"
+	db " FRAME"
 	text_end
 
 ; Table that indicates how the 3 text speed options affect frame delays.
