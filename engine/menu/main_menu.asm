@@ -95,9 +95,46 @@ endc
 	ret
 
 CheckIfSaveFileExists:
-	ld a, BANK(sOptions)
+; feature/completion: the demo trusted sOptions bit 0 as the "save exists" flag,
+; but that byte is $ff on fresh/never-properly-saved SRAM (see InitOptions'
+; comment), so the menu showed "Continue" for a nonexistent save and then loaded
+; garbage ("save data corrupted"). Validate the real game-data checksum instead
+; (same test VerifyChecksum uses on load): a save exists only if sChecksum+2 is
+; not the $ff sentinel AND matches the checksum of sGameData.
+	ld a, BANK(sChecksum)
 	call OpenSRAM
-	ld a, [sOptions]
+	ld a, [sChecksum + 2]
+	cp $ff
+	jr z, .no_save
+	ld a, BANK(sGameData)
+	call OpenSRAM
+; inline checksum over sGameData (Checksum lives in another bank; this is the
+; same additive/complement algorithm)
+	ld hl, sGameData
+	ld bc, sGameDataEnd - sGameData
+	xor a
+	ld d, a
+.checksum_loop
+	ld a, [hli]
+	add d
+	ld d, a
+	dec bc
+	ld a, b
+	or c
+	jr nz, .checksum_loop
+	ld a, d
+	cpl
+	ld b, a
+	ld a, BANK(sChecksum)
+	call OpenSRAM
+	ld a, [sChecksum + 2]
+	cp b
+	jr nz, .no_save
+	ld a, 1 ; valid save present
+	jr .store
+.no_save
+	xor a
+.store
 	ld [wSaveFileExists], a
 	call CloseSRAM
 	ret
@@ -146,19 +183,21 @@ MainMenu::
 	ld hl, wSaveFileExists
 	bit 0, [hl]
 	jr nz, .setMenuContinue
-	xor a
-	jr .skip
+	ld a, M_NEW_GAME
+	jr .checkSetTimeCombo
 .setMenuContinue
 	ld a, M_CONTINUE
-.skip
+.checkSetTimeCombo
+; feature/completion: the demo discarded this save-based choice and forced M_PLAY_GAME,
+; hiding the real New Game / Continue menu. Keep the save-based choice; preserve the
+; hidden DOWN+B+A -> Set Time combo as an override.
+	ld b, a
 	ldh a, [hJoyState]
 	and PAD_DOWN | PAD_B | PAD_A
 	cp PAD_DOWN | PAD_B | PAD_A
-	jr nz, .setMenuPlay
+	ld a, b
+	jr nz, .triggerMenu
 	ld a, M_SET_TIME
-	jr .triggerMenu
-.setMenuPlay
-	ld a, M_PLAY_GAME
 .triggerMenu
 	ld [wWhichIndexSet], a
 	ld hl, MainMenuHeader
@@ -336,6 +375,6 @@ NewGame::
 	ldh [hMapAnims], a
 	ld a, [wDebugFlags]
 	bit DEBUG_FIELD_F, a
-	jp z, DemoStart
+	jp z, GameStart ; feature/completion: boot the full authored intro, not the demo
 	call DebugSetUpPlayer
 	jp IntroCleanup

@@ -176,10 +176,26 @@ GamaGroup::
 	db 37, MON_GROWLITHE, MON_VULPIX, 0
 
 RivalGroup::
-	db  5, DEX_KURUSU, 0
-	db  5, DEX_HAPPA, 0
-	db  5, DEX_HONOGUMA, 0
-; Leftover Hiker data from Red/Blue
+	; feature/completion: these first 3 entries (chosen by GetLabPokemon via
+	; wOtherTrainerID 1/2/3) were leftover Red/Blue-format data — `db level, species, 0`
+	; with no name, no TRAINERTYPE byte and no -1 terminator — so ReadTrainerParty scanned
+	; for a nonexistent $ff, ran into neighbouring data and built a garbage battler.
+	; Rewritten in this build's real trainer format. Species use DEX_* (like the working
+	; trainers in this file); the rival's on-screen name comes from wRivalName via GetOTName,
+	; so the "@" name here is only a placeholder to satisfy ReadTrainerParty's '@' skip.
+	; ID 1 — rival took Kurusu (water; player chose Honoguma)
+	db "@", TRAINERTYPE_NORMAL
+	db 5, DEX_KURUSU
+	db -1
+	; ID 2 — rival took Happa (grass; player chose Kurusu)
+	db "@", TRAINERTYPE_NORMAL
+	db 5, DEX_HAPPA
+	db -1
+	; ID 3 — rival took Honoguma (fire; player chose Happa)
+	db "@", TRAINERTYPE_NORMAL
+	db 5, DEX_HONOGUMA
+	db -1
+; Leftover Hiker data from Red/Blue (unused; never reached — GetLabPokemon only returns IDs 1-3)
 	db 10, MON_GEODUDE, MON_GEODUDE, MON_ONIX, 0
 	db 15, MON_MACHOP, MON_GEODUDE, 0
 	db 13, MON_GEODUDE, MON_GEODUDE, MON_MACHOP, MON_GEODUDE, 0

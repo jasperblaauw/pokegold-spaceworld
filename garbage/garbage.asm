@@ -423,17 +423,17 @@ SECTION "Bank 01 Garbage", ROMX
 
 if DEF(_DEBUG)
 	if DEF(_GOLD)
-	ds 982, $39, $00
+	ds 939, $39, $00 ; feature/completion: reclaimed 43 bytes for CheckIfSaveFileExists
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/debug/bank01_silver.2bpp", 42
+INCBIN "garbage/debug/bank01_silver.2bpp", 85 ; feature/completion: 42 + 43 reclaimed
 	endc
 else
 	if DEF(_GOLD)
-INCBIN "garbage/bank01_gold.2bpp", 39
+INCBIN "garbage/bank01_gold.2bpp", 82 ; feature/completion: 39 + 43 reclaimed
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/bank01_silver.2bpp", 39
+INCBIN "garbage/bank01_silver.2bpp", 82 ; feature/completion: 39 + 43 reclaimed
 	endc
 endc
 
@@ -686,7 +686,7 @@ SECTION "Bank 0e Garbage", ROMX
 
 if DEF(_DEBUG)
 	if DEF(_GOLD)
-INCBIN "garbage/debug/bank0e_gold.2bpp", 188
+INCBIN "garbage/debug/bank0e_gold.2bpp", 194 ; feature/completion: -6B for reformatted rival party
 	endc
 	if DEF(_SILVER)
 	db -1 ; end
@@ -695,14 +695,14 @@ INCBIN "garbage/debug/bank0e_gold.2bpp", 188
 	db "こうめ@", TRAINERTYPE_ITEM_MOVES
 	db  8, DEX_CLEFAIRY, ITEM_NONE
 	db -1 ; end
-INCBIN "garbage/debug/bank0e_silver.2bpp", 185
+INCBIN "garbage/debug/bank0e_silver.2bpp", 191 ; feature/completion: -6B for reformatted rival party
 	endc
 else
 	if DEF(_GOLD)
-INCBIN "garbage/bank0e_gold.2bpp", 188
+INCBIN "garbage/bank0e_gold.2bpp", 194 ; feature/completion: -6B for reformatted rival party
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/bank0e_silver.2bpp", 175
+INCBIN "garbage/bank0e_silver.2bpp", 181 ; feature/completion: -6B for reformatted rival party
 	endc
 endc
 
@@ -711,17 +711,17 @@ SECTION "Bank 0f Garbage", ROMX
 
 if DEF(_DEBUG)
 	if DEF(_GOLD)
-INCBIN "garbage/debug/bank0f_gold.2bpp", 75
+INCBIN "garbage/debug/bank0f_gold.2bpp", 83 ; feature/completion: 75 + 8 reclaimed (wBattleLossContinues)
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/debug/bank0f_silver.2bpp", 75
+INCBIN "garbage/debug/bank0f_silver.2bpp", 83 ; feature/completion: 75 + 8 reclaimed
 	endc
 else
 	if DEF(_GOLD)
-INCBIN "garbage/bank0f_gold.2bpp", 75
+INCBIN "garbage/bank0f_gold.2bpp", 83 ; feature/completion: 75 + 8 reclaimed
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/bank0f_silver.2bpp", 75
+INCBIN "garbage/bank0f_silver.2bpp", 83 ; feature/completion: 75 + 8 reclaimed
 	endc
 endc
 
@@ -799,12 +799,12 @@ Unreferenced_Corrupt_LeafyEvosAttacks4:
 if DEF(_GOLD)
 	db $E6, $6D, $C3, $FF ; garbage
 
-INCBIN "garbage/debug/bank10_gold.2bpp"
+INCBIN "garbage/debug/bank10_gold.2bpp", 32 ; feature/completion: -32B for restored evolutions
 endc
 if DEF(_SILVER)
 	db 0, 0, 0, 0 ; garbage
 
-INCBIN "garbage/debug/bank10_silver.2bpp"
+INCBIN "garbage/debug/bank10_silver.2bpp", 32 ; feature/completion: -32B for restored evolutions
 endc
 else
 	if DEF(_GOLD)
@@ -849,10 +849,10 @@ else
 	db 63, MOVE_SOLARBEAM
 	db 0 ; no more level-up moves
 	db $1E, $DF, $90, $F6 ; garbage
-	INCBIN "garbage/bank10_gold.2bpp"
+	INCBIN "garbage/bank10_gold.2bpp", 32 ; feature/completion: -32B for restored evolutions
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/bank10_silver.2bpp", 186
+INCBIN "garbage/bank10_silver.2bpp", 218 ; feature/completion: +32B skipped for restored evolutions
 	endc
 endc
 

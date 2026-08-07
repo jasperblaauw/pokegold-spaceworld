@@ -1,4 +1,4 @@
-DemoStart::
+DemoStart:: ; unreferenced on feature/completion (NewGame now boots GameStart)
 	ld de, OakPic
 	lb bc, BANK(OakPic), $00
 	call IntroDisplayPicCenteredOrUpperRight
@@ -16,7 +16,7 @@ DemoStart::
 	call DemoSetUpPlayer
 	jp IntroCleanup
 
-GameStart:: ; unreferenced
+GameStart:: ; feature/completion: the full new-game intro, now booted from NewGame
 	ld de, OakPic
 	lb bc, BANK(OakPic), $00
 	call IntroDisplayPicCenteredOrUpperRight

@@ -1697,6 +1697,12 @@ LostBattle:
 	ld hl, RivalWinText
 	call PrintText
 	callfar HealParty
+	; feature/completion: this scripted first rival battle can be lost and the
+	; story continues (Oak's lab scene resumes). Flag it so the overworld does
+	; not white out/reset. wBattleResult stays LOSE so the scene shows the
+	; correct "rival won" dialogue.
+	ld a, 1
+	ld [wBattleLossContinues], a
 	ret
 
 .link

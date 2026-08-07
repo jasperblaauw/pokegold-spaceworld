@@ -1187,7 +1187,11 @@ wStateFlags:: db
 
 wBattleResult:: db
 
-	ds 1
+; feature/completion: nonzero if the just-lost battle is a scripted "can lose"
+; fight (the first rival battle) that the story continues from, so the overworld
+; must NOT white out/reset on loss. Reset at every battle start (ClearBattleRAM),
+; set in LostBattle's rival branch. (Repurposed a reserved padding byte.)
+wBattleLossContinues:: db
 
 wChosenStarter:: db
 wCurMartCount:: db

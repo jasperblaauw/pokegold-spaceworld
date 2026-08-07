@@ -138,14 +138,15 @@ StartMenuItems:
 	db -1
 
 GetStartMenuState:
-; Stores one of four values to wActiveBackpackPocket
-; based on story flags and debug mode.
-; 4 = debug, 3 = starting, 2 = rival beat in lab
-; 1 = pokedex recieved, 0 = chose starter
-	ld b, 4
-	ld hl, wDebugFlags
-	bit DEBUG_FIELD_F, [hl]
-	jr z, .store
+; Selects which StartMenuItems set to show, by story progress. The menu unlocks
+; features as they're obtained: 0 = pre-starter, 1 = chose starter (adds PARTY),
+; 2 = got Pokédex (adds POKEDEX), 3 = rival battled (adds BACKPACK). All four of
+; these sets include SAVE.
+; feature/completion: the demo forced set 4 (the only set WITHOUT SAVE) for all
+; normal, non-debug play, so the player could never save. Removed that shortcut;
+; normal play now uses the same story-progressive, save-enabled sets as the debug
+; path (Debug->FIELD pre-sets every event via SetDemoEventFlags, so it lands on
+; set 3). Set 4 is now unused.
 	ld b, 0
 	CheckEvent SILENT_HILL_LAB_BACK_CHOSE_STARTER
 	jr z, .store

@@ -74,19 +74,29 @@ OverworldLoop_05::
 OverworldLoop_ExitBattle::
 	ld a, [wBattleResult]
 	cp LOSE
-	jr z, .DemoGameOver
+	jr z, .Lost
+.ReturnToMain:
 	ld a, MAPSTATUS_RETURN_TO_MAIN
 	call SetMapStatus
 	ret
 
-.DemoGameOver:
-	ld hl, wJoypadFlags
-	res 4, [hl]
-	ld hl, .text
-	call OpenTextbox
-	call GBFadeOutToBlack
-	jp Init
+.Lost:
+; feature/completion: replaced the demo's game-over reset. A scripted "can lose"
+; battle (the first rival fight) continues the story in-place; any other loss
+; (wild/trainer) whites out the player back to their last respawn point.
+	ld a, [wBattleLossContinues]
+	and a
+	jr nz, .ReturnToMain
 
-.text:
-	text "つぎは　がんばるぞ！！"
-	done
+; White out: heal the party and teleport to the last respawn point. Until a
+; Pokémon Center sets one, fall back to the hometown (Silent Hill).
+	predef HealParty
+	ld a, [wDefaultSpawnPoint]
+	and a
+	jr nz, .haveSpawn
+	ld a, SPAWN_POINT_SILENT
+	ld [wDefaultSpawnPoint], a
+.haveSpawn:
+	ld a, MAPSETUP_TELEPORT
+	ldh [hMapEntryMethod], a
+	jr .ReturnToMain

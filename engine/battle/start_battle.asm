@@ -271,6 +271,7 @@ ClearBattleRAM:
 	xor a
 	ld [wBattlePlayerAction], a
 	ld [wBattleResult], a
+	ld [wBattleLossContinues], a ; feature/completion: default to "loss whites out"
 
 	ld hl, wPartyMenuCursor
 	ld [hli], a
