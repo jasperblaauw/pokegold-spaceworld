@@ -1971,11 +1971,11 @@ DEF Bank34StarterDexOffset EQU 13
 DEF Bank34CorruptOffset EQU $17
 	if DEF(_GOLD)
 	DEF Bank34OldOffset EQU 5
-INCBIN "garbage/debug/bank34_gold.2bpp", 115
+INCBIN "garbage/debug/bank34_gold.2bpp", 150
 	endc
 	if DEF(_SILVER)
 	DEF Bank34OldOffset EQU 0
-	INCBIN "garbage/debug/bank34_silver.2bpp", 115
+	INCBIN "garbage/debug/bank34_silver.2bpp", 150
 	endc
 else
 DEF Bank34NonDebugOffset EQU $1E
@@ -1983,10 +1983,10 @@ DEF Bank34OldOffset EQU -4
 DEF Bank34CorruptOffset EQU -7
 DEF Bank34StarterDexOffset EQU 37
 	if DEF(_GOLD)
-	INCBIN "garbage/bank34_gold.2bpp", 115
+	INCBIN "garbage/bank34_gold.2bpp", 150
 	endc
 	if DEF(_SILVER)
-	INCBIN "garbage/bank34_silver.2bpp", 149
+	INCBIN "garbage/bank34_silver.2bpp", 184
 	endc
 endc
 

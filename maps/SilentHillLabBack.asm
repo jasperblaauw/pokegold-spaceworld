@@ -168,6 +168,7 @@ SilentHillLabBackScript5:
 	call GetPokemonName
 	ld hl, SilentHillLabBackTextString13
 	call OpenTextbox
+	call SilentHillLabBackRemoveRivalBall
 	ld a, SCENE_SILENT_HILL_LAB_BACK_RIVAL_CHOOSING_STARTER3
 	ld [wMapScriptNumber], a
 	ret
@@ -181,10 +182,34 @@ SilentHillLabBackScript6:
 	ret
 
 SilentHillLabBackScript7:
+	call SilentHillLabBackRemovePlayerBall
+	call SilentHillLabBackRemoveRivalBall
 	ld hl, SilentHillLabBackNPCIDs1
 	ld de, SilentHillLabBackTextPointers2
 	call CallMapTextSubroutine
 	ret
+
+; Clears the Poké Balls the player and rival took off the lab-back table.
+; The player's ball is indexed by wChosenStarter (0/1/2 -> honoguma/kurusu/happa);
+; the rival always takes the next ball in the cycle
+; (honoguma->kurusu->happa->honoguma). DeleteObjectStruct removes the sprite and
+; masks the object, so it stays gone for the rest of the map session; the
+; CUTSCENE_OVER scene (Script7) re-applies both on every re-entry, leaving only
+; the third, untaken ball on the table.
+SilentHillLabBackRemovePlayerBall:
+	ld a, [wChosenStarter]
+	add SILENT_HILL_LAB_BACK_STARTER_HONOGUMA
+	jp DeleteObjectStruct
+
+SilentHillLabBackRemoveRivalBall:
+	ld a, [wChosenStarter]
+	inc a
+	cp 3
+	jr c, .no_wrap
+	sub 3
+.no_wrap
+	add SILENT_HILL_LAB_BACK_STARTER_HONOGUMA
+	jp DeleteObjectStruct
 
 SilentHillLabBackText1:
 	CheckEvent SILENT_HILL_LAB_BACK_CHOSE_STARTER
@@ -270,6 +295,7 @@ ConfirmPokemonSelection:
 	callfar GivePoke
 	xor a
 	ld [wPartyMon1 + 1], a
+	call SilentHillLabBackRemovePlayerBall
 	ld a, SCENE_SILENT_HILL_LAB_BACK_RIVAL_CHOOSING_STARTER
 	ld [wMapScriptNumber], a
 	ret
