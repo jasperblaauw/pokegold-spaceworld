@@ -26,6 +26,6 @@ BattleCommand_BellChime:
 	jp PrintNoChangesText
 
 BellChimedText:
-	text "<USER>の"
-	line "ステータスいじょうが　なおった！"
+	text "<USER>'s"
+	line "status is normal!"
 	prompt

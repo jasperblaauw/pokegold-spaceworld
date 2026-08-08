@@ -19,8 +19,9 @@ BattleCommand_StartSandstorm:
 	jp PrintText
 
 .SandstormBrewedText:
-	text "<TARGET>は"
-	line "すなあらしに　まきこまれた！"
+	text "<TARGET> was"
+	line "caught in a"
+	cont "SANDSTORM!"
 	prompt
 
 .failed

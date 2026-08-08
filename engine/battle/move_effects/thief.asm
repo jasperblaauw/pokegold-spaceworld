@@ -91,8 +91,9 @@ BattleCommand_Thief:
 	ret
 
 StoleText:
-	text "<USER>は　<TARGET>から"
+	text "<USER> stole"
 	line "@"
 	text_from_ram wStringBuffer1
-	text "を　うばいとった！"
+	text_start
+	cont "from <TARGET>!"
 	prompt

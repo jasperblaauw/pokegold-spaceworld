@@ -136,8 +136,8 @@ _PushWindow::
 	jr .indefinite_loop
 
 .WindowSaveAreaOverflowText:
-	text "ウィンドウセーブエリアが"
-	next "オーバーしました"
+	text "Window save area"
+	next "overflowed"
 	done
 
 ; Returns the carry flag if any of the other windows overlap with the current window.
@@ -290,8 +290,8 @@ Error_Cant_ExitMenu:
 	jr .infinite_loop
 
 .WindowPoppingErrorText:
-	text "ポップできる　ウィンドウが"
-	next "ありません！"
+	text "No window left"
+	next "to pop!"
 	done
 
 _ExitAllMenus::

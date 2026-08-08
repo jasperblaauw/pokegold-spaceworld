@@ -31,8 +31,8 @@ BattleCommand_Sketch:
 	jp PrintDidntAffectText
 
 SketchedText:
-	text "<USER>は"
+	text "<USER> copied"
 	line "@"
 	text_from_ram wStringBuffer1
-	text "を　ダビングした！"
+	text "!"
 	prompt

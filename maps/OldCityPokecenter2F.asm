@@ -73,7 +73,7 @@ OldCityPokecenter2FText3:
 	ret
 
 OldCityPokecenter2FTextString3:
-	text "おりゃ！"
+	text "Heave-ho!"
 	done
 
 OldCityPokecenter2FText4:
@@ -94,8 +94,9 @@ OldCityPokecenter2FText4:
 	ret
 
 OldCityPokecenter2FTextString4:
-	text "うしろにあるのは"
-	line "タイムマシンです"
+	text "The thing behind"
+	line "me is a TIME"
+	cont "MACHINE."
 	done
 
 ; Supposed to be wMovementObject, wMovementDataBank, wMovementDataAddr in order.

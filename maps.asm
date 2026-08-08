@@ -254,7 +254,6 @@ INCLUDE "maps/SilentHillLabBackUnused.asm"
 SECTION "City Maps", ROMX
 
 INCLUDE "maps/dummy_text_pointers.asm"
-INCLUDE "maps/SilentHill.asm"
 INCLUDE "maps/OldCity.asm"
 INCLUDE "maps/West.asm"
 INCLUDE "maps/HighTech.asm"
@@ -301,8 +300,15 @@ INCLUDE "maps/Route24.asm"
 INCLUDE "maps/Route26.asm"
 
 
-SECTION "Silent Hill Scripts", ROMX
+; feature/completion: the Silent Hill town map and its scripts were split out of
+; "City Maps"/"Silent Hill Scripts" (both bank $36, which ran out of reclaimable
+; garbage padding) into the empty bank $35. A map's attributes, blocks, text
+; pointers and script loader must all share one bank -- `map` in
+; data/maps/maps.asm stores a single `db BANK(\1_MapAttributes)` -- so the map
+; and its script file have to move together.
+SECTION "Silent Hill Town", ROMX
 
+INCLUDE "maps/SilentHill.asm"
 INCLUDE "maps/scripts/SilentHill.asm"
 
 

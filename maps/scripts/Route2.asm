@@ -83,59 +83,76 @@ Route2TextSign1:
 
 if DEF(_GOLD)
 Route2TextString1:
-	text "まあ　かわいらしい　トレーナーやこと"
-	line "うちと　ポケモン　しはります？"
+	text "My, what a sweet"
+	line "little TRAINER."
+	cont "Care for a #"
+	cont "battle with me?"
 	done
 
 Route2TextString2: ; (unused?)
-	text "いやあ　かんにんやわあ"
+	text "Oh my, do forgive"
+	line "me!"
 	done
 
 Route2TextString3:
-	text "かわいい　かおして　つよおすなあ"
-	line "その　ちょうしで　おきばりやす"
+	text "Such a sweet face,"
+	line "and yet so strong."
+	cont "Do keep it up now."
 	done
 endc
 if DEF(_SILVER)
 Route2TextString1:
-	text "うちの　ポケモン"
-	line "そら　もう　かわいいんどすえ"
+	text "My # are"
+	line "ever so adorable,"
+	cont "you know."
 	done
 
 Route2TextString2: ; (unused?)
-	text "うそでしょー！"
-	line "じゃなくて　なに　しはるんよ"
+	text "You can't be"
+	line "serious!"
+	cont "Really, what are"
+	cont "you doing?"
 	done
 
 Route2TextString3:
-	text "プりンちゃんが　かわいそ　どす"
+	text "Poor little"
+	line "JIGGLYPUFF."
 	done
 endc
 
 Route2TextString4:
 if DEF(_GOLD)
-	text "シゲル『おっ　サトシじゃないか！"
+	text "SHIGERU: Oh, if it"
+	line "isn't SATOSHI!"
 
-	para "なんとか　ここまで　これた"
-	line "って　かんじだな"
+	para "Looks like you"
+	line "barely made it"
+	cont "this far."
 endc
 if DEF(_SILVER)
-	text "サトシ『おっ　シゲルじゃないか"
-	line "なんとか　ここまで　これた"
-	cont "って　かんじだな"
+	text "SATOSHI: Oh, if it"
+	line "isn't SHIGERU!"
+	cont "Looks like you"
+	cont "barely made it"
+	cont "this far."
 endc
-	para "じつりょくが　ないのに"
-	line "むり　するなよな"
+	para "Don't push it when"
+	line "you haven't got"
+	cont "the skill."
 
-	para "もっと　ポケモン　あつめるとか"
-	line "いろんな　ポケモン　そだてるとか"
-	cont "やること　あるだろ？"
+	para "Catch more #"
+	line "and raise all"
+	cont "sorts of them<⋯⋯>"
+	cont "You've got things"
+	cont "to do, right?"
 
-	para "ここで　ひきかえしたほうが　いいぜ！"
-	line "じゃあな"
+	para "You'd best turn"
+	line "back here!"
+	cont "See you."
 	done
 
 Route2TextString5:
-	text "ここは　１ばん　どうろ"
-	line "サイレントヒル　⋯⋯　オールドシティ"
+	text "ROUTE 2"
+	line "SILENT HILL <⋯⋯>"
+	cont "OLD CITY"
 	done

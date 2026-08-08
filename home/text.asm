@@ -231,7 +231,7 @@ NullChar:: ; unused
 
 .Text:
 	deciram hEventID, 1, 2
-	text "エラー"
+	text "ERROR"
 	done
 
 MACRO print_name

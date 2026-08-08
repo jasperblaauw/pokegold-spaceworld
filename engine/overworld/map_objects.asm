@@ -2414,7 +2414,7 @@ PrintSaveScreenNumbers:
 	call PrintNumBadges
 	pop hl
 	push hl
-	ld de, (SCREEN_WIDTH * 6) + 9
+	ld de, (SCREEN_WIDTH * 6) + 10
 	add hl, de
 	call PrintNumOwnedMons
 	pop hl

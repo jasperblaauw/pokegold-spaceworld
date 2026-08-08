@@ -41,10 +41,10 @@ SafariBattleMenuHeader:
 	db STATICMENU_CURSOR
 	dn 2, 2
 	db 11
-	db "サファリボール×　　　@" ; "SAFARI BALL×   @"
-	db "エサをなげる@"         ; "THROW BAIT"
-	db "いしをなげる@"         ; "THROW ROCK"
-	db "にげる@"              ; "RUN"
+	db "BALL×   @" ; the ball count is drawn over the trailing spaces
+	db "BAIT@"
+	db "ROCK@"
+	db "RUN@"
 
 Battle_2DMenu:
 	call CopyMenuData

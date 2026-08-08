@@ -46,8 +46,8 @@ BattleCommand_Attract:
 	jp PrintText
 
 .FellInLoveText:
-	text "<TARGET>は"
-	line "メロメロに　なった！"
+	text "<TARGET>"
+	line "fell in love!"
 	prompt
 
 .failed

@@ -37,6 +37,6 @@ BattleCommand_Encore:
 	jp PrintDidntAffectText
 
 GotAnEncoreText:
-	text "<TARGET>は"
-	line "アンコールを　うけた！"
+	text "<TARGET> got an"
+	line "ENCORE!"
 	prompt

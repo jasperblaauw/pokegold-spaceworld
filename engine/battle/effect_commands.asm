@@ -2085,7 +2085,13 @@ BattleCommand_ApplyDamage:
 	ld [de], a
 	ret
 
-INCLUDE "engine/battle/move_effects/gen1_heal.asm"
+; feature/completion: deleted engine/battle/move_effects/gen1_heal.asm here.
+; It held Unreferenced_Gen1HealEffect (a pret-flagged Gen-1 leftover heal/REST
+; routine, complete with its own "BUG:" note) plus the only three references to
+; Unused_WentToSleepText / Unused_RestedText / Unused_RegainedHealthText. A
+; codebase-wide grep found no caller outside the file itself. Removed to buy
+; room in this bank-$0d section, which is a hard-capped 16 KB and cannot span
+; banks -- see the HANDOVER note on that wall. Recoverable from git history.
 
 GetFailureResultText:
 	ld de, wPlayerMoveStructEffect
@@ -3863,8 +3869,8 @@ Defrost:
 	jp PrintText
 
 DefrostedOpponentText:
-	text "The flames"
-	line "defrosted <TARGET>!"
+	text "The flames thawed"
+	line "<TARGET>!"
 	prompt
 
 BattleCommand_FreezeTarget:
@@ -5389,8 +5395,8 @@ RestedText:
 	done
 
 RegainedHealthText:
-	text "<USER> regained"
-	line "health!"
+	text "<USER>"
+	line "regained health!"
 	prompt
 
 INCLUDE "engine/battle/move_effects/transform.asm"
@@ -5735,8 +5741,8 @@ BattleCommand_TimeBasedHealContinue:
 	ret
 
 .RegainedHealthText
-	text "<USER> regained"
-	line "health!"
+	text "<USER>"
+	line "regained health!"
 	prompt
 
 INCLUDE "engine/battle/move_effects/hidden_power.asm"

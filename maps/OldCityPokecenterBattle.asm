@@ -37,6 +37,7 @@ OldCityPokecenterBattleText1:
 	ret
 
 OldCityPokecenterBattleTextString1:
-	text "ちょっとまってね！@"
+	text "Just a moment,"
+	line "please!@"
 	text_exit
 	text_end

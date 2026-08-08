@@ -24,5 +24,6 @@ BattleCommand_PayDay:
 	jp PrintText
 
 CoinsScatteredText:
-	text "こばんが　あたりに　ちらばった！"
+	text "Coins scattered"
+	line "everywhere!"
 	prompt

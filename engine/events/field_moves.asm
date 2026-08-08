@@ -152,7 +152,8 @@ FailCut:
 	ret
 
 Text_CantUseCutHere:
-	text "ここでは　つかえません"
+	text "Can't use that"
+	line "here."
 	prompt
 
 DoCut:
@@ -191,8 +192,8 @@ CutScript:
 
 Text_CutItDown:
 	text_from_ram wStringBuffer2
-	text "　は　"
-	line "くさかりを　つかった！"
+	text " used"
+	line "UPROOT!"
 	prompt
 
 SurfFunction:
@@ -255,8 +256,8 @@ FailSurf:
 	ret
 
 Text_CantSurfHere:
-	text "ここでは　のることが"
-	next "できません"
+	text "You can't ride"
+	next "here."
 	prompt
 
 SurfScript:
@@ -279,10 +280,10 @@ SurfScript:
 
 Text_UsedSurf:
 	text_from_ram wStringBuffer2
-	text "　は　"
+	text " carried"
 	line "@"
 	text_from_ram wPlayerName
-	text "を　のせた！"
+	text " along!"
 	prompt
 
 MovePlayerIntoWater:
@@ -398,7 +399,8 @@ FailFly:
 	ret
 
 Text_CantUseFlyHere:
-	text "ここでは　つかえません！"
+	text "Can't use that"
+	line "here!"
 	prompt
 
 FlyScript:
@@ -462,7 +464,8 @@ FailDig:
 	ret
 
 Text_CantUseDigHere:
-	text "ここでは　つかえません！"
+	text "Can't use that"
+	line "here!"
 	prompt
 
 DigScript:
@@ -532,7 +535,8 @@ CheckIfSpawnPoint:
 	ret
 
 Text_CantFindDestination:
-	text "とびさきが　みつかりません"
+	text "Can't find a"
+	line "destination."
 
 	para ""
 	done
@@ -554,7 +558,8 @@ FailTeleport:
 	ret
 
 Text_CantUseTeleportHere:
-	text "ここでは　つかえません！"
+	text "Can't use that"
+	line "here!"
 
 	para ""
 	done
@@ -572,6 +577,7 @@ TeleportScript:
 	jpfar DoTeleportAnimation
 
 Text_ReturnToLastMonCenter:
-	text "さいごに　たちよった"
-	line "#センターにもどります"
+	text "Return to the last"
+	line "# CENTER"
+	cont "you visited."
 	done

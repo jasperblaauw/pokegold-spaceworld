@@ -104,6 +104,6 @@ BattleCommand_PainSplit:
 	jp PrintDidntAffectText
 
 SharedPainText:
-	text "おたがいの　たいりょくを"
-	line "わかちあった！"
+	text "The battlers"
+	line "shared their pain!"
 	prompt

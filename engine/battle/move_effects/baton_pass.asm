@@ -146,5 +146,6 @@ BattleCommand_BatonPass:
 
 BattleText_MonIsAlreadyOut_0d:
 	text_from_ram wBattleMonNickname
-	text "はもうでています"
+	text_start
+	line "is already out!"
 	prompt

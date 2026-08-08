@@ -7,5 +7,5 @@ DisplayResetDialog::
 	ret
 
 _ResetConfirmText::
-	text "ほんとにリセットしますか？"
+	text "Really reset?"
 	done

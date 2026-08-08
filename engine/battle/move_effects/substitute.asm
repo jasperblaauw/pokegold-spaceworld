@@ -72,16 +72,16 @@ BattleCommand_Substitute:
 	jp PrintText
 
 MadeSubstituteText:
-	text "<USER>の"
-	line "ぶんしんが　あらわれた"
+	text "<USER> made"
+	line "a SUBSTITUTE!"
 	prompt
 
 HasSubstituteText:
-	text "しかし　<USER>の"
-	line "みがわりは　すでに　でていた！"
+	text "But <USER>"
+	line "has a SUBSTITUTE!"
 	prompt
 
 TooWeakSubText:
-	text "しかし　ぶんしんを　だすには"
-	line "たいりょくが　たりなかった！"
+	text "But it had too"
+	line "little HP!"
 	prompt

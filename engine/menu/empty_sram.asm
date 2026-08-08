@@ -98,25 +98,26 @@ SaveTheGame_yesorno:
 	ret
 
 WouldYouLikeToSaveTheGameText:
-	text "ここまでの　かつやくを"
-	line "#レポートに　かきこみますか？"
+	text "Would you like to"
+	line "save the game?"
 	done
 
 SavedTheGameText:
-	text "<PLAYER>は"
-	line "レポートに　しっかり　かきのこした！"
+	text "<PLAYER> saved"
+	line "the game!"
 	done
 
 AlreadyASaveFileText:
-	text "まえに　かかれた　レポートが"
-	line "きえて　しまいますが"
-	cont "うえから　かいても　いいですか？"
+	text "The earlier REPORT"
+	line "will be erased."
+	cont "Overwrite it?"
 	done
 
 AnotherSaveFileText:
-	text "まえに　かかれた　レポート　が"
-	line "こんかいと　ちがう　もの　ですが"
-	cont "うえから　かいても　いいですか？"
+	text "The earlier REPORT"
+	line "is a different"
+	cont "game."
+	cont "Overwrite it?"
 	done
 
 VerifyChecksum::
@@ -164,19 +165,19 @@ PrintSaveScreenText::
 
 .MenuHeader:
 	db MENU_BACKUP_TILES
-	menu_coords 5, 0, 19, 9
+	menu_coords 3, 0, 19, 9
 	dw .MenuData
 	db 1
 
 .MenuData:
 	db STATICMENU_PLACE_TITLE
 	db 4
-	db "しゅじんこう　<PLAYER>@"
-	db "もっているバッジ　　　　こ@"
-	db "#ずかん　　　　ひき@"
-	db "プレイじかん@"
+	db "PLAYER <PLAYER>@"
+	db "BADGES@"
+	db "POKéDEX@"
+	db "TIME@"
 	db 6
-	db "テスト@" ; "TEST"
+	db "TEST@"
 
 SaveOptionsAndGameData::
 	ld a, BANK(sOptions)
@@ -284,8 +285,8 @@ TryLoadSaveFile::
 	ret
 
 .SaveFileCorruptedText:
-	text "レポートの　ないようが"
-	line "こわれています！！"
+	text "The REPORT data"
+	line "is corrupted!!"
 	prompt
 
 TryLoadSaveData:

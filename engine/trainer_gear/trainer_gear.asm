@@ -603,10 +603,10 @@ TrainerGear_Phone:
 	ret
 
 .OutOfRangeText:
-	db "けんがい@"
+	db "NO SIGNAL@"
 
 .DarnText:
-	text "ちぇっ⋯⋯⋯⋯"
+	text "Darn<⋯⋯><⋯⋯>"
 	done
 
 TrainerGear_PhoneJoypad:
@@ -725,5 +725,5 @@ VerticalPipeGFX:
 INCBIN "gfx/trainer_gear/vertical_pipe.2bpp"
 
 TrainerGear_RadioText:
-	text "エーボタンで　チューニング！"
+	text "Press A to tune!"
 	done

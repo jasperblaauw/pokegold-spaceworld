@@ -325,7 +325,7 @@ SilentHillLabText:
 	ret
 
 SilentHillTextString2:
-	text "にゅうきょしゃ　ぼしゅうちゅう！"
+	text "Residents wanted!"
 	done
 
 SilentHillSignText1:
@@ -334,8 +334,8 @@ SilentHillSignText1:
 	ret
 
 SilentHillTextString3:
-	text "ここは　サイレント　ヒル"
-	line "しずかな　おか"
+	text "SILENT HILL"
+	line "A quiet hill."
 	done
 
 SilentHillPlayerHouseText:
@@ -344,7 +344,7 @@ SilentHillPlayerHouseText:
 	ret
 
 SilentHillTextString4:
-	text "ここは　<PLAYER>　のいえ"
+	text "<PLAYER>'s house"
 	done
 
 SilentHillRivalHouseText:
@@ -353,7 +353,7 @@ SilentHillRivalHouseText:
 	ret
 
 SilentHillTextString5:
-	text "ここは　<RIVAL>　のいえ"
+	text "<RIVAL>'s house"
 	done
 
 SilentHill_TextPointers::
@@ -363,19 +363,20 @@ SilentHill_TextPointers::
 	dw SilentHillTextPokemonHate ; npc2
 
 SilentHillTextRival1:
-	text "<RIVAL>『よう　ちょっと　おまえに"
-	cont "じまん　したいことが"
-	cont "あってきたんだよ"
+	text "<RIVAL>: Yo!"
+	cont "I came over 'cause"
+	cont "I've got something"
+	cont "to brag about."
 
-	para "おれ　あの　ゆうめいなオーキドから"
-	line "メール　もらっちゃった！"
-	cont "え？　おまえにも　きたの？"
-	cont "ちぇっ！　つまんねーの！"
+	para "I got mail from"
+	line "the famous OAK!"
+	cont "Huh? You got one"
+	cont "too? Tch! No fun!"
 
-	para "⋯⋯ふん！"
-	line "じゃあさ　じゃあさー　おまえさー"
-	cont "じぶんの　ははおや　のこと"
-	cont "いつも　なんて　よんでる？@"
+	para "<⋯⋯>Hmph! Then say,"
+	line "say, what do you"
+	cont "always call your"
+	cont "own mother?@"
 
 	start_asm
 	call LoadStandardMenuHeader
@@ -395,42 +396,44 @@ MomNameMenuHeaderUnused:
 .MomNameMenuDataUnused:
 	db STATICMENU_CURSOR
 	db 4 ; items
-	db "じぶんで　きめる@"
-	db "おかあさん　@"
-	db "ママ@"
-	db "かあちゃん@"
+	db "NEW NAME@"
+	db "MOM@"
+	db "MAMA@"
+	db "MOMMY@"
 
 SilentHillTextRival2: ; BYTE OFF
-	text "<RIVAL>『えー　かっこわりい！"
-	line "そんな　こどもっぽい"
-	cont "よびかた　してるなんて"
-	cont "おわらいだぜ！"
-	cont "あー　ちょっとだけ　すっきりした！"
+	text "<RIVAL>: Ehh, how"
+	line "uncool! Calling"
+	cont "her something that"
+	cont "childish is just a"
+	cont "joke! Ahh, I feel"
+	cont "a bit better now!"
 
-	para "そんじゃあ"
-	line "おれは　ひとあし　おさきに"
-	cont "オーキドのところへ"
-	cont "いくことに　するぜ！"
+	para "Well then, I'm"
+	line "off to OAK's place"
+	cont "a step ahead of"
+	cont "you!"
 	done
 
 SilentHillTextNorthExit:
-	text "ちょいまち！"
-	line "まってよ！　まてっ　てば！"
+	text "Hold on a sec!"
+	line "Wait! Wait up!"
 	done
 
 SilentHillTextPokemonInGrassString:
-	text "きみは　まったく"
-	line "なんにも　しらないんだね！"
-	cont "くさむらでは"
-	cont "やせいの　ポケモンが　とびだす！"
+	text "You really don't"
+	line "know a thing, huh!"
+	cont "Wild # leap"
+	cont "out of the grass!"
 
-	para "じぶんも　ポケモンを"
-	line "もって　いれば"
-	cont "たたかえるんだ⋯⋯"
+	para "If you had one of"
+	line "your own, you"
+	cont "could fight<⋯⋯>"
 
-	para "あっ！　ひょっとして　きみは"
-	line "⋯⋯ちょっと"
-	cont "ぼくに　ついて　きて！"
+	para "Ah! Could it be"
+	line "that you're<⋯⋯>"
+	cont "Hold on, come"
+	cont "with me!"
 	done
 
 SilentHillTextBackpack:
@@ -440,13 +443,15 @@ SilentHillTextBackpack:
 
 SilentHillTextBackpackString:
 if DEF(_GOLD)
-	text "あなたの　リュック　かっこいいわよ"
-	line "どこで　てに　いれたの？"
+	text "Your PACK looks"
+	line "great! Where did"
+	cont "you get it?"
 	done
 endc
 if DEF(_SILVER)
-	text "その　とけい　かっこいいわね"
-	line "えっ　トレーナーギアって　いうの？"
+	text "That watch is so"
+	line "cool. Oh, it's a"
+	cont "TRAINER GEAR?"
 	done
 endc
 
@@ -457,14 +462,16 @@ SilentHillTextPokemonHate:
 
 SilentHillTextPokemonHateString:
 if DEF(_GOLD)
-	text "よのなかに　ポケモンが　きらいな"
-	line "ひとは　いるのかな？"
+	text "I wonder if anyone"
+	line "in the world"
+	cont "dislikes #?"
 	done
 endc
 if DEF(_SILVER)
-	text "なに？　きみは"
-	line "ポケモンを　あつめてるのか！"
+	text "What? You collect"
+	line "#!"
 
-	para "それは　すばらしいことだ"
+	para "That's a wonderful"
+	line "thing to do."
 	done
 endc

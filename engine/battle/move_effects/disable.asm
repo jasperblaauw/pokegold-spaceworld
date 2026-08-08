@@ -73,8 +73,9 @@ BattleCommand_Disable:
 	jp PrintButItFailed
 
 MoveDisabledText:
-	text "<TARGET>の"
+	text "<TARGET>'s"
 	line "@"
 	text_from_ram wStringBuffer1
-	text "を　ふうじこめた！"
+	text_start
+	cont "was disabled!"
 	prompt

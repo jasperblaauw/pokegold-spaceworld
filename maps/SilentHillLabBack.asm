@@ -221,31 +221,36 @@ SilentHillLabBackText1:
 	ret
 
 SilentHillLabBackTextString1:
-	text "オーキド『ほれ　そこに　３びき"
-	cont "ポケモンが　いる　じゃろう！"
-	cont "ほっほ！"
+	text "OAK: See, there"
+	cont "are three #"
+	cont "over there! Ho ho!"
 
-	para "こいつらを　きみたちに"
-	cont "いっぴき　づつ　やろう！"
-	cont "⋯⋯　さあ　えらべ！"
+	para "I'll give one to"
+	cont "each of you."
+	cont "<⋯⋯>Now, choose!"
 	done
 
 SilentHillLabBackTextString2:
-	text "オーキド『まあ"
-	line "あわてるな　<RIVAL>！"
-	cont "おまえも　すきなものを　とれ！"
+	text "OAK: Now now,"
+	line "don't rush,"
+	cont "<RIVAL>!"
+	cont "You take your"
+	cont "favourite too!"
 	done
 
 SilentHillLabBackTextString3:
-	text "オーキド『さあ　<PLAYER>"
-	line "どの　ポケモンに　するかね？"
+	text "OAK: Now then,"
+	line "<PLAYER>, which"
+	cont "one will you have?"
 	done
 
 SilentHillLabBackTextString4:
-	text "オーキド『ほう！　ほのおのポケモン"
-	line "@"
+	text "OAK: Oho! A FIRE"
+	line "type! @"
 	text_from_ram wStringBuffer1
-	text "に　するんじゃな？@"
+	text_start
+	cont "is the one for"
+	cont "you, then?@"
 
 	start_asm
 	call ConfirmPokemonSelection
@@ -253,10 +258,12 @@ SilentHillLabBackTextString4:
 	ret
 
 SilentHillLabBackTextString5:
-	text "オーキド『ふむ　みずのポケモン"
-	line "@"
+	text "OAK: Hmm, a WATER"
+	line "type! @"
 	text_from_ram wStringBuffer1
-	text "に　きめるのじゃな？@"
+	text_start
+	cont "is what you'll"
+	cont "decide on, then?@"
 
 	start_asm
 	call ConfirmPokemonSelection
@@ -264,10 +271,12 @@ SilentHillLabBackTextString5:
 	ret
 
 SilentHillLabBackTextString6:
-	text "オーキド『おお！　くさのポケモン"
-	line "@"
+	text "OAK: Ooh! A GRASS"
+	line "type! @"
 	text_from_ram wStringBuffer1
-	text "が　いいんじゃな？@"
+	text_start
+	cont "is the one you'd"
+	cont "like, then?@"
 
 	start_asm
 	call ConfirmPokemonSelection
@@ -305,25 +314,30 @@ ConfirmPokemonSelection:
 	ret
 
 SilentHillLabBackTextString7:
-	text "では"
-	line "どれに　するのじゃ？"
+	text "So then, which"
+	line "will it be?"
 	done
 
 SilentHillLabBackTextString8:
-	text "オーキド『この　ポケモンは"
-	line "ほんとに　げんきが　いいぞ！"
+	text "OAK: This one is"
+	line "really full of"
+	cont "energy!"
 
-	para "<PLAYER>は　オーキドはかせから"
+	para "<PLAYER> received"
 	line "@"
 	text_from_ram wStringBuffer1
-	text "を　もらった！"
+	text " from"
+	cont "PROF.OAK!"
 	prompt
 
 SilentHillLabBackTextString9:
-	text "オーキド『そうじゃ！"
-	line "やせいの　ポケモンが　でて　きても"
-	cont "そいつを　たたかわせて　いけば"
-	cont "となりまちへ　いける！"
+	text "OAK: That's right!"
+	line "Even when wild"
+	cont "# appear,"
+	cont "if you have yours"
+	cont "fight them, you'll"
+	cont "reach the next"
+	cont "town!"
 	done
 
 SilentHillLabBackFunc3:
@@ -336,32 +350,37 @@ SilentHillLabBackFunc3:
 	ret
 
 SilentHillLabBackTextString10:
-	text "<RIVAL>『あッ！　おれにも！"
-	line "じいさん　おれにもくれよう！"
+	text "<RIVAL>: Ah! Me"
+	line "too! Gramps, give"
+	cont "me one too!"
 	done
 
 SilentHillLabBackTextString11:
-	text "<RIVAL>『いいぜ　<PLAYER>！"
-	line "さきに　えらんで！"
-	cont "おれは　こころが　ひろいからな"
+	text "<RIVAL>: Fine,"
+	line "<PLAYER>! You"
+	cont "choose first!"
+	cont "I'm a generous"
+	cont "guy, after all."
 	done
 
 SilentHillLabBackTextString12:
-	text "<RIVAL>『じゃ　おれは　これ！"
+	text "<RIVAL>: Then I'll"
+	line "take this one!"
 	done
 
 SilentHillLabBackTextString13:
-	text "<RIVAL>は　オーキドから"
+	text "<RIVAL> received"
 	line "@"
 	text_from_ram wStringBuffer1
-	text "を　もらった！"
+	text " from"
+	cont "PROF.OAK!"
 	done
 
 SilentHillLabBackTextString14:
-	text "<RIVAL>『<PLAYER>の#"
-	line "いいなあ！"
-	cont "でも　おれのポケモンも"
-	cont "ちょっと　いいだろ？"
+	text "<RIVAL>: <PLAYER>'s"
+	line "# is nice!"
+	cont "But mine's pretty"
+	cont "good too, right?"
 	done
 
 SilentHillLabBackFunc4:
@@ -416,8 +435,8 @@ SilentHillLabBackStarterData:
 	db DEX_HONOGUMA
 
 SilentHillLabBackTextString15:
-	text "オーキド『これ！"
-	line "よくばっちゃ　いかん！"
+	text "OAK: Hey! Don't"
+	line "be greedy!"
 	done
 
 SilentHillLabBackTextPointers2:

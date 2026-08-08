@@ -46,6 +46,6 @@ BattleCommand_MirrorMove:
 	jp EndMoveEffect
 
 MirrorMoveFailedText:
-	text "しかし　オウムがえしは"
-	next "しっぱいにおわった！"
+	text "But MIRROR MOVE"
+	next "failed!"
 	prompt

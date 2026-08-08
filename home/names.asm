@@ -198,12 +198,12 @@ GetMachineName::
 	ret
 
 .TMText:
-	db "わざマシン"
+	db "TM"
 .TMTextEnd:
 	db "@"
 
 .HMText:
-	db "ひでんマシン"
+	db "HM"
 .HMTextEnd:
 	db "@"
 

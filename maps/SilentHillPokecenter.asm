@@ -44,7 +44,8 @@ SilentHillPokecenterPCText:
 	ret
 
 SilentHillPokecenterTextString1:
-	text "げんざい　ちょうせいちゅうです"
+	text "Currently under"
+	line "adjustment."
 	done
 
 SilentHillPokecenter_TextPointers::
@@ -60,13 +61,16 @@ SilentHillPokecenterNPCText1:
 	ret
 
 SilentHillPokecenterTextString2:
-	text "もうしわけありませんが"
-	line "ただいま　しゅうりちゅう　でして"
+	text "I'm very sorry,"
+	line "but we're under"
+	cont "repair right now."
 
-	para "かいふくは　できません"
+	para "We can't heal your"
+	line "# just yet."
 
-	para "まちから　でるときは"
-	line "じゅうぶんに　おきをつけ　ください"
+	para "Please take plenty"
+	line "of care when you"
+	cont "leave town."
 	done
 
 SilentHillPokecenterNPCText2:
@@ -75,11 +79,12 @@ SilentHillPokecenterNPCText2:
 	ret
 
 SilentHillPokecenterTextString3:
-	text "あそこに　ある　パソコンは"
-	line "トレーナー　だったら"
-	cont "いつでも　むりょうで"
-	cont "つかうことが　できるよ"
-	cont "きが　きいてるよな！"
+	text "That <PC> over"
+	line "there is free to"
+	cont "use any time, as"
+	cont "long as you're a"
+	cont "TRAINER."
+	cont "Handy, huh!"
 	done
 
 SilentHillPokecenterNPCText3:
@@ -88,13 +93,17 @@ SilentHillPokecenterNPCText3:
 	ret
 
 SilentHillPokecenterTextString4:
-	text "いま　じゅんびちゅうの"
-	line "きかいは　すごいらしいよ"
+	text "That machine they"
+	line "are preparing now"
+	cont "is supposedly"
+	cont "amazing."
 
-	para "なんでも　ときを　こえて"
-	line "ポケモンが　こうかん　できるって！"
+	para "They say it can"
+	line "even trade #"
+	cont "across time!"
 
-	para "ほんとかな？"
+	para "Is that really"
+	line "true?"
 	done
 
 SilentHillPokecenterNPCText4:
@@ -103,8 +112,10 @@ SilentHillPokecenterNPCText4:
 	ret
 
 SilentHillPokecenterTextString5:
-	text "こいつ　ヘルガー"
-	line "いままでにない　タイプの　ポケモンさ"
+	text "This is HOUNDOOM."
+	line "A type of # "
+	cont "there's never"
+	cont "been before."
 	done
 
 SilentHillPokecenterNPCText5:
@@ -113,5 +124,5 @@ SilentHillPokecenterNPCText5:
 	ret
 
 SilentHillPokecenterTextString6:
-	text "ヘルガー『ぐるるうー"
+	text "HOUNDOOM: Grrrrr!"
 	done

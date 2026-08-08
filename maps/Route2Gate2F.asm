@@ -55,35 +55,41 @@ Route2Gate2FTextSign2:
 	ret
 
 Route2Gate2FTextString1:
-	text "ガンテツさんって　しってる？"
+	text "Do you know"
+	line "Mr.GANTETSU?"
 
-	para "ガンテツさんに"
-	line "きに　いられるように　なれば"
-	cont "トレーナーとして　たいしたもの　よ"
+	para "If you can get on"
+	line "his good side,"
+	cont "you're quite the"
+	cont "TRAINER."
 	done
 
 Route2Gate2FTextString2:
-	text "あなた　かんこうで　きたの？"
-	line "なら　ざんねんね"
+	text "Did you come"
+	line "sightseeing?"
+	cont "Then that's a"
+	cont "shame."
 
-	para "オールドシティの"
-	line "ごじゅうのとう　は"
-	cont "だれでも　はいれる　って"
-	cont "ものじゃないわ"
+	para "OLD CITY's FIVE-"
+	line "STORY PAGODA isn't"
+	cont "a place just"
+	cont "anyone can enter."
 	done
 
 Route2Gate2FTextString3:
-	text "<PLAYER>は"
-	line "ぼうえんきょうを　のぞいた！"
+	text "<PLAYER> peered"
+	line "through the"
+	cont "telescope!"
 
-	para "むむむ！"
-	line "たかーい　とう　が　みえる！"
+	para "Mmm! A tall, tall"
+	line "tower is visible!"
 	done
 
 Route2Gate2FTextString4:
-	text "<PLAYER>は"
-	line "ぼうえんきょうを　のぞいた！"
+	text "<PLAYER> peered"
+	line "through the"
+	cont "telescope!"
 
-	para "むむ？"
-	line "ながーい　かわ　が　みえる"
+	para "Hmm? A long, long"
+	line "river is visible."
 	done

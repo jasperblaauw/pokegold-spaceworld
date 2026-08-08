@@ -21,11 +21,11 @@ BattleCommand_NailDown:
 	jp PrintText
 
 .PutACurseText
-	text "<USER>は"
-	line "じぶんに　くぎを　うった"
+	text "<USER> nailed"
+	line "itself down!"
 
-	para "<TARGET>は"
-	line "のろいを　かけられた！"
+	para "<TARGET> was"
+	line "cursed!"
 	prompt
 
 .failed

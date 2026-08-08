@@ -30,8 +30,8 @@ BattleCommand_Nightmare:
 	jp PrintText
 
 .StartedNightmareText:
-	text "<TARGET>は"
-	line "あくむを　みはじめた！"
+	text "<TARGET> fell"
+	line "into a NIGHTMARE!"
 	prompt
 
 .failed

@@ -40,7 +40,8 @@ OldCityPokecenterTradeText1:
 	ret
 
 OldCityPokecenterTradeTextString1:
-	text "ちょっとまってね！@"
+	text "Just a moment,"
+	line "please!@"
 	text_exit
 	text_exit
 	text_exit

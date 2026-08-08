@@ -157,8 +157,9 @@ BattleCommand_Transform:
 	jp PrintButItFailed
 
 TransformedText:
-	text "<USER>は"
-	line "@"
+	text "<USER>"
+	line "transformed into"
+	cont "@"
 	text_from_ram wStringBuffer1
-	text "に　へんしんした！"
+	text "!"
 	prompt

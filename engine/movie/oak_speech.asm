@@ -330,94 +330,101 @@ INCLUDE "data/demo/demo_items.asm"
 INCLUDE "data/demo/demo_names.asm"
 
 OakSpeechDemo::
-	text "ようこそ"
-	line "ポケット　モンスターの　せかいへ！"
-	cont "ごぞんじ　わしが　オーキドじゃ！"
+	text "Welcome to the"
+	line "world of #!"
+	cont "As you know, I am"
+	cont "PROF.OAK!"
 
-	para "きょう　きみに　きてもらったのは"
-	line "ほかでもない"
-	cont "あたらしい　ずかんづくりを"
-	cont "てつだって　ほしいのじゃ！"
+	para "I asked you here"
+	line "for one reason:"
 
-	para "もちろん"
-	line "きみの　パートナーとなる　ポケモンと"
-	cont "リュックは　ようい　しておる"
+	para "I'd like your help"
+	line "making a new"
+	cont "POKéDEX!"
 
-	para "リュックの　なかには"
-	line "キズぐすりと"
-	cont "モンスターボールが"
-	cont "はいっておるから　あんしんじゃ！"
+	para "Your partner"
+	line "# and a PACK"
+	cont "are ready for you."
 
-	para "すでに　きみの　ライバルは"
-	line "しゅっぱつ　しとる"
+	para "The PACK holds a"
+	line "POTION and a"
+	cont "POKé BALL, so"
+	cont "you're all set!"
 
-	para "まけないよう　がんばって　くれい！"
+	para "Your rival has"
+	line "already set off."
+
+	para "Do your best not"
+	line "to lose to them!"
 	prompt
 
 OakSpeech1::
-	text "いやあ　またせた！"
+	text "Hello there!"
 
-	para "ポケット　モンスターの　せかいへ"
-	line "ようこそ！"
+	para "Welcome to the"
+	line "world of #!"
 
-	para "わたしの　なまえは　オーキド"
+	para "My name is OAK."
 
-	para "みんなからは　#　はかせと"
-	line "したわれて　おるよ"
+	para "Everyone calls me"
+	line "the # PROF!"
 	prompt
 
 OakSpeech2::
-	text "きみも　もちろん"
-	line "しっているとは　おもうが"
+	text "I'm sure you know"
+	line "this already, but"
 
-	para "この　せかいには"
-	line "ポケット　モンスターと　よばれる"
-	cont "いきもの　たちが"
-	cont "いたるところに　すんでいる！"
+	para "creatures called"
+	line "# live all"
+	cont "over this world!"
 	prompt
 
 OakSpeech3::
-	text "その　#　という　いきものを"
-	line "ひとは　ペットに　したり"
-	cont "しょうぶに　つかったり"
-	cont "そして・・・"
+	text "Some people keep"
+	line "# as pets."
 
-	para "わたしは　この　#の"
-	line "けんきゅうを　してる　というわけだ"
+	para "Others use them"
+	line "in battle..."
+
+	para "As for me, I"
+	line "study #!"
 	prompt
 
 OakSpeech4::
-	text "では　はじめに　きみの　なまえを"
-	line "おしえて　もらおう！"
+	text "First, tell me"
+	line "your name!"
 	prompt
 
 OakSpeech5::
-	text "そして　この　しょうねんは"
-	line "きみの　おさななじみであり"
-	cont"ライバルである"
+	text "And this boy is"
+	line "your childhood"
+	cont "friend and rival."
 
-	para "・・・えーと？"
-	line "なまえは　なんて　いったかな？"
+	para "Er? What was his"
+	line "name again?"
 	prompt
 
 OakSpeech6::
-	text "さて　きみの　きねんすべき"
-	line "たびだちのひを"
-	cont "きろくしておこう！"
+	text "Now, let's record"
+	line "the memorable day"
+	cont "you set out!"
 
-	para "じかんも　なるべく　せいかくにな！"
+	para "Set the time as"
+	line "accurately as you"
+	cont "can, too!"
 	prompt
 
 OakSpeech7::
-	text "<PLAYER>！"
+	text "<PLAYER>!"
 
-	para "いよいよ　これから"
-	line "きみの　ものがたりの　はじまりだ！"
+	para "From here on, your"
+	line "story begins!"
 
-	para "ゆめと　ぼうけんと！"
-	line "ポケット　モンスターの　せかいへ！"
+	para "To a world of"
+	line "dreams, adventure"
+	cont "and #!"
 
-	para "レッツ　ゴー！"
+	para "Let's go!"
 	done
 
 SetPlayerNamesDebug::
@@ -467,8 +474,8 @@ ChoosePlayerName::
 	ret
 
 ChoosePlayerNameEndText:
-	text "ふむ・・・"
-	line "<PLAYER>　と　いうんだな！"
+	text "Hmm..."
+	line "So it's <PLAYER>!"
 	prompt
 
 INCLUDE "data/names/player_names.asm"
@@ -506,8 +513,10 @@ ChooseRivalName::
 	ret
 
 ChooseRivalNameEndText:
-	text "そうか　そうだったな"
-	line "<RIVAL>　という　なまえだ"
+	text "Ah yes, that's it!"
+
+	para "His name was"
+	line "<RIVAL>!"
 	prompt
 
 INCLUDE "data/names/rival_names.asm"

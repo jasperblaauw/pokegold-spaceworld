@@ -12,7 +12,8 @@ BattleCommand_StartSun:
 	jp PrintText
 
 .SunGotBrightText
-	text "ひざしが　つよくなった！"
+	text "The sunlight got"
+	line "bright!"
 	prompt
 
 .failed

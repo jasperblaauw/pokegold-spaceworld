@@ -24,8 +24,8 @@ BattleCommand_Spikes:
 	jp PrintText
 
 .SpikesText
-	text "<TARGET>の　あしもとに"
-	line "まきびしが　ちらばった！"
+	text "SPIKES scattered"
+	line "around <TARGET>!"
 	prompt
 
 .failed

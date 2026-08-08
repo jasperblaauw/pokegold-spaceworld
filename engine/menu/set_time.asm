@@ -10,10 +10,10 @@ SetTime::
 
 AdjustTimeText:
 	deciram wStartHour, 1, 2
-	text "　じ"
+	text " hr."
 	line "@"
 	deciram wStartMinute, 1, 2
-	text "　ふん？@"
+	text " min.?@"
 	start_asm
 .loop
 	call ClearJoypad
@@ -70,8 +70,8 @@ AdjustTimeText:
 
 AdjustTimeEndText:
 	deciram wStartHour, 1, 2
-	text "　じ"
+	text " hr."
 	line "@"
 	deciram wStartMinute, 1, 2
-	text "　ふん？"
+	text " min.?"
 	done

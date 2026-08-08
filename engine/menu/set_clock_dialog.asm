@@ -10,11 +10,11 @@ SetClockDialog:
 	ld hl, SetClockDialog_ConfirmTimeDate
 	call PrintText
 
-	hlcoord 3, 13
+	hlcoord 1, 14
 	call SetClockDialog_PrintDayOfWeek
 	ld de, wHourBuffer
 
-	hlcoord 8, 14
+	hlcoord 6, 14
 	call SetClockDialog_PrintNumber
 	ld de, wMinuteBuffer
 
@@ -33,11 +33,9 @@ SetClockDialog_Init:
 	ld bc, 50
 	call ByteFill
 
-; load days of week
-	ld de, HUD_GFX
-	ld hl, vChars2 tile $40
-	lb bc, BANK(HUD_GFX), $20
-	call Request1bpp
+; The Japanese build loaded HUD_GFX here for the double-height kanji day-of-week
+; glyphs (日月火水木金土). SetClockDialog_PrintDayOfWeek now places the day as
+; ordinary font text, so that tile load is no longer needed.
 
 	ld de, UpArrowGFX
 	ld hl, vFont tile (TIMESET_UP_ARROW - $80)
@@ -101,19 +99,15 @@ SetClockDialog_RunFunction:
 SetClockDialog_AskDay:
 	ld hl, SetClockDialog_WhatDayIsIt
 	call PrintText
-	hlcoord 10, 16
-	ld de, .DayString
-	call PlaceString
+	; the JP build placed a "ようび" suffix here; the English day names
+	; (SUN/MON/...) stand on their own.
 
 	ld hl, wJumptableIndex
 	inc [hl]
 	ret
 
-.DayString:
-	db "ようび@"
-
 SetClockDialog_ChooseDayOfWeek:
-	hlcoord 9, 15
+	hlcoord 8, 16
 	call SetClockDialog_PrintDayOfWeek
 	call GetJoypadDebounced
 	ld hl, hJoySum
@@ -171,7 +165,7 @@ SetClockDialog_AskHour:
 	ret
 
 .HoursString:
-	db "じ@"
+	db "hr.@"
 
 SetClockDialog_ChooseHour:
 	ld de, wHourBuffer
@@ -240,7 +234,7 @@ SetClockDialog_AskMinutes:
 	ret
 
 .MinutesString:
-	db "ふん@"
+	db "min.@"
 
 SetClockDialog_ChooseMinutes:
 	ld de, wMinuteBuffer
@@ -301,18 +295,29 @@ SetClockDialog_ChooseMinutes:
 	ret
 
 SetClockDialog_PrintDayOfWeek:
-; Print top half
+; The JP build drew a double-height kanji from HUD_GFX (one tile per half).
+; English day names are three ordinary font tiles on a single row.
 	ld a, [wDayOfWeekBuffer]
-	sla a
-	add $40
-	ld [hl], a
-	inc a
-
-; Move down one row and print the bottom half
-	ld de, SCREEN_WIDTH
+	add a
+	add a ; * 4, the width of one .Days entry
+	ld e, a
+	ld d, 0
+	push hl
+	ld hl, .Days
 	add hl, de
-	ld [hl], a
-	ret
+	ld d, h
+	ld e, l
+	pop hl
+	jp PlaceString
+
+.Days:
+	db "SUN@"
+	db "MON@"
+	db "TUE@"
+	db "WED@"
+	db "THU@"
+	db "FRI@"
+	db "SAT@"
 
 SetClockDialog_PrintNumber:
 	push hl
@@ -325,19 +330,21 @@ SetClockDialog_PrintNumber:
 	ret
 
 SetClockDialog_WhatDayIsIt:
-	text "きょうは　なんようび　だったかの？"
+	text "What day is it?"
 	done
 
 SetClockDialog_HowManyHours:
-	text "いまは　なんじ　じゃ？"
+	text "What hour is it?"
 	done
 
 SetClockDialog_HowManyMinutes:
 	deciram wStartHour, 1, 2
-	text "じ　なんふん　かな？"
+	text " o'clock. Mins?"
 	done
 
+; The blanks are where SetClockDialog fills in the day (cols 1-3), the hour
+; (cols 6-7) and the minutes (cols 12-13).
 SetClockDialog_ConfirmTimeDate:
-	text "　　　ようび　　　じ　　　ふん"
-	line "ほんとうに　あっているかの？"
+	text "       hr.   min."
+	line "Is this correct?"
 	done

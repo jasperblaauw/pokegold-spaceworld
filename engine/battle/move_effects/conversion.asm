@@ -23,8 +23,8 @@ BattleCommand_Conversion:
 	jp PrintText
 
 .TransformedTypeText
-	text "<TARGET>の　タイプを"
-	line "じぶんに　はりつけた！"
+	text "Copied the type"
+	line "of <TARGET>!"
 	prompt
 
 .fail

@@ -23,8 +23,8 @@ BattleCommand_Safeguard:
 	jp PrintText
 
 .CoveredByVeilText:
-	text "<USER>は"
-	line "しんぴのベールに　つつまれた！"
+	text "<USER> is"
+	line "covered by a veil!"
 	prompt
 
 .failed

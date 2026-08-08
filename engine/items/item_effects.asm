@@ -2296,7 +2296,7 @@ ItemOakWarningText:
 
 ItemBelongsToSomeoneElseText:
 	text "It's an important"
-	next "item you can't use!"
+	next "item. Can't use!"
 	prompt
 
 ItemWontHaveAnyEffectText:

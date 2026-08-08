@@ -48,24 +48,29 @@ Route1TextSign2:
 	ret
 
 Route1TextString1:
-	text "しょうねん！"
+	text "Hey, kid!"
 
-	para "モンスターボールは"
-	line "やせいの　ポケモンを　よわらせてから"
-	cont "つかうのが　きほんだ！"
+	para "The basics of a"
+	line "POKé BALL: weaken"
+	cont "the wild # "
+	cont "first, then throw!"
 	done
 
 Route1TextString2:
-	text "ぼく　ゆうがた　じゅくの　かえりに"
-	line "かわった　ポケモンを　みたよ"
+	text "On my way home"
+	line "from cram school"
+	cont "this evening, I"
+	cont "saw an odd one!"
 	done
 
 Route1TextString3:
-	text "このさき　しずかな　おか"
-	line "やせいの　ポケモンに　ちゅうい"
+	text "QUIET HILL ahead."
+	line "Watch out for"
+	cont "wild #."
 	done
 
 Route1TextString4:
-	text "ここは　１ばん　どうろ"
-	line "サイレントヒル　⋯⋯　オールドシティ"
+	text "ROUTE 1"
+	line "SILENT HILL <⋯⋯>"
+	cont "OLD CITY"
 	done

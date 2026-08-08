@@ -902,6 +902,134 @@ HUD (both sides, incl. a 1-digit and a 2-digit level), party screen (check level
 don't collide with the HP bar), summary pink page next to the level. If you can get a **Magnemite,
 Voltorb, Ditto or Porygon**, confirm it shows **no** symbol rather than ♀.
 
+### Phase 4 — map dialogue + the rest of the reachable text ✅ (BUILD-VERIFIED, playtest-pending, 2026-08-08)
+
+**Every `maps/*.asm` file is now English — zero Japanese strings remain in any map.** Plus the
+shared engine text a first-act player actually reaches. All 8 ROMs build warning-clean; new text
+structures were decoded back out of `pokegold-spaceworld-debug.gb` and checked opcode by opcode.
+
+**Two tools were written this session and are worth reusing** (in the session scratchpad, and cheap
+to recreate — a future session should rebuild them before translating anything else):
+- **A width linter** that parses every `text`/`line`/`cont`/`para`/`next` row in a file and reports
+  worst-case rendered width, expanding the inline dict tokens (`<PLAYER>`/`<RIVAL>`/`<MOM>` = 7,
+  `<USER>`/`<TARGET>` = 10, `#` = 7, `<TRAINER>` = 7, `<ROCKET>` = 6, `<PC>`/`<TM>` = 2). This is the
+  single highest-value thing to have: it found **four latent overflows in files previous sessions had
+  already "finished"** (`DefrostedOpponentText`, both `RegainedHealthText`s,
+  `ItemBelongsToSomeoneElseText`) and one in the in-progress `oak_speech.asm`. All fixed.
+- **A ROM text decoder** (label → sym lookup → charmap decode) for verifying emitted bytes.
+- **Correction to an earlier note:** `<⋯⋯>` renders as **2 columns**, not 6 — `SixDotsCharText` is
+  `db "⋯⋯@"`, i.e. two `⋯` tiles, each a full three-dot glyph. Budget it as 2.
+
+**Files translated (maps):** `PlayerHouse2F` (Ken/TRAINER GEAR, the PC mail, the radio news that
+carries the §3 "Oak has vanished" hook, doll, N64), `maps/scripts/SilentHill` (rival boast + the
+hidden mom-name prompt, Blue's grass tutorial, all five signs), `RivalHouse` (mail, Ken's map
+cartridge, the BILL hint), `SilentHillLabBack` (the whole starter-choice scene), `SilentHillLabFront`
+(the big one — Oak's speech, the POKéDEX handover, the rival battle, Nanami's PACK, both aides, the
+lab PC mail), `SilentHillPokecenter`, `Route1`, `Route2`, `Route2Gate1F/2F`, `QuietHills` (all 10
+trainer encounter/defeat lines per version + the NPC + both signposts), `OldCityPokecenter2F/Trade/
+Battle`, `DeletedMap`. English strings came from `docs/_glossary/translations.py`'s `DIALOGUE` dict
+where it had them; `SilentHill`, `Route1` and `Route2` are **not** in that dict and were translated
+from the Japanese directly.
+
+**Files translated (shared engine text reachable in the first act):**
+- `engine/events/std_scripts.asm` — bookshelf/fridge/stove/sink/window/TV flavour, the Pokémon Center
+  sign, and the duplicate radio-news script.
+- **`engine/events/pokecenter_pc.asm` — the handover previously listed this as unreachable. It is
+  not:** `PlayerHouse2FComputerText` does `callfar PokemonCenterPC` once the mail is read, so the
+  network menu, `<PLAYER>'s <PC>` item storage, withdraw/deposit/toss and the YOROIDORI news page are
+  all reachable **from the first room of the game**. Fully translated. (Bill's PC behind `???'s <PC>`
+  is still `bills_pc.asm` and still deferred with M1e.)
+- `engine/menu/empty_sram.asm` — **the SAVE flow**, which M1-bug4 made reachable: the save prompt,
+  "saved the game", both overwrite warnings, the corrupt-file message, and the save-info panel.
+  That panel's box was widened `menu_coords 5,0,19,9` → `3,0,19,9` so `PLAYER <PLAYER>` fits a
+  7-character name; `PrintSaveScreenNumbers`' offsets (`engine/overworld/map_objects.asm`) are
+  relative to the box origin so they followed it, and the dex column moved `+9` → `+10` to line up
+  with the badge count under the shorter English labels.
+- `engine/battle/move_effects/*.asm` — **~35 per-turn battle messages that Phase 3 missed** because
+  they live in their own files rather than in `effect_commands.asm` (attract, conversion 1/2, disable,
+  destiny bond, encore, endure, focus energy, foresight, leech seed, lock on, magnitude, mimic, mirror
+  move, mist, nail down, nightmare, pain split, pay day, perish song, protect, rain dance, rapid spin,
+  safeguard, sandstorm, sketch, spikes, spite, substitute, sunny day, teleport, thief, transform,
+  baton pass). Also `engine/battle/menu.asm`'s Safari menu.
+- `data/trainers/parties.asm` — the 14 trainer **names** (JUNICHI, SOUSUKE, KENJI, KEN, ATSUKO,
+  HIZUKI, HISASHI, MEGUMI, TETSUYA, AKITO, SHIGEKI, TETSUJI, TAMAO, KOUME), shown in every
+  "`<CLASS> <NAME>` wants to battle!".
+- `engine/events/field_moves.asm`, `data/maps/landmark_names.asm` (debug warp menu),
+  `engine/events/town_map.asm`, `engine/trainer_gear/trainer_gear.asm`, `engine/menu/set_time.asm`,
+  `engine/menu/reset_dialog.asm`, `engine/menu/menu.asm`, `home/names.asm` (TM/HM prefixes),
+  `home/text.asm`, `home/talk_to_npc.asm`, `data/mon_menu.asm`.
+
+**Name-table cleanups (L2 generator artifacts, all cosmetic but visible):** `data/moves/names.asm`
+had entries padded to 12 with spaces and three that were *truncated* at 12 — `"UPROOT   PUL"`,
+`"STALKER   (B"`, `"TEMPT   SCAT"`, `"MEGAHORN ()"` — plus `" (BLANK  SLO"` ×3 for the unused F2-F4
+slots. The table is `@`-scanned, not strided, so lengths are free: fixed to `UPROOT` / `STALKER` /
+`TEMPT` / `MEGAPHONE` / `?`. `data/trainers/class_names.asm` likewise: `"TEAM ROCKET "` ×2 trimmed and
+`"SWIMMER  "` ×2 → `SWIMMER♀` / `SWIMMER♂` (the ♀/♂ glyphs are in the retail sheet at `$f5`/`$ef`).
+
+**ROM-space work — the important structural change this session:**
+- **`SECTION "Silent Hill Town"` is new, and lives in the empty bank `$35`.** Bank `$36` (City Maps /
+  Route Maps / Silent Hill Scripts / Set Time / Route Scripts) had only ~547 B of reclaimable padding
+  left and needed far more. **A map's attributes, blocks, text pointers and script loader must all
+  share one bank** — `map` in `data/maps/maps.asm` emits a single `db BANK(\1_MapAttributes)` and
+  `map_attributes` emits bare 16-bit `dw`s for the rest — so `maps/SilentHill.asm` and
+  `maps/scripts/SilentHill.asm` had to move **together**. Verified no external references first, then
+  verified in the built ROM: `SilentHill_MapAttributes = 35:4000` and the map-group entry now reads
+  `35 00 01 00 40 …`. `layout.link` lost `"Silent Hill Scripts"` from `ROMX $36` and gained
+  `"Silent Hill Town"` on `ROMX $35`; 4096 B of `Bank 35 Garbage` was freed, so **~2.5 KB of that bank
+  is still spare for M1c/M1d content.** This is the template for the next time a map bank fills up.
+- **The bank-`$0d` 16 KB wall was hit again** by the `move_effects/*` translations (`Section "Effect
+  Commands" grew too big`, +133 B). Fixed the same way as last time: **deleted
+  `engine/battle/move_effects/gen1_heal.asm`** — `Unreferenced_Gen1HealEffect`, a pret-flagged
+  zero-caller Gen-1 leftover (it even carries its own `; BUG:` note) that held the only references to
+  the three `Unused_*` heal texts. Grepped codebase-wide for callers first; a comment at the old
+  `INCLUDE` site in `effect_commands.asm` records what was removed and why. Recoverable from git.
+- Garbage reclaimed: **Bank 34 +3000**, **Bank 2f +1000** (QuietHills), **Bank 25 +1000**,
+  **Bank 26 +1000**, **Bank 05 +600**, **Bank 3f +250**, **Bank 0e +200**, **Bank 02 +200**,
+  **Bank 03 +150**, **Bank 01 +200**, plus the 4096 freed in bank `$35`. Several were taken with
+  deliberate margin so the next content batch doesn't need a reclaim round-trip.
+
+**Naming decisions worth keeping consistent:** マサキ → **BILL** (matching the choice already made in
+`item_effects.asm`), ヨロイドリ → **YOROIDORI** (matching `data/pokemon/names.asm`), ケン → **KEN**,
+ナナミ → **NANAMI**, and Route 2's version-exclusive rival cameo keeps **SHIGERU**/**SATOSHI** (it is
+literally those characters in the prototype, not `<RIVAL>`/`<PLAYER>`).
+
+**PLAYTEST for this batch — walk the whole first act start to finish, reading everything:**
+(a) new game → the clock-set dialog (day names read `SUN`…`SAT`, `hr.`/`min.`, and the confirm line
+lines up as `SUN  hh hr.  mm min.`), Oak's speech, both naming screens;
+(b) the bedroom: talk to KEN, read the **PC** (mail → yes and no), **open the PC again after reading
+the mail** — that is the item-storage system, so try withdraw/deposit/toss and each menu; the radio;
+the doll; the N64; the bookshelves;
+(c) downstairs MOM, the rival's house (mail, KEN's map cartridge), then the **TRAINER GEAR** map;
+(d) SILENT HILL: the rival's boast + the mom-name prompt, all five signs, both townspeople, Blue's
+grass tutorial, the Pokémon Center (nurse/PC/NPCs);
+(e) the lab: the full Oak scene, the starter choice (all three confirmations use a `text_from_ram` +
+`text_start` + `cont` structure that is new this session — check the species name lands on its own
+row and the sentence continues cleanly), the rival battle, Nanami's PACK speech, both aides, the lab
+PC mail, then walk back in for the `FINISHED` scene;
+(f) **SAVE** from the START menu — the prompt, the save-info panel (`PLAYER`/`BADGES`/`POKéDEX`/`TIME`
+labels lined up with their numbers), then soft-reset and Continue;
+(g) ROUTE 1 → QUIET HILL: every trainer's encounter, mid-battle and defeat lines, both signposts, the
+NPC; ROUTE 2, the gate's two floors and the telescope;
+(h) in battle, watch for the newly-translated per-turn effect messages (status, stat changes,
+SUBSTITUTE, LEECH SEED, DISABLE, MIMIC, TRANSFORM, PAY DAY, weather) and the trainer names.
+
+**Still Japanese, deliberately (all off the reachable path):** `data/pokemon/dex_entries.asm`,
+`data/moves/descriptions.asm`, `data/items/descriptions.asm` (long flavour, deferred by the
+localization scope), `engine/link/*`, `engine/games/*` (minigames), `engine/pokemon/bills_pc.asm` and
+`engine/items/tm_holder.asm` (M1e), `engine/events/breeder.asm`, `engine/movie/trade_animation.asm`,
+the `engine/debug/*` menus, and the kana keyboard tables in `engine/menu/text_entry.asm` /
+`data/text/text_input_chars.asm` (data for a code path the English keyboard doesn't take).
+
+**Next translation target, and it is reachable:** the **Pokédex UI** — `engine/pokedex/pokedex.asm`
+(`String_SEEN`/`String_OWN`/`String_SELECT_SEARCH`/`String_START_VARIANTS`),
+`engine/pokedex/pokedex_2.asm` (search-by-type menus, the Unown variants page),
+`engine/pokedex/display_dex_entry.asm` (the height/weight labels) and
+`data/types/search_strings.asm` (15 fixed-width-4 type strings — English type names are up to 8
+characters, so this one **needs the column arithmetic checked**, not a blind swap). Oak hands the
+POKéDEX over during the intro, so a playtester reaches all of it. Left for a fresh session
+deliberately: every one of these is a hard-coded `PlaceString` coordinate, which is exactly the class
+of change that has bitten this project before.
+
 ## Session log
 - **2026-08-06** — M0 (boot GameStart, byte-verified), M1a (rival party fix), M1f (evolutions restored + 32B garbage reclaim). All build-verified, all playtest-pending. M1e investigated & deferred (unsafe blind). Established gotcha: **must test the `-correctheader` (MBC3/RTC) debug ROM on SameBoy** — the base MBC1 ROM doesn't run. First SameBoy test also surfaced the main-menu label bug (only showed "Play Pokemon") → fixed to show real New Game / Continue. Remaining: M1b/c/d content (playtest-led), then M1e.
 - **2026-08-07** — Playtest round 1 feedback (3 lab bugs). Fixed **rival battle** properly (M1a rewrite: real trainer format + `DEX_` species, byte-verified; my earlier MON_ attempt was wrong) and by analysis the **loss-reset** (bug #3, was a garbage-battler side effect). Also fixed the **main-menu** to show real New Game/Continue. Still open: **bug #1** (chosen Poké Ball doesn't vanish in lab-back) — cosmetic, needs playtest to confirm intended behavior. Reclaimed 6B from `Bank 0e Garbage` for the reformatted rival party. _Next: user re-tests the rival battle (win AND lose) on `pokegold-spaceworld-debug-correctheader.gb`; if good, fix bug #1 then proceed to M1c/M1d._
@@ -942,3 +1070,4 @@ Voltorb, Ditto or Porygon**, confirm it shows **no** symbol rather than ♀.
 - **2026-08-08 (Phase 3 cont. 2)** — Translated `party_menu.asm` / `learn.asm` / `pokemart_menu.asm` (the three files the last session queued) and then the rest of the party/summary surface a playtester hits alongside them: `mon_submenu.asm` + `data/mon_menu.asm`, `mon_stats.asm`, `stats_screen.asm`, `evolve.asm`, `add_mon.asm`, `move_mon.asm`, `knows_move.asm`, `check_tossable_item.asm`, `ai/items.asm`. All 4 ROMs + `-correctheader` variants build warning-clean; new text structures spot-decoded from the ROM. This batch was more layout than wording: the widened name-length constants from L0/L2 had left hard-coded box geometry wrong in code that had never been rendered yet, and three of those were outright bugs — `ForgetMove`'s move-list box drew off the right edge of the screen (`ld c, MOVE_NAME_LENGTH`, 7→13) *and* covered its own prompt; the party submenu was 6 columns wide but lists real 11-character move names; and `PrintMonTypes`' `.hide_type_2` blanked the wrong tiles (offsets hand-computed for 4-character kana type names, width taken from `PLAYER_NAME_LENGTH`, which L0 changed). Also moved the stats screen's vertical-divider draw into `.draw_page` so it survives the now-wider green-page move box. See the new **"L-system continuation — party / summary / mart surface"** subsection for the full writeup, the static-box column-budget rules, and the consolidated PLAYTEST checklist. **One layout issue deliberately left open:** the stats screen's 7-column left strip truncates 10-character nicknames/species names — that needs a redesign with screenshots, not a blind edit. _Next: Phase 4 dialogue (starting with `oak_speech.asm`, i.e. the M1b intro); the Phase-3 files that remain are all unreachable content (minigames, PC, link, breeder) and should wait until the feature that uses them exists._
 - **2026-08-08 (playtest round 9)** — User playtested the previous three batches and reported 12 items. Fixed 11; one is blocked on a design decision. The headline is a real data-corruption bug, not a layout nit: **`SkipNames` was still stepping 6 bytes**, the JP uniform name-table stride, so every party nickname and OT name was written over the tail of the previous entry (`HONOGU`+`HANEKO` = the `HONOGUHANE` the user saw, plus the `?` nickname and `?` OT that followed). Split into `SkipNames` (11) / `SkipOTNames` (8) with box tables still at 6, audited all 21 call sites, and gave `GetNicknamePointer` and `GetNick` explicit width parameters — they were each serving two tables that are no longer the same width. Also fixed a latent `SendMonIntoBox` overflow found on the way. Net ROM0 change was negative. Byte-verified the emitted strides. Beyond that: battle HUD level moved to its own right-aligned row under the name (per the user's retail screenshot), FIGHT list widened to 12 columns with `MoveInfoBox` relocated to the top-left, stats screen given two full-width name rows by shrinking the EXP box and skipping the divider there (plus moving the whole tilemap block into `.draw_page`, since `ClearBox` wipes cols 8-20 on every page load), rival "sent out" wording, empty-pack `CANCEL`, YES/NO, a 5-step wild-encounter cooldown, and MOM now heals. All 4 ROMs + `-correctheader` variants build warning-clean. See the **"Playtest round 9"** subsection above for the full writeup, the measured box-widening numbers for M1e, and the two items deliberately left undone (**EXP bar colour** — no free SGB palette, needs a user decision; **HUD gender symbol** — needs the enemy's base data in a hot battle path). _Next: user playtests round 9 (capture bug first — it needs 3+ catches in a row), then decide the EXP-bar trade-off, then Phase 4 dialogue starting with `oak_speech.asm`._
 - **2026-08-08 (playtest round 10)** — Four playtest items, all fixed; all 8 ROMs build warning-clean and every new code block was decoded back out of the ROM and checked. Two were real bugs with non-obvious causes. **(1) The "lab is closed" block was in `maps/scripts/SilentHill.asm`, not the lab map** — `CheckLabDoor`/`LabClosed` off `SilentHillScript7`, firing one tile *below* the warp tiles so the door never opened; it's demo scope-limiting and it made the lab front's fully authored `FINISHED` scene (Oak + both aides + the PC mail) unreachable, so per the user's decision the door is now open (the routines are kept, marked unreferenced, so it's a one-line revert; the back room stays locked). **(2) The summary screen's front-sprite clipping was a `ClearBox` sized from a ROM0 label address** — `ld bc, TextCommands` = `$120d` = 18 rows × **13** columns from `hlcoord 8, 0`, and column 20 of a 20-wide tilemap is column 0 of the next row, so every page load wiped the leftmost column of the 7×7 front pic (and wrote one byte past the tilemap). Replaced with an explicit `lb bc, SCREEN_HEIGHT, SCREEN_WIDTH - 8` in all three page loaders — **note that any ROM0 edit was silently resizing that box**. Plus **(3)** a caught-species Poké Ball on the wild-battle enemy HUD (`PokeBallsGFX` tile 0 parked in the free BG tile `$5d` by `LoadHPBar`, so it survives the battle-from-menu return path, + a `wPokedexCaught` `CHECK_FLAG` in `UpdateEnemyHUD`) and **(4)** gender symbols one column right of the level tag on the battle HUD, party screen and summary screen — which closes the round-9 "deliberately not done" HUD-gender item. The enemy HUD reads its gender ratio straight from `BaseData` with `GetFarByte` rather than calling `GetBaseData`, precisely to keep `wMonHeader` holding the player's mon (the risk round 9 flagged); the new helpers also blank genderless species instead of reporting them female like the shared `GetGender` does. Reclaimed Bank 0f +92, Bank 14 +45, Bank 3e +11. _Next: user playtests round 10 (see its PLAYTEST checklist — the lab re-entry and the summary paging are the two to check first), then the EXP-bar colour decision is still open, then Phase 4 dialogue starting with `oak_speech.asm`._
+- **2026-08-08 (Phase 4 — map dialogue)** — Picked up three files the previous session left modified mid-work (`oak_speech.asm`, `set_clock_dialog.asm`, `garbage.asm`): they were complete and building, so they were verified (the clock dialog's day-of-week now places `SUN`…`SAT` as ordinary font text instead of the double-height kanji, and its `HUD_GFX` tile load is gone) and the session moved on. **Then translated every remaining `maps/*.asm` file** — the whole first act, from the bedroom through Silent Hill, the lab, Route 1/2 and Quiet Hills — plus the shared engine text a player reaches alongside it. Two discoveries worth carrying forward: **`pokecenter_pc.asm` is reachable from the first room** (the bedroom PC `callfar`s it), not unreachable as the handover claimed, and **~35 per-turn battle messages live in `engine/battle/move_effects/*.asm`** rather than `effect_commands.asm`, so Phase 3 had missed them. A width linter written this session also caught **four latent row overflows in files earlier sessions had signed off**. Structurally, the Silent Hill town map + its scripts were split into a new `SECTION "Silent Hill Town"` in the empty bank `$35` (a map's attributes/blocks/text/scripts must share one bank — see the writeup), which is the template for the next full map bank, and the bank-`$0d` 16 KB wall was cleared again by deleting the zero-caller `Unreferenced_Gen1HealEffect`. All 8 ROMs build warning-clean; emitted text spot-decoded from the ROM. See the **"Phase 4 — map dialogue"** subsection above for the full writeup and the start-to-finish playtest walkthrough. _Next: user playtests the first act end to end; then the **Pokédex UI** (reachable — Oak gives the dex in the intro), which needs its `PlaceString` column arithmetic checked rather than a blind swap._

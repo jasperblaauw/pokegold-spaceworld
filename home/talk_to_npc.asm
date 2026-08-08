@@ -4,7 +4,7 @@ MapDefaultText::
 	ret
 
 GameFreakText::
-	text "ゲームフリーク！"
+	text "GAME FREAK!"
 	done
 
 TextAsmEnd::

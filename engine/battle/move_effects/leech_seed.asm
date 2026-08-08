@@ -35,11 +35,11 @@ BattleCommand_LeechSeed:
 	jp PrintText
 
 WasSeededText:
-	text "<TARGET>に"
-	line "たねを　うえつけた！"
+	text "<TARGET> was"
+	line "seeded!"
 	prompt
 
 EvadedText:
-	text "<TARGET>は"
-	line "こうげきを　かわした！"
+	text "<TARGET>"
+	line "evaded the attack!"
 	prompt

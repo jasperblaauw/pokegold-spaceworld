@@ -14,6 +14,7 @@ BattleCommand_EscapeTrappingMove:
 	ret
 
 ReleasedByText:
-	text "<USER>は　<TARGET>の"
-	line "こうげきから　かいほうされた！"
+	text "<USER> was"
+	line "freed from"
+	cont "<TARGET>!"
 	prompt

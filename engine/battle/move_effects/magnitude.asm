@@ -25,7 +25,7 @@ BattleCommand_GetMagnitude:
 	ret
 
 MagnitudeText:
-	text "マグニチュード@"
+	text "MAGNITUDE @"
 	deciram wTextDecimalByte, 1, 1
 	text "！！"
 	prompt

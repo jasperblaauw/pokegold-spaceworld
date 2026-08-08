@@ -36,6 +36,6 @@ BattleCommand_PerishSong:
 	jp PrintButItFailed
 
 StartPerishText:
-	text "おたがいの#は"
-	line "３ターンごに　ほろびてしまう！"
+	text "Both # will"
+	line "faint in 3 turns!"
 	prompt

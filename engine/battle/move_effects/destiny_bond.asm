@@ -12,6 +12,7 @@ BattleCommand_DestinyBond:
 	jp PrintText
 
 DestinyBondEffectText:
-	text "<USER>は　あいてを"
-	line "みちずれに　しようとしている"
+	text "<USER> wants"
+	line "to take the foe"
+	cont "down with it!"
 	prompt

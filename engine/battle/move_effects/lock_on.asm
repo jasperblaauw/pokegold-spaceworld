@@ -23,6 +23,6 @@ BattleCommand_LockOn:
 	jp PrintDidntAffectText
 
 TookAimText:
-	text "<TARGET>を"
-	line "ロックオンした！"
+	text "Took aim at"
+	line "<TARGET>!"
 	prompt

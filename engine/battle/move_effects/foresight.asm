@@ -22,8 +22,9 @@ BattleCommand_Foresight:
 	jp PrintText
 
 .IdentifiedText:
-	text "<USER>は　<TARGET>の"
-	line "しょうたいを　みやぶった！"
+	text "<USER>"
+	line "identified"
+	cont "<TARGET>!"
 	prompt
 
 .failed

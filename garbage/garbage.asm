@@ -423,17 +423,17 @@ SECTION "Bank 01 Garbage", ROMX
 
 if DEF(_DEBUG)
 	if DEF(_GOLD)
-	ds 815, $39, $00 ; feature/completion: reclaimed 43 + 8 + 116 (English item names) bytes
+	ds 444, $39, $00 ; feature/completion: reclaimed 43 + 8 + 116 (English item names) + 171 (intro text) + 200 (Oak speech) bytes
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/debug/bank01_silver.2bpp", 209 ; feature/completion: 42 + 43 + 8 + 116 (English items) reclaimed
+INCBIN "garbage/debug/bank01_silver.2bpp", 580 ; feature/completion: 42 + 43 + 8 + 116 (English items) + 171 (intro text) + 200 (Oak speech) reclaimed
 	endc
 else
 	if DEF(_GOLD)
-INCBIN "garbage/bank01_gold.2bpp", 206 ; feature/completion: 39 + 43 + 8 + 116 (English items) reclaimed
+INCBIN "garbage/bank01_gold.2bpp", 577 ; feature/completion: 39 + 43 + 8 + 116 (English items) + 171 (intro text) + 200 (Oak speech) reclaimed
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/bank01_silver.2bpp", 206 ; feature/completion: 39 + 43 + 8 + 116 (English items) reclaimed
+INCBIN "garbage/bank01_silver.2bpp", 577 ; feature/completion: 39 + 43 + 8 + 116 (English items) + 171 (intro text) + 200 (Oak speech) reclaimed
 	endc
 endc
 
@@ -442,17 +442,17 @@ SECTION "Bank 02 Garbage", ROMX
 
 if DEF(_DEBUG)
 	if DEF(_GOLD)
-INCBIN "garbage/debug/bank02_gold.2bpp", 188
+INCBIN "garbage/debug/bank02_gold.2bpp", 388 ; feature/completion: +200 Phase 4 PC/town-map text
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/debug/bank02_silver.2bpp", 188
+INCBIN "garbage/debug/bank02_silver.2bpp", 388 ; feature/completion: +200 Phase 4 PC/town-map text
 	endc
 else
 	if DEF(_GOLD)
-INCBIN "garbage/bank02_gold.2bpp", 188
+INCBIN "garbage/bank02_gold.2bpp", 388 ; feature/completion: +200 Phase 4 PC/town-map text
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/bank02_silver.2bpp", 188
+INCBIN "garbage/bank02_silver.2bpp", 388 ; feature/completion: +200 Phase 4 PC/town-map text
 	endc
 endc
 
@@ -513,17 +513,17 @@ Unreferenced_Corrupt_KnowsMove:
 	prompt
 
 if DEF(_GOLD)
-INCBIN "garbage/debug/bank03_gold.2bpp", 261 ; feature/completion: +4 OT-party nickname fill, +187 English item_effects text, +8 English add_mon/knows_move text, +name-table stride fix
+INCBIN "garbage/debug/bank03_gold.2bpp", 411 ; feature/completion: +4 OT-party nickname fill, +187 English item_effects text, +8 English add_mon/knows_move text, +name-table stride fix, +150 Phase 4 shared scripts
 endc
 if DEF(_SILVER)
-INCBIN "garbage/debug/bank03_silver.2bpp", 261 ; feature/completion: +4 OT-party nickname fill, +187 English item_effects text, +8 English add_mon/knows_move text, +name-table stride fix
+INCBIN "garbage/debug/bank03_silver.2bpp", 411 ; feature/completion: +4 OT-party nickname fill, +187 English item_effects text, +8 English add_mon/knows_move text, +name-table stride fix, +150 Phase 4 shared scripts
 endc
 else
 if DEF(_GOLD)
-INCBIN "garbage/bank03_gold.2bpp", 426 ; feature/completion: +4 OT-party nickname fill, +187 English item_effects text, +8 English add_mon/knows_move text, +name-table stride fix
+INCBIN "garbage/bank03_gold.2bpp", 576 ; feature/completion: +4 OT-party nickname fill, +187 English item_effects text, +8 English add_mon/knows_move text, +name-table stride fix, +150 Phase 4 shared scripts
 endc
 if DEF(_SILVER)
-INCBIN "garbage/bank03_silver.2bpp", 426 ; feature/completion: +4 OT-party nickname fill, +187 English item_effects text, +8 English add_mon/knows_move text, +name-table stride fix
+INCBIN "garbage/bank03_silver.2bpp", 576 ; feature/completion: +4 OT-party nickname fill, +187 English item_effects text, +8 English add_mon/knows_move text, +name-table stride fix, +150 Phase 4 shared scripts
 endc
 endc
 
@@ -553,17 +553,17 @@ SECTION "Bank 05 Garbage", ROMX
 
 if DEF(_DEBUG)
 	if DEF(_GOLD)
-INCBIN "garbage/debug/bank05_gold.2bpp", 74
+INCBIN "garbage/debug/bank05_gold.2bpp", 674 ; feature/completion: +600 Phase 4 shared scripts
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/debug/bank05_silver.2bpp", 74
+INCBIN "garbage/debug/bank05_silver.2bpp", 674 ; feature/completion: +600 Phase 4 shared scripts
 	endc
 else
 	if DEF(_GOLD)
-INCBIN "garbage/bank05_gold.2bpp", 38
+INCBIN "garbage/bank05_gold.2bpp", 638 ; feature/completion: +600 Phase 4 shared scripts
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/bank05_silver.2bpp", 38
+INCBIN "garbage/bank05_silver.2bpp", 638 ; feature/completion: +600 Phase 4 shared scripts
 	endc
 endc
 
@@ -686,7 +686,7 @@ SECTION "Bank 0e Garbage", ROMX
 
 if DEF(_DEBUG)
 	if DEF(_GOLD)
-INCBIN "garbage/debug/bank0e_gold.2bpp", 355 ; feature/completion: +161 for English trainer names
+INCBIN "garbage/debug/bank0e_gold.2bpp", 555 ; feature/completion: +161 for English trainer names, +200 English trainer names
 	endc
 	if DEF(_SILVER)
 	db -1 ; end
@@ -695,14 +695,14 @@ INCBIN "garbage/debug/bank0e_gold.2bpp", 355 ; feature/completion: +161 for Engl
 	db "こうめ@", TRAINERTYPE_ITEM_MOVES
 	db  8, DEX_CLEFAIRY, ITEM_NONE
 	db -1 ; end
-INCBIN "garbage/debug/bank0e_silver.2bpp", 352 ; feature/completion: +161 for English trainer names
+INCBIN "garbage/debug/bank0e_silver.2bpp", 552 ; feature/completion: +161 for English trainer names, +200 English trainer names
 	endc
 else
 	if DEF(_GOLD)
-INCBIN "garbage/bank0e_gold.2bpp", 355 ; feature/completion: +161 for English trainer names
+INCBIN "garbage/bank0e_gold.2bpp", 555 ; feature/completion: +161 for English trainer names, +200 English trainer names
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/bank0e_silver.2bpp", 342 ; feature/completion: +161 for English trainer names
+INCBIN "garbage/bank0e_silver.2bpp", 542 ; feature/completion: +161 for English trainer names, +200 English trainer names
 	endc
 endc
 
@@ -1222,17 +1222,17 @@ SECTION "Bank 24 Garbage", ROMX
 
 if DEF(_DEBUG)
 	if DEF(_GOLD)
-	INCBIN "garbage/debug/bank24_gold.2bpp", 43
+	INCBIN "garbage/debug/bank24_gold.2bpp", 66 ; feature/completion: 23 reclaimed (English clock dialog)
 	endc
 	if DEF(_SILVER)
-	INCBIN "garbage/debug/bank24_silver.2bpp", 43
+	INCBIN "garbage/debug/bank24_silver.2bpp", 66 ; feature/completion: 23 reclaimed (English clock dialog)
 	endc
 else
 	if DEF(_GOLD)
-	INCBIN "garbage/bank24_gold.2bpp", 43
+	INCBIN "garbage/bank24_gold.2bpp", 66 ; feature/completion: 23 reclaimed (English clock dialog)
 	endc
 	if DEF(_SILVER)
-	INCBIN "garbage/bank24_silver.2bpp", 43
+	INCBIN "garbage/bank24_silver.2bpp", 66 ; feature/completion: 23 reclaimed (English clock dialog)
 	endc
 endc
 
@@ -1241,17 +1241,17 @@ SECTION "Bank 25 Garbage", ROMX
 
 if DEF(_DEBUG)
 	if DEF(_GOLD)
-	INCBIN "garbage/debug/bank25_gold.2bpp", 221
+	INCBIN "garbage/debug/bank25_gold.2bpp", 1221 ; feature/completion: 1000 (Route 1/2 + gate English dialogue) reclaimed
 	endc
 	if DEF(_SILVER)
-	INCBIN "garbage/debug/bank25_silver.2bpp", 221
+	INCBIN "garbage/debug/bank25_silver.2bpp", 1221 ; feature/completion: 1000 (Route 1/2 + gate English dialogue) reclaimed
 	endc
 else
 	if DEF(_GOLD)
-	INCBIN "garbage/bank25_gold.2bpp", 221
+	INCBIN "garbage/bank25_gold.2bpp", 1221 ; feature/completion: 1000 (Route 1/2 + gate English dialogue) reclaimed
 	endc
 	if DEF(_SILVER)
-	INCBIN "garbage/bank25_silver.2bpp", 221
+	INCBIN "garbage/bank25_silver.2bpp", 1221 ; feature/completion: 1000 (Route 1/2 + gate English dialogue) reclaimed
 	endc
 endc
 
@@ -1260,17 +1260,17 @@ SECTION "Bank 26 Garbage", ROMX
 
 if DEF(_DEBUG)
 	if DEF(_GOLD)
-	INCBIN "garbage/debug/bank26_gold.2bpp", 34
+	INCBIN "garbage/debug/bank26_gold.2bpp", 1034 ; feature/completion: 1000 (Route 2 gate + pokecenter English dialogue) reclaimed
 	endc
 	if DEF(_SILVER)
-	INCBIN "garbage/debug/bank26_silver.2bpp", 34
+	INCBIN "garbage/debug/bank26_silver.2bpp", 1034 ; feature/completion: 1000 (Route 2 gate + pokecenter English dialogue) reclaimed
 	endc
 else
 	if DEF(_GOLD)
-	INCBIN "garbage/bank26_gold.2bpp", 34
+	INCBIN "garbage/bank26_gold.2bpp", 1034 ; feature/completion: 1000 (Route 2 gate + pokecenter English dialogue) reclaimed
 	endc
 	if DEF(_SILVER)
-	INCBIN "garbage/bank26_silver.2bpp", 34
+	INCBIN "garbage/bank26_silver.2bpp", 1034 ; feature/completion: 1000 (Route 2 gate + pokecenter English dialogue) reclaimed
 	endc
 endc
 
@@ -1437,17 +1437,17 @@ SECTION "Bank 2f Garbage", ROMX
 
 if DEF(_DEBUG)
 	if DEF(_GOLD)
-	INCBIN "garbage/debug/bank2f_gold.2bpp", 150
+	INCBIN "garbage/debug/bank2f_gold.2bpp", 1150 ; feature/completion: 1000 reclaimed (QuietHills English dialogue)
 	endc
 	if DEF(_SILVER)
-	INCBIN "garbage/debug/bank2f_silver.2bpp", 62
+	INCBIN "garbage/debug/bank2f_silver.2bpp", 1062 ; feature/completion: 1000 reclaimed (QuietHills English dialogue)
 	endc
 else
 	if DEF(_GOLD)
-	INCBIN "garbage/bank2f_gold.2bpp", 150
+	INCBIN "garbage/bank2f_gold.2bpp", 1150 ; feature/completion: 1000 reclaimed (QuietHills English dialogue)
 	endc
 	if DEF(_SILVER)
-	INCBIN "garbage/bank2f_silver.2bpp", 62
+	INCBIN "garbage/bank2f_silver.2bpp", 1062 ; feature/completion: 1000 reclaimed (QuietHills English dialogue)
 	endc
 endc
 
@@ -1971,11 +1971,11 @@ DEF Bank34StarterDexOffset EQU 13
 DEF Bank34CorruptOffset EQU $17
 	if DEF(_GOLD)
 	DEF Bank34OldOffset EQU 5
-INCBIN "garbage/debug/bank34_gold.2bpp", 246
+INCBIN "garbage/debug/bank34_gold.2bpp", 3246 ; feature/completion: +3000 reclaimed (Phase 4 English map dialogue)
 	endc
 	if DEF(_SILVER)
 	DEF Bank34OldOffset EQU 0
-	INCBIN "garbage/debug/bank34_silver.2bpp", 246
+	INCBIN "garbage/debug/bank34_silver.2bpp", 3246 ; feature/completion: +3000 reclaimed (Phase 4 English map dialogue)
 	endc
 else
 DEF Bank34NonDebugOffset EQU $1E
@@ -1983,10 +1983,10 @@ DEF Bank34OldOffset EQU -4
 DEF Bank34CorruptOffset EQU -7
 DEF Bank34StarterDexOffset EQU 37
 	if DEF(_GOLD)
-	INCBIN "garbage/bank34_gold.2bpp", 246
+	INCBIN "garbage/bank34_gold.2bpp", 3246 ; feature/completion: +3000 reclaimed (Phase 4 English map dialogue)
 	endc
 	if DEF(_SILVER)
-	INCBIN "garbage/bank34_silver.2bpp", 280
+	INCBIN "garbage/bank34_silver.2bpp", 3280 ; feature/completion: +3000 reclaimed (Phase 4 English map dialogue)
 	endc
 endc
 
@@ -1999,17 +1999,17 @@ rept 23
 endr
 if DEF(_DEBUG)
 	if DEF(_GOLD)
-	INCBIN "garbage/debug/bank35_gold.2bpp", 23
+	INCBIN "garbage/debug/bank35_gold.2bpp", 4119 ; feature/completion: 4096 freed for SECTION "Silent Hill Town"
 	endc
 	if DEF(_SILVER)
-	INCBIN "garbage/debug/bank35_silver.2bpp", 23
+	INCBIN "garbage/debug/bank35_silver.2bpp", 4119 ; feature/completion: 4096 freed for SECTION "Silent Hill Town"
 	endc
 else
 	if DEF(_GOLD)
-	INCBIN "garbage/bank35_gold.2bpp", 23
+	INCBIN "garbage/bank35_gold.2bpp", 4119 ; feature/completion: 4096 freed for SECTION "Silent Hill Town"
 	endc
 	if DEF(_SILVER)
-	INCBIN "garbage/bank35_silver.2bpp", 23
+	INCBIN "garbage/bank35_silver.2bpp", 4119 ; feature/completion: 4096 freed for SECTION "Silent Hill Town"
 	endc
 endc
 
@@ -2191,16 +2191,16 @@ if DEF(_DEBUG)
 	cpl
 	ret
 	if DEF(_GOLD)
-INCBIN "garbage/debug/bank3f_gold.2bpp", 164
+INCBIN "garbage/debug/bank3f_gold.2bpp", 414 ; feature/completion: +250 Phase 4
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/debug/bank3f_silver.2bpp", 164
+INCBIN "garbage/debug/bank3f_silver.2bpp", 414 ; feature/completion: +250 Phase 4
 	endc
 else
 	if DEF(_GOLD)
-INCBIN "garbage/bank3f_gold.2bpp", 162
+INCBIN "garbage/bank3f_gold.2bpp", 412 ; feature/completion: +250 Phase 4
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/bank3f_silver.2bpp", 162
+INCBIN "garbage/bank3f_silver.2bpp", 412 ; feature/completion: +250 Phase 4
 	endc
 endc

@@ -204,80 +204,102 @@ QuietHillsSignpost1:
 if DEF(_GOLD)
 
 QuietHillsTrainer6EncounterString:
-	text "ねえ　ねえ　みてよ"
+	text "Hey, hey, look at"
+	line "this!"
 
-	para "これ　ぜったい"
-	line "しんしゅの　ポケモン　だよ！"
+	para "This has GOT to be"
+	line "a new species of"
+	cont "#!"
 	done
 
-	text "まだ　ポケモンの　とくちょう"
-	line "わかってないから　しかたないよ"
+	text "I still don't know"
+	line "this one's traits,"
+	cont "so it can't be"
+	cont "helped."
 	done
 
 QuietHillsTrainer6WonString:
-	text "あたらしい　ポケモンだけでなく"
-	line "あたらしい　タイプも"
-	cont "みつかったって　うわさだよ"
+	text "Rumour has it that"
+	line "not just new"
+	cont "# have been"
+	cont "found, but new"
+	cont "types too."
 	done
 
 QuietHillsTrainer5EncounterString:
-	text "いい　てんきねー"
-	line "あなた　ちょうしは　いかが？"
+	text "Lovely weather,"
+	line "isn't it?"
+	cont "How are you doing?"
 	done
 
-	text "なにするニャー"
-	line "⋯⋯なにいってるのかしら　あたし"
+	text "What was that for,"
+	line "meow!"
+	cont "<⋯⋯>what am I even"
+	cont "saying?"
 	done
 
 QuietHillsTrainer5WonString:
-	text "なんで　こうなるの？"
-	line "さんぽしてた　だけなのに@@"
+	text "Why did it turn"
+	line "out like this?"
+	cont "I was only taking"
+	cont "a walk<⋯⋯>@@"
 
 QuietHillsTrainer4EncounterString:
-	text "こんなところで"
-	line "ひを　ふく　れんしゅう！"
+	text "Practising my"
+	line "fire-breathing out"
+	cont "here!"
 	done
 
-	text "あちち　しっぱいだー"
+	text "Ow-ow-ow, I blew"
+	line "it!"
 	done
 
 QuietHillsTrainer4WonString:
-	text "よるになると　くらくなるから"
-	line "こどもは　はやく　かえりなさい！"
+	text "It gets dark once"
+	line "night falls, so"
+	cont "kids, hurry home!"
 
-	para "おれ？"
-	line "おれは　ひをふくから　だいじょうぶ"
+	para "Me? I'm fine."
+	line "I breathe fire."
 	done
 
 QuietHillsTrainer3EncounterString:
-	text "むしポケモンの　ことなら"
-	line "だれよりも　くわしいよ"
+	text "When it comes to"
+	line "BUG #, I"
+	cont "know more than"
+	cont "anyone."
 	done
 
-	text "パラパラー"
+	text "Para-para!"
 	done
 
 QuietHillsTrainer3WonString:
-	text "ポケモンずかんを　つくるんだって？"
-	line "ちょっと　みせてよ"
+	text "You're making a"
+	line "POKéDEX? Let me"
+	cont "see it a sec."
 
-	para "へー"
-	line "タイプべつに　ポケモン　さがせるんだ"
+	para "Ohh, so you can"
+	line "search for #"
+	cont "by type."
 	done
 
 QuietHillsTrainer2EncounterString:
-	text "いっとくけど"
-	line "きみよりも　べんきょう　してるから"
-	cont "きみよりも　つよいよ　ぜったい！"
+	text "Just so you know,"
+	line "I study harder"
+	cont "than you, so I'm"
+	cont "definitely"
+	cont "stronger than you!"
 	done
 
-	text "な　なぜなんだ？"
+	text "W-why<⋯⋯>?"
 	done
 
 QuietHillsTrainer2WonString:
-	text "おかしいよ⋯⋯"
-	line "まいにち　ポケモンの　べんきょうを"
-	cont "きちんと　してるのに　まけるなんて"
+	text "That's strange<⋯⋯>"
+	line "I study # "
+	cont "properly every"
+	cont "single day, and"
+	cont "yet I lost<⋯⋯>"
 	done
 
 endc
@@ -285,93 +307,118 @@ endc
 if DEF(_SILVER)
 
 QuietHillsTrainer6EncounterString:
-	text "じゃーん！"
-	line "みたことない　ポケモン"
-	cont "だいはっけん"
+	text "Ta-daa!"
+	line "A never-before-"
+	cont "seen #, a"
+	cont "huge discovery!"
 	done
 
-	text "ほかの　ポケモンも"
-	line "つかまえて　おくべきだったー"
+	text "I should have"
+	line "caught some other"
+	cont "# too<⋯⋯>"
 	done
 
 QuietHillsTrainer6WonString:
-	text "きみの　ポケモンも　みたことないな"
-	line "ね　こうかん　しない？"
+	text "I've never seen"
+	line "your #"
+	cont "either. Say, want"
+	cont "a trade?"
 	done
 
 QuietHillsTrainer5EncounterString:
-	text "ねーねー　あたしと"
-	line "ポケモンしょうぶ　しよーよー"
+	text "Hey, hey, let's"
+	line "have a # "
+	cont "battle, come on!"
 	done
 
-	text "やーん"
+	text "Nooo!"
 	done
 
 QuietHillsTrainer5WonString:
-	text "よるになると　くらくなるじゃない？"
-	line "あるいてても　まわりが"
-	cont "よくわからなくて　こわいわ"
+	text "It gets dark when"
+	line "night falls, no?"
+	cont "Even walking, I"
+	cont "can't see much"
+	cont "around me. Scary."
 	done
 
 QuietHillsTrainer4EncounterString:
-	text "きみ！"
+	text "You!"
 
-	para "おこらないから"
-	line "いけが　あるところを　おしえなさい！"
+	para "I won't get mad,"
+	line "so tell me where"
+	cont "there's a pond!"
 	done
 
-	text "みずが　ちかくに　ないと⋯⋯"
+	text "If there's no"
+	line "water nearby<⋯⋯>"
 	done
 
 QuietHillsTrainer4WonString:
-	text "どうして　おじさんは"
-	line "こんなところに　いるんだ？"
+	text "Why is a grown man"
+	line "in a place like"
+	cont "this?"
 	done
 
 QuietHillsTrainer3EncounterString:
-	text "ポケモンは　はじめたばかり？"
-	line "それやったら　まけへんで"
+	text "Just started out"
+	line "with #? In"
+	cont "that case I won't"
+	cont "lose!"
 	done
 
-	text "うわ　なんでやねん"
+	text "Whoa, what the"
+	line "heck?"
 	done
 
 QuietHillsTrainer3WonString:
-	text "なんか　すっげー　くやしいわ"
+	text "Man, that's"
+	line "seriously"
+	cont "frustrating."
 	done
 
 QuietHillsTrainer2EncounterString:
-	text "ここは　ひろくて"
-	line "トレーニングに　さいてきだ"
+	text "This place is wide"
+	line "open, perfect for"
+	cont "training."
 
-	para "なんのって　もちろん"
-	line "ポケモンの　トレーニングだよ！"
+	para "Training for what?"
+	line "# training,"
+	cont "of course!"
 	done
 
-	text "れ　れんしゅう　ぶそくか⋯⋯"
+	text "A-am I short on"
+	line "practice<⋯⋯>?"
 	done
 
 QuietHillsTrainer2WonString:
-	text "よーし　はしる　ぞー"
+	text "Alright, time to"
+	line "run!"
 	done
 
 endc
 
 QuietHillsText1String:
-	text "この　おかの　ポケモンは　よわい！"
-	line "だから　ここで　しゅぎょう　している"
-	cont "トレーナーも　おおいよ"
+	text "The # on"
+	line "this hill are"
+	cont "weak! That's why"
+	cont "lots of TRAINERS"
+	cont "train here."
 
-	para "みんな　バトルが　すきだから"
-	line "うでだめしを　するといい"
+	para "Everyone loves"
+	line "battling, so it's"
+	cont "a good place to"
+	cont "test your skill."
 	done
 
 QuietHillsSignpost2String:
-	text "しずかな　おか"
-	line "サイレントヒル　は　こちら"
+	text "QUIET HILL"
+	line "SILENT HILL, this"
+	cont "way."
 	done
 
 QuietHillsSignpost1String:
-	text "しずかな　おか"
-	line "オールドシティ　は　こちら"
+	text "QUIET HILL"
+	line "OLD CITY, this"
+	cont "way."
 	done

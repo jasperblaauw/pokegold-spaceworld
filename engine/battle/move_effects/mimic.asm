@@ -37,8 +37,8 @@ BattleCommand_Mimic:
 	jp PrintButItFailed
 
 MimicLearnedMoveText:
-	text "<USER>は"
+	text "<USER> learned"
 	line "@"
 	text_from_ram wStringBuffer1
-	text "を　おぼえた！"
+	text "!"
 	prompt

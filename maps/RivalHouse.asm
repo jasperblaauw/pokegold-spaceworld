@@ -83,9 +83,9 @@ RivalHouseNPCText1:
 	ret
 
 RivalHouseTextString1:
-	text "おや？　<RIVAL>あてに　メールが"
-	line "とどいている　ようだ"
-	cont "よんでみる？@"
+	text "Huh? There's mail"
+	line "for <RIVAL>."
+	cont "Read it?@"
 
 	start_asm
 	call YesNoBox
@@ -102,18 +102,24 @@ RivalHouseTextString1:
 	ret
 
 RivalHouseTextString2:
-	text "とつぜん　メールを　さしあげる"
-	line "しつれいを　おゆるしあれ"
+	text "Forgive me for"
+	line "writing to you so"
+	cont "suddenly."
 
-	para "じつは　きみに　どうしても"
-	line "わたしたい　ものが　あるのじゃが"
-	cont "うけとって　もらえんかのう"
-	cont "ポケモンけんきゅうしゃ　オーキド"
+	para "The truth is, I"
+	line "have something I"
+	cont "must give you."
+	cont "Would you accept"
+	cont "it?"
+
+	para "# researcher"
+	line "OAK"
 	done
 
 RivalHouseTextString3:
-	text "ひとのメールは"
-	line "みちゃ　いけないよな<⋯⋯>"
+	text "You shouldn't read"
+	line "other people's"
+	cont "mail<⋯⋯>"
 	done
 
 RivalHouse_TextPointers::
@@ -126,8 +132,9 @@ RivalHouseNPCText3:
 	ret
 
 RivalHouseTextString4:
-	text "このまえ　かわったいろの"
-	line "ポッポを　みかけたわ"
+	text "The other day I"
+	line "spotted a PIDGEY"
+	cont "of an odd colour."
 	done
 
 RivalHouseNPCText4:
@@ -146,36 +153,44 @@ RivalHouseNPCText4:
 	ret
 
 RivalHouseTextString5:
-	text "ケン『ななな"
-	line "なんだ　<PLAYER>　じゃないか！"
+	text "KEN: Wh-wh-what,"
+	line "if it isn't"
+	cont "<PLAYER>!"
 
-	para "おれは　ちょっと　あのー"
-	line"がっこうの　しゅくだいを"
-	cont "おしえに　きてるんだ！"
+	para "I'm, uh, just here"
+	line "to help out with"
+	cont "some homework!"
 
-	para "えっ　マップ？"
-	line "そうか　そんな　やくそくも　してたな"
-	cont "わかった"
-	cont "トレーナーギアを　かしてみな"
+	para "Huh? A map?"
+	line "Oh right, I did"
+	cont "promise that."
+	cont "Got it. Lend me"
+	cont "your TRAINER GEAR."
 
-	para "スロットに　マップの　カセットを　"
-	line "さしこんでっと⋯⋯"
-	cont "よし　これで　マップが　みれるぞ！"
+	para "Slot the map"
+	line "cartridge in<⋯⋯>"
+	cont "There! Now you can"
+	cont "see the map!"
 	done
 
 RivalHouseTextString6:
-	text "もし　オールドにいくなら"
-	line "マサキって　やつに　あうといい"
+	text "If you head to"
+	line "OLD CITY, go meet"
+	cont "a guy named BILL."
 
-	para "おれの　ともだちで"
-	line "すごい　ポケモン　マニアだ！"
-	cont "きっと　おまえの"
-	cont "てだすけを　してくれるぜ"
+	para "He's a friend of"
+	line "mine and a huge"
+	cont "# maniac!"
+	cont "He's sure to lend"
+	cont "you a hand."
 	done
 
 RivalHouseTextString7:
-	text "ケン『<PLAYER>"
-	line "オーキドはかせに　みこまれて"
-	cont "ポケモンずかんを　つくるんだって？"
-	cont "すごいじゃないか　がんばれよ"
+	text "KEN: <PLAYER>,"
+	line "I hear PROF.OAK"
+	cont "picked you to make"
+	cont "a POKéDEX?"
+
+	para "That's amazing!"
+	line "Good luck!"
 	done

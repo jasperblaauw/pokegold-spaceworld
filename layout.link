@@ -200,11 +200,11 @@ ROMX $34
 	"Silent Hill Maps"
 	"Bank 34 Garbage"
 ROMX $35
+	"Silent Hill Town"
 	"Bank 35 Garbage"
 ROMX $36
 	"City Maps"
 	"Route Maps"
-	"Silent Hill Scripts"
 	"Set Time"
 	"Route Scripts"
 	"Bank 36 Garbage"

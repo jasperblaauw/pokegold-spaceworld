@@ -12,6 +12,6 @@ BattleCommand_Protect:
 	jp PrintText
 
 ProtectedItselfText:
-	text "<USER>は"
-	line "まもりの　たいせいに　はいった！"
+	text "<USER>"
+	line "protected itself!"
 	prompt

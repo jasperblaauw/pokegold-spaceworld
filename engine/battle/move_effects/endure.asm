@@ -12,6 +12,6 @@ BattleCommand_Endure:
 	jp PrintText
 
 BracedItselfText:
-	text "<USER>は　こらえる"
-	line "たいせいに　はいった！"
+	text "<USER>"
+	line "braced itself!"
 	prompt

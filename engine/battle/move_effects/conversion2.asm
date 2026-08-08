@@ -41,10 +41,10 @@ BattleCommand_Conversion2:
 	jp PrintText
 
 .TransformedTypeText
-	text "<TARGET>の　タイプを"
+	text "<TARGET> became"
 	line "@"
 	text_from_ram wStringBuffer1
-	text "に　かえた！"
+	text " type!"
 	prompt
 
 .failed

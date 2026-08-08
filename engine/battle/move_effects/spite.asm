@@ -76,10 +76,11 @@ BattleCommand_Spite:
 	jp PrintDidntAffectText
 
 SpiteEffectText:
-	text "<TARGET>の"
+	text "<TARGET>'s"
 	line "@"
 	text_from_ram wStringBuffer1
-	text "を　@"
+	text_start
+	cont "lost @"
 	deciram wTextDecimalByte, 1, 1
-	text "けずった！"
+	text " PP!"
 	prompt

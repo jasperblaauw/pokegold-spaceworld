@@ -19,6 +19,6 @@ BattleCommand_FocusEnergy:
 
 GettingPumpedText:
 	text_exit
-	text "<USER>は"
-	line "はりきっている！"
+	text "<USER> is"
+	line "getting pumped!"
 	prompt

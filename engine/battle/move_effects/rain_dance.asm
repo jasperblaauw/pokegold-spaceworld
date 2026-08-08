@@ -12,7 +12,7 @@ BattleCommand_StartRain:
 	jp PrintText
 
 .DownpourText
-	text "おおあめに　なった！"
+	text "Downpour!"
 	prompt
 
 .failed

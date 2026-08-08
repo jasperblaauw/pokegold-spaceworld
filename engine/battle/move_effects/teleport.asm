@@ -133,16 +133,16 @@ BattleCommand_TryEscape:
 	jp PrintText
 
 FledFromBattleText:
-	text "<USER>は　せんとうから"
-	line "りだつした！"
+	text "<USER> fled"
+	line "the battle!"
 	prompt
 
 FledInFearText:
-	text "<TARGET>は　おじけづいて"
-	line "にげだした！"
+	text "<TARGET> got"
+	line "scared and fled!"
 	prompt
 
 BlownAwayText:
-	text "<TARGET>は"
-	line "ふきとばされた！"
+	text "<TARGET> was"
+	line "blown away!"
 	prompt

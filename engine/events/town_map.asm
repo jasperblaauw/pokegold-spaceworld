@@ -107,7 +107,7 @@ FlyMap::
 	ret
 
 ChooseADestinationText:
-	db "とびさき　を　えらんでください@"
+	db "Choose destination.@"
 
 Pokedex_GetArea:
 	ld a, [wNestIconBlinkCounter]
@@ -122,10 +122,10 @@ Pokedex_GetArea:
 	call Request1bpp
 
 	call GetPokemonName
-	hlcoord 4, 15
+	hlcoord 1, 15
 	call PlaceString
 
-	hlcoord 9, 15
+	hlcoord 12, 15
 	ld de, .String_SNest
 	call PlaceString
 
@@ -155,7 +155,7 @@ Pokedex_GetArea:
 	ret
 
 .String_SNest:
-	db "の　すみか@"
+	db "'s NEST@"
 
 .PlaceNest:
 	ld a, [wNestIconBlinkCounter]

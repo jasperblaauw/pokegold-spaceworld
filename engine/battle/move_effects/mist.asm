@@ -17,6 +17,6 @@ BattleCommand_Mist:
 	jp PrintButItFailed
 
 MistText:
-	text "<USER>は"
-	line "しろい　きりに　つつまれた！"
+	text "<USER> became"
+	line "shrouded in mist!"
 	prompt

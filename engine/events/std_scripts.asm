@@ -2,35 +2,41 @@
 ; from an object placed over the corresponding collision tile.
 
 ; Early duplicate of PlayerHouse2FRadioText, which is present in the map's bank in the final game.
-; Uses the long "ポケモン" and "⋯⋯⋯⋯" instead of their shortcuts, and lacks the final sentence.
+; Uses the long "POKéMON" and "<⋯⋯><⋯⋯>" spelled out instead of their shortcut
+; control codes, and lacks the final sentence.
 _Unreferenced_PokemonNewsScript::
 	ld hl, .DuplicatePokemonNewsText
 	call OpenTextbox
 	ret
 
 .DuplicatePokemonNewsText
-	text "<PLAYER>は"
-	line "ラジオのスイッチを　おした！"
+	text "<PLAYER> switched"
+	line "on the radio!"
 
-	para "ジェイ　オー　ピー　エム"
-	line "こちらは"
-	cont "ポケモン　ほうそうきょく　です"
+	para "J-O-P-M. This is"
+	line "POKéMON Radio,"
+	cont "bringing you the"
+	cont "POKéMON News."
 
-	para "ポケモンニュースを　おおくりします"
+	para "<⋯⋯> The famous"
+	line "POKéMON researcher"
+	cont "PROF.OAK has"
+	cont "vanished from"
+	cont "KANTO!"
 
-	para "⋯⋯　ポケモンの　せかいてきな"
-	line "けんきゅうしゃ　オーキドはかせが"
-	cont "カントーから　すがたを　けしました"
-	cont "あらたな　けんきゅうの　ばしょを"
-	cont "もとめて　いどうした　との"
-	cont "みかたも　ありますが"
-	cont "なんらかの　じけんに　まきこまれた"
-	cont "かのうせいも　あり"
-	cont "かんけいしゃは　とても"
-	cont "しんぱい　しています"
+	para "Some believe he"
+	line "moved on to find a"
+	cont "new place for his"
+	cont "research."
 
-	para "⋯⋯⋯⋯いじょう"
-	line "ポケモンニュースでした"
+	para "But he may have"
+	line "been caught up in"
+	cont "some incident, and"
+	cont "those close to him"
+	cont "are very worried."
+
+	para "<⋯⋯><⋯⋯> That was"
+	line "the POKéMON News."
 
 	para "⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯"
 	done
@@ -42,7 +48,8 @@ _PokemonBooksScript::
 
 ; "Crammed full of POKéMON books!" flavor text
 .PokemonBooksText:
-	text "ポケモンえほんが　そろってる！"
+	text "Crammed full of"
+	line "# books!"
 	done
 
 _FridgeScript::
@@ -51,8 +58,9 @@ _FridgeScript::
 	ret
 
 .FridgeText:
-	text "なかは<⋯⋯>"
-	line "ほとんど　からっぽだ<⋯⋯>"
+	text "Inside<⋯⋯>"
+	line "it's almost"
+	cont "empty<⋯⋯>"
 	done
 
 _StoveScript::
@@ -61,8 +69,9 @@ _StoveScript::
 	ret
 
 .StoveText:
-	text "ガスコンロの　ひは　きえている"
-	line "あんぜん　だいいち！"
+	text "The gas burner is"
+	line "switched off."
+	cont "Safety first!"
 	done
 
 _SinkScript::
@@ -71,8 +80,10 @@ _SinkScript::
 	ret
 
 .SinkText:
-	text "ピカピカの　ながしだい！"
-	line "こんやの　メニューは　なんだろう？"
+	text "A sparkling clean"
+	line "sink!"
+	cont "What's on the menu"
+	cont "tonight?"
 	done
 
 _PokecenterSignScript::
@@ -81,8 +92,9 @@ _PokecenterSignScript::
 	ret
 
 .PokecenterSignText:
-	text "ポケモンの　たいりょく　かいふく！"
-	line "ポケモンセンター"
+	text "Restore #"
+	line "to full health!"
+	cont "# CENTER"
 	done
 
 _WindowScript::
@@ -91,7 +103,8 @@ _WindowScript::
 	ret
 
 .WindowText:
-	text "まどが　よごれているぞ？"
+	text "The window is"
+	line "dirty, isn't it?"
 	done
 
 ; Various scenes from the Pokemon anime that play on the player and rival's TVs
@@ -116,22 +129,30 @@ _TVScript::
 
 ; Scene from "Pokémon: I Choose You!"
 .TVDayText:
-	text "ピカチュウが　オニスズメと"
-	line "たたかっている<⋯⋯>"
-	cont "サトシが　なみだ　ぐんでいる<⋯⋯>"
-	cont "#アニメだ！"
+	text "PIKACHU battles a"
+	line "SPEAROW<⋯⋯>"
+	cont "SATOSHI has tears"
+	cont "in his eyes<⋯⋯>"
+	cont "It's the #"
+	cont "cartoon!"
 	done
 
 ; Scene from "Primeape Goes Bananas"
 .TVNightText:
-	text "オコリザルが　あばれている<⋯⋯>"
-	cont "サトシが　にげまわってる！<⋯⋯>"
-	cont "#アニメだ！"
+	text "A PRIMEAPE is on"
+	cont "the rampage<⋯⋯>"
+	cont "SATOSHI is running"
+	cont "for his life!<⋯⋯>"
+	cont "It's the #"
+	cont "cartoon!"
 	done
 
 ; Scene from "Bulbasaur's Mysterious Garden"
 .TVMorningText:
-	text "フシギダネが　すねている<⋯⋯>"
-	cont "サトシが　こまっている<⋯⋯>"
-	cont "#アニメだ！"
+	text "A BULBASAUR is"
+	cont "sulking<⋯⋯>"
+	cont "SATOSHI doesn't"
+	cont "know what to do<⋯⋯>"
+	cont "It's the #"
+	cont "cartoon!"
 	done

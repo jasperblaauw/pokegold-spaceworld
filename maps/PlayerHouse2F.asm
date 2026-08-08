@@ -156,52 +156,59 @@ PlayerHouse2FN64Text:
 	ret
 
 PlayerHouse2FTextString1:
-	text "ケン『おっ　おまえの　うでで"
-	line "ひかりかがやく　そのとけいは⋯⋯"
-	cont "<PLAYER>も　ついに"
-	cont "トレーナーギアを　かったのか！"
+	text "KEN: Whoa! That"
+	line "watch shining on"
+	cont "your wrist<⋯⋯>"
+	cont "<PLAYER>, you got a"
+	cont "TRAINER GEAR too!"
 
-	para "すごいじゃないか！"
-	line "でも　かったばかりじゃ　じかんしか"
-	cont "わからないだろ？"
-	cont "あとで　マップが"
-	cont "みられるように　してやるよ！"
-	cont "おまえ　どうせ"
-	cont "あそびに　いくんだろう？"
+	para "Pretty sharp!"
+	line "But fresh out of"
+	cont "the box, all it"
+	cont "tells you is the"
+	cont "time, right?"
+	cont "Later I'll set it"
+	cont "up to show a map!"
 
-	para "ざんねんながら　おふくろは"
-	line "かいものに　いってるから"
-	cont "おこづかいを　もらおうなんて"
-	cont "きょうは　むり　だぜ！"
+	para "You're off to play"
+	line "anyway, right?"
+
+	para "Too bad, though."
+	line "MOM's out shopping"
+	cont "so no allowance"
+	cont "for you today!"
 	done
 
 PlayerHouse2FTextString2:
-	text "そうだ　おまえの　パソコンに"
-	line "メールが　とどいていたな"
-	cont "でかけるんなら"
-	cont "メールぐらい　よんでおけよ"
+	text "That's right, you"
+	line "had mail on your"
+	cont "<PC>. If you're"
+	cont "going out, read"
+	cont "it first at least."
 	done
 
 PlayerHouse2FTextString3:
-	text "クリスマスに　カントーの"
-	line "しんせきに　プレゼント"
-	cont "してもらった　にんぎょうだ"
+	text "It's a doll my"
+	line "relatives in KANTO"
+	cont "gave me for"
+	cont "CHRISTMAS."
 	done
 
 PlayerHouse2FTextString4:
-	text "ニンテンドウ６４を　してる！"
-	cont "⋯⋯　⋯⋯　さてと！"
-	cont "そろそろ　そとに　あそびに"
-	cont "でかけるか！"
+	text "Playing my"
+	cont "NINTENDO 64!"
+	cont "<⋯⋯> Right then!"
+	cont "Guess it's time to"
+	cont "go outside!"
 	done
 
 PlayerHouse2FTextString5:
-	text "<PLAYER>は"
-	line "パソコンの　スイッチを　いれた！"
+	text "<PLAYER> turned on"
+	line "the <PC>!"
 
-	para "おや？　<PLAYER>あてに"
-	line "メールが　とどいている　ようだ"
-	cont "よんでみる？@"
+	para "Huh? There's mail"
+	line "for <PLAYER>."
+	cont "Read it?@"
 
 	start_asm
 	call PlayerHouse2FCheckEmail
@@ -209,63 +216,77 @@ PlayerHouse2FTextString5:
 	ret
 
 PlayerHouse2FTextString6:
-	text "とつぜん　メールを　さしあげる"
-	line "しつれいを　おゆるしあれ"
+	text "Forgive me for"
+	line "writing to you so"
+	cont "suddenly."
 
-	para "じつは　きみに　どうしても"
-	line "わたしたい　ものが　あるのじゃが"
-	cont "うけとって　もらえんかのう"
-	cont "ポケモンけんきゅうしゃ　オーキド"
+	para "The truth is, I"
+	line "have something I"
+	cont "must give you."
+	cont "Would you accept"
+	cont "it?"
+
+	para "# researcher"
+	line "OAK"
 	done
 
 PlayerHouse2FTextString7:
-	text "あとで"
-	line "よもっと<⋯⋯>"
+	text "I'll read it"
+	line "later<⋯⋯>"
 	done
 
 PlayerHouse2FTextString8: ; (unused?)
-	text "しんはつばい　トレーナーギア！"
-	line "ポケモントレーナーの　ための"
-	cont "さいせんたんの　とけい　です"
+	text "New release: the"
+	line "TRAINER GEAR!"
+	cont "The cutting-edge"
+	cont "watch made for"
+	cont "# TRAINERS."
 
-	para "じかんが　わかるのは　あたりまえ"
-	line "カセットを　ついかすれば"
-	cont "ばしょも　わかる！　"
-	cont "でんわが　かけられる！"
+	para "Of course it tells"
+	line "the time. Add a"
+	cont "cartridge and it"
+	cont "shows your place!"
+	cont "It makes calls!"
 
-	para "とどめは"
-	line "ラジオを　きくことができる！"
+	para "And to top it off,"
+	line "you can listen to"
+	cont "the radio!"
 
-	para "もうしこみさきは⋯⋯"
-	line "⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯"
-	cont "シルフの　ホームページだ"
+	para "To order<⋯⋯>"
+	line "<⋯⋯><⋯⋯><⋯⋯>"
+	cont "SILPH's home page."
 	done
 
 PlayerHouse2FTextString9:
-	text "<PLAYER>は"
-	line "ラジオのスイッチを　おした！"
+	text "<PLAYER> switched"
+	line "on the radio!"
 
-	para "ジェイ　オー　ピー　エム"
-	line "こちらは"
-	cont "#　ほうそうきょく　です"
+	para "J-O-P-M. This is"
+	line "# Radio,"
+	cont "bringing you the"
+	cont "# News."
 
-	para "#ニュースを　おおくりします"
-	line "<⋯⋯>　#の　せかいてきな"
-	cont "けんきゅうしゃ　オーキドはかせが"
-	cont "カントー　から"
-	cont "すがたを　けしました"
-	cont "あらたな　けんきゅうの　ばしょを"
-	cont "もとめて　いどうした　との"
-	cont "みかたも　ありますが"
-	cont "なんらかの　じけんに　まきこまれた"
-	cont "かのうせいも　あり"
-	cont "かんけいしゃは　とても"
-	cont "しんぱい　しています"
+	para "<⋯⋯> The famous"
+	line "# researcher"
+	cont "PROF.OAK has"
+	cont "vanished from"
+	cont "KANTO!"
 
-	para "<⋯⋯><⋯⋯>いじょう"
-	line "#ニュースでした"
+	para "Some believe he"
+	line "moved on to find a"
+	cont "new place for his"
+	cont "research."
 
-	para "<⋯⋯><⋯⋯><⋯⋯><⋯⋯><⋯⋯><⋯⋯>"
-	line "それでは　ひきつづき"
-	cont "おんがくを　おたのしみ　ください"
+	para "But he may have"
+	line "been caught up in"
+	cont "some incident, and"
+	cont "those close to him"
+	cont "are very worried."
+
+	para "<⋯⋯> That was"
+	line "the # News."
+
+	para "<⋯⋯><⋯⋯><⋯⋯>"
+	line "And now, please"
+	cont "enjoy the music."
 	done

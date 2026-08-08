@@ -7,19 +7,22 @@ Unused_FieldMoveMenuData:
 .MenuText:
 	db STATICMENU_CURSOR | STATICMENU_NO_TOP_SPACING
 	db 3 ; amount of options
-	db "うる@"      ; Switch
-	db "かう@"      ; Buy
-	db "やめる@"    ; Cancel
-	db "くさかり@"   ; "Mower"? (replaced by Uproot)
-	db "とんでけ@"   ; "Flight"? (replaced by Wind Ride)
-	db "どんぶらこ@" ; "Splash"? (replaced by Water Sport)
-	db "フルパワー@" ; "Full Power" (replaced by Strong Arm)
-	db "ひかりゴケ@" ; Bright Moss
-	db "うずしお@"   ; Whirlpool
-	db "とびはねる@" ; Bounce
-	db "あなをほる@" ; Dig
-	db "テレポート@" ; Teleport
-	db "タマゴうみ@" ; Softboiled
+; Unused: the live submenu builds its entries from GetMoveName instead.
+; The box above is only 4 text columns wide (menu_coords x2 - x1 - 2), so the
+; JP entries never fit either -- kept short rather than padded out.
+	db "SELL@"  ; Sell
+	db "BUY@"   ; Buy
+	db "QUIT@"  ; Cancel
+	db "CUT@"   ; Uproot
+	db "FLY@"   ; Wind Ride
+	db "SURF@"  ; Water Sport
+	db "PUSH@"  ; Strong Arm
+	db "GLOW@"  ; Bright Moss
+	db "WHRL@"  ; Whirlpool
+	db "HOP@"   ; Bounce
+	db "DIG@"   ; Dig
+	db "WARP@"  ; Teleport
+	db "HEAL@"  ; Softboiled
 
 ; MonMenuOptionStrings indexes
 	const_def 1
