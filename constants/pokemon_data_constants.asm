@@ -121,6 +121,10 @@ DEF GRASS_WILDDATA_NITEBLOCK_START   EQU 7 ; the slot in GrassMonProbTable to st
 
 DEF GRASS_WILDDATA_LENGTH EQU (NUM_GRASSMON * 2) + 3 + 2
 
+; feature/completion: steps that must be taken on encounter terrain after a wild
+; battle before another one can be rolled, so encounters can't chain immediately.
+DEF WILD_ENCOUNTER_COOLDOWN EQU 5
+
 DEF BASE_HAPPINESS        EQU 70
 
 ; PP

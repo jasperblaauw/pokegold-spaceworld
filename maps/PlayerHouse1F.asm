@@ -62,15 +62,31 @@ PlayerHouse1F_TextPointers::
 PlayerHouse1FNPCText1:
 	ld hl, PlayerHouse1FTextString1
 	call OpenTextbox
+; feature/completion: Silent Hill's Pokémon Center is deliberately under repair
+; and the lab shuts after the rival battle, which left the whole first act with
+; no way to heal. MOM now restores the party, as the Gen 1 mother does.
+	predef HealParty
+	ld de, SFX_FULL_HEAL
+	call WaitPlaySFX
+	call WaitSFX
+	ld hl, PlayerHouse1FHealedText
+	call OpenTextbox
 	ret
 
 PlayerHouse1FTextString1:
-	text "おかあさん『えっ　あなた"
-	line "オーキドはかせに"
-	cont "ポケモンずかんを　つくってくれって"
-	cont "たのまれたの？"
+	text "MOM: Oh! PROF.OAK"
+	line "asked you to make"
+	cont "a POKéDEX?"
 
-	para "すごいじゃない！"
-	line "わたしも　ポケモン　きらいって"
-	cont "わけじゃないし　がんばるのよ！"
+	para "That's wonderful!"
+	line "I like # as"
+	cont "much as you do!"
+	done
+
+PlayerHouse1FHealedText:
+	text "MOM: You look"
+	line "tired! Rest here."
+
+	para "There! Everyone"
+	line "is all better now!"
 	done

@@ -164,6 +164,30 @@ PrintTempMonStats::
 	next "SPEED"
 	next "@"
 
+; Returns the gender symbol of the mon whose DVs are at hl in a.
+; wMonHGenderRatio supplies the species' ratio, so GetBaseData must have run for
+; it first. Unlike GetGender below, genderless species get a blank rather than
+; being reported female.
+GetGenderChar::
+	ld a, [wMonHGenderRatio]
+	cp GENDER_UNKNOWN
+	ld a, ' '
+	ret z
+	ld a, [hli] ; Attack DV
+	and $f0
+	ld b, a
+	ld a, [hl] ; Speed DV
+	and $f0
+	swap a
+	or b
+	ld b, a
+	ld a, [wMonHGenderRatio]
+	cp b
+	ld a, '♂'
+	ret c
+	ld a, '♀'
+	ret
+
 GetGender::
 
 ; 0: PartyMon

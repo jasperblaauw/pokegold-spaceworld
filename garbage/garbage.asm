@@ -513,17 +513,17 @@ Unreferenced_Corrupt_KnowsMove:
 	prompt
 
 if DEF(_GOLD)
-INCBIN "garbage/debug/bank03_gold.2bpp", 234 ; feature/completion: +4 OT-party nickname fill, +187 English item_effects text, +8 English add_mon/knows_move text
+INCBIN "garbage/debug/bank03_gold.2bpp", 261 ; feature/completion: +4 OT-party nickname fill, +187 English item_effects text, +8 English add_mon/knows_move text, +name-table stride fix
 endc
 if DEF(_SILVER)
-INCBIN "garbage/debug/bank03_silver.2bpp", 234 ; feature/completion: +4 OT-party nickname fill, +187 English item_effects text, +8 English add_mon/knows_move text
+INCBIN "garbage/debug/bank03_silver.2bpp", 261 ; feature/completion: +4 OT-party nickname fill, +187 English item_effects text, +8 English add_mon/knows_move text, +name-table stride fix
 endc
 else
 if DEF(_GOLD)
-INCBIN "garbage/bank03_gold.2bpp", 399 ; feature/completion: +4 OT-party nickname fill, +187 English item_effects text, +8 English add_mon/knows_move text
+INCBIN "garbage/bank03_gold.2bpp", 426 ; feature/completion: +4 OT-party nickname fill, +187 English item_effects text, +8 English add_mon/knows_move text, +name-table stride fix
 endc
 if DEF(_SILVER)
-INCBIN "garbage/bank03_silver.2bpp", 399 ; feature/completion: +4 OT-party nickname fill, +187 English item_effects text, +8 English add_mon/knows_move text
+INCBIN "garbage/bank03_silver.2bpp", 426 ; feature/completion: +4 OT-party nickname fill, +187 English item_effects text, +8 English add_mon/knows_move text, +name-table stride fix
 endc
 endc
 
@@ -591,17 +591,17 @@ SECTION "Bank 09 Garbage", ROMX
 
 if DEF(_DEBUG)
 	if DEF(_GOLD)
-INCBIN "garbage/debug/bank09_gold.2bpp", 126 ; feature/completion: +3 for battle menu translation, +7 English AI item text
+INCBIN "garbage/debug/bank09_gold.2bpp", 145 ; feature/completion: +3 for battle menu translation, +7 English AI item text, +name-table stride fix
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/debug/bank09_silver.2bpp", 126 ; feature/completion: +3 for battle menu translation, +7 English AI item text
+INCBIN "garbage/debug/bank09_silver.2bpp", 145 ; feature/completion: +3 for battle menu translation, +7 English AI item text, +name-table stride fix
 	endc
 else
 	if DEF(_GOLD)
-INCBIN "garbage/bank09_gold.2bpp", 126 ; feature/completion: +3 for battle menu translation, +7 English AI item text
+INCBIN "garbage/bank09_gold.2bpp", 145 ; feature/completion: +3 for battle menu translation, +7 English AI item text, +name-table stride fix
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/bank09_silver.2bpp", 126 ; feature/completion: +3 for battle menu translation, +7 English AI item text
+INCBIN "garbage/bank09_silver.2bpp", 145 ; feature/completion: +3 for battle menu translation, +7 English AI item text, +name-table stride fix
 	endc
 endc
 
@@ -711,17 +711,17 @@ SECTION "Bank 0f Garbage", ROMX
 
 if DEF(_DEBUG)
 	if DEF(_GOLD)
-INCBIN "garbage/debug/bank0f_gold.2bpp", 400 ; feature/completion: 75 + 8 (wBattleLossContinues) + 3 ("no will to fight") + 314 (L-system core.asm battle text)
+INCBIN "garbage/debug/bank0f_gold.2bpp", 492 ; feature/completion: 75 + 8 (wBattleLossContinues) + 3 ("no will to fight") + 314 (L-system core.asm battle text) + 92 (HUD gender + caught-ball icon)
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/debug/bank0f_silver.2bpp", 400 ; feature/completion: 75 + 8 + 3 + 314
+INCBIN "garbage/debug/bank0f_silver.2bpp", 492 ; feature/completion: 75 + 8 + 3 + 314 + 92
 	endc
 else
 	if DEF(_GOLD)
-INCBIN "garbage/bank0f_gold.2bpp", 400 ; feature/completion: 75 + 8 + 3 + 314
+INCBIN "garbage/bank0f_gold.2bpp", 492 ; feature/completion: 75 + 8 + 3 + 314 + 92
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/bank0f_silver.2bpp", 400 ; feature/completion: 75 + 8 + 3 + 314
+INCBIN "garbage/bank0f_silver.2bpp", 492 ; feature/completion: 75 + 8 + 3 + 314 + 92
 	endc
 endc
 
@@ -916,17 +916,17 @@ SECTION "Bank 14 Garbage", ROMX
 
 if DEF(_DEBUG)
 	if DEF(_GOLD)
-	INCBIN "garbage/debug/bank14_gold.2bpp", 1489 ; feature/completion: +1255 for English Pokémon names, +10 for SGB party menu HP-bar fix, +62 for English party menu text, +6 English stats screen text
+	INCBIN "garbage/debug/bank14_gold.2bpp", 1573 ; feature/completion: +1255 for English Pokémon names, +10 for SGB party menu HP-bar fix, +62 for English party menu text, +6 English stats screen text, +name-table stride fix, +45 party/summary gender symbol
 	endc
 	if DEF(_SILVER)
-	INCBIN "garbage/debug/bank14_silver.2bpp", 1489 ; feature/completion: +1255 for English Pokémon names, +10 for SGB party menu HP-bar fix, +62 for English party menu text, +6 English stats screen text
+	INCBIN "garbage/debug/bank14_silver.2bpp", 1573 ; feature/completion: +1255 for English Pokémon names, +10 for SGB party menu HP-bar fix, +62 for English party menu text, +6 English stats screen text, +name-table stride fix, +45 party/summary gender symbol
 	endc
 else
 	if DEF(_GOLD)
-	INCBIN "garbage/bank14_gold.2bpp", 1489 ; feature/completion: +1255 for English Pokémon names, +10 for SGB party menu HP-bar fix, +62 for English party menu text, +6 English stats screen text
+	INCBIN "garbage/bank14_gold.2bpp", 1573 ; feature/completion: +1255 for English Pokémon names, +10 for SGB party menu HP-bar fix, +62 for English party menu text, +6 English stats screen text, +name-table stride fix, +45 party/summary gender symbol
 	endc
 	if DEF(_SILVER)
-	INCBIN "garbage/bank14_silver.2bpp", 1489 ; feature/completion: +1255 for English Pokémon names, +10 for SGB party menu HP-bar fix, +62 for English party menu text, +6 English stats screen text
+	INCBIN "garbage/bank14_silver.2bpp", 1573 ; feature/completion: +1255 for English Pokémon names, +10 for SGB party menu HP-bar fix, +62 for English party menu text, +6 English stats screen text, +name-table stride fix, +45 party/summary gender symbol
 	endc
 endc
 
@@ -1971,11 +1971,11 @@ DEF Bank34StarterDexOffset EQU 13
 DEF Bank34CorruptOffset EQU $17
 	if DEF(_GOLD)
 	DEF Bank34OldOffset EQU 5
-INCBIN "garbage/debug/bank34_gold.2bpp", 150
+INCBIN "garbage/debug/bank34_gold.2bpp", 246
 	endc
 	if DEF(_SILVER)
 	DEF Bank34OldOffset EQU 0
-	INCBIN "garbage/debug/bank34_silver.2bpp", 150
+	INCBIN "garbage/debug/bank34_silver.2bpp", 246
 	endc
 else
 DEF Bank34NonDebugOffset EQU $1E
@@ -1983,10 +1983,10 @@ DEF Bank34OldOffset EQU -4
 DEF Bank34CorruptOffset EQU -7
 DEF Bank34StarterDexOffset EQU 37
 	if DEF(_GOLD)
-	INCBIN "garbage/bank34_gold.2bpp", 150
+	INCBIN "garbage/bank34_gold.2bpp", 246
 	endc
 	if DEF(_SILVER)
-	INCBIN "garbage/bank34_silver.2bpp", 184
+	INCBIN "garbage/bank34_silver.2bpp", 280
 	endc
 endc
 
@@ -2170,17 +2170,17 @@ SECTION "Bank 3e Garbage", ROMX
 
 if DEF(_DEBUG)
 	if DEF(_GOLD)
-INCBIN "garbage/debug/bank3e_gold.2bpp", 42
+INCBIN "garbage/debug/bank3e_gold.2bpp", 53 ; feature/completion: +11 for the caught-ball tile load
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/debug/bank3e_silver.2bpp", 42
+INCBIN "garbage/debug/bank3e_silver.2bpp", 53 ; feature/completion: +11 for the caught-ball tile load
 	endc
 else
 	if DEF(_GOLD)
-INCBIN "garbage/bank3e_gold.2bpp", 42
+INCBIN "garbage/bank3e_gold.2bpp", 53 ; feature/completion: +11 for the caught-ball tile load
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/bank3e_silver.2bpp", 42
+INCBIN "garbage/bank3e_silver.2bpp", 53 ; feature/completion: +11 for the caught-ball tile load
 	endc
 endc
 

@@ -662,6 +662,246 @@ Keep applying the text-engine rules above (`text_start` before a bare `line` aft
 `text_from_ram`/`deciram`; 18-column interior; give a name its own row whenever it would share one
 with more than ~8 characters), plus the static-box column budgets recorded in this section.
 
+### Playtest round 9 (2026-08-08) — name-table stride bug + battle/stats layout + QoL ✅ (BUILD-VERIFIED, playtest-pending)
+
+**The important one: `SkipNames` was still stepping 6 bytes per entry.** The user reported that
+"each caught mon corrupted the one before it" — catching HANEKO after HONOGUMA produced
+`HONOGUHANE` as the *player's* mon name in the next battle, then a `?` nickname in the party and a
+`?` for `OT/` on the summary. Root cause: `home/util.asm` `SkipNames` ("Returns hl + a * 6") is the
+routine every name table is indexed with, and it was never updated when L0 widened the tables.
+The JP prototype stored **every** name table at a uniform 6-byte stride, so one routine served all;
+the English build has **three** widths — nicknames `MON_NAME_LENGTH` (11), OT names
+`PLAYER_NAME_LENGTH` (8), boxed-mon names still 6 (`BOX_MON_*`, deferred to M1e). Entry *N* was
+therefore written at offset 6*N* into an 11-wide table, landing on top of entry *N*-1's tail —
+`"HONOGU"` + `"HANEKO"` written at offset 6 is exactly the string the user saw.
+
+- **`SkipNames` split by table** (`home/util.asm`): `SkipNames` = `MON_NAME_LENGTH`,
+  `SkipOTNames` = `PLAYER_NAME_LENGTH`, both falling through to the existing `AddNTimes`. Net
+  **−2 bytes** of ROM0 (the old routine had its own loop). Byte-verified in the ROM: `SkipNames` =
+  `01 0b 00 18 03` (`ld bc,$0b` / `jr AddNTimes`), `SkipOTNames` = `01 08 00`.
+  **`AddNTimes` preserves `bc`**, which is what lets callers keep the width around for the copy.
+- **Sites that pick a table at runtime** (party *or* box, in `move_mon.asm`) now set `bc` alongside
+  `hl` in each branch and call `AddNTimes` directly — matching the idiom the same file already used
+  for the mon structs (`ld hl, wPartyMon1 / ld bc, PARTYMON_STRUCT_LENGTH … / call AddNTimes`).
+- **Call sites corrected:** `TryAddMonToParty` (the capture path — OT stride, the actual bug),
+  the OT-party→party copy (stride *and* a copy length that used `MON_NAME_LENGTH` on an 8-wide OT
+  table), the PC deposit/withdraw paths, `RemoveMonFromPartyOrBox`'s shift loops,
+  `switchpartymons.asm`, `link.asm`'s trade buffers, and `stats_screen.asm`.
+- **`GetNicknamePointer` is shared by the nickname *and* OT pointer tables**, which are no longer the
+  same width — that is the `OT/ ?` on the summary. It now takes the width in `e`; `BOXMON` overrides
+  to the box width and `TEMPMON` still returns early.
+- **`GetNick` takes the width in `bc`** via a new exported `GetNickWithWidth::`; Bill's PC
+  (`menu_2.asm`) passes `BOX_MON_NAME_LENGTH`. `GetNick` now falls through instead of jumping, which
+  is what paid for the ROM0 budget.
+- **Latent box overflow fixed too:** `SendMonIntoBox` indexed `wBoxMonNicknames` at
+  `MON_NAME_LENGTH` (11) and `wBoxMonOTs` at `PLAYER_NAME_LENGTH` (8) against tables *declared* at 6,
+  so a filling box would have run off the end of `wBox`. All of its strides/copy lengths are now
+  `BOX_MON_*`. Also fixed the egg-into-box stride and translated its `たまご` name to `EGG`.
+- **Box widening was considered and rejected for now.** Measured: widening `BOX_MON_NAME_LENGTH`→11
+  and `BOX_MON_OT_LENGTH`→8 costs **+210 B WRAM** (1220 B free — fits) and **+1050 B per SRAM bank**
+  (banks 2/3 have 1180/1429 B free — fits, but leaves only ~130 B in bank 2). It would make every
+  stride uniform and delete the runtime-stride branches. Deferred to **M1e**, which owns box work and
+  has its own verification checklist; the numbers above are recorded so M1e doesn't have to re-derive
+  them.
+- **Known, deliberately left:** `GiveMon`'s party-full branch still copies `MON_NAME_LENGTH` into
+  `wBoxMonNicknames` slot 0 (over-writes slot 1's name, stays inside `wBox`). Untangling it needs the
+  surrounding push/pop dance understood; it is box code, so it belongs with M1e.
+
+**Battle HUD — level on its own row (matches the retail screenshot the user supplied).** The level
+was printed immediately after the mon name on the same row (`PlaceString` returns `bc` = the
+position after the name). Now: player name row 8→**7**, level row **8** right-aligned at col 15
+(ends col 17, beside the HP box edge); enemy name row 1→**0**, level row **1** at col 7 (ends col 9).
+Both are inside the existing `ClearBox` regions (player rows 7-11 cols 9-19; enemy rows 0-3 cols
+1-11), and the HP bar / HP numbers / EXP bar rows are untouched. `PrintLevel` is left-aligned and
+already shifts back a column for 3-digit levels, so only single-digit levels needed a `cp 10 / inc hl`
+nudge to make all three widths end on the same column. A status condition still replaces the level in
+the same three columns.
+- **Gender symbol NOT added** — see "Deliberately not done" below.
+
+**FIGHT menu — move names no longer clipped.** The list box was `hlcoord 0,8 / b 8 / c 8` = a
+**7-column** name area (names at col 2, right border col 9), so `DOUBLE KICK` (11) ran straight past
+it. The budget is genuinely impossible side-by-side: 12 columns of move name + 8 of type name
+(`FIGHTING`/`ELECTRIC`) + borders > 20. Fixed the way retail does — by moving the info box out of the
+list's row band:
+- Move list `c` 8→**13** (cols 0-14, 12-column interior). Type-2 variant (the Ether/Elixir picker)
+  moved `hlcoord 10,8 c 8` → `hlcoord 6,8 c 12`, names col 12→7, cursor init X 11→**6**.
+- **`MoveInfoBox` moved `hlcoord 9,12` → `hlcoord 0,0`** (rows 0-5, cols 0-10). PP now on row 1 with a
+  new `PP` label, `MOVE TYPE` on row 3, the type name on row 4 (full 8 columns). Safe because
+  `MoveSelectionScreen`'s caller does `SafeLoadTempTilemapToTilemap` + `UpdateBattleHuds` on exit, so
+  the enemy HUD it covers is restored. Also dropped a stray `'／'` at `hlcoord 14,16` that had been
+  landing in the type-name row (visible with short type names like `ICE`).
+
+**Stats screen — full-width name rows.** The 7-column left strip (bounded by the divider at col 7)
+truncated `HONOGUMA` to `HONOGU`; this was the item the previous session flagged as
+"needs screenshots, not a blind edit". With the screenshot: the **EXP box only needed 4 interior rows,
+not 6** — moved from `hlcoord 8,10 / b 6` to `hlcoord 8,12 / b 4` (its `EXP POINTS` title still sits
+on the top border row), freeing rows 10-11 across the full screen width. The **divider now skips rows
+10-11** (via a small `StatsScreen_DrawDividerRun` helper called for rows 0-9 and 12-17), nickname
+stays at `1,10` but can now run to col 11 with the gender symbol after it, and the species name moved
+`1,12`→`1,11`.
+- **Critical detail:** `.draw_page`'s `ClearBox` is `hlcoord 8,0` with `bc = TextCommands` = **b=18,
+  c=13** — it wipes cols 8-20 on *every* row, every page load. The name block was in a first-load-only
+  branch, so anything crossing the divider would have been erased on paging away and back. **The whole
+  tilemap block moved into `.draw_page`** (after the ClearBox); only the palette/front-pic remains
+  first-load-only, still guarded by the existing `ret nz`.
+- Page indicator `◀ ページ ▶` (tiles `$32`-`$35`; `StatsGFX` = `separator.2bpp` + `stats.2bpp`, so
+  `$31` is the divider, `$32`/`$35` the arrows and `$33`/`$34` the kana) → arrows moved out to cols 1
+  and 6 with `PAGE` placed as text between them.
+
+**Other fixes in this round:**
+- **`TrainerSentOutText`** → retail's three-row form: class+name / `sent out` / `<MON>!` (`<CONT>`
+  scrolls), exactly as in the user's retail screenshot. The old form read "`<RIVAL> KURUSU is out!`".
+- **Empty-pack `CANCEL`** — `menu_2.asm`'s `.CancelString` was `"　ーーやめるーー@"`, which is the
+  `--'s'm --` gibberish the user saw; now `" --CANCEL--"`. `scrolling_menu.asm`'s `"やめる"` → `CANCEL`.
+- **YES/NO box** (`home/menu.asm` `YesNoMenuHeader`) → `YES`/`NO`. Both this box and the title
+  screen's SRAM-clear dialog give exactly **3 text columns** (`menu_coords` is `y1,x1,y2,x2`;
+  budget = `x2 - x1 - 2`), so both fit with no geometry change. Also translated the SRAM-clear
+  prompt and its NO/YES options.
+- **Wild-encounter grace period** — new `wWildEncounterCooldown` (repurposed padding next to
+  `wBattleLossContinues`) + `WILD_ENCOUNTER_COOLDOWN EQU 5`. Set in `TryWildBattle`'s `.ok` when an
+  encounter fires, decremented in `.encounter` *after* `.CheckGrassCollision` — so it counts steps
+  taken **on encounter terrain**, and needs no battle-exit hook at all.
+- **MOM heals the party** (`maps/PlayerHouse1F.asm`): `predef HealParty` + `SFX_FULL_HEAL`, with her
+  dialogue translated and a follow-up "all better" line. This is the first act's only heal source —
+  Silent Hill's centre is intentionally under repair and the lab back room locks.
+- **The "lab is closed" question, answered:** the lab **front** is *not* closed — its warps in
+  `SilentHill.asm` are always live and Oak plus his aides are in `SilentHillLabFrontNPCIDs9` for the
+  `FINISHED` scene. What locks is the **back room** (the starter table): `SilentHillLabFrontMoveDown`
+  blocks the doorway at `(4,1)`, prints `カギが　かかっている` and walks the player back left. That is
+  original prototype behaviour and it exists to stop you re-taking a starter — worth keeping. Its
+  message is now `It's locked.`
+- Garbage reclaimed this round: **Bank 03 +27, Bank 09 +19, Bank 14 +39, Bank 34 +96**; ROM0 needed
+  none (the `SkipNames` split and the `GetNick` fall-through were net-negative).
+
+**Deliberately NOT done — needs a decision, do not "fix" blind:**
+- **EXP bar colour (user's item 7).** The bar tracks the HP colour because `BlkPacket_Battle`'s first
+  block is `%111 … outside = palette 0`, which paints everything not covered by a later block with
+  palette 0 — and palette 0 is `wPlayerHPPal`. Making it a fixed blue needs a **free SGB palette, and
+  there is none**: `SGB_BattleColors` assigns all four (0 = player HP colour, 1 = enemy HP colour,
+  2 = player mon's palette *and* the bottom textbox, 3 = enemy mon's palette). This project has no CGB
+  palette path (SGB `ATTR_BLK` only), so a permanently-blue bar means giving up one of those four.
+  Options for the user: (a) accept it, (b) give the bar its own block using palette 2 or 3 — stops it
+  tracking HP but tints it with a species colour, (c) add CGB support. **Adding a 6th `attr_blk` block
+  also costs 16 bytes** (packet count goes 2→3, needing `ds 10` padding).
+- **Gender symbol on the battle HUD.** The two-line split is in; the ♂/♀ is not. `GetGender` needs
+  `wMonHGenderRatio`, i.e. `GetBaseData` for that species. The player's HUD already loads it — but the
+  *enemy* HUD does not, and adding it there would leave `wMonHeader` holding the enemy's data after
+  `UpdateBattleHuds` instead of the player's. `GetGender` also lives in a different bank from
+  `core.asm`. Given this project has already been bitten twice by exactly this class of shared-state
+  change (the round-7 `DrawHP` repoint that broke the battle HUD, and the undersized
+  `wBattleMonNickname` that corrupted `wBattleMon`), it should be done deliberately with a playtest,
+  not bundled in.
+
+**PLAYTEST for this round** — the capture bug is the one to check first, and it needs **three or more
+catches in a row**: catch two or three wild mons, then (a) start another wild battle and confirm your
+own mon's name is correct, (b) open the party and confirm every nickname is right, (c) open each
+caught mon's summary and confirm `OT/` shows your name. Then: rival send-out wording; the battle HUD
+(name on one row, level right-aligned below it, HP/EXP bars unchanged); FIGHT with a mon that knows a
+long move (DOUBLE KICK) plus the new top-left PP/TYPE box, and confirm the enemy HUD comes back when
+you cancel out; the stats screen's three pages with a 10-character name and a dual-type mon, **paging
+away and back** (this is what the `ClearBox` fix guards); an empty PACK in battle; any YES/NO prompt;
+talk to MOM with a hurt party; and walk in grass after a wild battle to confirm the ~5-step gap.
+
+### Playtest round 10 (2026-08-08) — lab door, caught-ball icon, summary sprite clip, gender symbols ✅ (BUILD-VERIFIED, playtest-pending)
+
+Four items from playtest. All 8 ROMs build warning-clean; every new code block was decoded out of
+`pokegold-spaceworld-debug.gb` and checked against the intended bytes.
+
+**1. The lab is no longer sealed after the intro (the JP string + push-back-down).** The block was
+*not* in `SilentHillLabFront.asm` (that one is the back room, pushing you LEFT, already reading
+`It's locked.`) — it was `CheckLabDoor` / `LabClosed` in **`maps/scripts/SilentHill.asm`**, reached
+from `SilentHillScript7` (the `SCENE_SILENT_HILL_GOT_STARTER` steady-state script). Standing at
+`(14,12)`/`(15,12)` — one tile *below* the two lab warp tiles, so the warp never fires — and pressing
+UP printed `あれ？　カギが　かかっている` and ran `SilentHillMovement7` (`slow_step DOWN`).
+- **This is demo scope-limiting, not intended design** (user decision: open it). The lab front has a
+  fully authored post-story scene: `SCENE_SILENT_HILL_LAB_FRONT_FINISHED` → `SilentHillLabFrontScript19`
+  with `SilentHillLabFrontNPCIDs9` spawning **Oak + both aides**, and `bg_event 6,1` → the **PC mail**
+  (`SilentHillLabFrontTextString1`). Sealing the town-side door made all of that unreachable.
+- **Fix:** dropped the `call CheckLabDoor` / `ret z` from `SilentHillScript7`. `CheckLabDoor`,
+  `LabClosed`, `SilentHillTextString1` and `SilentHillMovement7` are kept and marked
+  `; unreferenced (see SilentHillScript7)` (pret convention — one line restores the demo behaviour).
+  Its message was translated to `Huh? It's locked.` anyway so nothing untranslated remains in the file.
+- The **back room stays locked** via `SilentHillLabFrontMoveDown`, which is the lock that actually
+  matters (it stops you re-taking a starter).
+- **Known follow-up (Phase 4):** the lab PC's mail is still Japanese *and* its content is an M3 story
+  beat — Oak's assistant reporting that Oak has gone missing, which reads oddly with Oak standing in
+  the room. When Phase 4 reaches this file, gate it behind a story event rather than translating it
+  in place.
+
+**2. Caught-species Poké Ball on the enemy HUD.** The prototype never had one; the retail games show
+it in wild battles for a species you already own. Nothing in battle BG VRAM was a ball, so:
+- **`engine/gfx/load_gfx.asm` `LoadHPBar`** now also copies the first tile of `PokeBallsGFX` (the
+  healthy ball — the same tile `LoadPokeDexGraphics` already reuses as the dex's caught marker) to
+  `vChars2 tile $5d`, a **genuinely free BG tile**: `vBackPic` ends at $54, `ExpBarGFX` occupies
+  $55-$5c and `hp_bar.2bpp` starts at $60. New constant `CAUGHT_BALL_TILE` in
+  `constants/battle_constants.asm`. **Deliberately in `LoadHPBar`, not `LoadBattleFontsHPBar`:** the
+  battle-from-menu return path (`_LoadHPBar`, 4 call sites in `core.asm`) only reloads the bars, so a
+  tile parked in the fonts loader would not come back after opening the party/bag mid-battle.
+- **`core.asm` `PlaceCaughtBallIcon`** (called right after `DrawEnemyHUDBorder` in `UpdateEnemyHUD`):
+  wild battles only (`cp WILD_BATTLE`), `CHECK_FLAG` on `wPokedexCaught` via
+  `predef SmallFarFlagAction` (same idiom as `item_effects.asm`'s capture path), then the tile at
+  `hlcoord 1, 1` — the left edge of the level row, directly above the HP bar's left border tile, and
+  inside the `ClearBox` that runs first.
+
+**3. Summary-screen front sprite lost its left column on every page switch — root cause was a
+label-address-derived `ClearBox` size.** All three page loaders cleared the right-hand half with
+`ld bc, TextCommands`, an original "clever" reuse of a ROM0 **label address** as a `b`/`c` pair.
+`TextCommands` currently sits at `$120d` → **b=18 rows, c=13 columns**. Starting at `hlcoord 8, 0`,
+13 columns spans cols 8-**20**, and column 20 of a 20-wide tilemap *is column 0 of the next row* — so
+each page load wiped **column 0 of rows 1-18**, i.e. the leftmost tile column of the 7×7 front pic
+(`PrepMonFrontpic` always places a 7×7 grid at `hlcoord 0, 1`, which is why only large sprites showed
+it; smaller pics have blank padding there). It also wrote one byte past the end of the tilemap on the
+last row. The pic is only drawn in the first-load-only branch, so it stayed clipped until the screen
+was reopened.
+- **Fix:** `lb bc, SCREEN_HEIGHT, SCREEN_WIDTH - 8` (18, 12) in all three loaders — same instruction
+  size, and no longer silently dependent on where a ROM0 label happens to land. **Any ROM0 edit was
+  shifting this box.** Grep for other `ld bc, <label>` used as dimensions if a similar mystery appears.
+
+**4. Gender symbol on the battle HUD, party screen and summary screen.** Genders *are* implemented in
+this prototype (`GENDER_*` ratios in every base-stats file, `GetGender` in `mon_stats.asm`, used by
+`attract.asm`), so this was placement work. Placed **one column right of the level tag** in all three
+places, per the user's spec. This closes the "Deliberately NOT done — HUD gender symbol" item above.
+- **Two small helpers instead of reusing `GetGender`.** `GetGender` picks its DV pointer from
+  `wMonType`/`wCurPartyMon`, which is wrong for the battle HUD and would have meant clobbering shared
+  state; it also has a pret-flagged bug (**genderless species report as female** — 6 species here:
+  Ditto, Magnemite/Magneton, Voltorb/Electrode, Porygon). New code takes the DV pointer explicitly
+  and blanks genderless species. `GetGender` itself is untouched, so its existing callers are unaffected.
+  - `GetGenderChar::` in `engine/pokemon/mon_stats.asm` (hl = DVs → symbol in a, from
+    `wMonHGenderRatio`): used by `party_menu.asm` and `stats_screen.asm`, which share bank `$14`.
+  - `BattleHUD_PlaceGender` in `core.asm` (hl = tilemap position, de = DVs, **c = the gender ratio**):
+    a deliberate duplicate, because bank `$0f` can't `call` into bank `$14` and `predef` can't return
+    a value in `a`.
+- **Battle HUD.** Player: `hlcoord 18, 8` (level ends col 17), reusing the `wMonHGenderRatio` that
+  `UpdatePlayerHUD`'s existing `GetBaseData` already loaded. Enemy: `hlcoord 10, 1` (level ends col 9)
+  — and this is where the previously-flagged risk lives. **`UpdateEnemyHUD` deliberately does NOT call
+  `GetBaseData`**: `UpdateBattleHuds` runs player-then-enemy and the rest of the engine expects
+  `wMonHeader` to still hold the *player's* data afterwards. The enemy's ratio is instead read
+  straight out of the table with `BaseData + BASE_GENDER` + `AddNTimes` + `GetFarByte`, so
+  `wMonHeader` is never touched. Do it this way if any other enemy-side base-stat field is ever needed
+  in a HUD path.
+- **Party screen.** There was no room: level was flush against the HP bar (cols 8-10, bar at 11). The
+  level moved **one column left** (`.PrintLevel`, `SCREEN_WIDTH + 5` → `+ 4`, so cols 7-9) and the
+  symbol sits at col 10. Row layout is now: name (col 3) + HP text (col 12) / status (col 3) + level
+  (col 7) + gender (col 10) + HP bar (cols 11-19). `CopyMonToTempMon` in `PlacePartyMember` already
+  ran `GetBaseData` for each mon, so the ratio and `wTempMonDVs` are both correct per row.
+- **Summary screen (pink page).** The symbol **moved off the nickname** (round 9 put it there) to
+  `hlcoord 5, 8`, right of the level at cols 1-3. This also fixed a latent bug in the round-9 version:
+  it called `GetGender` *before* anything on that page had loaded the header, so it was reading the
+  **previous** mon's `wMonHGenderRatio` — `.draw_page` now calls `GetBaseData` first (`wCurSpecies` is
+  already set from `wMonHIndex` at the top of `LoadPinkPage`; `PrintMonTypes` further down does its
+  own call).
+- Garbage reclaimed: **Bank 0f +92**, **Bank 14 +45**, **Bank 3e +11**.
+
+**PLAYTEST for this round:** (a) finish the intro, leave the lab, **walk back in** — no message, no
+push-back; Oak and his two aides should be inside, and walking up to the back-room door at the top
+should still say `It's locked.`; (b) catch a wild mon, then battle that **same species** again — a
+Poké Ball should appear at the top-left of the enemy's HUD (and *not* appear for a species you
+haven't caught, nor in a trainer battle); (c) open the summary of a mon with a **large front sprite**,
+page ◀▶ to moves/stats and back — the sprite's left edge must stay intact; (d) gender symbols: battle
+HUD (both sides, incl. a 1-digit and a 2-digit level), party screen (check level at col 7 + gender
+don't collide with the HP bar), summary pink page next to the level. If you can get a **Magnemite,
+Voltorb, Ditto or Porygon**, confirm it shows **no** symbol rather than ♀.
+
 ## Session log
 - **2026-08-06** — M0 (boot GameStart, byte-verified), M1a (rival party fix), M1f (evolutions restored + 32B garbage reclaim). All build-verified, all playtest-pending. M1e investigated & deferred (unsafe blind). Established gotcha: **must test the `-correctheader` (MBC3/RTC) debug ROM on SameBoy** — the base MBC1 ROM doesn't run. First SameBoy test also surfaced the main-menu label bug (only showed "Play Pokemon") → fixed to show real New Game / Continue. Remaining: M1b/c/d content (playtest-led), then M1e.
 - **2026-08-07** — Playtest round 1 feedback (3 lab bugs). Fixed **rival battle** properly (M1a rewrite: real trainer format + `DEX_` species, byte-verified; my earlier MON_ attempt was wrong) and by analysis the **loss-reset** (bug #3, was a garbage-battler side effect). Also fixed the **main-menu** to show real New Game/Continue. Still open: **bug #1** (chosen Poké Ball doesn't vanish in lab-back) — cosmetic, needs playtest to confirm intended behavior. Reclaimed 6B from `Bank 0e Garbage` for the reformatted rival party. _Next: user re-tests the rival battle (win AND lose) on `pokegold-spaceworld-debug-correctheader.gb`; if good, fix bug #1 then proceed to M1c/M1d._
@@ -700,3 +940,5 @@ with more than ~8 characters), plus the static-box column budgets recorded in th
 - **2026-08-07 (Phase 3 cont.)** — Translated all 89 `effect_commands.asm` glossary strings (every move-effect message: status conditions, confusion, stat changes, multi-hit, charge-move flavor text, substitute, screens, held items) plus `data/battle/stat_names.asm` (needed by the very common stat-change text, not itself a glossary entry). Hit and resolved a new class of problem: the "Effect Commands" section is a hard-capped 16 KB RGBDS section (can't span banks) and was already nearly full — garbage-padding trimming alone couldn't fix the 387-byte overflow. Fixed via reclaiming the 128B of `Bank 0d Garbage`, deleting a pret-flagged zero-caller dead subroutine (`Unreferenced_OldSleepTarget`, ~230B, verified via codebase-wide grep before removing), and tightening wording on ~20 of the wordier messages. See the new **"L-system continuation — effect_commands.asm move-effect text"** subsection above for the full writeup and the "hard 16KB wall" lesson for future files. All 4 ROMs build warning-clean. Build-verified, playtest-pending. _Next: `start_battle.asm`/`used_move_text.asm`, then `item_effects.asm`/`start_menu.asm`, watching for the same bank-size wall in any near-full bank._
 - **2026-08-08 (Phase 3 cont.)** — Translated `start_battle.asm` (11 keys), `used_move_text.asm` (8), `item_effects.asm` (50) and `start_menu.asm` (44) — the battle-start banners, the per-turn "X used MOVE!" line, every ball/capture/item-refusal message, and the whole PACK + party-details + Trainer Card menu surface. All 4 ROMs + `-correctheader` variants build warning-clean; emitted bytes spot-verified in the ROM. Reclaimed +187 B `Bank 03 Garbage` and +139 B `Bank 04 Garbage`; `used_move_text.asm` shrank ~30 B, which put 38 B of slack back into the wall-bound bank `$0d` "Effect Commands" section. Three structural notes worth carrying forward: the JP move-grammar machinery in `used_move_text.asm` is kept even though English ignores it (its `GetMoveGrammar` side effect drives COUNTER, and `wMoveGrammar` is a union alias of `wNumSetBits`); static menu boxes give `x2 - x1 - 2` text columns, so `SelectedItemMenu` needed its left edge widened for "TOSS"; and the party move-details pane now puts TYPE and POWER on separate rows because English type names print in full (up to 8 chars) and collided with the old shared-row layout. See the new **"L-system continuation — start_battle / used_move_text / item_effects / start_menu"** subsection for the full writeup + consolidated PLAYTEST checklist. _Next: `party_menu.asm` / `learn.asm` / `pokemart_menu.asm` (the three remaining Phase-3 files on M1d's reachable path), then the unreachable ones (`poker_minigame`, `pokecenter_pc`, `bills_pc`), then Phase 4 dialogue._
 - **2026-08-08 (Phase 3 cont. 2)** — Translated `party_menu.asm` / `learn.asm` / `pokemart_menu.asm` (the three files the last session queued) and then the rest of the party/summary surface a playtester hits alongside them: `mon_submenu.asm` + `data/mon_menu.asm`, `mon_stats.asm`, `stats_screen.asm`, `evolve.asm`, `add_mon.asm`, `move_mon.asm`, `knows_move.asm`, `check_tossable_item.asm`, `ai/items.asm`. All 4 ROMs + `-correctheader` variants build warning-clean; new text structures spot-decoded from the ROM. This batch was more layout than wording: the widened name-length constants from L0/L2 had left hard-coded box geometry wrong in code that had never been rendered yet, and three of those were outright bugs — `ForgetMove`'s move-list box drew off the right edge of the screen (`ld c, MOVE_NAME_LENGTH`, 7→13) *and* covered its own prompt; the party submenu was 6 columns wide but lists real 11-character move names; and `PrintMonTypes`' `.hide_type_2` blanked the wrong tiles (offsets hand-computed for 4-character kana type names, width taken from `PLAYER_NAME_LENGTH`, which L0 changed). Also moved the stats screen's vertical-divider draw into `.draw_page` so it survives the now-wider green-page move box. See the new **"L-system continuation — party / summary / mart surface"** subsection for the full writeup, the static-box column-budget rules, and the consolidated PLAYTEST checklist. **One layout issue deliberately left open:** the stats screen's 7-column left strip truncates 10-character nicknames/species names — that needs a redesign with screenshots, not a blind edit. _Next: Phase 4 dialogue (starting with `oak_speech.asm`, i.e. the M1b intro); the Phase-3 files that remain are all unreachable content (minigames, PC, link, breeder) and should wait until the feature that uses them exists._
+- **2026-08-08 (playtest round 9)** — User playtested the previous three batches and reported 12 items. Fixed 11; one is blocked on a design decision. The headline is a real data-corruption bug, not a layout nit: **`SkipNames` was still stepping 6 bytes**, the JP uniform name-table stride, so every party nickname and OT name was written over the tail of the previous entry (`HONOGU`+`HANEKO` = the `HONOGUHANE` the user saw, plus the `?` nickname and `?` OT that followed). Split into `SkipNames` (11) / `SkipOTNames` (8) with box tables still at 6, audited all 21 call sites, and gave `GetNicknamePointer` and `GetNick` explicit width parameters — they were each serving two tables that are no longer the same width. Also fixed a latent `SendMonIntoBox` overflow found on the way. Net ROM0 change was negative. Byte-verified the emitted strides. Beyond that: battle HUD level moved to its own right-aligned row under the name (per the user's retail screenshot), FIGHT list widened to 12 columns with `MoveInfoBox` relocated to the top-left, stats screen given two full-width name rows by shrinking the EXP box and skipping the divider there (plus moving the whole tilemap block into `.draw_page`, since `ClearBox` wipes cols 8-20 on every page load), rival "sent out" wording, empty-pack `CANCEL`, YES/NO, a 5-step wild-encounter cooldown, and MOM now heals. All 4 ROMs + `-correctheader` variants build warning-clean. See the **"Playtest round 9"** subsection above for the full writeup, the measured box-widening numbers for M1e, and the two items deliberately left undone (**EXP bar colour** — no free SGB palette, needs a user decision; **HUD gender symbol** — needs the enemy's base data in a hot battle path). _Next: user playtests round 9 (capture bug first — it needs 3+ catches in a row), then decide the EXP-bar trade-off, then Phase 4 dialogue starting with `oak_speech.asm`._
+- **2026-08-08 (playtest round 10)** — Four playtest items, all fixed; all 8 ROMs build warning-clean and every new code block was decoded back out of the ROM and checked. Two were real bugs with non-obvious causes. **(1) The "lab is closed" block was in `maps/scripts/SilentHill.asm`, not the lab map** — `CheckLabDoor`/`LabClosed` off `SilentHillScript7`, firing one tile *below* the warp tiles so the door never opened; it's demo scope-limiting and it made the lab front's fully authored `FINISHED` scene (Oak + both aides + the PC mail) unreachable, so per the user's decision the door is now open (the routines are kept, marked unreferenced, so it's a one-line revert; the back room stays locked). **(2) The summary screen's front-sprite clipping was a `ClearBox` sized from a ROM0 label address** — `ld bc, TextCommands` = `$120d` = 18 rows × **13** columns from `hlcoord 8, 0`, and column 20 of a 20-wide tilemap is column 0 of the next row, so every page load wiped the leftmost column of the 7×7 front pic (and wrote one byte past the tilemap). Replaced with an explicit `lb bc, SCREEN_HEIGHT, SCREEN_WIDTH - 8` in all three page loaders — **note that any ROM0 edit was silently resizing that box**. Plus **(3)** a caught-species Poké Ball on the wild-battle enemy HUD (`PokeBallsGFX` tile 0 parked in the free BG tile `$5d` by `LoadHPBar`, so it survives the battle-from-menu return path, + a `wPokedexCaught` `CHECK_FLAG` in `UpdateEnemyHUD`) and **(4)** gender symbols one column right of the level tag on the battle HUD, party screen and summary screen — which closes the round-9 "deliberately not done" HUD-gender item. The enemy HUD reads its gender ratio straight from `BaseData` with `GetFarByte` rather than calling `GetBaseData`, precisely to keep `wMonHeader` holding the player's mon (the risk round 9 flagged); the new helpers also blank genderless species instead of reporting them female like the shared `GetGender` does. Reclaimed Bank 0f +92, Bank 14 +45, Bank 3e +11. _Next: user playtests round 10 (see its PLAYTEST checklist — the lab re-entry and the summary paging are the two to check first), then the EXP-bar colour decision is still open, then Phase 4 dialogue starting with `oak_speech.asm`._

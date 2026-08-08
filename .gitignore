@@ -33,3 +33,6 @@ __pycache__
 
 # macos files
 .DS_Store
+
+# emulator save states (SameBoy)
+*.s[0-9]

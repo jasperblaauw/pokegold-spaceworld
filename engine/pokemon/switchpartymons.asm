@@ -82,32 +82,32 @@ _SwitchPartyMons::
 	call CopyBytes
 	ld a, [wSwitchMonTo]
 	ld hl, wPartyMonOTs
-	call SkipNames
+	call SkipOTNames
 	push hl
-	call .CopyNameToSwitchMonBuffer
+	call .CopyOTNameToSwitchMonBuffer
 	ld a, [wSwitchMonFrom]
 	ld hl, wPartyMonOTs
-	call SkipNames
+	call SkipOTNames
 	pop de
 	push hl
-	call .CopyName
+	call .CopyOTName
 	pop de
 	ld hl, wSwitchItemBuffer
-	call .CopyName
+	call .CopyOTName
 	ld hl, wPartyMonNicknames
 	ld a, [wSwitchMonTo]
 	call SkipNames
 	push hl
-	call .CopyNameToSwitchMonBuffer
+	call .CopyNicknameToSwitchMonBuffer
 	ld hl, wPartyMonNicknames
 	ld a, [wSwitchMonFrom]
 	call SkipNames
 	pop de
 	push hl
-	call .CopyName
+	call .CopyNickname
 	pop de
 	ld hl, wSwitchItemBuffer
-	call .CopyName
+	call .CopyNickname
 	ld hl, sPartyMail
 	ld a, [wSwitchMonTo]
 	ld bc, MAIL_STRUCT_LENGTH
@@ -136,10 +136,18 @@ _SwitchPartyMons::
 	pop hl
 	ret
 
-.CopyNameToSwitchMonBuffer
+; OT names and nicknames are different widths in the English build, so the two
+; passes above can no longer share one copy routine.
+.CopyOTNameToSwitchMonBuffer
 	ld de, wSwitchItemBuffer
 
-.CopyName
+.CopyOTName
 	ld bc, PLAYER_NAME_LENGTH
-	call CopyBytes
-	ret
+	jp CopyBytes
+
+.CopyNicknameToSwitchMonBuffer
+	ld de, wSwitchItemBuffer
+
+.CopyNickname
+	ld bc, MON_NAME_LENGTH
+	jp CopyBytes

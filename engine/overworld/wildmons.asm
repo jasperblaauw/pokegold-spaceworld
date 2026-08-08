@@ -130,6 +130,17 @@ TryWildBattle::
 	call .CheckGrassCollision
 	jr nc, .no_battle
 
+; feature/completion: enforce a grace period after each wild battle. The counter
+; is set when an encounter triggers and only ticks down on steps that would
+; otherwise have been eligible, so it measures steps taken in grass.
+	ld a, [wWildEncounterCooldown]
+	and a
+	jr z, .off_cooldown
+	dec a
+	ld [wWildEncounterCooldown], a
+	jr .no_battle
+
+.off_cooldown
 ; Get encounter rate for the time of day.
 	call WildMon_GetTimeOfDay
 	ld c, a
@@ -209,6 +220,8 @@ TryWildBattle::
 	ret
 
 .ok
+	ld a, WILD_ENCOUNTER_COOLDOWN
+	ld [wWildEncounterCooldown], a
 	ld a, WILD_BATTLE
 	ld [wBattleMode], a
 	xor a

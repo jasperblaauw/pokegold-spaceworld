@@ -351,7 +351,7 @@ ScrollingMenu_UpdateDisplay::
 	ret
 
 .CancelString:
-	db "やめる@"
+	db "CANCEL@"
 
 .call_function
 	ld d, h

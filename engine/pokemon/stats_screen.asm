@@ -97,10 +97,30 @@ LoadPinkPage::
 	ld a, [wMonHIndex]
 	ld [wMoveGrammar], a
 	ld [wCurSpecies], a
-	ld a, b
-	and a
-	jr nz, .draw_page
+.draw_page
 	push bc
+; The divider is redrawn on every page load, not just the first: the green
+; page's move-list box has to be wide enough for English move names, so its
+; left border covers column 7. It now skips rows 10-11, where the nickname and
+; the species name run the full width of the screen — a 10-character English
+; name does not fit in the 7-column strip left of the divider.
+	ld bc, SCREEN_WIDTH
+	hlcoord 7, 0
+	ld d, 10
+	call StatsScreen_DrawDividerRun
+	hlcoord 7, 12
+	ld d, SCREEN_HEIGHT - 12
+	call StatsScreen_DrawDividerRun
+
+	ld b, 1
+	call StatsScreen_LoadPageIndicators
+	hlcoord 8, 0
+	lb bc, SCREEN_HEIGHT, SCREEN_WIDTH - 8
+	call ClearBox
+
+; Everything below used to be drawn only on the first load. ClearBox above wipes
+; columns 8-19 on every row, so the two full-width name rows would be erased
+; when paging away and back; the whole tilemap is now redrawn each page load.
 	hlcoord 1, 0
 	ld [hl], '・'
 	inc hl
@@ -112,58 +132,40 @@ LoadPinkPage::
 	call PrintNumber
 	hlcoord 1, 8
 	call PrintLevel
+; The gender symbol goes one column right of the level tag (columns 1-3) rather
+; than trailing the nickname. GetBaseData has to run first: wCurSpecies is
+; already this mon's, but nothing before this point has loaded its header —
+; PrintMonTypes does its own call further down.
+	call GetBaseData
+	ld hl, wTempMonDVs
+	call GetGenderChar
+	hlcoord 5, 8
+	ld [hl], a
 
 	ld hl, NicknamePointers
+	ld e, MON_NAME_LENGTH
 	call GetNicknamePointer
 	ld d, h
 	ld e, l
 	hlcoord 1, 10
 	call PlaceString
-	push bc
-	call GetGender
-	ld a, '♂'
-	jr c, .done_status
-	ld a, '♀'
-.done_status
-	pop hl
-	ld [hl], a
-	hlcoord 1, 12
+	hlcoord 1, 11
 	ld a, '／'
 	ld [hli], a
 	ld a, [wMonHIndex]
 	ld [wMoveGrammar], a
 	call GetPokemonName
 	call PlaceString
-	ld a, $32
+; The page row was four tiles: the ◀/▶ arrows ($32/$35) around a two-tile "ページ"
+; graphic ($33/$34). "PAGE" needs four columns of ordinary font, so the arrows
+; move out to columns 1 and 6 — still inside this page's 7-column left strip.
+	hlcoord 1, 16
+	ld [hl], $32 ; ◀
 	hlcoord 2, 16
-	ld [hli], a
-	inc a
-	ld [hli], a
-	inc a
-	ld [hli], a
-	inc a
-	ld [hl], a
-	pop bc
-.draw_page
-	push bc
-; The divider is redrawn on every page load, not just the first: the green
-; page's move-list box has to be wide enough for English move names, so its
-; left border covers column 7.
-	hlcoord 7, 0
-	ld bc, SCREEN_WIDTH
-	ld d, SCREEN_HEIGHT
-.vertical_divider
-	ld a, $31
-	ld [hl], a
-	add hl, bc
-	dec d
-	jr nz, .vertical_divider
-
-	ld b, 1
-	call StatsScreen_LoadPageIndicators
-	hlcoord 8, 0
-	ld bc, TextCommands
-	call ClearBox
+	ld de, StatsText_Page
+	call PlaceString
+	hlcoord 6, 16
+	ld [hl], $35 ; ▶
 
 	hlcoord 10, 1
 	ld b, 0
@@ -197,12 +199,15 @@ LoadPinkPage::
 	hlcoord 11, 7
 	call PrintMonTypes
 
-	hlcoord 8, 10
-	ld b, 6
+; The EXP box moved down two rows (top border 10 -> 12) to free rows 10-11 for
+; the full-width name rows above. Its four interior rows (13-16) still hold the
+; same five items: the "EXP POINTS" title sits on the top border as before.
+	hlcoord 8, 12
+	ld b, 4
 	ld c, 10
 	call DrawTextBox
 
-	hlcoord 9, 10
+	hlcoord 9, 12
 	ld de, StatusText_ExpPoints
 	call PlaceString
 
@@ -214,23 +219,23 @@ LoadPinkPage::
 	inc a
 	ld [wTempMonLevel], a
 .got_level
-	hlcoord 16, 12
+	hlcoord 16, 14
 	call PrintLevel
 
 	pop af
 	ld [wTempMonLevel], a
 	ld de, wTempMonExp
-	hlcoord 12, 11
+	hlcoord 12, 13
 	lb bc, 3, 7
 	call PrintNumber
 
 	call .CalcExpToNextLevel
 	ld de, wExpToNextLevel
-	hlcoord 10, 13
+	hlcoord 10, 15
 	lb bc, 3, 7
 	call PrintNumber
 
-	hlcoord 9, 12
+	hlcoord 9, 14
 	ld de, StatusText_Ato
 	call PlaceString
 
@@ -303,6 +308,9 @@ StatusText_StatusType:
 StatusText_OK:
 	db "OK@"
 
+StatsText_Page:
+	db "PAGE@"
+
 StatusText_ExpPoints:
 	db "EXP POINTS@"
 
@@ -320,7 +328,7 @@ LoadGreenPage::
 	call StatsScreen_LoadPageIndicators
 
 	hlcoord 8, 0
-	ld bc, TextCommands
+	lb bc, SCREEN_HEIGHT, SCREEN_WIDTH - 8
 	call ClearBox
 
 	hlcoord 8, 1
@@ -387,7 +395,7 @@ LoadBluePage::
 	call StatsScreen_LoadPageIndicators
 
 	hlcoord 8, 0
-	ld bc, TextCommands
+	lb bc, SCREEN_HEIGHT, SCREEN_WIDTH - 8
 	call ClearBox
 
 	hlcoord 9, 1
@@ -400,11 +408,12 @@ LoadBluePage::
 	call PrintNumber
 
 	ld hl, .OTPointers
+	ld e, PLAYER_NAME_LENGTH
 	call GetNicknamePointer
 
 	ld de, wStringBuffer1
 	push de
-	ld bc, MON_NAME_LENGTH
+	ld bc, PLAYER_NAME_LENGTH
 	call CopyBytes
 
 	pop de
@@ -439,6 +448,15 @@ LoadBluePage::
 	dw wBoxMonOTs
 	dw wBufferMonOT
 
+; Draws d rows of the vertical divider downwards from hl. bc must be SCREEN_WIDTH.
+StatsScreen_DrawDividerRun:
+	ld a, $31
+	ld [hl], a
+	add hl, bc
+	dec d
+	jr nz, StatsScreen_DrawDividerRun
+	ret
+
 StatsScreen_LoadPageIndicators::
 	hlcoord 1, 14
 	ld a, $36
@@ -471,6 +489,12 @@ StatsScreen_LoadPageIndicators::
 	ld [hl], a
 	ret
 
+; hl = a table of four list pointers indexed by wMonType; e = the entry width of
+; that table's PARTYMON / OTPARTYMON lists. This routine serves both the nickname
+; tables (MON_NAME_LENGTH) and the OT tables (PLAYER_NAME_LENGTH), which are no
+; longer the same width, so the caller has to say which it is passing. BOXMON
+; lists are still stored at the Japanese width, and TEMPMON is a single buffer
+; with no index.
 GetNicknamePointer::
 	ld a, [wMonType]
 	add a
@@ -481,7 +505,13 @@ GetNicknamePointer::
 	ld h, [hl]
 	ld l, a
 	ld a, [wMonType]
-	cp 3
+	cp TEMPMON
 	ret z
+	cp BOXMON
+	jr nz, .got_width
+	ld e, BOX_MON_NAME_LENGTH
+.got_width
+	ld b, 0
+	ld c, e
 	ld a, [wCurPartyMon]
-	jp SkipNames
+	jp AddNTimes

@@ -2268,14 +2268,19 @@ TrainerAboutToUseText:
 	line "switch too?"
 	done
 
+; Retail's three-row form: the trainer's class and name fill row 1, "sent out"
+; is row 2, and <CONT> scrolls it up so the mon name gets a row to itself. A
+; 12-column class plus a 7-column name plus a 10-column mon name cannot share
+; two rows any other way.
 TrainerSentOutText:
 	text_from_ram wOTClassName
 	text " @"
 	text_from_ram wStringBuffer1
 	text_start
-	line "@"
+	line "sent out"
+	cont "@"
 	text_from_ram wEnemyMonNickname
-	text " is out!"
+	text "!"
 	done
 
 NewEnemyMonStatus:
@@ -3015,11 +3020,10 @@ UpdatePlayerHUD:
 	hlcoord 18, 9
 	ld [hl], $73
 	ld de, wBattleMonNickname
-	hlcoord 10, 8
+	hlcoord 10, 7
 	call CenterMonName
 	call PlaceString
 
-	push bc
 	ld hl, wBattleMon
 	ld de, wTempMon
 	ld bc, (wBattleMonMovesEnd - wBattleMonSpecies)
@@ -3034,16 +3038,30 @@ UpdatePlayerHUD:
 	ld [wCurSpecies], a
 	call GetBaseData
 
-	pop hl
-	push hl
-	inc hl
+; Retail puts the level on its own row below the name rather than trailing it,
+; right-aligned against the HP box's right edge (column 17). A status condition
+; replaces the level in the same three columns, as it did before.
+	hlcoord 15, 8
 	ld de, wTempMonStatus
 	predef PlaceNonFaintStatus
-	pop hl
 	jr nz, .dont_print_level
+	hlcoord 15, 8
+	ld a, [wTempMonLevel]
+	cp 10
+	jr nc, .print_level
+	inc hl ; PrintLevel is left-aligned, so a single digit needs nudging right
+.print_level
 	call PrintLevel
 
 .dont_print_level
+; The gender symbol sits one column right of the level, against the HP box's
+; right edge. GetBaseData above loaded this species, so wMonHGenderRatio is ours.
+	ld a, [wMonHGenderRatio]
+	ld c, a
+	ld de, wBattleMonDVs
+	hlcoord 18, 8
+	call BattleHUD_PlaceGender
+
 	ld a, [wTempMonSpecies]
 	ld [wCurPartySpecies], a
 	hlcoord 10, 9
@@ -3099,26 +3117,46 @@ UpdateEnemyHUD:
 	lb bc, 4, 11
 	call ClearBox
 	callfar DrawEnemyHUDBorder
+	call PlaceCaughtBallIcon
 
 	ld de, wEnemyMonNickname
-	hlcoord 2, 1
+	hlcoord 2, 0
 	call CenterMonName
 	call PlaceString
 
-	ld h, b
-	ld l, c
-	push hl
-	inc hl
+; As on the player's side, the level moves to its own row under the name,
+; right-aligned against the enemy HP box's right edge (column 9).
+	hlcoord 7, 1
 	ld de, wEnemyMonStatus
 	predef PlaceNonFaintStatus
 
-	pop hl
 	jr nz, .dont_print_level
 	ld a, [wEnemyMonLevel]
 	ld [wTempMonLevel], a
+	hlcoord 7, 1
+	cp 10
+	jr nc, .print_level
+	inc hl ; PrintLevel is left-aligned, so a single digit needs nudging right
+.print_level
 	call PrintLevel
 
 .dont_print_level
+; The enemy's gender goes one column right of its level, as the player's does.
+; UpdatePlayerHUD left wMonHeader holding the *player's* base data and the rest
+; of the battle engine relies on that, so the ratio is read straight out of
+; BaseData instead of calling GetBaseData for the enemy here.
+	ld a, [wEnemyMonSpecies]
+	dec a
+	ld bc, BaseData.FirstEntryEnd - BaseData
+	ld hl, BaseData + BASE_GENDER
+	call AddNTimes
+	ld a, BANK(BaseData)
+	call GetFarByte
+	ld c, a
+	ld de, wEnemyMonDVs
+	hlcoord 10, 1
+	call BattleHUD_PlaceGender
+
 	ld hl, wEnemyMonHP
 	ld a, [hli]
 	ldh [hMultiplicand + 1], a
@@ -3197,6 +3235,54 @@ UpdateHPPal:
 	ret z
 	ld b, SGB_BATTLE_COLORS
 	jp GetSGBLayout
+
+; Writes the gender symbol of a battle mon to the tilemap.
+; hl = where to write it, de = the mon's DVs, c = its species' gender ratio.
+; Genderless species get a blank. This duplicates GetGenderChar in
+; engine/pokemon/mon_stats.asm, which is in another bank; the shared GetGender
+; can't be used here because it picks its DVs from wMonType/wCurPartyMon.
+BattleHUD_PlaceGender:
+	ld a, c
+	cp GENDER_UNKNOWN
+	ld a, ' '
+	jr z, .place
+	ld a, [de] ; Attack DV
+	and $f0
+	ld b, a
+	inc de
+	ld a, [de] ; Speed DV
+	and $f0
+	swap a
+	or b
+	ld b, a
+	ld a, c
+	cp b
+	ld a, '♂'
+	jr c, .place
+	ld a, '♀'
+.place
+	ld [hl], a
+	ret
+
+; In a wild battle, a Poké Ball appears at the left edge of the enemy's HP bar
+; row once that species has been caught, as it does in the retail games.
+PlaceCaughtBallIcon:
+	ld a, [wBattleMode]
+	cp WILD_BATTLE
+	ret nz
+	ld a, [wEnemyMonSpecies]
+	dec a
+	ld c, a
+	ld b, CHECK_FLAG
+	ld d, 0
+	ld hl, wPokedexCaught
+	predef SmallFarFlagAction
+	ld a, c
+	and a
+	ret z
+	hlcoord 1, 1
+	ld [hl], CAUGHT_BALL_TILE
+	ret
 
 ; center's mon's name on the battle screen
 ; if the name is 1 or 2 letters long, it is printed 2 spaces more to the right than usual
@@ -3644,15 +3730,19 @@ MoveSelectionScreen::
 	call CopyBytes
 	xor a
 	ldh [hBGMapMode], a
+; English move names reach 12 characters (FLAMETHROWER), but this box only gave
+; the list 7 columns, so anything longer ran past its right border. Both variants
+; are widened to a 12-column interior; MoveInfoBox moved to the top of the screen
+; to make room, since 12 columns of name plus 8 of type name cannot share a row.
 	hlcoord 0, 17 - (NUM_MOVES * 2) - 1
 	ld b, 8
-	ld c, 8
+	ld c, 13
 	ld a, [wMoveSelectionMenuType]
 	cp 2
 	jr nz, .got_dims
-	hlcoord 10, 17 - (NUM_MOVES * 2) - 1
+	hlcoord 6, 17 - (NUM_MOVES * 2) - 1
 	ld b, 8
-	ld c, 8
+	ld c, 12
 
 .got_dims
 	call DrawTextBox
@@ -3660,7 +3750,7 @@ MoveSelectionScreen::
 	ld a, [wMoveSelectionMenuType]
 	cp 2
 	jr nz, .got_start_coord
-	hlcoord 12, 17 - (NUM_MOVES * 2) + 1
+	hlcoord 7, 17 - (NUM_MOVES * 2) + 1
 
 .got_start_coord
 	ld a, SCREEN_WIDTH * 2
@@ -3671,7 +3761,7 @@ MoveSelectionScreen::
 	ld a, [wMoveSelectionMenuType]
 	cp 2
 	jr nz, .got_default_coord
-	ld b, 11
+	ld b, 6 ; one column left of the widened type-2 list
 
 .got_default_coord
 	ld a, 17 - (NUM_MOVES * 2) + 1
@@ -4075,7 +4165,11 @@ MoveInfoBox:
 	xor a
 	ldh [hBGMapMode], a
 
-	hlcoord 9, 12
+; Moved from the bottom right (9,12) to the top left so the widened move list can
+; use the full lower half. The battle screen is restored by
+; SafeLoadTempTilemapToTilemap + UpdateBattleHuds when move selection exits, so
+; covering the enemy HUD while the FIGHT menu is open is safe.
+	hlcoord 0, 0
 	ld b, 4
 	ld c, 9
 	call DrawTextBox
@@ -4091,7 +4185,7 @@ MoveInfoBox:
 	cp b
 	jr nz, .not_disabled
 
-	hlcoord 10, 15
+	hlcoord 1, 3
 	ld de, .Disabled
 	call PlaceString
 	jr .done
@@ -4124,20 +4218,24 @@ MoveInfoBox:
 	ld a, [hl]
 	and PP_MASK
 	ld [wStringBuffer1], a
-	hlcoord 10, 15
+; Interior is rows 1-4, columns 1-9: PP on row 1, the "MOVE TYPE" label on row 3
+; and the type name (up to 8 characters) on row 4.
+	hlcoord 1, 3
 	ld de, .Type
 	call PlaceString
 
-	hlcoord 16, 13
+	hlcoord 1, 1
+	ld de, .PP
+	call PlaceString
+
+	hlcoord 6, 1
 	ld [hl], '／'
-	hlcoord 14, 16
-	ld [hl], '／'
-	hlcoord 14, 13
+	hlcoord 4, 1
 	ld de, wStringBuffer1
 	lb bc, 1, 2
 	call PrintNumber
 
-	hlcoord 17, 13
+	hlcoord 7, 1
 	ld de, wTempPP
 	lb bc, 1, 2
 	call PrintNumber
@@ -4145,7 +4243,7 @@ MoveInfoBox:
 	callfar UpdateMoveData
 	ld a, [wPlayerMoveStruct]
 	ld b, a
-	hlcoord 10, 16
+	hlcoord 1, 4
 	predef PrintMoveType
 
 .done
@@ -4155,6 +4253,8 @@ MoveInfoBox:
 	db "DISABLED!@"
 .Type:
 	db "MOVE TYPE@"
+.PP:
+	db "PP@"
 
 ParseEnemyAction:
 	ld a, [wLinkMode]

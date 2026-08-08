@@ -1539,7 +1539,7 @@ LinkTrade:
 	ld [wPlayerTrademon], a
 	ld a, [wCurTradePartyMon]
 	ld hl, wPartyMon1OT
-	call SkipNames
+	call SkipOTNames
 	ld de, wPlayerTrademonOTName
 	ld bc, PLAYER_NAME_LENGTH
 	call CopyBytes
@@ -1570,7 +1570,7 @@ LinkTrade:
 ; OT name
 	ld a, [wCurOTTradePartyMon]
 	ld hl, wOTPartyMon1OT
-	call SkipNames
+	call SkipOTNames
 	ld de, wOTTrademonOTName
 	ld bc, PLAYER_NAME_LENGTH
 	call CopyBytes

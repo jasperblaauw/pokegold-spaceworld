@@ -87,6 +87,11 @@ DEF SPDSPCDV_SHINY EQU $AA
 	const WILD_BATTLE
 	const TRAINER_BATTLE
 
+; feature/completion: the "you already own this species" Poké Ball on the enemy
+; HUD. LoadHPBar parks the first tile of PokeBallsGFX here, in the gap between
+; the EXP bar tiles ($55-$5c) and the HP bar tiles ($60-$6b).
+DEF CAUGHT_BALL_TILE EQU $5d
+
 ; battle types (wBattleType values)
 	const_def
 	const BATTLETYPE_NORMAL

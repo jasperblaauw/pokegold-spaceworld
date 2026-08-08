@@ -32,7 +32,7 @@ PlacePackItems::
 	ret
 
 .CancelString:
-	db "　ーーやめるーー@"
+	db " --CANCEL--@"
 
 PlaceMenuItemName::
 	push de
@@ -62,14 +62,18 @@ PlaceMenuItemQuantity::
 
 PlacePartyMonNicknames::
 	ld hl, wPartyMonNicknames
+	push de
+	ld a, [wScrollingMenuCursorPosition]
+	call GetNick
 	jr PlaceMonNicknames
 
 PlaceBoxMonNicknames::
 	ld hl, wBoxMonNicknames
-PlaceMonNicknames:
 	push de
 	ld a, [wScrollingMenuCursorPosition]
-	call GetNick
+	ld bc, BOX_MON_NAME_LENGTH
+	call GetNickWithWidth
+PlaceMonNicknames:
 	pop hl
 	call PlaceString
 	ret
@@ -114,7 +118,8 @@ PlaceDetailedBoxMonView::
 
 	ld a, [wScrollingMenuCursorPosition]
 	ld hl, wBoxMonNicknames
-	call GetNick
+	ld bc, BOX_MON_NAME_LENGTH
+	call GetNickWithWidth
 	pop hl
 	call PlaceString
 	ld de, MON_NAME_LENGTH

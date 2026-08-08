@@ -543,8 +543,8 @@ SRAMClearMenu::
 	jp Init
 
 SRAMClear_Message::
-	text "すべての　セーブデータエリアを"
-	line "クリア　しますか？"
+	text "Clear all of the"
+	line "save data areas?"
 	done
 
 SRAMClear_WinPOS::
@@ -556,8 +556,8 @@ SRAMClear_WinPOS::
 SRAMClear_TextChoice::
 	db %11000000
 	db 2
-	db "いいえ@"
-	db "はい@"
+	db "NO@"
+	db "YES@"
 
 IntroCopyRightInfo::
 	call ClearTileMap

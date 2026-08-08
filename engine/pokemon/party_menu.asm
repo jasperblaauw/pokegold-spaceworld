@@ -260,6 +260,17 @@ PlacePartyMember::
 	call SetPartyHPBarPalette
 	pop de
 	pop hl
+; The gender goes between the level and the HP bar. CopyMonToTempMon above ran
+; GetBaseData for this mon, so wMonHGenderRatio is the right species'.
+	push hl
+	ld bc, SCREEN_WIDTH + 7 ; row below the name, col 10 (right of the level)
+	add hl, bc
+	push hl
+	ld hl, wTempMonDVs
+	call GetGenderChar
+	pop hl
+	ld [hl], a
+	pop hl
 	jr .PrintLevel
 
 .PlacePartyMonTMHMCompatibility
@@ -278,7 +289,7 @@ PlacePartyMember::
 	call PlaceString
 	pop hl
 .PrintLevel
-	ld bc, SCREEN_WIDTH + 5 ; row below the name, col 8 (right against the HP bar at col 11)
+	ld bc, SCREEN_WIDTH + 4 ; row below the name, col 7 (level 7-9, gender 10, bar 11)
 	add hl, bc
 	push de
 	call PrintLevel

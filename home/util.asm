@@ -46,16 +46,25 @@ Copy2x2TilesToVRAM:: ; unreferenced
 	pop de
 	jp CopyBytes
 
+; The Japanese prototype stored every name table at a uniform 6-byte stride, so
+; a single SkipNames indexed all of them. The English widths differ per table
+; (nicknames MON_NAME_LENGTH, OT names PLAYER_NAME_LENGTH, boxed-mon names still
+; the Japanese width), so a caller must use the routine matching the table it is
+; indexing. Getting this wrong writes each entry over the tail of the previous
+; one.
+
 SkipNames::
-; Returns hl + a * 6
-	and a
-	ret z
-	ld bc, 6
-.loop:
-	add hl, bc
-	dec a
-	jr nz, .loop
-	ret
+; Returns hl + a * MON_NAME_LENGTH (party / OT-party nickname tables)
+	ld bc, MON_NAME_LENGTH
+	jr AddNTimes
+
+SkipOTNames::
+; Returns hl + a * PLAYER_NAME_LENGTH (party / OT-party OT-name tables)
+	ld bc, PLAYER_NAME_LENGTH
+	; fallthrough
+
+; Boxed-mon name tables are still stored at the Japanese width; the few places
+; that index them set bc to a BOX_MON_* width and call AddNTimes directly.
 
 AddNTimes::
 ; Adds bc to hl, a times

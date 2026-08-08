@@ -730,7 +730,7 @@ SilentHillLabFrontText3:
 	ret
 
 SilentHillLabFrontTextString3:
-	text "カギが　かかっている"
+	text "It's locked."
 	done
 
 SilentHillLabFrontText4:

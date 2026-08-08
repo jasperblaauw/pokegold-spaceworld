@@ -1211,7 +1211,12 @@ wBattleLossContinues:: db
 wChosenStarter:: db
 wCurMartCount:: db
 
-	ds 15
+; feature/completion: steps left before another wild encounter may be rolled.
+; Set to WILD_ENCOUNTER_COOLDOWN when an encounter triggers and counted down one
+; per step taken on encounter terrain by TryWildBattle. (Repurposed padding.)
+wWildEncounterCooldown:: db
+
+	ds 14
 
 wListPointer:: dw
 wNamesPointer:: dw

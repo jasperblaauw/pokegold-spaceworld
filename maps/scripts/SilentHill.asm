@@ -259,14 +259,17 @@ SilentHillScript6:
 	ret
 
 SilentHillScript7:
-	call CheckLabDoor
-	ret z
+; The demo sealed the lab once you had your starter (call CheckLabDoor / ret z
+; below). The lab front has an authored post-story scene of its own
+; (SCENE_SILENT_HILL_LAB_FRONT_FINISHED spawns Oak and his two aides, and the
+; PC is readable), so the door stays open here; the back room with the starter
+; table is still locked by SilentHillLabFrontMoveDown.
 	ld hl, SilentHillNPCIDs2
 	ld de, SilentHillSignPointers
 	call CallMapTextSubroutine
 	ret
 
-CheckLabDoor:
+CheckLabDoor: ; unreferenced (see SilentHillScript7)
 	ld a, [wYCoord]
 	cp $C
 	ret nz
@@ -291,7 +294,7 @@ CheckLabDoor:
 	call xor_a
 	ret
 
-LabClosed:
+LabClosed: ; unreferenced (see SilentHillScript7)
 	ld a, 0
 	ld hl, SilentHillMovement7
 	call LoadMovementDataPointer
@@ -301,11 +304,11 @@ LabClosed:
 	call SetMapStatus
 	ret
 
-SilentHillTextString1:
-	text "あれ？　カギが　かかっている"
+SilentHillTextString1: ; unreferenced (see SilentHillScript7)
+	text "Huh? It's locked."
 	done
 
-SilentHillMovement7:
+SilentHillMovement7: ; unreferenced (see SilentHillScript7)
 	slow_step DOWN
 	step_end
 

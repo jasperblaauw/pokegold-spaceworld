@@ -104,7 +104,14 @@ LoadHPBar::
 	ld hl, vChars2 tile $55
 	lb bc, BANK(ExpBarGFX), (ExpBarGFX.End - ExpBarGFX) / TILE_SIZE
 	call Get2bpp
-	ret
+; The healthy-ball tile doubles as the enemy HUD's "already caught" marker, the
+; same way LoadPokeDexGraphics reuses it for the Pokédex list. This is in
+; LoadHPBar rather than LoadBattleFontsHPBar so it also comes back when a battle
+; returns from a menu screen, which only reloads the bars.
+	ld de, PokeBallsGFX
+	ld hl, vChars2 tile CAUGHT_BALL_TILE
+	lb bc, BANK(PokeBallsGFX), 1 ; 1 of 4 tiles
+	jp Get2bpp
 
 LoadPokemonStatsGraphics::
 	call LoadPokemonMenuGraphics
