@@ -644,7 +644,8 @@ wider box doesn't look wrong over the party list); (c) **STATS screen, all three
 / TO NEXT rows), green (ITEM/NONE, MOVES list — try a mon with a 12-character move like FLAMETHROWER,
 and check the divider column looks right when you page back to pink), blue (ID/OT/STATS box, and that
 the five stat names and values don't collide); (d) use a Rare Candy / win a level in battle → the
-level-up stats box; (e) **teach a 5th move** (TM or level-up) → the "A new move…" prompt, then the
+level-up stats box; (e) **teach a move to a mon that already knows four** (TM or level-up), so the
+game has to ask you to forget one → the "A new move…" prompt, then the
 forget-move list box, then "Poof!"/"forgot" — this is the box that used to run off-screen; (f) **evolve
 a starter at L16** (M1f restored those) → Congratulations! / It's a X!; (g) toss an item from the PACK
 and try to toss a key item; (h) catch a mon with a full party (BOX message) and with a free slot
