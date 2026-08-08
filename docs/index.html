@@ -181,6 +181,24 @@
   .card span { font-size: .82rem; color: var(--ink-faint); }
   .card .tag { font-family: var(--mono); font-size: .62rem; letter-spacing: .1em; text-transform: uppercase; color: var(--accent-strong); }
 
+  /* ---------- Screenshots ---------- */
+  .shots {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 320px));
+    gap: 16px; margin: 20px 0; justify-content: start;
+  }
+  .shot { margin: 0; }
+  .shot img {
+    display: block; width: 100%; image-rendering: pixelated;
+    border: 1px solid var(--line); border-radius: 6px;
+  }
+  .shot figcaption {
+    margin-top: 6px; font-family: var(--mono); font-size: .68rem;
+    letter-spacing: .08em; color: var(--ink-faint);
+  }
+  .shot figcaption b { color: var(--ink); letter-spacing: .1em; text-transform: uppercase; }
+  .sw { display: inline-flex; vertical-align: -3px; border: 1px solid var(--line); border-radius: 3px; overflow: hidden; }
+  .sw i { display: block; width: 15px; height: 15px; }
+
   .tbl-wrap { overflow-x: auto; margin: 18px 0; border: 1px solid var(--line); border-radius: var(--radius); }
   table { width: 100%; border-collapse: collapse; font-size: .87rem; }
   th, td { text-align: left; padding: 9px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
@@ -310,6 +328,10 @@
         <a href="#sec-ram" data-target="sec-ram">ram/</a>
         <a href="#sec-garbage" data-target="sec-garbage">garbage/</a>
         <a href="#sec-tools" data-target="sec-tools">tools/</a>
+      </div>
+      <div class="nav-group">
+        <p>Systems</p>
+        <a href="#sys-rtc" data-target="sys-rtc">Real-time clock</a>
       </div>
       <div class="nav-group">
         <p>The World</p>
@@ -987,6 +1009,188 @@ RGBASMFLAGS += -Q8 -P includes.asm</code></pre>
     </section>
 
     <!-- ===================== SYMBOLS & TOOLS REPO ===================== -->
+    <!-- ===================== REAL-TIME CLOCK ===================== -->
+    <section class="page" id="sys-rtc">
+      <p class="eyebrow">Systems</p>
+      <h1>The real-time clock</h1>
+      <p class="lead">Oak's intro asks for the day of the week, the hour and the minute — the prototype's first stab at the feature that became Gold &amp; Silver's day/night cycle. Most of the machinery is already here: an MBC3 clock driver, four times of day, time-sliced wild encounters, per-time DMG palettes. Some of it is wired to nothing, and the shipped cartridge header quietly undermines the rest.</p>
+
+      <h2>Where the answers go</h2>
+      <p><code>SetClockDialog</code> (<code>engine/menu/set_clock_dialog.asm</code>) runs during Oak's speech and collects three values into <code>wStartDay</code>, <code>wStartHour</code>, <code>wStartMinute</code>. <code>SetClock</code> (<code>home/time.asm</code>) then pushes them at the cartridge clock, and <code>StartRTC</code> releases the halt bit once the intro finishes.</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Value</th><th>Written to</th><th>Fate</th></tr></thead>
+          <tbody>
+            <tr><td>Hour</td><td>RTC hours register (<code>RAMB_RTC_H</code>)</td><td>Drives everything below</td></tr>
+            <tr><td>Minute</td><td>RTC minutes register (<code>RAMB_RTC_M</code>)</td><td>Display only</td></tr>
+            <tr><td>Seconds</td><td>Forced to <code>0</code></td><td>Display + RNG reseed</td></tr>
+            <tr><td>Day of week</td><td><code>hRTCDays</code> in HRAM — <em>never</em> the clock's day counter</td><td>Read by nothing outside the debug overlay</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout warn">
+        <span class="ico">▲</span>
+        <p><strong>The day of the week is a dead end.</strong> <code>SetClock</code> stores it in HRAM and stops there; <code>RAMB_RTC_DL</code> is never written and <code>UpdateTime</code> never reads days back. The only consumer is the debug build's on-screen clock bar, which prints <code>hRTCDays &amp; 7</code> as a kanji (日月火水木金土). No weekly NPCs, no daily events, no berry regrowth — the prompt exists, the payload doesn't. <code>wStartDay</code> also sits in a WRAM <code>UNION</code> with <code>wStringBuffer2</code>, so it is scratch memory, not save data.</p>
+      </div>
+
+      <h2>The four times of day</h2>
+      <p>Every frame that matters, <code>UpdateTime</code> latches the clock, copies seconds/minutes/hours into HRAM, and walks a table to derive <code>wTimeOfDay</code>. The comparison is "boundary ≥ hour", so each named boundary hour belongs to the <em>earlier</em> band:</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Hours</th><th><code>wTimeOfDay</code></th><th>Retail G/S, for comparison</th></tr></thead>
+          <tbody>
+            <tr><td>0 – 6</td><td><code>NITE_F</code></td><td>18 – 3 night</td></tr>
+            <tr><td>7 – 9</td><td><code>MORN_F</code></td><td>4 – 9 morning</td></tr>
+            <tr><td>10 – 15</td><td><code>DAY_F</code></td><td>10 – 17 day</td></tr>
+            <tr><td>16 – 23</td><td><code>NITE_F</code></td><td>18 – 3 night</td></tr>
+            <tr><td>—</td><td><code>DARKNESS_F</code></td><td>no equivalent</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Daytime is only six hours wide here and night covers seventeen, so a randomly-set clock lands on night about 70% of the time. The fourth state, <code>DARKNESS_F</code>, is never produced by this table — only the debug mode below reaches it.</p>
+
+      <h2>What actually reads the time</h2>
+      <div class="cards">
+        <div class="card">
+          <span class="tag">encounters</span>
+          <b>Wild Pokémon</b>
+          <span>Each map's entry in <code>data/wild/maps/</code> carries three encounter rates and overlapping morn/day/nite blocks — Route 1 gives Sunny/Pidgey in the morning and Rattata/Hoho at night.</span>
+        </div>
+        <div class="card">
+          <span class="tag">palettes</span>
+          <b>Overworld shading</b>
+          <span>Picks one of four DMG palette sequences and fades between them live when the band changes.</span>
+        </div>
+        <div class="card">
+          <span class="tag">sgb</span>
+          <b>Super Game Boy tint</b>
+          <span><code>GetMapPalsIndex</code> swaps towns, routes and caves to <code>PAL_NIGHTTIME</code> outside of day/morning.</span>
+        </div>
+        <div class="card">
+          <span class="tag">battle</span>
+          <b>Morning Sun · Synthesis · Moonlight</b>
+          <span>Heal a random ½–full HP in their own window, a flat ½ otherwise. Moonlight also accepts <code>DARKNESS_F</code>.</span>
+        </div>
+        <div class="card">
+          <span class="tag">script</span>
+          <b>The television</b>
+          <span>The TV in the player's and rival's houses plays three different anime-episode texts depending on the band.</span>
+        </div>
+        <div class="card">
+          <span class="tag">display</span>
+          <b>Clock read-outs</b>
+          <span>Trainer Gear shows H:MM:SS live; the save screen and Continue panel label the wall clock "TIME" — there is no play-time counter.</span>
+        </div>
+      </div>
+      <p>That is the complete list. Nothing else in the ROM branches on <code>wTimeOfDay</code>: no time-based evolutions (the only methods are <code>EVOLVE_LEVEL</code>, <code>EVOLVE_STONE</code>, <code>EVOLVE_ITEM</code>, <code>EVOLVE_TRADE</code>), no phone calls, no Bug-Catching Contest, and none of retail's clock-desync password system.</p>
+
+      <h2>Why the overworld looks the same all day</h2>
+      <p>It isn't the missing Game Boy Color support — the DMG palettes <em>are</em> time-dependent. <code>ReplaceTimeOfDayPals</code> picks a packed byte per map type, <code>GetTimePalette</code> pulls a 2-bit index out of it, and that index selects one of four fade sequences in <code>engine/tilesets/timeofday_pals.asm</code>. The resting background palette works out as:</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Band</th><th><code>rBGP</code></th><th>Effect</th></tr></thead>
+          <tbody>
+            <tr><td>Day</td><td><code>$e4</code></td><td>Identity — black / dark / light / white</td></tr>
+            <tr><td>Morning</td><td><code>$e8</code></td><td>Colour 1 darkened; whites still white</td></tr>
+            <tr><td>Night</td><td><code>$e9</code></td><td>Whites drop to light grey — the whole map dims</td></tr>
+            <tr><td>Darkness</td><td><code>$f9</code></td><td>Heavily crushed, plus the flashlight effect</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Towns, routes and caves use all four slots. Indoor maps use a packed byte whose day and night slots are <em>identical</em>, so interiors genuinely never change. And because the difference is a shade swap rather than a hue shift, a green-tinted DMG emulator makes night look like a slightly muddier version of the same screen rather than a different time of day.</p>
+      <div class="callout warn">
+        <span class="ico">▲</span>
+        <p><strong>The likelier culprit: the cartridge header.</strong> The prototype's own header declares <code>MBC1+RAM+BATTERY</code> — a mapper with no timer at all — while the code talks fluent MBC3 RTC. That mismatch is why the Makefile also emits <code>*-correctheader.gb</code> variants patched to <code>MBC3+TIMER+RAM+BATTERY</code>. On an emulator that honours the real header there is no clock hardware behind <code>$A000</code>, so the reads come back from ordinary SRAM banks and the hour never advances: the time of day freezes at whatever the first read produced. If you want to watch the cycle, play a <code>-correctheader</code> build.</p>
+      </div>
+      <p>Colour is a separate matter: the header sets the SGB flag but no CGB flag, so these ROMs are DMG/SGB-only. Real colour arrived later in development — on Super Game Boy you do get a distinct night palette, which is as close as the prototype comes to retail's day/night look.</p>
+
+      <h2>Silent Hill, hour by hour</h2>
+      <p>Here is the starter town rendered straight from <code>maps/SilentHill.blk</code>, its metatiles and the <code>silent_hill</code> tileset — the whole 10 × 9-block map, which is four Game Boy screens' worth. The <em>pixels are identical in all twelve images</em>. The only thing that changes is <code>rBGP</code>, the four-entry lookup from a tile's colour number to one of the LCD's four shades:</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Band</th><th><code>rBGP</code></th><th>Colour 0 →</th><th>1 →</th><th>2 →</th><th>3 →</th></tr></thead>
+          <tbody>
+            <tr><td>Day</td><td><code>$e4</code></td><td>shade 0</td><td>shade 1</td><td>shade 2</td><td>shade 3</td></tr>
+            <tr><td>Morning</td><td><code>$e8</code></td><td>shade 0</td><td>shade 2</td><td>shade 2</td><td>shade 3</td></tr>
+            <tr><td>Night</td><td><code>$e9</code></td><td>shade 1</td><td>shade 2</td><td>shade 2</td><td>shade 3</td></tr>
+            <tr><td>Darkness</td><td><code>$f9</code></td><td>shade 1</td><td>shade 2</td><td>shade 3</td><td>shade 3</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Morning and night both collapse colours 1 and 2 onto the same shade, which is why detail flattens out; night additionally lifts colour 0 off the lightest shade, so the paper-white background goes grey. <strong>What those four shades actually look like is the console's business, not the game's</strong> — and that's the whole explanation for the different tints you see per mode.</p>
+
+      <h3>Game Boy <span class="sw"><i style="background:#9BBC0F"></i><i style="background:#8BAC0F"></i><i style="background:#306230"></i><i style="background:#0F380F"></i></span></h3>
+      <div class="shots">
+        <figure class="shot"><img src="img/rtc/silenthill-dmg-day.png" alt="Silent Hill on DMG, daytime palette" width="320" height="288"><figcaption><b>Day</b> · 10:00–15:59 · BGP $e4</figcaption></figure>
+        <figure class="shot"><img src="img/rtc/silenthill-dmg-morn.png" alt="Silent Hill on DMG, morning palette" width="320" height="288"><figcaption><b>Morning</b> · 07:00–09:59 · BGP $e8</figcaption></figure>
+        <figure class="shot"><img src="img/rtc/silenthill-dmg-nite.png" alt="Silent Hill on DMG, night palette" width="320" height="288"><figcaption><b>Night</b> · 16:00–06:59 · BGP $e9</figcaption></figure>
+        <figure class="shot"><img src="img/rtc/silenthill-dmg-dark.png" alt="Silent Hill on DMG, darkness palette" width="320" height="288"><figcaption><b>Darkness</b> · debug only · BGP $f9</figcaption></figure>
+      </div>
+
+      <h3>Super Game Boy <span class="sw"><i style="background:#E6E6E6"></i><i style="background:#62E6B4"></i><i style="background:#7BA4A4"></i><i style="background:#202020"></i></span></h3>
+      <div class="shots">
+        <figure class="shot"><img src="img/rtc/silenthill-sgb-day.png" alt="Silent Hill on SGB, daytime palette" width="320" height="288"><figcaption><b>Day</b> · <code>PAL_TOWN_SILENTHILL</code></figcaption></figure>
+        <figure class="shot"><img src="img/rtc/silenthill-sgb-morn.png" alt="Silent Hill on SGB, morning palette" width="320" height="288"><figcaption><b>Morning</b> · <code>PAL_TOWN_SILENTHILL</code></figcaption></figure>
+        <figure class="shot"><img src="img/rtc/silenthill-sgb-nite.png" alt="Silent Hill on SGB, night palette" width="320" height="288"><figcaption><b>Night</b> · <code>PAL_NIGHTTIME</code></figcaption></figure>
+        <figure class="shot"><img src="img/rtc/silenthill-sgb-dark.png" alt="Silent Hill on SGB, darkness palette" width="320" height="288"><figcaption><b>Darkness</b> · <code>PAL_NIGHTTIME</code></figcaption></figure>
+      </div>
+      <div class="callout warn">
+        <span class="ico">▲</span>
+        <p><strong><code>PAL_NIGHTTIME</code> is a byte-for-byte copy of <code>PAL_TOWN_SILENTHILL</code></strong> — check <code>data/sgb/super_palettes.asm</code>, both read <code>RGB 28,28,28, 12,28,22, 15,20,20, 04,04,04</code>. So in the starter town specifically, the SGB "night palette" swap changes nothing at all, and night still comes purely from <code>rBGP</code>. It <em>does</em> do visible work elsewhere: Font's orange or Old City's brown both flip to this mint-and-slate set after dark. The cool cast at night comes from shade 2 (<span class="sw"><i style="background:#7BA4A4"></i></span> a desaturated cyan) taking over most of the screen once colours 1 and 2 merge.</p>
+      </div>
+
+      <h3>Game Boy Color / Advance <span class="sw"><i style="background:#FFFFFF"></i><i style="background:#FFAD63"></i><i style="background:#843100"></i><i style="background:#000000"></i></span></h3>
+      <div class="shots">
+        <figure class="shot"><img src="img/rtc/silenthill-cgb-day.png" alt="Silent Hill on CGB, daytime palette" width="320" height="288"><figcaption><b>Day</b> · boot-ROM default</figcaption></figure>
+        <figure class="shot"><img src="img/rtc/silenthill-cgb-morn.png" alt="Silent Hill on CGB, morning palette" width="320" height="288"><figcaption><b>Morning</b> · boot-ROM default</figcaption></figure>
+        <figure class="shot"><img src="img/rtc/silenthill-cgb-nite.png" alt="Silent Hill on CGB, night palette" width="320" height="288"><figcaption><b>Night</b> · boot-ROM default</figcaption></figure>
+        <figure class="shot"><img src="img/rtc/silenthill-cgb-dark.png" alt="Silent Hill on CGB, darkness palette" width="320" height="288"><figcaption><b>Darkness</b> · boot-ROM default</figcaption></figure>
+      </div>
+      <p>Because the header carries no CGB flag, a Game Boy Color runs these ROMs in DMG-compatibility mode and the <em>boot ROM</em> picks the colours: it hashes the header title, finds no match for <code>POKEMON2GOLD</code> / <code>POKEMON2SILVER</code>, and falls back to its default white / orange / red-brown / black set. That's the red-orange cast you get in CGB and GBA modes — GBA is the same palette again, run through a different LCD correction curve, so it reads a shade duller. <code>rBGP</code> still works in this mode, which is why the four times of day remain distinguishable even though the game itself knows nothing about colour.</p>
+      <div class="callout">
+        <span class="ico">i</span>
+        <p>These are renders of the background layer only — no player, NPCs, or tileset animation (Silent Hill uses <code>TilesetGenericAnim</code>), and no fade frames. The script that produced them walks the same data the game does: <code>.blk</code> block ids → 4 × 4 metatile definitions → <code>common.2bpp</code> (tiles <code>$00–$1f</code>) plus <code>silent_hill.common.2bpp</code> (tiles <code>$20–$5f</code>), exactly as <code>LoadTilesetGFX</code> lays them out in VRAM for an exterior map.</p>
+      </div>
+
+      <h2>Setting the clock afterwards</h2>
+      <p>Oak's intro isn't the only way in. Hold <strong>DOWN + B + A</strong> as the main menu opens and the menu becomes a single <code>SET TIME</code> entry (<code>engine/menu/main_menu.asm</code>), which runs <code>SetTime</code> from <code>engine/menu/set_time.asm</code>: up/down adjusts the hour, left/right the minute, A commits via <code>SetClock</code> + <code>StartRTC</code>. Seconds are zeroed each time. The debug field menu reaches the same routine directly.</p>
+      <div class="callout">
+        <span class="ico">i</span>
+        <p>A small prototype wart lives here: after each adjustment the routine reprints <code>AdjustTimeText</code> — the version that carries the <code>start_asm</code> input loop — rather than the otherwise-unused <code>AdjustTimeEndText</code> beside it. The source keeps a <code>; meant AdjustTimeEndText?</code> comment on the line.</p>
+      </div>
+
+      <h2>Debug: the one-minute day</h2>
+      <p>With <code>DEBUG_FIELD_F</code> set in <code>wDebugFlags</code> and <code>OVERWORLD_MINUTE_TIME_F</code> set in <code>wTimeOfDayDebugFlags</code> (toggled from the debug toolgear), <code>UpdateTime</code> derives the band from <em>seconds</em> instead of hours — a complete cycle every minute:</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Seconds</th><th>Band</th></tr></thead>
+          <tbody>
+            <tr><td>0 – 30</td><td>Day</td></tr>
+            <tr><td>31 – 35</td><td>Night</td></tr>
+            <tr><td>36 – 50</td><td>Darkness</td></tr>
+            <tr><td>51 – 59</td><td>Morning</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>This is the only route to <code>DARKNESS_F</code>, and therefore the only way to see the <strong>flashlight effect</strong>: <code>hOverworldFlashlightEffect</code> is set exclusively by the darkness branch of <code>GetTimePalette</code>, and it makes the map redraw only a 7×7, 5×5, 3×3 or 1×1 window around the player (<code>engine/overworld/player_step.asm</code>). Retail's dark caves and Flash are already implemented in here — just not attached to any map.</p>
+
+      <h2>Files to read</h2>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>File</th><th>Contains</th></tr></thead>
+          <tbody>
+            <tr><td><code>home/time.asm</code></td><td>The whole driver: <code>LatchClock</code>, <code>UpdateTime</code>, <code>SetClock</code>, <code>StartRTC</code>, the band table</td></tr>
+            <tr><td><code>home/rtc.asm</code></td><td>Thin farcall wrappers used from menus and text loops</td></tr>
+            <tr><td><code>engine/tilesets/timeofday_pals.asm</code></td><td>Palette sets, fade sequences, the darkness/flashlight switch</td></tr>
+            <tr><td><code>engine/menu/set_clock_dialog.asm</code></td><td>The intro's day/hour/minute dialog</td></tr>
+            <tr><td><code>engine/menu/set_time.asm</code></td><td>The <code>SET TIME</code> menu</td></tr>
+            <tr><td><code>constants/misc_constants.asm</code></td><td><code>MORN_HOUR</code>/<code>DAY_HOUR</code>/<code>NITE_HOUR</code> and the <code>*_F</code> band flags</td></tr>
+            <tr><td><code>constants/hardware.inc</code></td><td><code>rRTCLATCH</code>, <code>rRTCREG</code>, the <code>RAMB_RTC_*</code> bank selectors</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
     <!-- ===================== STORY ===================== -->
     <section class="page" id="story">
       <p class="eyebrow">The World</p>
