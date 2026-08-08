@@ -513,17 +513,17 @@ Unreferenced_Corrupt_KnowsMove:
 	prompt
 
 if DEF(_GOLD)
-INCBIN "garbage/debug/bank03_gold.2bpp", 39 ; feature/completion: +4 for OT-party nickname default fill
+INCBIN "garbage/debug/bank03_gold.2bpp", 226 ; feature/completion: +4 OT-party nickname fill, +187 English item_effects text
 endc
 if DEF(_SILVER)
-INCBIN "garbage/debug/bank03_silver.2bpp", 39 ; feature/completion: +4 for OT-party nickname default fill
+INCBIN "garbage/debug/bank03_silver.2bpp", 226 ; feature/completion: +4 OT-party nickname fill, +187 English item_effects text
 endc
 else
 if DEF(_GOLD)
-INCBIN "garbage/bank03_gold.2bpp", 204 ; feature/completion: +4 for OT-party nickname default fill
+INCBIN "garbage/bank03_gold.2bpp", 391 ; feature/completion: +4 OT-party nickname fill, +187 English item_effects text
 endc
 if DEF(_SILVER)
-INCBIN "garbage/bank03_silver.2bpp", 204 ; feature/completion: +4 for OT-party nickname default fill
+INCBIN "garbage/bank03_silver.2bpp", 391 ; feature/completion: +4 OT-party nickname fill, +187 English item_effects text
 endc
 endc
 
@@ -534,17 +534,17 @@ if DEF(_DEBUG)
 	db $18, $00 ; leftover of previous graphics
 Unreferenced_UnusedLeaderNameGFX:: INCBIN "gfx/trainer_card/unused_leader_name.2bpp"
 	if DEF(_GOLD)
-INCBIN "garbage/debug/bank04_gold.2bpp", 308 ; feature/completion: +81 for English lowercase keyboard
+INCBIN "garbage/debug/bank04_gold.2bpp", 447 ; feature/completion: +81 English lowercase keyboard, +139 English start_menu text
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/debug/bank04_silver.2bpp", 308 ; feature/completion: +81 for English lowercase keyboard
+INCBIN "garbage/debug/bank04_silver.2bpp", 447 ; feature/completion: +81 English lowercase keyboard, +139 English start_menu text
 	endc
 else
 	if DEF(_GOLD)
-INCBIN "garbage/bank04_gold.2bpp", 242 ; feature/completion: +81 for English lowercase keyboard
+INCBIN "garbage/bank04_gold.2bpp", 381 ; feature/completion: +81 English lowercase keyboard, +139 English start_menu text
 endc
 	if DEF(_SILVER)
-INCBIN "garbage/bank04_silver.2bpp", 242 ; feature/completion: +81 for English lowercase keyboard
+INCBIN "garbage/bank04_silver.2bpp", 381 ; feature/completion: +81 English lowercase keyboard, +139 English start_menu text
 	endc
 endc
 

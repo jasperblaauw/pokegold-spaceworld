@@ -586,69 +586,69 @@ PokeBallEffect:
 	jp TossItem
 
 Unreferenced_BallDodgedText:
-	text "よけられた！" ; "It dodged the thrown BALL!"
-	line "こいつは　つかまりそうにないぞ！" ; "This MON can't be caught!"
+	text "It dodged the BALL"
+	line "It can't be caught"
 	prompt
 
 Unreferenced_BallMissedText:
-	text "#に" ; "You missed the"
-	line "うまく　あたらなかった！" ; "(MON)!"
+	text "You missed the"
+	line "#!"
 	prompt
 
 BallBrokeFreeText:
-	text "だめだ！　#が" ; "Oh no! The (MON)"
-	line "ボールから　でてしまった！" ; "broke free!"
+	text "Oh no! The #"
+	line "broke free!"
 	prompt
 
 BallAppearedCaughtText:
-	text "ああ！" ; "Aww! It appeared"
-	line "つかまえたと　おもったのに！" ; "to be caught!"
+	text "Aww! It appeared"
+	line "to be caught!"
 	prompt
 
 BallAlmostHadItText:
-	text "ざんねん！" ; "Aargh!"
-	line "もうすこしで　つかまえられたのに！" ; "Almost had it!"
+	text "Aargh!"
+	line "Almost had it!"
 	prompt
 
 BallSoCloseText:
-	text "おしい！" ; "Shoot! It was so"
-	line "あと　ちょっとの　ところだったのに！" ; "close too!"
+	text "Shoot! It was so"
+	line "close, too!"
 	prompt
 
 Text_GotchaMonWasCaught:
-	text "やったー！" ; "Gotcha!"
-	line "@"
+	text "Gotcha! @"
 	text_from_ram wEnemyMonNickname
-	text "を　つかまえたぞ！@" ; "(MON) was caught!"
+	text_start
+	line "was caught!@"
 	sound_caught_mon
 	text_waitbutton
 	text_end
 
 BallSentToBillsPCText:
 	text_from_ram wBoxMonNicknames
-	text "は　マサキの　ところへ" ; "was transferred to"
-	line "てんそうされた！" ; "BILL's PC!"
+	text " went to"
+	line "BILL's <PC>!"
 	prompt
 
 BallSentToSomeonesPCText:
 	text_from_ram wBoxMonNicknames
-	text "は　だれかの　<PC>に" ; "was transferred to"
-	line "てんそうされた！" ; "Someone's PC!"
+	text " went to"
+	line "someone's <PC>!"
 	prompt
 
 NewDexDataText_CaughtMon:
 	text_from_ram wEnemyMonNickname
-	text "の　データが　あたらしく" ; "New Dex data will"
-	line "#ずかんに　セーブされます！@" ; "be added for (MON)!"
+	text "'s data"
+	line "is in the POKéDEX!@"
 	sound_slot_machine_start
 	text_waitbutton
 	text_end
 
 AskGiveNicknameText_CaughtMon:
-	text "つかまえた　@"
+	text "Give @"
 	text_from_ram wStringBuffer1
-	text "に"
-	line "なまえを　つけますか"
+	text_start
+	line "a nickname?"
 	done
 
 ReturnToBattle_UseBall:
@@ -840,15 +840,18 @@ RareCandy_StatBooster_ExitMenu:
 	jp ReloadFontAndTileset
 
 ItemStatRoseText:
-	text_from_ram wStringBuffer1 ; "(MON)'s"
-	text "の　@"
-	text_from_ram wStringBuffer2 ; "(STAT) rose."
-	text "の"
-	line "きそ　ポイントが　あがった！"
+; The mon name and the stat name are kept on separate rows: together they can
+; reach 10 + 7 characters, past the textbox's 18-column interior.
+	text_from_ram wStringBuffer1 ; (MON)
+	text "'s base"
+	line "@"
+	text_from_ram wStringBuffer2 ; (STAT)
+	text " went up!"
 	prompt
 
 ItemWontHaveEffectText:
-	text "つかっても　こうかが　ないよ" ; "It won't have any effect."
+	text "It won't have any"
+	line "effect."
 	prompt
 
 StatStrings:
@@ -858,11 +861,11 @@ StatStrings:
 	dw .speed
 	dw .special
 
-.health: db "たいりょく@" ; "HEALTH"
-.attack: db "こうげきりょく@" ; "ATTACK"
-.defense: db "ぼうぎょりょく@" ; "DEFENSE"
-.speed: db "すばやさ@" ; "SPEED"
-.special: db "とくしゅのうりょく@" ; "SPECIAL"
+.health: db "HEALTH@"
+.attack: db "ATTACK@"
+.defense: db "DEFENSE@"
+.speed: db "SPEED@"
+.special: db "SPECIAL@"
 
 GetStatExpRelativePointer:
 	ld a, [wCurItem]
@@ -1252,7 +1255,7 @@ ItemActionTextWaitButton:
 	ldh [hBGMapMode], a
 	ld hl, wTileMap
 	ld bc, SCREEN_AREA
-	ld a, '　'
+	ld a, ' '
 	call ByteFill
 	callfar WritePartyMenuTilemapAndText
 	ld a, 1
@@ -1548,8 +1551,8 @@ SoftboiledFunction:
 	jp .loop
 
 .ItemCantUseOnMonText:
-	text "その#には　"
-	line "つかえません"
+	text "It can't be used"
+	line "on that #."
 	done
 
 EscapeRopeEffect:
@@ -1731,20 +1734,21 @@ ENDM
 	db -1 ; end
 
 .PlayedFluteText:
-	text "#のふえを　ふいた！"
+	text "Played the"
+	line "POKé FLUTE!"
 
-	para "うーん！"
-	line "すばらしい　ねいろだ！"
+	para "Mmm! What a"
+	line "wonderful tone!"
 	prompt
 
 .FluteWakeUpText:
-	text "すべての　#が"
-	line "めを　さました！"
+	text "All #"
+	line "woke up!"
 	prompt
 
 .PlayedTheFlute:
-	text "<PLAYER>は"
-	line "#のふえを　ふいてみた！@"
+	text "<PLAYER> played"
+	line "the POKé FLUTE!@"
 	text_waitbutton
 	start_asm
 	ld a, [wBattleMode]
@@ -1771,10 +1775,10 @@ CoinCaseEffect:
 	ret
 
 CoinCaseCountText:
-	text "あなたの　コイン"
+	text "Your coins:"
 	line "@"
 	deciram wCoins, 2, 4
-	text "まい"
+	text " coins"
 	prompt
 
 ; These rod effects haven't been touched since Generation I... like, at all.
@@ -2061,30 +2065,29 @@ PPRestoreItem_Cancel:
 	ret
 
 RaiseThePPOfWhichMoveText:
-	text "どのわざの"
-	line "ポイントをふやす？"
+	text "Raise the PP of"
+	line "which move?"
 	done
 
 RestoreThePPOfWhichMoveText:
-	text "どのわざを"
-	line "かいふくする？"
+	text "Restore the PP of"
+	line "which move?"
 	done
 
 PPIsMaxedOutText:
 	text_from_ram wStringBuffer2
-	text "は　これいじょう"
-	line "ふやすことが　できません"
+	text "'s PP"
+	line "can't go higher!"
 	prompt
 
 PPsIncreasedText:
 	text_from_ram wStringBuffer2
-	text "の"
-	line "わざポイントが　ふえた！"
+	text "'s PP"
+	line "increased!"
 	prompt
 
 PPRestoredText:
-	text "わざポイントが"
-	line "かいふくした！"
+	text "PP was restored!"
 	prompt
 
 TMHolderEffect:
@@ -2196,34 +2199,29 @@ AskTeachTMHM_Old:
 	jp UseDisposableItem
 
 .BootedTMText:
-	text "<TM>を　きどうした！"
+	text "Booted up the <TM>!"
 	prompt
 
 .BootedHMText:
-	text "ひでんマシンを　きどうした！"
+	text "Booted up the HM!"
 
 .ContainedMoveText:
-	text "なかには　@"
+	text "Inside was"
+	line "@"
 	text_from_ram wStringBuffer2
-	text "が"
-	line "きろくされていた！"
+	text "!"
 
-	para "@"
-	text_from_ram wStringBuffer2
-	text "を"
-	line "#に　おぼえさせますか？"
+	para "Teach it to a"
+	line "#?"
 	done
 
 .TMHMNotCompatibleText:
 	text_from_ram wStringBuffer1
-	text "と　@"
+	text " and"
+	line "@"
 	text_from_ram wStringBuffer2
-	text "は"
-	line "あいしょうが　わるかった！"
-
-	para "@"
-	text_from_ram wStringBuffer2
-	text "は　おぼえられない！"
+	text_start
+	para "aren't compatible!"
 	prompt
 
 UseItemText:
@@ -2290,64 +2288,67 @@ CantUseItemMessage:
 	jp PrintText
 
 ItemOakWarningText:
-	text "オーキドの　ことば<⋯⋯>"
-	line "<PLAYER>よ！　こういうものには"
-	cont "つかいどきが　あるのじゃ！"
+	text "PROF.OAK's words<⋯⋯>"
+	line "<PLAYER>! There's a"
+	cont "time and place to"
+	cont "use this!"
 	prompt
 
 ItemBelongsToSomeoneElseText:
-	text "たいせつな　あずかりものです！"
-	next "つかうことは　できません！"
+	text "It's an important"
+	next "item you can't use!"
 	prompt
 
 ItemWontHaveAnyEffectText:
-	text "つかっても　こうかがないよ"
+	text "It won't have any"
+	line "effect."
 	prompt
 
 BallBlockedText:
-	text "<TRAINER>に　ボールを　はじかれた！"
+	text "<TRAINER> blocked"
+	line "the BALL!"
 	prompt
 
 BallDontBeAThiefText:
-	text "ひとの　ものを　とったら　どろぼう！"
+	text "Don't be a thief!"
 	prompt
 
 NoCyclingText:
-	text "ここでは　じてんしゃに"
-	next "のることは　できません"
+	text "You can't ride the"
+	next "BICYCLE here."
 	prompt
 
 ItemCantGetOnText:
-	text "ここでは@"
+	text "You can't ride"
+	line "@"
 	text_from_ram wStringBuffer1
-	text "に"
-	line "のることは　できません"
+	text " here."
 	prompt
 
 BallBoxFullText:
-	text "ボックスに　あずけている　#が"
-	line "いっぱいなので　つかえません！"
+	text "The BOX is full!"
+	line "You can't use it."
 	prompt
 
 ItemUsedText:
-	text "<PLAYER>は@"
+	text "<PLAYER> used@"
 	text_low
 	text_from_ram wStringBuffer2
-	text "を　つかった！"
+	text "!"
 	done
 
 ItemGotOnText:
-	text "<PLAYER>は@"
+	text "<PLAYER> got on@"
 	text_low
 	text_from_ram wStringBuffer2
-	text "に　のった"
+	text "."
 	prompt
 
 ItemGotOffText:
-	text "<PLAYER>は@"
+	text "<PLAYER> got off@"
 	text_low
 	text_from_ram wStringBuffer2
-	text "から　おりた"
+	text "."
 	prompt
 
 ApplyPPUp:

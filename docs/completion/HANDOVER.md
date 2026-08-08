@@ -459,12 +459,100 @@ Japanese would have produced broken-looking mixed text on the single most common
   battle to trigger it, so this is best covered by a longer play session hitting a variety of moves
   rather than one scripted path.
 
-**Next: `start_battle.asm`/`used_move_text.asm`** (battle-start and "X used MOVE!" text — small
-files, high visibility), then `item_effects.asm` (50 keys) and `start_menu.asm` (44 keys), then down
-the glossary's remaining per-file key counts → Phase 4 dialogue. Any file assigned to an
-already-nearly-full bank may hit the same hard 16 KB section-size wall `effect_commands.asm` did —
-check for `Unreferenced_`/`Unused_` dead code in that file before aggressively trimming translation
-wording.
+### L-system continuation — start_battle / used_move_text / item_effects / start_menu ✅ (BUILD-VERIFIED, playtest-pending, 2026-08-08)
+Translated the next four files on the glossary's priority list (11 + 8 + 50 + 44 keys). All 4 ROMs +
+`-correctheader` variants build warning-clean; emitted text bytes spot-checked against the ROM with a
+charmap decoder (control opcodes, `text_from_ram` targets and `<LINE>`/`<PROMPT>` placement all verified).
+
+**`engine/battle/used_move_text.asm`** — "X used MOVE!". This file lives *inside* `effect_commands.asm`
+(it's `INCLUDE`d near the end), i.e. inside the hard-capped 16 KB bank-`$0d` section that hit the wall
+last session, so it had to come out **smaller**, not bigger. It did (~30 B), and bank `$0d` now has
+38 B of slack again.
+- The Japanese sentence was assembled from a grammar table: `<USER>` + a particle (`の` / `は`, picked
+  by `GetMoveGrammar` from `data/moves/grammar.asm`) + move name + one of **five** different sentence
+  enders (`を つかった！` / `を した！` / `した！` / ` こうげき！` / `！`). English needs none of that
+  distinction: both particle strings became `" used"` and all five enders became `"!"`, giving
+  `<USER> used` / `MOVE!` (retail's rendering).
+- **The grammar machinery is deliberately left in place.** `GetMoveGrammar`'s side effect —
+  `ld [hl], a` into `wLastPlayerCounterMove`/`wLastEnemyCounterMove` — is what makes COUNTER work, and
+  `wMoveGrammar` is a **union alias of `wNumSetBits`** (same WRAM byte, see `ram/wram.asm:1436-1443`),
+  which is how `MoveNameText`'s ender-table index gets set. Don't "simplify" either away.
+- Dropped `.UsedInsteadText` (the disobedience infix). English can't use it: the infix lands on row 1
+  *before* `MoveNameText`'s `line`, so `<USER>`(10) + `" used"`(5) + `" instead,"`(9) = 24 columns, well
+  past the 18-column interior. Disobedience is already announced by `IgnoredOrdersText` immediately
+  before this text, so nothing is lost. `UsedMove1Text`/`UsedMove2Text` now share one
+  `UsedMoveText_GetMoveNameText` tail.
+
+**`engine/battle/start_battle.asm`** — battle-start banners, Pay Day payout, link-battle result strings.
+- `WildPokemonAppearedText` / `HookedPokemonAttackedText` / `WantsToBattleText` were all restructured so
+  **the name gets its own row** (`text "Wild @"` → RAM → `text_start` → `line "appeared!"`). A species
+  name renders up to `MON_NAME_LENGTH - 1` = 10 columns; "Oh! A wild <NAME>" or "<NAME> appeared!" both
+  blow past 18. Result: `Wild <NAME>` / `appeared!`, `Hooked <NAME>` / `attacked!`,
+  `<CLASS> <NAME>` / `wants to battle!`.
+- `BattleText_PlayerPickedUpPayDayMoney` → `<PLAYER> picked up` / `<n> yen!`.
+- Link-battle `.YouWin`/`.YouLose`/`.Draw` and the `'Ｖ'`/`'Ｓ'` VS tiles ($69/$6a — JP-font-only glyphs
+  that the retail Latin sheet doesn't have there) → plain `'V'`/`'S'`. Link play is unreachable content;
+  translated for completeness only.
+
+**`engine/items/item_effects.asm`** (50 keys) — ball-throw outcomes, capture/PC-transfer, nickname
+prompt, vitamins, POKé FLUTE, Coin Case, PP restore/raise, TM/HM boot-up, and every "can't use that
+here" refusal. Notable width decisions (all forced by the 10-char mon-name / 12-char item-name budget):
+- `Text_GotchaMonWasCaught` → `Gotcha! <NAME>` / `was caught!`; `BallSentToBillsPCText` /
+  `BallSentToSomeonesPCText` → `<NAME> went to` / `BILL's <PC>!` (resp. `someone's <PC>!`).
+  **Naming call:** the glossary renders マサキ literally as "Masaki"; since this is an *English*
+  localization and Bill has an official English name, the string says **BILL**. Easy to flip back.
+- `ItemStatRoseText` → `<MON>'s base` / `<STAT> went up!` — the mon name (10) and the stat name (7)
+  can't share a row. `StatStrings` → HEALTH/ATTACK/DEFENSE/SPEED/SPECIAL.
+- `ItemUsedText`/`ItemGotOnText`/`ItemGotOffText` keep their `text_low` (TX_LOW) second-row jump:
+  `<PLAYER> used` on row 1, item name + `!` on row 2.
+- `.TMHMNotCompatibleText` lost its second paragraph (the redundant "<MOVE> can't be learned!"); the
+  first one already says it, and neither the mon name nor the move name fits beside other words.
+
+**`engine/menu/start_menu.asm`** (44 keys) — the whole PACK/field-menu surface: pocket title rows, item
+action menus, toss confirm, held-item give/take, MAIL, party move-details pane, and the Trainer Card.
+- **Static menu boxes: usable text columns = `x2 - x1 - 2`** (the cursor column is included in that
+  budget). `SelectedItemMenu` had only 3 columns (JP `つかう`/`すてる`), so its `menu_coords` left edge
+  moved `$0E`→`$0D` to fit **TOSS**. Menus are now USE/TOSS/SET (debug), USE/TOSS, GIVE/TAKE,
+  READ/TAKE/QUIT.
+- **Pocket title rows are fixed-width full-row strings** drawn with `PlaceString` over row 1 (plus a
+  blank row 0). Each replacement keeps the original row's exact character count (20 / 20 / 19 / 18 / 20)
+  so it still blanks the whole row: `ITEMS`, `KEY ITEMS`, `PACK`, `BALL HOLDER`, blank.
+- **Party move-details pane got a layout change.** The JP put both labels on one row
+  (`タイプ／ … いりょく／`, type value at col 5, power at col 15). English type names print **in full**
+  via `PrintMoveType` (which `PlaceString`s the real string — only `GetTypeName`'s copy is truncated by
+  `TYPE_NAME_LENGTH`), so FIGHTING/ELECTRIC (8 chars) would have run straight through the power label.
+  Split it: `TYPE/` + value on row 12, new `PartyPowerText` (`POWER/`) + value on row 13. Row 13 was
+  free — the surrounding `ClearBox` covers rows 11-16 and `PrintMoveDescription` starts at row 14.
+- **Trainer Card:** it uses the normal font (it `PlaceString`s `wPlayerName` on the same screen), so the
+  labels translate normally. `next` there steps **two** rows, which is why the labels land on rows 2 / 6
+  / 10 next to the name (6,2), money (7,6) and dex count. `NAME` is deliberately 4 chars — the player
+  name is placed at column 6 and would overwrite a 5th. "caught" is 6 columns where `ひき` was 2, so the
+  dex count moved `13,10`→`10,10` and its suffix `16,10`→`13,10`. Badge page header → `LEAGUE BADGES`
+  (dropping `#`, which expands to 7 characters and would have overflowed the row).
+- Reclaimed **+187 B from `Bank 03 Garbage`** (item_effects) and **+139 B from `Bank 04 Garbage`**
+  (start_menu). `used_move_text`/`start_battle` needed none — they shrank.
+
+**Deferred from these files:** the `'▶'` / `'」'` cursor-and-marker tile literals in `start_menu.asm`
+(party/trainer-card arrows) were left at their existing byte values — they're glyph tiles, not letters,
+and the party screen already playtested fine with them.
+
+**PLAYTEST for this batch:** (a) any battle — the start banner ("Wild X appeared!", trainer
+"<CLASS> <NAME> wants to battle!"), then "<MON> used <MOVE>!" every turn; (b) BAG: open each pocket
+(title rows), select an item (USE/TOSS menu — check TOSS isn't clipped), toss some, try using a
+field-only item in battle and a battle-only item in the field (the refusal texts), press SELECT with
+nothing registered; (c) party screen: pick a mon → move details (TYPE/ and POWER/ on their own rows,
+values not overlapping), and the move-reorder prompt; (d) Trainer Card from the field menu (NAME/MONEY/
+POKéDEX labels lined up with their values, badge page header); (e) catch something with a Poké Ball —
+break-free/almost-had-it lines, "Gotcha! X was caught!", the dex-data line, and the nickname prompt;
+(f) give/take a held item and the swap prompt.
+
+**Next: `poker_minigame.asm` (27) / `party_menu.asm` (24) / `pokecenter_pc.asm` (21) / `learn.asm` (16)
+/ `bills_pc.asm` (16) / `pokemart_menu.asm` (15)** — of these, `party_menu.asm`, `learn.asm` and
+`pokemart_menu.asm` are on the reachable path for M1d (Old City mart + a gym), so they're the
+higher-value ones; the minigames and PC are not reachable yet. Then Phase 4 dialogue. Keep applying the
+text-engine rules above (`text_start` before a bare `line` after `text_from_ram`/`deciram`; 18-column
+interior; give a name its own row whenever it would share one with more than ~8 characters), and check
+for the hard 16 KB section wall in any near-full bank.
 
 ## Session log
 - **2026-08-06** — M0 (boot GameStart, byte-verified), M1a (rival party fix), M1f (evolutions restored + 32B garbage reclaim). All build-verified, all playtest-pending. M1e investigated & deferred (unsafe blind). Established gotcha: **must test the `-correctheader` (MBC3/RTC) debug ROM on SameBoy** — the base MBC1 ROM doesn't run. First SameBoy test also surfaced the main-menu label bug (only showed "Play Pokemon") → fixed to show real New Game / Continue. Remaining: M1b/c/d content (playtest-led), then M1e.
@@ -502,3 +590,4 @@ wording.
   - **User confirmed all clean** — battle HUD, battle menu actions, and party screen colors (bar + icon) all correct. Localization Phase 1/2/L0-L3a + the M1b playtest-round bugs are now fully closed out. _Next: continue Phase 3 (battle/party/bag/summary system text) → Phase 4 (dialogue for implemented maps)._
 - **2026-08-07 (Phase 3 start)** — Translated all 76 `core.asm` glossary strings (the battle master text — fled/fainted/status/weather/perish-song/safeguard/spikes/held-items/PP/disabled/no-moves/encore/exp/level-up/send-out/recall/escape/no-will-to-fight/trainer-switch/rival-win-loss/out-of-mons/move-info-box). All 4 ROMs build warning-clean; +314B reclaimed from `Bank 0f Garbage`. See the new **"L-system continuation — core.asm battle master text"** subsection above for the full text-engine mechanics writeup (the `PlaceString`/`TextCommandProcessor` opcode-boundary rules — required reading before translating any more battle/menu text files) and a real pre-existing crash bug found+fixed in `TrainerAboutToUseText` (bare `line` after `text_from_ram` reads the `<LINE>` byte as a garbage top-level opcode; fixed by inserting `text_start`). Build-verified, playtest-pending — see that section's PLAYTEST checklist. _Next: `effect_commands.asm` (89 keys, move-effect messages seen almost every turn) is the next-highest-value file, then `start_battle.asm`/`used_move_text.asm`, then down the glossary's per-file key counts toward Phase 4 dialogue._
 - **2026-08-07 (Phase 3 cont.)** — Translated all 89 `effect_commands.asm` glossary strings (every move-effect message: status conditions, confusion, stat changes, multi-hit, charge-move flavor text, substitute, screens, held items) plus `data/battle/stat_names.asm` (needed by the very common stat-change text, not itself a glossary entry). Hit and resolved a new class of problem: the "Effect Commands" section is a hard-capped 16 KB RGBDS section (can't span banks) and was already nearly full — garbage-padding trimming alone couldn't fix the 387-byte overflow. Fixed via reclaiming the 128B of `Bank 0d Garbage`, deleting a pret-flagged zero-caller dead subroutine (`Unreferenced_OldSleepTarget`, ~230B, verified via codebase-wide grep before removing), and tightening wording on ~20 of the wordier messages. See the new **"L-system continuation — effect_commands.asm move-effect text"** subsection above for the full writeup and the "hard 16KB wall" lesson for future files. All 4 ROMs build warning-clean. Build-verified, playtest-pending. _Next: `start_battle.asm`/`used_move_text.asm`, then `item_effects.asm`/`start_menu.asm`, watching for the same bank-size wall in any near-full bank._
+- **2026-08-08 (Phase 3 cont.)** — Translated `start_battle.asm` (11 keys), `used_move_text.asm` (8), `item_effects.asm` (50) and `start_menu.asm` (44) — the battle-start banners, the per-turn "X used MOVE!" line, every ball/capture/item-refusal message, and the whole PACK + party-details + Trainer Card menu surface. All 4 ROMs + `-correctheader` variants build warning-clean; emitted bytes spot-verified in the ROM. Reclaimed +187 B `Bank 03 Garbage` and +139 B `Bank 04 Garbage`; `used_move_text.asm` shrank ~30 B, which put 38 B of slack back into the wall-bound bank `$0d` "Effect Commands" section. Three structural notes worth carrying forward: the JP move-grammar machinery in `used_move_text.asm` is kept even though English ignores it (its `GetMoveGrammar` side effect drives COUNTER, and `wMoveGrammar` is a union alias of `wNumSetBits`); static menu boxes give `x2 - x1 - 2` text columns, so `SelectedItemMenu` needed its left edge widened for "TOSS"; and the party move-details pane now puts TYPE and POWER on separate rows because English type names print in full (up to 8 chars) and collided with the old shared-row layout. See the new **"L-system continuation — start_battle / used_move_text / item_effects / start_menu"** subsection for the full writeup + consolidated PLAYTEST checklist. _Next: `party_menu.asm` / `learn.asm` / `pokemart_menu.asm` (the three remaining Phase-3 files on M1d's reachable path), then the unreachable ones (`poker_minigame`, `pokecenter_pc`, `bills_pc`), then Phase 4 dialogue._

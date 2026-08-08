@@ -410,7 +410,7 @@ DebugBackpackLoop:
 	jp HandleBackpackInput
 
 .ToolsPocketText
-	db "　　　　　　ふつうの　どうぐ　　　　　　@"
+	db "       ITEMS        @" ; 20 columns, as the Japanese row was
 
 .NoTools
 	ld hl, KeyItemsPocketHeader
@@ -430,7 +430,7 @@ DebugBackpackLoop:
 	jr HandleBackpackInput
 
 KeyItemsPocketText:
-	db "　　　　　　だいじな　もの　　　　　　　@"
+	db "     KEY ITEMS      @" ; 20 columns
 
 NondebugBackpackLoop:
 	ld hl, BackpackMenuHeader
@@ -450,7 +450,7 @@ NondebugBackpackLoop:
 	jr HandleBackpackInput
 
 BackpackHeaderText:
-	db "　　　　　　リュックの　なか　　　　　@"
+	db "       PACK        @" ; 19 columns
 
 HandleBackpackInput:
 	ld a, [wMenuJoypad]
@@ -576,21 +576,21 @@ DebugSelectedItemMenu:
 .DebugSelectedItemMenuText
 	db STATICMENU_CURSOR | STATICMENU_NO_TOP_SPACING
 	db 3
-	db "つかう@" ; use
-	db "すてる@" ; toss
-	db "とうろく@" ; register
+	db "USE@"
+	db "TOSS@"
+	db "SET@"
 
 SelectedItemMenu:
 	db MENU_BACKUP_TILES
-	menu_coords $0E, $0A, $13, $0E
+	menu_coords $0D, $0A, $13, $0E
 	dw .SelectedItemMenuText
 	db 1 ; default option
 
 .SelectedItemMenuText
 	db STATICMENU_CURSOR | STATICMENU_NO_TOP_SPACING
 	db 2
-	db "つかう@" ; use
-	db "すてる@" ; toss
+	db "USE@"
+	db "TOSS@"
 
 TossItemSelection:
 	ld de, wNumBagItems
@@ -693,22 +693,22 @@ TryTossItem:
 
 .TossedText:
 	text_from_ram wStringBuffer2
-	text "を　"
-	line "いくつ　すてますか？"
+	text_start
+	line "Toss out how many?"
 	done
 
 .TossVerifyText:
 	text_from_ram wStringBuffer2
-	text "を　@"
+	text " x@"
 	deciram wItemQuantity, 1, 2
-	text "こ"
-	line "すててもよろしいですか？"
+	text_start
+	line "Is it OK to toss?"
 	done
 
 .TossedTextCopy:
 	text_from_ram wStringBuffer1
-	text "を"
-	line "すてました！"
+	text_start
+	line "was thrown away!"
 	prompt
 
 CantDropItem:
@@ -717,8 +717,8 @@ CantDropItem:
 	ret
 
 .CantDropItemText:
-	text "それは　とても　たいせつなモノです"
-	line "すてることは　できません！"
+	text "That's much too"
+	line "important to toss!"
 	prompt
 
 PrintCantUseHM:
@@ -727,8 +727,8 @@ PrintCantUseHM:
 	ret
 
 .CantUseHMText:
-	text "かいはつちゅう　です"
-	line "いまは　つかえません"
+	text "Under development."
+	line "Can't be used yet."
 	prompt
 
 PrintCantUseText:
@@ -737,9 +737,10 @@ PrintCantUseText:
 	ret
 
 .CantUseHereText:
-	text "オーキドの　ことば<⋯⋯>"
-	line "<PLAYER>よ！　こういうものには"
-	cont "つかいどきが　あるのじゃ！"
+	text "PROF.OAK's words<⋯⋯>"
+	line "<PLAYER>! There's a"
+	cont "time and place to"
+	cont "use this!"
 	prompt
 
 DrawNoItemsText:
@@ -748,8 +749,8 @@ DrawNoItemsText:
 	ret
 
 .NoItemsText:
-	text "どうぐ　をひとつも"
-	next "もっていません！"
+	text "You don't have a"
+	next "single item!"
 	prompt
 
 BallPocket:
@@ -778,7 +779,7 @@ BallPocket:
 	ret
 
 .BallHolderText:
-	db "　　　　　ボール　ホルダ　　　　　　@"
+	db "   BALL HOLDER    @" ; 18 columns
 
 .BallPocketHeader:
 	db MENU_BACKUP_TILES
@@ -806,7 +807,7 @@ DrawBackpackTitleRow:
 	ret
 
 .BlankLine:
-	db "　　　　　　　　　　　　　　　　　　　　@"
+	db "                    @" ; 20 blank columns
 
 LoadItemData:
 	ld a, [wCurItem]
@@ -867,8 +868,8 @@ RegisterItem:
 
 .RegisteredItemText:
 	text_from_ram wStringBuffer2
-	text "を　"
-	line "べんりボタンに　とうろくした！"
+	text_start
+	line "was set to SELECT!"
 	prompt
 
 PrintCantRegisterToolText:
@@ -877,8 +878,8 @@ PrintCantRegisterToolText:
 	ret
 
 .CantRegisterToolText:
-	text "そのどうぐは　"
-	line "とうろくできません！"
+	text "That item can't be"
+	line "registered!"
 	prompt
 
 StartMenu_Party:
@@ -1107,62 +1108,65 @@ GiveTakeItemMenuData:
 .Items:
 	db STATICMENU_CURSOR ; flags
 	db 2 ; # items
-	db "そうびを　する@"
-	db "そうびを　はずす@"
+	db "GIVE@"
+	db "TAKE@"
 
 ItemCantHeldText:
 	text_from_ram wStringBuffer1
-	text "を　そうびすることは"
-	line "できません"
+	text_start
+	line "can't be held."
 	prompt
 
 PokemonSwapItemText:
 	text_from_ram wMonOrItemNameBuffer
-	text "は　そうび　していた"
-	line "@"
+	text " let go"
+	line "of @"
 	text_from_ram wStringBuffer1
-	text "を　はずして"
+	text "!"
+
 	para "@"
 	text_from_ram wStringBuffer2
-	text "を　そうびした！"
+	text_start
+	line "is now held!"
 	prompt
 
 PokemonHoldItemText:
 	text_from_ram wMonOrItemNameBuffer
-	text "は　@"
+	text " holds"
+	line "@"
 	text_from_ram wStringBuffer2
-	text "を"
-	line "そうびした！"
+	text "!"
 	prompt
 
 PokemonNotHoldingText:
 	text_from_ram wMonOrItemNameBuffer
-	text "は　なにも"
-	line "そうび　していません！"
+	text " isn't"
+	line "holding anything!"
 	prompt
 
 ItemStorageFullText:
-	text "どうぐが　いっぱいで"
-	line "そうびを　はずせません！"
+	text "The PACK is full!"
+	line "It can't be taken."
 	prompt
 
 PokemonTookItemText:
-	text_from_ram wMonOrItemNameBuffer
-	text "から　@"
+	text "Took @"
 	text_from_ram wStringBuffer1
-	text "を"
-	line "はずしました！"
+	text_start
+	line "from @"
+	text_from_ram wMonOrItemNameBuffer
+	text "!"
 	prompt
 
 PokemonAskSwapItemText:
 	text_from_ram wMonOrItemNameBuffer
-	text "は　@"
+	text " holds"
+	line "@"
 	text_from_ram wStringBuffer1
-	text "を"
-	line "すでに　そうび　しています"
+	text "!"
 
-	para "そうびしている　どうぐを"
-	line "とりかえますか？"
+	para "Swap the held"
+	line "item?"
 	done
 
 GetPartyItemOffset:
@@ -1312,27 +1316,27 @@ PartyMailMenu:
 
 	db $80
 	db 3
-	db "メールを　よむ@"
-	db "メールを　はずす@"
-	db "やめる@"
+	db "READ@"
+	db "TAKE@"
+	db "QUIT@"
 
 .MessageRemoveMail
-	text "メールを　はずすと　メッセージが"
-	line "きえてしまいますが　いいですか？"
+	text "Removing MAIL will"
+	line "erase it. OK?"
 	done
 
 .DrawNick
 	text_from_ram wStringBuffer1
-	text "から　@"
+	text "'s@"
 
 .DeleteMailText
-	text "メールを"
-	line "はずしました！"
+	text_start
+	line "MAIL was removed!"
 	prompt
 
 .MailFullText
-	text "どうぐが　いっぱいで"
-	line "メールを　はずせません！"
+	text "The PACK is full!"
+	line "Can't remove MAIL."
 	prompt
 
 PartyPokemonSummary:
@@ -1423,7 +1427,7 @@ PrintNotHealthyEnoughText:
 	jp HandleSelectedPokemon
 
 NotHealthyEnoughText:
-	text "たいりょくが　たりません！"
+	text "Its HP is too low!"
 	prompt
 
 PrintNeedNewBadgeText:
@@ -1432,8 +1436,8 @@ PrintNeedNewBadgeText:
 	jp HandleSelectedPokemon
 
 NeedNewBadgeText:
-	text "あたらしい　バッジを　てにするまで"
-	line "まだ　つかえません！"
+	text "You need a new"
+	line "BADGE to use this!"
 	prompt
 
 PartyPokemonSummary2:
@@ -1560,8 +1564,14 @@ PartySelectionInputs:
 	call PlaceString
 	ld a, [wCurSpecies]
 	ld b, a
-	hlcoord 5, 12
+	hlcoord 7, 12
 	predef PrintMoveType
+; The Japanese labels shared one row ("タイプ／ … いりょく／"), but an English type
+; name runs up to 8 characters (FIGHTING/ELECTRIC) and would have collided with
+; the power label, so POWER gets the row below.
+	hlcoord 1, 13
+	ld de, PartyPowerText
+	call PlaceString
 	ld a, [wCurSpecies]
 	dec a
 	ld hl, Moves + MOVE_POWER
@@ -1569,7 +1579,7 @@ PartySelectionInputs:
 	call AddNTimes
 	ld a, BANK(Moves)
 	call GetFarByte
-	hlcoord 15, 12
+	hlcoord 8, 13
 	cp 2
 	jr c, .NotAMove
 	ld [wTempSpecies], a
@@ -1697,13 +1707,16 @@ PartyMenuAttributes:
 	db $F3
 
 PartyTypeText:
-	db "タイプ／　　　　　いりょく／@"
+	db "TYPE/@"
+
+PartyPowerText:
+	db "POWER/@"
 
 PartyPokeDivider:
-	db "ーーー@"
+	db "---@"
 
 PartyMoveText:
-	db "どこに　いどうしますか？@"
+	db "Move it to where?@"
 
 CheckRegisteredItem::
 	call .RegisteredItem
@@ -1723,8 +1736,8 @@ CheckRegisteredItem::
 	ret
 
 .NothingRegisteredText:
-	text "べんりボタンを　おした！"
-	line "⋯しかしなにもおきない！"
+	text "Pressed SELECT!"
+	line "Nothing happened!"
 	prompt
 
 GetRegisteredItemID:
@@ -2092,7 +2105,9 @@ DrawTrainerCardMainPage:
 	hlcoord 2, 2
 	ld de, TrainerCardText
 	call PlaceString
-	hlcoord 16, 10
+; "caught" is 6 columns wide where the Japanese "ひき" was 2, so the count and
+; its suffix both shift left to keep them inside the screen.
+	hlcoord 13, 10
 	ld de, TrainerCardDexEntriesText
 	call PlaceString
 	hlcoord 6, 2
@@ -2111,7 +2126,7 @@ DrawTrainerCardMainPage:
 	ld b, $1C
 	call CountSetBits
 	ld de, wNamedObjectIndexBuffer
-	hlcoord 13, 10
+	hlcoord 10, 10
 	lb bc, 1, 3
 	call PrintNumber
 	hlcoord 1, 0
@@ -2136,15 +2151,18 @@ DrawTrainerCardMainPage:
 	ld [hl], '▶'
 	ret
 
+; `next` steps two rows here, so these land on rows 2 / 6 / 10, matching the
+; player name (6,2), the money (7,6) and the dex count printed alongside them.
+; "NAME" stops at column 5 because the player name is placed at column 6.
 TrainerCardText:
-	db   "なまえ／"
+	db   "NAME"
 	next ""
-	next "おこづかい"
+	next "MONEY"
 	next ""
-	next "#ずかん@"
+	next "POKéDEX@"
 
 TrainerCardDexEntriesText:
-	db "ひき@"
+	db "caught@"
 
 TrainerCardNameTiles:
 	db $0A, $0C, $0D, $0E, $0F, $FF
@@ -2180,7 +2198,7 @@ DrawTrainerCaseBadgePage:
 	ret
 
 TrainerCardLeagueBadgesTextTiles:
-	db "#リーグバッジ@"
+	db "LEAGUE BADGES@"
 
 TrainerCardBadgesTiles:
 	db $0A, $0B, $0C, $0D, $0E, $FF

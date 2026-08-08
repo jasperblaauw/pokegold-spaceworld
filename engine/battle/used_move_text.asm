@@ -28,27 +28,19 @@ UsedMoveText:
 	ld hl, UsedMove1Text
 	ret
 
+; The Japanese text picked a particle here ("の" / "は") from the move's grammar
+; class, and inserted "めいれいをむしして" ("ignoring orders") when the mon
+; disobeyed. English needs neither: both classes read "used", and disobedience
+; is already announced by IgnoredOrdersText immediately before this text.
 UsedMove1Text:
-	text "の　@"
+	text " used@"
 	start_asm
-	jr UsedMoveText_CheckObedience
+	jr UsedMoveText_GetMoveNameText
 
 UsedMove2Text:
-	text "は　@"
+	text " used@"
 	start_asm
-UsedMoveText_CheckObedience:
-; check obedience
-	ld a, [wAlreadyDisobeyed]
-	and a
-	jr z, .GetMoveNameText
-; print " instead,"
-	ld hl, .UsedInsteadText
-	ret
-
-.UsedInsteadText:
-	text "めいれいをむしして@"
-	start_asm
-.GetMoveNameText:
+UsedMoveText_GetMoveNameText:
 	ld hl, MoveNameText
 	ret
 
@@ -87,24 +79,27 @@ MoveNameText:
 	dw EndUsedMove4Text
 	dw EndUsedMove5Text
 
+; Each Japanese grammar class ended the sentence differently ("を つかった！",
+; "を した！", "した！", " こうげき！", "！"). English ends them all the same way,
+; but the five entries are kept so the grammar table above still indexes cleanly.
 EndUsedMove1Text:
-	text "を　つかった！"
+	text "!"
 	done
 
 EndUsedMove2Text:
-	text "を　した！"
+	text "!"
 	done
 
 EndUsedMove3Text:
-	text "した！"
+	text "!"
 	done
 
 EndUsedMove4Text:
-	text "　こうげき！"
+	text "!"
 	done
 
 EndUsedMove5Text:
-	text "！"
+	text "!"
 	done
 
 GetMoveGrammar:

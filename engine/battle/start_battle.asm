@@ -422,10 +422,10 @@ AddBattleMoneyToAccount:
 	ret
 
 BattleText_PlayerPickedUpPayDayMoney:
-	text "<PLAYER>は　@"
+	text "<PLAYER> picked up"
+	line "@"
 	deciram wPayDayMoney, 3, 6
-	text "円"
-	line "ひろった！"
+	text " yen!"
 	prompt
 
 ShowLinkBattleParticipantsAfterEnd:
@@ -453,13 +453,13 @@ ShowLinkBattleParticipantsAfterEnd:
 	ret
 
 .YouWin:
-	db "あなたの　かち@"
+	db " You win@"
 
 .YouLose:
-	db "あなたの　まけ@"
+	db "You lose@"
 
 .Draw:
-	db "　　ひきわけ@"
+	db "  Draw@"
 
 PlayBattleMusic:
 	push hl
@@ -493,7 +493,7 @@ InitBattleDisplay:
 	call Call_LoadBattleFontsHPBar
 	ld hl, vBGMap0
 	lb bc, 4, 0
-	ld a, '　'
+	ld a, ' '
 	call ByteFill
 	call LoadMapTimeOfDay.PushAttrMap
 	call EnableLCD
@@ -684,26 +684,29 @@ BattleStartMessage:
 	call PrintText
 	ret
 
+; Each of these puts the name on the row above the verb: a species name renders
+; up to MON_NAME_LENGTH - 1 (10) characters, which would overflow the textbox's
+; 18-column interior if it had to share a row with the rest of the sentence.
 WildPokemonAppearedText:
-	text "あ！　やせいの"
-	line "@"
+	text "Wild @"
 	text_from_ram wEnemyMonNickname
-	text "が　とびだしてきた！"
+	text_start
+	line "appeared!"
 	prompt
 
 HookedPokemonAttackedText:
-	text "つりあげた　@"
+	text "Hooked @"
 	text_from_ram wEnemyMonNickname
-	text "が"
-	line "とびかかってきた！"
+	text_start
+	line "attacked!"
 	prompt
 
 WantsToBattleText:
 	text_from_ram wOTClassName
-	text "の　@"
+	text " @"
 	text_from_ram wStringBuffer1
-	text "が"
-	line "しょうぶを　しかけてきた！"
+	text_start
+	line "wants to battle!"
 	prompt
 
 ShowLinkBattleParticipants:
@@ -739,9 +742,9 @@ _ShowLinkBattleParticipants:
 	ld de, wOTPlayerName
 	call PlaceString
 	hlcoord 9, 8
-	ld a, 'Ｖ'
+	ld a, 'V'
 	ld [hli], a
-	ld [hl], 'Ｓ'
+	ld [hl], 'S'
 	callfar LinkBattle_TrainerHuds
 	ld c, 150
 	jp DelayFrames
