@@ -147,10 +147,11 @@ DoBattle:
 	jr WildFled_EnemyFled_LinkBattleCanceled
 
 Unused_OutOfSafariBallsText:
-	text "アナウンス『ピンポーン！"
+	text "Announcement:"
 
-	para "サファリ　ボールを"
-	line "ぜんぶ　なげました！"
+	para "'Ding-dong! You've"
+	line "thrown all your"
+	cont "SAFARI BALLs!'"
 	prompt
 
 WildFled_EnemyFled_LinkBattleCanceled:
@@ -176,15 +177,17 @@ WildFled_EnemyFled_LinkBattleCanceled:
 	jpfar AnimationSlideEnemyMonOff
 
 WildPokemonFledText:
-	text "やせいの@"
+	text "Wild @"
 	text_from_ram wEnemyMonNickname
-	text "は　にげだした！"
+	text_start
+	line "fled!"
 	prompt
 
 EnemyPokemonFledText:
-	text "てきの@"
+	text "Foe's @"
 	text_from_ram wEnemyMonNickname
-	text "は　にげだした！"
+	text_start
+	line "fled!"
 	prompt
 
 BattleTurn:
@@ -751,33 +754,35 @@ ResidualDamage:
 	ret
 
 HurtByPoisonText:
-	text "<USER>は"
-	line "どくの　ダメージを　うけている！"
+	text "<USER> is hurt"
+	line "by poison!"
 	prompt
 
 HurtByBurnText:
-	text "<USER>は"
-	line "やけどの　ダメージを　うけている！"
+	text "<USER> is hurt"
+	line "by its burn!"
 	prompt
 
 LeechSeedSapsText:
-	text "やどりぎが　<USER>の"
-	line "たいりょくを　うばう！"
+	text "LEECH SEED saps"
+	line "<USER>'s HP!"
 	prompt
 
 HasANightmareText:
-	text "<USER>は"
-	line "あくむに　うなされている！"
+	text "<USER> is"
+	line "having a"
+	cont "nightmare!"
 	prompt
 
 HurtByCurseText:
-	text "<USER>は"
-	line "のろわれている！"
+	text "<USER> is"
+	line "afflicted by"
+	cont "the curse!"
 	prompt
 
 SandstormHitsText:
-	text "すなあらしが　<USER>を"
-	line "おそう！"
+	text "The sandstorm"
+	line "hits <USER>!"
 	prompt
 
 HandlePerishSong:
@@ -860,10 +865,10 @@ HandlePerishSong:
 	ret
 
 PerishCountText:
-	text "<USER>の　ほろびの"
-	line "カウントが　@"
+	text "<USER>'s"
+	line "PERISH count: @"
 	deciram wNumSetBits, 1, 1
-	text "になった！"
+	text "!"
 	prompt
 
 HandleSafeguard:
@@ -895,8 +900,9 @@ HandleSafeguard:
 	jp PrintText
 
 BattleText_SafeguardFaded:
-	text "<USER>を　つつんでいた"
-	line "しんぴの　ベールが　なくなった！"
+	text "The mystical veil"
+	line "on <USER>"
+	cont "disappeared!"
 	prompt
 
 HandleWeather:
@@ -934,19 +940,22 @@ HandleWeather:
 	dw BattleText_TheSunlightFaded
 
 BattleText_RainContinuesToFall:
-	text "あめが　ふりつずいている"
+	text "Rain continues"
+	line "to fall."
 	prompt
 
 BattleText_TheSunlightIsStrong:
-	text "ひざしが　つよい"
+	text "The sunlight is"
+	line "strong."
 	prompt
 
 BattleText_TheRainStopped:
-	text "あめが　やんだ！"
+	text "The rain stopped!"
 	prompt
 
 BattleText_TheSunlightFaded:
-	text "ひざしが　よわくなった！"
+	text "The sunlight"
+	line "faded!"
 	prompt
 
 ; Subtract c HP from mon
@@ -1333,9 +1342,10 @@ UpdateBattleStateAndExperienceAfterEnemyFaint:
 	jp GiveExperiencePoints
 
 EnemyMonFainted:
-	text "てきの　@"
+	text "Foe's @"
 	text_from_ram wEnemyMonNickname
-	text "は　たおれた！"
+	text_start
+	line "fainted!"
 	prompt
 
 StopDangerSound:
@@ -1473,24 +1483,26 @@ WinTrainerBattle:
 	ret
 
 GotMoneyForWinningText:
-	text "<PLAYER>は　しょうきんとして"
+	text "<PLAYER> got"
 	line "@"
 	deciram wBattleReward, 3, 6
-	text "円　てにいれた！"
+	text " yen!"
 	prompt
 
 BattleText_EnemyWasDefeated:
 	text_from_ram wOTClassName
-	text "の　@"
+	text " @"
 	text_from_ram wStringBuffer1
 	text_start
-	line "との　しょうぶに　かった！"
+	line "defeated,"
+	cont "you won!"
 	prompt
 
 RivalLossText:
-	text "<RIVAL>『あれー？"
-	line "おまえの　#に"
-	cont "すりゃあ　よかったのかなあ？"
+	text "<RIVAL>: 'Huh?"
+	line "Maybe I should"
+	cont "have traded for"
+	cont "your #...'"
 	prompt
 
 PlayVictoryMusic:
@@ -1582,7 +1594,8 @@ UpdateFaintedPlayerMon:
 
 FaintedText:
 	text_from_ram wBattleMonNickname
-	text "は　たおれた！"
+	text_start
+	line "fainted!"
 	prompt
 
 AskUseNextPokemon:
@@ -1614,7 +1627,8 @@ AskUseNextPokemon:
 	jp TryToRunAwayFromBattle
 
 BattleText_UseNextMon:
-	text "つぎの　#をつかいますか？"
+	text "Use the next"
+	line "#?"
 	done
 
 ForcePlayerMonChoice:
@@ -1724,22 +1738,23 @@ LostBattle:
 	ret
 
 RivalWinText:
-	text "<RIVAL>『やった！"
-	line "いい#　えらんだかも！"
+	text "<RIVAL>: 'Yes!"
+	line "Maybe I picked"
+	cont "a good #!'"
 	prompt
 
 OutOfUsableMonsText:
-	text "<PLAYER>の　てもとには"
-	line "たたかえる　#が　いない！"
+	text "<PLAYER> has no"
+	line "# left!"
 
-	para "<PLAYER>は"
-	line "めのまえが　まっくらに　なった！"
+	para "Everything went"
+	line "black!"
 	prompt
 
 LostAgainstText:
 	text_from_ram wOTClassName
-	text "との"
-	line "しょうぶに　まけた！"
+	text_start
+	line "defeated you!"
 	prompt
 
 MonFaintedAnimation:
@@ -2233,30 +2248,34 @@ EnemySendOutFirstMon:
 	call LoadTilemapToTempTilemap
 	jp PlayerSwitch
 
-; BUG: They forgot to terminate the line immediately after StringBuffer1.
-; This makes the game halt the script early and throw up an error handler,
-; due to reading the start of the following 'text' line as a <NULL> character.
+; feature/completion: the original had "line" here with no "@" argument, so
+; PlaceString ran straight off the end of the box into the following
+; text_from_ram's raw opcode bytes as if they were characters, eventually
+; hitting a stray <NULL> and halting the script — fixed by giving line an
+; explicit "@" terminator, matching the (correct) pattern in TrainerSentOutText
+; right below.
 TrainerAboutToUseText:
 	text_from_ram wOTClassName
-	text "の　@"
+	text " @"
 	text_from_ram wStringBuffer1
-	text "は"
-	line
+	text_start
+	line "@"
 	text_from_ram wEnemyMonNickname
-	text "を　くりだそうと　している"
+	text_start
+	cont "is coming out!"
 
-	para "<PLAYER>も　#を"
-	line "とりかえますか？"
+	para "Will <PLAYER>"
+	line "switch too?"
 	done
 
 TrainerSentOutText:
 	text_from_ram wOTClassName
-	text "の　@"
+	text " @"
 	text_from_ram wStringBuffer1
-	text "は"
+	text_start
 	line "@"
 	text_from_ram wEnemyMonNickname
-	text "を　くりだした！"
+	text " is out!"
 	done
 
 NewEnemyMonStatus:
@@ -2457,24 +2476,26 @@ TryToRunAwayFromBattle:
 	ret
 
 BattleText_CantEscape:
-	text "にげられない！"
+	text "Can't escape!"
 	prompt
 
 BattleText_TheresNoEscapeFromTrainerBattle:
-	text "ダメだ！"
-	line "しょうぶの　さいちゅうに"
-	cont "あいてに　せなかは　みせられない！"
+	text "No!"
+	line "There's no turning"
+	cont "your back mid-"
+	cont "battle!"
 	prompt
 
 BattleText_GotAwaySafely:
-	text "うまく　にげきれた！"
+	text "Got away safely!"
 	prompt
 
 BattleText_UserFledUsingAStringBuffer1:
-	text "<TARGET>は　そうびしていた"
-	line "@"
+	text "<TARGET> used"
+	line "held @"
 	text_from_ram wStringBuffer1
-	text "を　つかって　にげた"
+	text_start
+	line "to flee!"
 	prompt
 
 LoadBattleMonFromParty:
@@ -2707,8 +2728,8 @@ SpikesDamage:
 	ret
 
 BattleText_UserHurtBySpikes:
-	text "<USER>は　まきびしの"
-	line "ダメージを　うけた！"
+	text "<USER> is hurt"
+	line "by SPIKES!"
 	prompt
 
 RecallPlayerMon:
@@ -2871,10 +2892,11 @@ ItemRecoveryAnim:
 	ret
 
 RecoveredUsingText:
-	text "<TARGET>は　そうびしていた"
-	line "@"
+	text "<TARGET> used"
+	line "held @"
 	text_from_ram wStringBuffer1
-	text "で　かいふくした！"
+	text_start
+	line "to recover!"
 	prompt
 
 HandleStatBoostingHeldItems:
@@ -2971,10 +2993,11 @@ HandleStatBoostingHeldItems:
 INCLUDE "data/battle/held_stat_up.asm"
 
 UseItemFailedText:
-	text "<USER>が　そうびしていた"
+	text "<USER>'s held"
 	line "@"
 	text_from_ram wStringBuffer1
-	text "が　さどうした！"
+	text_start
+	line "activated!"
 	prompt
 
 UpdateBattleHuds::
@@ -3302,8 +3325,8 @@ BattleMenu_Pack:
 	jp BattleMenu
 
 BattleText_ItemsCantBeUsedHere:
-	text "ここでは　どうぐを"
-	line "つかうことは　できません"
+	text "Items can't be"
+	line "used here."
 	prompt
 
 StopUsingTrappingMove:
@@ -3571,13 +3594,15 @@ PassedBattleMonEntrance:
 
 BattleText_MonIsAlreadyOut_0f:
 	text_from_ram wBattleMonNickname
-	text "はもうでています"
+	text_start
+	line "is already out."
 	prompt
 
 BattleText_MonCantBeRecalled:
 	text_from_ram wBattleMonNickname
-	text "を　もどすことが"
-	line "できない！"
+	text_start
+	line "can't be"
+	cont "recalled!"
 	prompt
 
 BattleMenu_Run:
@@ -3818,16 +3843,18 @@ MoveSelectionScreen::
 	jp MoveSelectionScreen
 
 .BattleText_TheresNoPPLeftForThisMove:
-	text "わざの　のこりポイントが　ない！"
+	text "No PP left"
+	line "for this move!"
 	prompt
 
 .BattleText_TheMoveIsDisabled:
-	text "わざを　ふうじられている！"
+	text "The move is"
+	line "DISABLED!"
 	prompt
 
 .Unused_BattleText_MimicWhichMove:
-	db   "どのわざを"
-	next "ものまねする？@"
+	db   "Mimic which"
+	next "move?@"
 
 .pressed_up
 	ld a, [wMenuCursorY]
@@ -3955,8 +3982,9 @@ MoveSelectionScreen::
 
 .BattleText_MonHasNoMovesLeft:
 	text_from_ram wBattleMonNickname
-	text "は　だすことの　できる"
-	line "わざが　ない！"
+	text_start
+	line "has no moves"
+	cont "left to use!"
 	done
 
 .pressed_select
@@ -4124,9 +4152,9 @@ MoveInfoBox:
 	jp WaitBGMap
 
 .Disabled:
-	db "ふうじられている！@"
+	db "DISABLED!@"
 .Type:
-	db "わざタイプ@"
+	db "MOVE TYPE@"
 
 ParseEnemyAction:
 	ld a, [wLinkMode]
@@ -4353,8 +4381,8 @@ LinkBattleSendRecieveAction:
 	ret
 
 BattleText_TargetsEncoreEnded:
-	text "<TARGET>の"
-	line "アンコールじょうたいが　とけた！"
+	text "<TARGET>'s"
+	line "ENCORE ended!"
 	prompt
 
 ; The Counter code from Generation I, completely unchanged.
@@ -5506,7 +5534,7 @@ BoostExp:
 
 BoostedExpPointsText:
 	text_from_ram wStringBuffer1
-	text "は@"
+	text " gained@"
 	start_asm
 	ld a, [wBoostExpByExpAll]
 	ld hl, .WithExpAllText
@@ -5520,26 +5548,26 @@ BoostedExpPointsText:
 	ret
 
 .WithExpAllText:
-	text "　がくしゅうそうちで@"
+	text "via EXP.ALL,@"
 	start_asm
 	ld hl, .ExpPointsText
 	ret
 
 .BoostedExpPointsText:
-	text "　おおめに@"
+	text "a boosted@"
 .ExpPointsText:
 	text_start
 	line "@"
 	deciram wStringBuffer2, 2, 4
-	text "　けいけんちを　もらった！"
+	text " EXP. Points!"
 	prompt
 
 GrewToLevelText:
 	text_from_ram wStringBuffer1
-	text "は"
-	line "レベル@"
+	text " grew to"
+	line "LV@"
 	deciram wCurPartyLevel, 1, 3
-	text "　に　あがった！@"
+	text "!@"
 	sound_dex_fanfare_50_79
 	text_end
 
@@ -5609,31 +5637,32 @@ SendOutMonText:
 	jp PrintText
 
 GoMonText:
-	text "ゆけっ！　@"
+	text "Go!@"
 	start_asm
 	jr PrintPlayerMon1Text
 
 DoItMonText:
-	text "いってこい！　@"
+	text "Do it!@"
 	start_asm
 	jr PrintPlayerMon1Text
 
 GoForItMonText:
-	text "がんばれ！　@"
+	text "Go for it!@"
 	start_asm
 	jr PrintPlayerMon1Text
 
 YourFoesWeakGetmMonText:
-	text "あいてが　よわっている！"
-	line "チャンスだ！　@"
+	text "Weak! Get 'em!@"
 	start_asm
 
 PrintPlayerMon1Text:
 	ld hl, .Text
 	ret
 .Text:
+	text_start
+	line "@"
 	text_from_ram wBattleMonNickname
-	text "！"
+	text "!"
 	done
 
 RetreatMon:
@@ -5642,7 +5671,7 @@ RetreatMon:
 
 PlayerMon2Text:
 	text_from_ram wBattleMonNickname
-	text "　@"
+	text " @"
 	start_asm
 	push de
 	push bc
@@ -5692,17 +5721,17 @@ PlayerMon2Text:
 	ret
 
 EnoughText:
-	text "もういい！@"
+	text "Enough!@"
 	start_asm
 	jr PrintComeBackText
 
 OKExclamationText:
-	text "いいぞ！@"
+	text "OK!@"
 	start_asm
 	jr PrintComeBackText
 
 GoodText:
-	text "よくやった！@"
+	text "Good!@"
 	start_asm
 	jr PrintComeBackText
 
@@ -5712,7 +5741,7 @@ PrintComeBackText:
 
 ComeBackText:
 	text_start
-	line "もどれ！"
+	line "Come back!"
 	done
 
 PrintSafariZoneBattleText:
@@ -5747,17 +5776,17 @@ PrintSafariZoneBattleText:
 	jp PrintText
 
 Unused_SafariZoneEatingText:
-	text "やせいの@"
+	text "Wild @"
 	text_from_ram wEnemyMonNickname
-	text "は"
-	line "エサを　たべてる！"
+	text_start
+	line "is eating!"
 	prompt
 
 Unused_SafariZoneAngryText:
-	text "やせいの@"
+	text "Wild @"
 	text_from_ram wEnemyMonNickname
-	text "は"
-	line "おこってる！"
+	text_start
+	line "is angry!"
 	prompt
 
 ; Calculate the percent exp between this level and the next

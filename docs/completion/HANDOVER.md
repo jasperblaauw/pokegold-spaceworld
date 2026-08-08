@@ -344,6 +344,128 @@ regressed. User confirmed all clean as of round 8.
 
 ### Next: PLAYTEST-VERIFIED as of round 8 (2026-08-07) → continue L-system rest (battle text, party/bag/summary), then L-dialogue.
 
+### L-system continuation — core.asm battle master text ✅ (BUILD-VERIFIED, playtest-pending, 2026-08-07)
+Translated all 76 `docs/_glossary/system_data.py` `"core.asm:*"` entries — every text block in
+`engine/battle/core.asm` (fled/fainted/status-hit/weather/perish-song/safeguard/spikes/held-item/
+no-PP/disabled/no-moves-left/encore/exp-gain/level-up/send-out/recall/can't-escape/no-will-to-fight/
+trainer-switch/trainer-sent-out/rival-win/rival-loss/out-of-usable-mons/move-info-box labels). This
+is the file that renders during **every battle**, including the one the user has been repeatedly
+playtesting, so it was worth doing thoroughly rather than skimming.
+
+**Text-engine mechanics learned (needed for every future Phase-3 file — read this before
+translating another battle/menu text file):**
+- `PlaceString` (`home/text.asm:102`) is the low-level char-placer. It stops the instant it hits a
+  literal `@` byte (`charmap "@", $50`) and returns control to the **top-level** command dispatcher,
+  `TextCommandProcessor`/`NextTextCommand` (`home/text.asm:403`). That dispatcher reads the very next
+  byte as a **raw opcode index** into `TextCommands` (`TX_START`=0, `TX_RAM`=1 for `text_from_ram`,
+  `TX_NUM`=9 for `deciram`, `START_ASM`=8, `TX_END`=$50, …) — it does **not** know about `<LINE>`/
+  `<PARA>`/`<CONT>`/`<NEXT>`/`<PROMPT>`/`<DONE>` (those are charmap tokens $49–$58, only recognized
+  **inside** an active `PlaceString` run, via its internal `CheckDict` table).
+  - **Rule:** a literal `text "...@"` fragment must end in `@` iff another `text_from_ram`/`deciram`/
+    `text_move`/`start_asm`/fresh `text`/`text_end` command follows immediately — that `@` is what
+    hands control back to the top-level dispatcher for the next opcode. `<PLAYER>`/`<RIVAL>`/`<MOM>`/
+    `<USER>`/`<TARGET>`/`#`(POKéMON)/`<PC>`/`<TM>`/`<TRAINER>`/`<ROCKET>` are all inline `CheckDict`
+    tokens (like `<LINE>`) and can be used anywhere inside a run with no `@` needed around them.
+  - **Rule (the one that will bite you):** `<LINE>`/`<PARA>`/`<CONT>`/`<NEXT>` can only appear
+    **inside** an active `PlaceString` run. Writing a bare `line "..."` directly after a
+    `text_from_ram`/`deciram` call is **broken** — the `<LINE>` byte ($4f) gets read as a raw
+    top-level opcode index (garbage jump) instead of a cursor move. Fix: insert a bare `text_start`
+    (emits `TX_START` with zero literal argument) between the RAM op and the `line`/`cont`/`para` —
+    this opens a fresh `PlaceString` run whose first byte *is* the `<LINE>` token, which is valid.
+    This exact idiom already existed once in the original source (`BattleText_EnemyWasDefeated`'s
+    `text_from_ram` → `text_start` → `line`) — I just didn't recognize it as *required* until I
+    traced `TextCommandProcessor` and found the opcode-table mechanism. Grep the file for
+    `text_start` before `line`/`cont`/`para` as the template.
+  - `TEXTBOX_INNERW` = 18 (`SCREEN_WIDTH`(20) − `BORDER_WIDTH`(2)) — the safe per-row character
+    budget for the standard bottom textbox. `<PLAYER>`/`<RIVAL>`/`<TARGET>`/`<USER>`/name buffers
+    expand to up to `PLAYER_NAME_LENGTH-1`(7) or `MON_NAME_LENGTH-1`(10) chars at render time — budget
+    for the **worst case** width when a name shares a row with fixed text, or give the name its own
+    row via `line`. Several encouragement/switch-in lines (GoForItMonText's "Go for it!",
+    BattleText_EnemyWasDefeated's class+trainer-name row) were left un-linebroken for parity with the
+    original's row-concatenation approach and **may overflow for a long name/trainer-name** — cosmetic
+    only (raw tilemap-row wraparound, not a crash), flagged here rather than over-engineered, since
+    these are rarer paths (mon switching mid-battle, defeating a trainer) than the very-common
+    fled/fainted/status-hit lines which got dedicated `line` rows and are safe up to the full 10-char
+    name width.
+- **Found and fixed a real pre-existing bug while translating `TrainerAboutToUseText`** (shown when
+  an opponent trainer is about to send in their next Pokémon mid-battle — i.e. **any multi-mon
+  trainer fight**, which doesn't exist yet in the reachable content but will as soon as M1d/gym
+  trainers are added): the original had a bare `line` (no `"@"` argument) sitting directly after a
+  `text_from_ram` call — exactly the broken pattern above, and it was *already* flagged by a
+  `; BUG:` comment above it (a pret-contributor note on an original prototype bug: "forgot to
+  terminate the line… makes the game halt the script early"). Fixed by adding the missing `"@"`,
+  matching the correct pattern already present one label below it (`TrainerSentOutText`). This was a
+  latent crash risk for any future multi-mon trainer battle; now fixed at the source alongside the
+  translation.
+- `.Disabled`/`.Type` (`MoveInfoBox`, the small 9-col box under the move list) → `"DISABLED!"` /
+  `"MOVE TYPE"`, both exactly 9 chars to fit the box's interior (no line-wrap available there, it's a
+  raw `PlaceString` call, not a `text`-macro-driven textbox).
+- Reclaimed **314 bytes** from `Bank 0f Garbage` (`garbage/garbage.asm`, offset 86→400 on all 4
+  variants) — English battle text is substantially longer in byte count than the terse kana it
+  replaced, even accounting for the many added `line`/`cont`/`text_start` control bytes.
+- All 4 ROMs + `-correctheader` variants build warning-clean.
+- PLAYTEST: fight the rival (win and lose), get poisoned/burned/asleep with a nightmare, faint a mon,
+  win money, level up, catch enough EXP to see "grew to LV_", switch Pokémon mid-battle (Enough!/OK!/
+  Good! + "Come back!"), try to run/can't-escape a trainer battle. Watch specifically for **name
+  overflow** on the "Go for it! <NAME>!" and post-trainer-win "<CLASS> <NAME> defeated, you won!"
+  lines if a caught mon or trainer ends up with a long name.
+
+**Next: Phase 3 continues with `effect_commands.asm`** (89 glossary keys — move-effect messages,
+seen on nearly every single turn of every battle, so second-highest priority after `core.asm`), then
+`start_battle.asm`/`used_move_text.asm` (battle-start and "used MOVE!" text), then work down the
+glossary's per-file key counts (`item_effects.asm`, `start_menu.asm`, `party_menu.asm`,
+`pokecenter_pc.asm`, `learn.asm`, `bills_pc.asm`, `pokemart_menu.asm`, …) → then Phase 4 dialogue.
+Apply the same text-engine rules above to every file — particularly the `text_start`-before-bare-
+`line` rule, since every file with `text_from_ram`/`deciram` calls is at risk of the same bug class.
+
+### L-system continuation — effect_commands.asm move-effect text ✅ (BUILD-VERIFIED, playtest-pending, 2026-08-07)
+Translated all 89 `system_data.py` `"effect_commands.asm:*"` entries — every move-effect message in
+`engine/battle/effect_commands.asm` (sleep/freeze/paralysis/confusion/flinch/recharge/disable/
+infatuation/obedience/PP/miss/crash/type-effectiveness/critical/rage/substitute/status-infliction/
+stat-up-down/multi-hit/charge-move flavor text/recoil/screens/protect/safeguard/held-item-activation).
+Also translated `data/battle/stat_names.asm` (ATTACK/DEFENSE/SPEED/SP.ATK/SP.DEF/ACCURACY/EVASION —
+not itself a glossary entry, but every stat-up/down message renders one of these, so leaving it
+Japanese would have produced broken-looking mixed text on the single most common battle message).
+
+- **Extended the `core.asm` text-engine rules**: same `text_start`-before-bare-`line` requirement
+  applied throughout. `Text_BattleEffectActivate`/`Text_BattleFoeEffectActivate` (the "X's STAT rose!"
+  /"sharply rose!" texts — used by every stat-changing move) use the pre-existing `<SCROLL>` control
+  code (`_ContTextNoPause`) to scroll the stat name from row 2 up to row 1 before appending "sharply"/
+  "harshly" fresh on row 2 — translated in place without altering that mechanism, since it already
+  correctly solves the width problem (stat name and qualifier never share a row).
+- **Hit a hard ROM-space wall this file** (new gotcha for future files, not just a "reclaim more
+  garbage" situation): `SECTION "Effect Commands", ROMX` (bank `$0d`) is a single, hard-capped 16 KB
+  (`0x4000`) RGBDS section — a section can never span multiple banks — and it was already close to
+  full before translation (only 128 B of `Bank 0d Garbage` padding existed). The English text alone
+  overflowed it by 387 bytes, which **no amount of garbage-padding trimming can fix** (that technique
+  only helps when the *neighboring* section has slack, not when the section itself exceeds one full
+  bank). Fixed by: (a) reclaiming the 128 B of `Bank 0d Garbage` (now skip-to-empty), (b) **deleting
+  `Unreferenced_OldSleepTarget`** (~230 B) — a pret-flagged, zero-caller dead Gen-1-leftover sleep
+  routine (comment already called it out: "Unreferenced. Seems to be early sleep code leftover from
+  Gen 1"), confirmed via a codebase-wide grep for zero references before removing, and (c) tightening
+  wording across ~20 of the wordier multi-line messages (merging redundant `line`/`cont` rows,
+  dropping filler clauses like "Its moves may be blocked" → "paralyzed!", "were eliminated!" → folded
+  into one line "All stats reset!"). **Lesson for future files:** if a bank-overflow error says
+  "Section ... grew too big (max size = 0x4000...)" instead of the usual linker "would overflow ROMX
+  by N bytes", garbage-trimming won't help — check for dead/unreferenced code in that file first
+  (grep the label name codebase-wide for zero hits) before cutting translation wording.
+- **Byte-efficiency note for future translation:** `<USER>`/`<TARGET>`/`<PLAYER>`/`<RIVAL>`/`#`
+  are single-byte dict tokens at runtime regardless of the name's rendered width — prefer them over
+  spelling out a literal pronoun/word ("affect <TARGET>" costs ~8 bytes; "affect it" costs ~10) when
+  both read naturally.
+- All 4 ROMs + `-correctheader` variants build warning-clean.
+- PLAYTEST: see the consolidated **"Testable action points"** list the user requested — every
+  status condition, stat change, multi-hit move, held item proc, and screen/protect move needs a
+  battle to trigger it, so this is best covered by a longer play session hitting a variety of moves
+  rather than one scripted path.
+
+**Next: `start_battle.asm`/`used_move_text.asm`** (battle-start and "X used MOVE!" text — small
+files, high visibility), then `item_effects.asm` (50 keys) and `start_menu.asm` (44 keys), then down
+the glossary's remaining per-file key counts → Phase 4 dialogue. Any file assigned to an
+already-nearly-full bank may hit the same hard 16 KB section-size wall `effect_commands.asm` did —
+check for `Unreferenced_`/`Unused_` dead code in that file before aggressively trimming translation
+wording.
+
 ## Session log
 - **2026-08-06** — M0 (boot GameStart, byte-verified), M1a (rival party fix), M1f (evolutions restored + 32B garbage reclaim). All build-verified, all playtest-pending. M1e investigated & deferred (unsafe blind). Established gotcha: **must test the `-correctheader` (MBC3/RTC) debug ROM on SameBoy** — the base MBC1 ROM doesn't run. First SameBoy test also surfaced the main-menu label bug (only showed "Play Pokemon") → fixed to show real New Game / Continue. Remaining: M1b/c/d content (playtest-led), then M1e.
 - **2026-08-07** — Playtest round 1 feedback (3 lab bugs). Fixed **rival battle** properly (M1a rewrite: real trainer format + `DEX_` species, byte-verified; my earlier MON_ attempt was wrong) and by analysis the **loss-reset** (bug #3, was a garbage-battler side effect). Also fixed the **main-menu** to show real New Game/Continue. Still open: **bug #1** (chosen Poké Ball doesn't vanish in lab-back) — cosmetic, needs playtest to confirm intended behavior. Reclaimed 6B from `Bank 0e Garbage` for the reformatted rival party. _Next: user re-tests the rival battle (win AND lose) on `pokegold-spaceworld-debug-correctheader.gb`; if good, fix bug #1 then proceed to M1c/M1d._
@@ -378,3 +500,5 @@ regressed. User confirmed all clean as of round 8.
   2. **Battle menu PKMN↔PACK swap:** `BattleMenu`'s dispatch (`engine/battle/core.asm`, ~line 3218) reads `wStartmenuCursor`/`wMenuCursorPosition` (a 1-indexed row-major position: TL=1,TR=2,BL=3,BR=4 — verified via `Battle_2DMenu`'s `cursorX + (cursorY-1)*numRows` math) and still branched `cp 2 → Pack, cp 3 → PKMN`, matching the *original* JP order (FIGHT/ITEM/POKe/RUN) rather than the round-6 reordered display (FIGHT/`<PK><MN>`/PACK/RUN). Swapped to `cp 2 → PKMN, cp 3 → Pack` to match the display.
   3. **Party screen grayscale HP bar/sprite:** traced to `data/sgb/blk_packets.asm` `BlkPacket_PartyMenu`, the SGB color-region table for the party screen — unrelated to any DMG/CGB palette code, this project's only in-game colorization is via SGB ATTR_BLK packets. Two bugs found: (a) the 6 per-mon HP-color rects' Y-coordinates were never updated for the round-6/7 row swap (still `12,2i` / `18,2i+1`, one row too high — same category of bug as #1 above, just in SGB data instead of code); (b) their region mask was `%010` (SGB "line/border only" — the *interior* of the rect, where the bar/text actually render, was never recolored, matching "only a hair of color" symptom), should be `%011` (line+inside) matching the *exact* same pattern already used successfully by `BlkPacket_Battle`'s equivalent small HP-color rects (region mask `%011`, palette bytes `\2=\3=`health color`, \4=0` — identical structure to what `SGB_ApplyPartyMenuHPPals` already writes into the party packet's palette byte, confirming the mask was the only thing wrong). Also widened the icon-column block's Y-range (`02,12`→`02,15`) since icons are 2 tiles tall and mon 5's (index 5) icon pixel position works out to tile rows 13–15, past the old bottom edge — **this one is a lower-confidence fix** (reasoned from the icon Y-position formula in `mon_icons.asm`, not cross-checked against a known-working reference like the HP-bar fix was) and may need another look if sprites are still off after this.
   - **User confirmed all clean** — battle HUD, battle menu actions, and party screen colors (bar + icon) all correct. Localization Phase 1/2/L0-L3a + the M1b playtest-round bugs are now fully closed out. _Next: continue Phase 3 (battle/party/bag/summary system text) → Phase 4 (dialogue for implemented maps)._
+- **2026-08-07 (Phase 3 start)** — Translated all 76 `core.asm` glossary strings (the battle master text — fled/fainted/status/weather/perish-song/safeguard/spikes/held-items/PP/disabled/no-moves/encore/exp/level-up/send-out/recall/escape/no-will-to-fight/trainer-switch/rival-win-loss/out-of-mons/move-info-box). All 4 ROMs build warning-clean; +314B reclaimed from `Bank 0f Garbage`. See the new **"L-system continuation — core.asm battle master text"** subsection above for the full text-engine mechanics writeup (the `PlaceString`/`TextCommandProcessor` opcode-boundary rules — required reading before translating any more battle/menu text files) and a real pre-existing crash bug found+fixed in `TrainerAboutToUseText` (bare `line` after `text_from_ram` reads the `<LINE>` byte as a garbage top-level opcode; fixed by inserting `text_start`). Build-verified, playtest-pending — see that section's PLAYTEST checklist. _Next: `effect_commands.asm` (89 keys, move-effect messages seen almost every turn) is the next-highest-value file, then `start_battle.asm`/`used_move_text.asm`, then down the glossary's per-file key counts toward Phase 4 dialogue._
+- **2026-08-07 (Phase 3 cont.)** — Translated all 89 `effect_commands.asm` glossary strings (every move-effect message: status conditions, confusion, stat changes, multi-hit, charge-move flavor text, substitute, screens, held items) plus `data/battle/stat_names.asm` (needed by the very common stat-change text, not itself a glossary entry). Hit and resolved a new class of problem: the "Effect Commands" section is a hard-capped 16 KB RGBDS section (can't span banks) and was already nearly full — garbage-padding trimming alone couldn't fix the 387-byte overflow. Fixed via reclaiming the 128B of `Bank 0d Garbage`, deleting a pret-flagged zero-caller dead subroutine (`Unreferenced_OldSleepTarget`, ~230B, verified via codebase-wide grep before removing), and tightening wording on ~20 of the wordier messages. See the new **"L-system continuation — effect_commands.asm move-effect text"** subsection above for the full writeup and the "hard 16KB wall" lesson for future files. All 4 ROMs build warning-clean. Build-verified, playtest-pending. _Next: `start_battle.asm`/`used_move_text.asm`, then `item_effects.asm`/`start_menu.asm`, watching for the same bank-size wall in any near-full bank._

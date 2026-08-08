@@ -667,17 +667,17 @@ SECTION "Bank 0d Garbage", ROMX
 
 if DEF(_DEBUG)
 	if DEF(_GOLD)
-INCBIN "garbage/debug/bank0d_gold.2bpp"
+INCBIN "garbage/debug/bank0d_gold.2bpp", 128 ; feature/completion: fully reclaimed (128B) for L-system effect_commands.asm battle text
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/debug/bank0d_silver.2bpp"
+INCBIN "garbage/debug/bank0d_silver.2bpp", 128
 	endc
 else
 	if DEF(_GOLD)
-INCBIN "garbage/bank0d_gold.2bpp"
+INCBIN "garbage/bank0d_gold.2bpp", 128
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/bank0d_silver.2bpp"
+INCBIN "garbage/bank0d_silver.2bpp", 128
 	endc
 endc
 
@@ -711,17 +711,17 @@ SECTION "Bank 0f Garbage", ROMX
 
 if DEF(_DEBUG)
 	if DEF(_GOLD)
-INCBIN "garbage/debug/bank0f_gold.2bpp", 86 ; feature/completion: 75 + 8 (wBattleLossContinues) + 3 ("no will to fight" translation)
+INCBIN "garbage/debug/bank0f_gold.2bpp", 400 ; feature/completion: 75 + 8 (wBattleLossContinues) + 3 ("no will to fight") + 314 (L-system core.asm battle text)
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/debug/bank0f_silver.2bpp", 86 ; feature/completion: 75 + 8 + 3
+INCBIN "garbage/debug/bank0f_silver.2bpp", 400 ; feature/completion: 75 + 8 + 3 + 314
 	endc
 else
 	if DEF(_GOLD)
-INCBIN "garbage/bank0f_gold.2bpp", 86 ; feature/completion: 75 + 8 + 3
+INCBIN "garbage/bank0f_gold.2bpp", 400 ; feature/completion: 75 + 8 + 3 + 314
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/bank0f_silver.2bpp", 86 ; feature/completion: 75 + 8 + 3
+INCBIN "garbage/bank0f_silver.2bpp", 400 ; feature/completion: 75 + 8 + 3 + 314
 	endc
 endc
 

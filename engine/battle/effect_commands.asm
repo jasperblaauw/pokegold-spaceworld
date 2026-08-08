@@ -597,92 +597,96 @@ EndTurn:
 	ret
 
 FastAsleepText:
-	text "<USER>は"
-	line "ぐうぐう　ねむっている"
+	text "<USER> is fast"
+	line "asleep."
 	prompt
 
 WokeUpText:
-	text "<USER>は　めをさました！"
+	text "<USER>"
+	line "woke up!"
 	prompt
 
 FrozenSolidText:
-	text "<USER>は"
-	line "こおって　しまって　うごかない！"
+	text "<USER> is"
+	line "frozen solid!"
 	prompt
 
 FullyParalyzedText:
-	text "<USER>は"
-	line "からだが　しびれて　うごけない"
+	text "<USER> is"
+	line "paralyzed!"
 	prompt
 
 FlinchedText:
-	text "<USER>は　ひるんだ！"
+	text "<USER>"
+	line "flinched!"
 	prompt
 
 MustRechargeText:
-	text "こうげきの　はんどうで"
-	line "<USER>は　うごけない！"
+	text "<USER> must"
+	line "recharge!"
 	prompt
 
 DisabledNoMoreText:
-	text "<USER>の"
-	line "かなしばりが　とけた！"
+	text "<USER> is"
+	line "free again!"
 	prompt
 
 IsConfusedText:
-	text "<USER>は"
-	line "こんらんしている！"
+	text "<USER> is"
+	line "confused!"
 	prompt
 
 HurtItselfText:
-	text "わけも　わからず"
-	line "じぶんを　こうげきした！"
+	text "It hurt itself"
+	line "in its confusion!"
 	prompt
 
 ConfusedNoMoreText:
-	text "<USER>の"
-	line "こんらんが　とけた！"
+	text "<USER> snapped"
+	line "out of confusion!"
 	prompt
 
 AttackContinuesText:
-	text "<USER>の　こうげきは"
-	line "まだ　つづいている"
+	text "<USER>'s"
+	line "attack continues!"
 	done
 
 CantMoveText:
-	text "<USER>は"
-	line "みうごきが　とれない！"
+	text "<USER>"
+	line "can't move!"
 	prompt
 
 StoringEnergyText:
-	text "<USER>は　がまんしている"
+	text "<USER> is"
+	line "storing energy!"
 	prompt
 
 UnleashedEnergyText:
-	text "<USER>の"
-	line "がまんが　とかれた！"
+	text "<USER>"
+	line "unleashed energy!"
 	prompt
 
 HungOnText:
-	text "<TARGET>は"
+	text "<TARGET>"
 	line "@"
 	text_from_ram wStringBuffer1
-	text "で　もちこたえた！"
+	text_start
+	line "hung on!"
 	prompt
 
 EnduredText:
-	text "<TARGET>は　あいての"
-	line "こうげきを　こらえた！"
+	text "<TARGET>"
+	line "endured it!"
 	prompt
 
 InLoveWithText:
-	text "<USER>は"
-	line "<TARGET>に　メロメロだ！"
+	text "<USER> loves"
+	line "<TARGET>!"
 	prompt
 
 InfatuationText:
-	text "<USER>は　メロメロで"
-	line "わざが　だせなかった！"
+	text "<USER> is"
+	line "infatuated!"
 	prompt
 
 MoveDisabled:
@@ -706,10 +710,11 @@ MoveDisabled:
 	jp PrintText
 
 DisabledMoveText:
-	text "<USER>は　かなしばりで"
-	line "@"
+	text "<USER> can't"
+	line "use @"
 	text_from_ram wStringBuffer1
-	text "がだせない！"
+	text_start
+	line "(bound)!"
 	prompt
 
 HitConfusion:
@@ -978,27 +983,32 @@ BattleCommand_CheckObedience:
 
 LoafingAroundText:
 	text_from_ram wBattleMonNickname
-	text "は　なまけている"
+	text_start
+	line "is loafing around."
 	prompt
 
 BeganToNapText:
 	text_from_ram wBattleMonNickname
-	text "は　ひるねをはじめた！"
+	text_start
+	line "napped off!"
 	prompt
 
 WontObeyText:
 	text_from_ram wBattleMonNickname
-	text "は　いうことを　きかない"
+	text_start
+	line "won't obey!"
 	prompt
 
 TurnedAwayText:
 	text_from_ram wBattleMonNickname
-	text "は　そっぽを　むいた"
+	text_start
+	line "turned away!"
 	prompt
 
 IgnoredOrdersText:
 	text_from_ram wBattleMonNickname
-	text "は　しらんぷりをした"
+	text_start
+	line "ignored orders!"
 	prompt
 
 INCLUDE "engine/battle/used_move_text.asm"
@@ -1091,8 +1101,8 @@ BattleCommand_DoTurn:
 	ret
 
 NoPPLeftText:
-	text "しかし　わざの　ポイントが"
-	line "なかった！"
+	text "But there's"
+	line "no PP left!"
 	prompt
 
 BattleCommand_Critical:
@@ -2133,19 +2143,18 @@ endr
 	jp DoPlayerDamage
 
 AttackMissedText:
-	text "しかし　<USER>の"
-	line "こうげきは　はずれた！"
+	text "But <USER>'s"
+	line "attack missed!"
 	prompt
 
 CrashedText:
-	text "いきおい　あまって"
-	line "<USER>は"
-	cont "じめんに　ぶつかった！"
+	text "<USER> crashed"
+	line "into the ground!"
 	prompt
 
 UnaffectedText:
-	text "<TARGET>には"
-	line "ぜんぜんきいてない！"
+	text "It doesn't"
+	line "affect <TARGET>!"
 	prompt
 
 PrintDoesntAffect:
@@ -2153,8 +2162,8 @@ PrintDoesntAffect:
 	jp PrintText
 
 DoesntAffectText:
-	text "<TARGET>には"
-	line "こうかが　ない　みたいだ<⋯⋯>"
+	text "Doesn't seem to"
+	line "affect <TARGET>"
 	prompt
 
 ; Prints the message for critical hits or one-hit KOs.
@@ -2188,11 +2197,11 @@ BattleCommand_CriticalText:
 	dw OneHitKOText
 
 CriticalHitText:
-	text "きゅうしょに　あたった！"
+	text "A critical hit!"
 	prompt
 
 OneHitKOText:
-	text "いちげき　ひっさつ！"
+	text "One-hit KO!"
 	prompt
 
 BattleCommand_SuperEffectiveText:
@@ -2207,11 +2216,13 @@ BattleCommand_SuperEffectiveText:
 	jp PrintText
 
 SuperEffectiveText:
-	text "こうかは　ばつぐんだ！"
+	text "It's super"
+	line "effective!"
 	prompt
 
 NotVeryEffectiveText:
-	text "こうかは　いまひとつの　ようだ"
+	text "It's not very"
+	line "effective..."
 	prompt
 
 BattleCommand_CheckFaint:
@@ -2286,8 +2297,8 @@ BattleCommand_CheckFaint:
 	jp EndMoveEffect
 
 TookDownWithItText:
-	text "<TARGET>は　<USER>を"
-	line "みちずれに　した！"
+	text "<TARGET> took"
+	line "<USER> down!"
 	prompt
 
 ; Used to handle hitting the opponent when they have SUBSTATUS_RAGE.
@@ -2344,8 +2355,8 @@ BattleCommand_BuildOpponentRage:
 	ret
 
 RageBuildingText:
-	text "<USER>の　いかりの"
-	line "ボルテージが　あがっていく！"
+	text "<USER>'s RAGE"
+	line "is building!"
 	prompt
 
 EndMoveEffect:
@@ -3286,13 +3297,13 @@ DoSubstituteDamage:
 	jp CallFromBank0F
 
 SubTookDamageText:
-	text "<TARGET>に　かわって"
-	line "ぶんしんが　こうげきを　うけた！"
+	text "The SUBSTITUTE"
+	line "took the hit!"
 	prompt
 
 SubFadedText:
-	text "<TARGET>の　ぶんしんは"
-	line "きえてしまった<⋯⋯>"
+	text "<TARGET>'s"
+	line "SUBSTITUTE faded"
 	prompt
 
 UpdateMoveData:
@@ -3346,85 +3357,15 @@ UpdateMoveData:
 	call GetMoveName
 	jp CopyStringToStringBuffer2
 
-; Unreferenced. Seems to be early sleep code leftover from Gen 1.
-; It was used at SOME point, seeing as compatibility with held items was added.
-Unreferenced_OldSleepTarget:
-	ld de, wEnemyMonStatus
-	ld bc, wEnemySubStatus4
-	ldh a, [hBattleTurn]
-	and a
-	jp z, .player
-	ld de, wBattleMonStatus
-	ld bc, wPlayerSubStatus4
-
-.player:
-	ld a, [bc]
-	bit SUBSTATUS_RECHARGE, a
-	res SUBSTATUS_RECHARGE, a
-	ld [bc], a
-	jr nz, .set_sleep_counter
-	; Return if it already has a status effect
-	ld a, [de]
-	and a
-	ret nz
-	; Return if the move would be not very effective
-	ld a, [wTypeModifier]
-	and $7f
-	cp EFFECTIVE
-	ret c
-	; Check held item effect and return if it prevents sleep
-	call GetOpponentItem
-	ld a, b
-	cp HELD_PREVENT_SLEEP
-	ret z
-	; Return if effect chance isn't met
-	call BattleCommand_EffectChance
-	ret nc
-	; Return if Safeguard is protecting the target
-	call SafeCheckSafeguard
-	ret nz
-
-.set_sleep_counter:
-	; Set sleep counter to between 1 and 7
-	call BattleRandom
-	and 7
-	jr z, .set_sleep_counter
-
-	ld [de], a
-	call PlayDamageAnim
-	push de
-	ld hl, UpdateBattleHuds
-	call CallFromBank0F
-
-	ld hl, FellAsleepText
-	call PrintText
-	pop de
-
-	; Check for held items. If it has one of the below effects, the item is used.
-
-	call GetOpponentItem
-	ld a, b
-	cp HELD_HEAL_SLEEP
-	jr z, .cure_sleep
-	cp HELD_HEAL_STATUS
-	jr z, .cure_sleep
-	cp HELD_FULL_RESTORE
-	jr z, .cure_sleep
-	ret
-
-.cure_sleep:
-	ld a, [de]
-	and ~SLP
-	ld [de], a
-	ld a, [hl]
-	call PrintUsersItemActivated
-	call ConsumeHeldItem
-	ld hl, UpdateBattleHuds
-	jp CallFromBank0F
+; feature/completion: deleted Unreferenced_OldSleepTarget (~230B) here — a
+; pret-flagged dead Gen-1-leftover sleep routine with zero callers anywhere in
+; the codebase (superseded by the active BattleCommand_SleepTarget below).
+; Reclaimed to make room for this bank's L-system battle-text translation
+; rather than trim wording further; verified zero references before deleting.
 
 FellAsleepText:
-	text "<TARGET>は"
-	line "ねむってしまった！"
+	text "<TARGET> fell"
+	line "asleep!"
 	prompt
 
 BattleCommand_SleepTarget:
@@ -3520,8 +3461,8 @@ BattleCommand_SleepTarget:
 	jp PrintText
 
 AlreadyAsleepText:
-	text "<TARGET>は　すでに"
-	line "ねむっている"
+	text "<TARGET> is"
+	line "already asleep."
 	prompt
 
 BattleCommand_PoisonTarget:
@@ -3587,7 +3528,8 @@ BattleCommand_PoisonTarget:
 	jp CallFromBank0F
 
 WasPoisonedText:
-	text "<TARGET>は　どくをあびた！"
+	text "<TARGET> was"
+	line "poisoned!"
 	prompt
 
 BattleCommand_Poison:
@@ -3706,13 +3648,13 @@ BattleCommand_Poison:
 	jp PrintText
 
 AlreadyPoisonedText:
-	text "<TARGET>は　すでに"
-	line "どくを　あびている"
+	text "<TARGET> is"
+	line "already poisoned."
 	prompt
 
 BadlyPoisonedText:
-	text "<TARGET>は"
-	line "もうどくをあびた！"
+	text "<TARGET> was"
+	line "badly poisoned!"
 	prompt
 
 BattleCommand_DrainTarget:
@@ -3721,8 +3663,8 @@ BattleCommand_DrainTarget:
 	jp PrintText
 
 SuckedHealthText:
-	text "<TARGET>から"
-	line "たいりょくを　すいとった！"
+	text "Sucked HP"
+	line "from <TARGET>!"
 	prompt
 
 BattleCommand_EatDream:
@@ -3731,8 +3673,8 @@ BattleCommand_EatDream:
 	jp PrintText
 
 DreamEatenText:
-	text "<TARGET>の"
-	line "ゆめを　くった！"
+	text "Ate <TARGET>'s"
+	line "dream!"
 	prompt
 
 SapHealth:
@@ -3894,8 +3836,8 @@ BattleCommand_BurnTarget:
 	jp CallFromBank0F
 
 WasBurnedText:
-	text "<TARGET>は"
-	line "やけどをおった！"
+	text "<TARGET> was"
+	line "burned!"
 	prompt
 
 Defrost:
@@ -3921,8 +3863,8 @@ Defrost:
 	jp PrintText
 
 DefrostedOpponentText:
-	text "ほのおをあびて<TARGET>の"
-	line "こおりが　とけた！"
+	text "The flames"
+	line "defrosted <TARGET>!"
 	prompt
 
 BattleCommand_FreezeTarget:
@@ -3989,8 +3931,8 @@ BattleCommand_FreezeTarget:
 	jp CallFromBank0F
 
 WasFrozenText:
-	text "<TARGET>は"
-	line "こおりづけになった！"
+	text "<TARGET> was"
+	line "frozen solid!"
 	prompt
 
 BattleCommand_ParalyzeTarget:
@@ -4239,10 +4181,10 @@ BattleCommand_StatUp:
 	jp PrintNoChangesText
 
 Text_BattleEffectActivate:
-	text "<USER>の"
+	text "<USER>'s"
 	line "@"
 	text_from_ram wStringBuffer2
-	text "が@"
+	text "@"
 	start_asm
 
 	ld hl, .BattleStatWentWayUpText
@@ -4260,11 +4202,11 @@ Text_BattleEffectActivate:
 
 .BattleStatWentWayUpText
 	text_exit
-	text "<SCROLL>ぐーんと@"
+	text "<SCROLL>sharply@"
 	; Fallthrough. These strings are connected in Japanese, but separate in English.
 
 .BattleStatWentUpText
-	text "　あがった！"
+	text " rose!"
 	prompt
 
 BattleCommand_StatDown:
@@ -4470,10 +4412,10 @@ BattleCommand_StatDown:
 	jp TryPrintButItFailed
 
 Text_BattleFoeEffectActivate:
-	text "<TARGET>の"
+	text "<TARGET>'s"
 	line "@"
 	text_from_ram wStringBuffer2
-	text "が@"
+	text "@"
 	start_asm
 	ld hl, .BattleStatFellText
 	ldh a, [hBattleTurn]
@@ -4492,11 +4434,11 @@ Text_BattleFoeEffectActivate:
 
 .BattleStatSharplyFellText:
 	text_exit
-	text "<SCROLL>がくっと@"
+	text "<SCROLL>harshly@"
 	; Fallthrough. These strings are connected in Japanese, but separate in English.
 
 .BattleStatFellText:
-	text "　さがった！"
+	text " fell!"
 	prompt
 
 GetStatName:
@@ -4687,15 +4629,17 @@ BattleCommand_EndLoop:
 	ret
 
 PlayerHitTimesText:
-	text "あいてに　@"
+	text "Hit the foe"
+	line "@"
 	deciram wPlayerDamageTaken, 1, 1
-	text "かい　あたった！"
+	text " times!"
 	prompt
 
 EnemyHitTimesText:
-	text "あいてに　@"
+	text "Hit the foe"
+	line "@"
 	deciram wEnemyDamageTaken, 1, 1
-	text "かい　あたった！"
+	text " times!"
 	prompt
 
 BattleCommand_FlinchTarget:
@@ -4875,33 +4819,34 @@ BattleCommand_Charge:
 	ret
 
 BattleMadeWhirlwindText:
-	text "の　まわりで"
-	line "くうきが　うずを　まく！"
+	text_start
+	line "'s surroundings"
+	cont "swirled!"
 	prompt
 
 BattleTookSunlightText:
-	text "は"
-	line "ひかりを　きゅうしゅうした！"
+	text_start
+	line "absorbed light!"
 	prompt
 
 BattleLoweredHeadText:
-	text "は"
-	line "くびを　ひっこめた！"
+	text_start
+	line "tucked its head!"
 	prompt
 
 BattleGlowingText:
-	text "を"
-	line "はげしい　ひかりが　つつむ！"
+	text_start
+	line "glows brightly!"
 	prompt
 
 BattleFlewText:
-	text "は"
-	line "そらたかく　とびあがった！"
+	text_start
+	line "flew up high!"
 	prompt
 
 BattleDugText:
-	text "は"
-	line "あなをほって　ちちゅうに　もぐった！"
+	text_start
+	line "dug underground!"
 	prompt
 
 ; Skips to the traptarget command in the move's battle script buffer.
@@ -5058,8 +5003,8 @@ BattleCommand_Recoil:
 	jp PrintText
 
 RecoilText:
-	text "<USER>は　こうげきの"
-	line "はんどうを　うけた！"
+	text "<USER> is hit"
+	line "by recoil!"
 	prompt
 
 BattleCommand_ConfuseTarget:
@@ -5132,8 +5077,8 @@ BattleCommand_FinishConfusingTarget:
 	jp PrintText
 
 BecameConfusedText:
-	text "<TARGET>は"
-	line "こんらんした！"
+	text "<TARGET> became"
+	line "confused!"
 	prompt
 
 BattleCommand_Confuse_CheckSnore_Swagger_ConfuseHit:
@@ -5357,8 +5302,7 @@ BattleCommand_ResetStats:
 	ret
 
 EliminatedStatsText:
-	text "すべての　ステータスが"
-	line "もとに　もどった！"
+	text "All stats reset!"
 	prompt
 
 BattleCommand_Heal:
@@ -5435,18 +5379,18 @@ BattleCommand_Heal:
 	jp PrintButItFailed
 
 WentToSleepText:
-	text "<USER>は"
-	line "ねむりはじめた！"
+	text "<USER> went"
+	line "to sleep!"
 	done
 
 RestedText:
-	text "<USER>は　けんこうになって"
-	line "ねむりはじめた！"
+	text "<USER> got"
+	line "healthy and slept!"
 	done
 
 RegainedHealthText:
-	text "<USER>は　たいりょくを"
-	line "かいふくした！"
+	text "<USER> regained"
+	line "health!"
 	prompt
 
 INCLUDE "engine/battle/move_effects/transform.asm"
@@ -5490,13 +5434,13 @@ BattleCommand_Screen:
 	jp PrintButItFailed
 
 LightScreenEffectText:
-	text "<USER>は"
-	line "とくしゅこうげきに　つよくなった！"
+	text "<USER> is now"
+	line "SP.DEF-boosted!"
 	prompt
 
 ReflectEffectText:
-	text "<USER>は"
-	line "だげきこうげきに　つよくなった！"
+	text "<USER> is now"
+	line "DEF-boosted!"
 	prompt
 
 ; Hasn't been split into "can't go any higher/lower!" yet
@@ -5505,7 +5449,8 @@ PrintNoChangesText:
 	jp PrintText
 
 NoChangesText:
-	text "しかし　こうかが　なかった！"
+	text "But it had"
+	line "no effect!"
 	prompt
 
 PrintNothingHappenedText:
@@ -5513,7 +5458,8 @@ PrintNothingHappenedText:
 	jp PrintText
 
 NothingHappenedText:
-	text "しかし　なにもおこらない"
+	text "But nothing"
+	line "happened."
 	prompt
 
 TryPrintButItFailed:
@@ -5526,7 +5472,7 @@ PrintButItFailed:
 	jp PrintText
 
 ButItFailedText:
-	text "しかし　うまく　きまらなかった！"
+	text "It failed!"
 	prompt
 
 PrintDidntAffectText:
@@ -5534,13 +5480,13 @@ PrintDidntAffectText:
 	jp PrintText
 
 DidntAffectText:
-	text "しかし　<TARGET>には"
-	line "きかなかった！"
+	text "But it didn't"
+	line "affect <TARGET>!"
 	prompt
 
 IsUnaffectedText:
-	text "<TARGET>は"
-	line "へいきな　かおを　している！"
+	text "<TARGET> looks"
+	line "unaffected!"
 	prompt
 
 PrintParalyze:
@@ -5548,15 +5494,16 @@ PrintParalyze:
 	jp PrintText
 
 ParalyzedText:
-	text "<TARGET>は　まひして"
-	line "わざが　でにくくなった！"
+	text "<TARGET> is"
+	line "paralyzed!"
 	prompt
 
 ProtectedByText:
-	text "<TARGET>は　"
+	text "<TARGET> is"
 	line "@"
 	text_from_ram wStringBuffer1
-	text "で　まもられてる！"
+	text_start
+	line "protected!"
 	prompt
 
 CheckSubstituteOpp:
@@ -5603,8 +5550,8 @@ BattleCommand_ArenaTrap:
 	jp PrintText
 
 .CantEscapeNowText:
-	text "<TARGET>は"
-	line "もう　にげられない！"
+	text "<TARGET> can no"
+	line "longer escape!"
 	prompt
 
 .failed
@@ -5649,8 +5596,8 @@ BattleCommand_Defrost:
 	ret
 
 WasDefrostedText:
-	text "<USER>の"
-	line "こおりが　とけた！"
+	text "<USER> was"
+	line "defrosted!"
 	prompt
 
 INCLUDE "engine/battle/move_effects/nail_down.asm"
@@ -5712,8 +5659,8 @@ BattleCommand_CheckSafeguard:
 	jp PrintText
 
 SafeguardProtectText:
-	text "<TARGET>は"
-	line "しんぴのベールに　まもられている！"
+	text "<TARGET> is"
+	line "veil-protected!"
 	prompt
 
 INCLUDE "engine/battle/move_effects/magnitude.asm"
@@ -5788,8 +5735,8 @@ BattleCommand_TimeBasedHealContinue:
 	ret
 
 .RegainedHealthText
-	text "<USER>は　たいりょくを"
-	line "かいふくした！"
+	text "<USER> regained"
+	line "health!"
 	prompt
 
 INCLUDE "engine/battle/move_effects/hidden_power.asm"
@@ -5972,10 +5919,11 @@ PrintUsersItemActivated:
 	ret
 
 BattleText_UsersStringBuffer1Activated:
-	text "そうびしていた"
+	text "The held"
 	line "@"
 	text_from_ram wStringBuffer1
-	text "が　さどうした！"
+	text_start
+	line "activated!"
 	prompt
 
 PlayDamageAnim:
