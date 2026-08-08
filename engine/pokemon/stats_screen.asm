@@ -134,18 +134,7 @@ LoadPinkPage::
 	ld [wMoveGrammar], a
 	call GetPokemonName
 	call PlaceString
-	hlcoord 7, 0
-	ld bc, SCREEN_WIDTH
-	ld d, SCREEN_HEIGHT
-
-.vertical_divider
-	ld a, $31
-	ld [hl], a
-	add hl, bc
-	dec d
-	jr nz, .vertical_divider
-
-	inc a
+	ld a, $32
 	hlcoord 2, 16
 	ld [hli], a
 	inc a
@@ -157,6 +146,19 @@ LoadPinkPage::
 	pop bc
 .draw_page
 	push bc
+; The divider is redrawn on every page load, not just the first: the green
+; page's move-list box has to be wide enough for English move names, so its
+; left border covers column 7.
+	hlcoord 7, 0
+	ld bc, SCREEN_WIDTH
+	ld d, SCREEN_HEIGHT
+.vertical_divider
+	ld a, $31
+	ld [hl], a
+	add hl, bc
+	dec d
+	jr nz, .vertical_divider
+
 	ld b, 1
 	call StatsScreen_LoadPageIndicators
 	hlcoord 8, 0
@@ -179,7 +181,7 @@ LoadPinkPage::
 	ld de, StatusText_StatusType
 	call PlaceString
 
-	hlcoord 15, 4
+	hlcoord 16, 4
 	ld a, [wMonType]
 	cp 2
 	jr z, .StatusOK
@@ -190,7 +192,9 @@ LoadPinkPage::
 .StatusOK
 	ld de, StatusText_OK
 	call z, PlaceString
-	hlcoord 14, 6
+; Type names print in full and reach 8 characters (FIGHTING / ELECTRIC), so
+; they go on the rows below the "TYPE/" label rather than beside it.
+	hlcoord 11, 7
 	call PrintMonTypes
 
 	hlcoord 8, 10
@@ -198,7 +202,7 @@ LoadPinkPage::
 	ld c, 10
 	call DrawTextBox
 
-	hlcoord 10, 10
+	hlcoord 9, 10
 	ld de, StatusText_ExpPoints
 	call PlaceString
 
@@ -210,7 +214,7 @@ LoadPinkPage::
 	inc a
 	ld [wTempMonLevel], a
 .got_level
-	hlcoord 16, 14
+	hlcoord 16, 12
 	call PrintLevel
 
 	pop af
@@ -226,12 +230,8 @@ LoadPinkPage::
 	lb bc, 3, 7
 	call PrintNumber
 
-	hlcoord 9, 13
+	hlcoord 9, 12
 	ld de, StatusText_Ato
-	call PlaceString
-
-	hlcoord 17, 13
-	ld de, StatusText_De
 	call PlaceString
 
 	ld a, [wTempMonLevel]
@@ -297,23 +297,20 @@ NicknamePointers:
 	dw wPartyMonNicknames, wOTPartyMonNicknames, wBoxMonNicknames, wBufferMonNickname
 
 StatusText_StatusType:
-	db   "じょうたい／"
-	next "タイプ／@"
+	db   "STATUS/"
+	next "TYPE/@"
 
 StatusText_OK:
-	db "ふつう@"
+	db "OK@"
 
 StatusText_ExpPoints:
-	db "　けいけんち　@"
+	db "EXP POINTS@"
 
 StatusText_Ato:
-; This string and the one below are used to present the
-; remaining amount of EXP to level up in a grammatical manner.
-; Equivalent to the English version's "LEVEL UP - <amount> to :L<level>".
-	db "あと@"
-
-StatusText_De:
-	db "で@"
+; Labels the row above the remaining-EXP figure; PrintLevel puts the level it
+; counts towards on the same row. The Japanese layout's trailing "で" particle
+; (StatusText_De) has no English equivalent and was dropped.
+	db "TO NEXT@"
 
 LoadGreenPage::
 	call WaitBGMap
@@ -337,7 +334,9 @@ LoadGreenPage::
 	ld [wNamedObjectIndexBuffer], a
 	call GetItemName
 .got_item_name
-	hlcoord 11, 2
+; Item names are up to ITEM_NAME_LENGTH - 1 = 12 characters, so they start at
+; the left edge of the right-hand column.
+	hlcoord 8, 2
 	call PlaceString
 
 	ld hl, wTempMonMoves
@@ -345,21 +344,23 @@ LoadGreenPage::
 	ld bc, NUM_MOVES
 	call CopyBytes
 
-	hlcoord 8, 4
+; Widened one column to the left (the divider column, which LoadPinkPage
+; redraws) so that 12-character English move names fit the interior.
+	hlcoord 7, 4
 	ld b, 12
-	ld c, 10
+	ld c, 11
 	call DrawTextBox
 
 	hlcoord 11, 4
 	ld de, .Moves
 	call PlaceString
 
-	hlcoord 9, 6
+	hlcoord 8, 6
 	ld a, SCREEN_WIDTH * 3
 	ld [wListMovesLineSpacing], a
 	call ListMoves
 
-	hlcoord 11, 7
+	hlcoord 10, 7
 	ld a, SCREEN_WIDTH * 3
 	ld [wListMovesLineSpacing], a
 	call ListMovePP
@@ -370,13 +371,13 @@ LoadGreenPage::
 	ret
 
 .Item
-	db "そうび@"
+	db "ITEM@"
 
 .NoItem
-	db "なし@"
+	db "NONE@"
 
 .Moves
-	db "　もちわざ　@"
+	db "MOVES@"
 
 LoadBluePage::
 	call WaitBGMap
@@ -423,12 +424,14 @@ LoadBluePage::
 	ret
 
 .IDNo_OT
-	db   "<ID>№／"
-	next "おや／"
+; Both labels are kept to 3 columns: the ID number (5 digits) and the OT name
+; are both placed at column 12, immediately to the right.
+	db   "ID/"
+	next "OT/"
 	next "@"
 
 .Parameters
-	db "　パラメータ　@"
+	db "STATS@"
 
 .OTPointers
 	dw wPartyMonOTs

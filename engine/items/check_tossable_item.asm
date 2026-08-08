@@ -126,19 +126,19 @@ Unreferenced_TossItem_Old:
 
 .ItemsDiscardedText:
 	text_from_ram wStringBuffer1
-	text "を" ; "Threw away"
-	line "すてました！" ; "(item?)!"
+	text_start
+	line "was thrown away!"
 	prompt
 
 .ItemsThrowAwayText:
 	text_from_ram wStringBuffer2
-	text "を　すてます" ; "Are you sure you want"
-	line "ほんとに　よろしいですか？" ; "to throw (item?) away?"
+	text_start
+	line "Throw it away?"
 	prompt
 
 .ItemsTooImportantText:
-	text "それは　とても　たいせつなモノです" ; "You can't throw away"
-	line "すてることは　できません！" ; "something that special!"
+	text "That item is too"
+	line "vital to toss out!"
 	prompt
 
 Unused_IsKeyItem_Old:

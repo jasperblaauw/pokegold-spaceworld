@@ -546,13 +546,120 @@ POKéDEX labels lined up with their values, badge page header); (e) catch someth
 break-free/almost-had-it lines, "Gotcha! X was caught!", the dex-data line, and the nickname prompt;
 (f) give/take a held item and the swap prompt.
 
-**Next: `poker_minigame.asm` (27) / `party_menu.asm` (24) / `pokecenter_pc.asm` (21) / `learn.asm` (16)
-/ `bills_pc.asm` (16) / `pokemart_menu.asm` (15)** — of these, `party_menu.asm`, `learn.asm` and
-`pokemart_menu.asm` are on the reachable path for M1d (Old City mart + a gym), so they're the
-higher-value ones; the minigames and PC are not reachable yet. Then Phase 4 dialogue. Keep applying the
-text-engine rules above (`text_start` before a bare `line` after `text_from_ram`/`deciram`; 18-column
-interior; give a name its own row whenever it would share one with more than ~8 characters), and check
-for the hard 16 KB section wall in any near-full bank.
+### L-system continuation — party / summary / mart surface ✅ (BUILD-VERIFIED, playtest-pending, 2026-08-08)
+Translated the three files the previous session named (`party_menu.asm` 24 keys, `learn.asm` 16,
+`pokemart_menu.asm` 15) plus the rest of the party/summary cluster a playtester reaches in the same
+breath: `mon_submenu.asm` + `data/mon_menu.asm`, `mon_stats.asm`, `stats_screen.asm`, `evolve.asm`,
+`add_mon.asm`, `move_mon.asm`, `knows_move.asm`, `check_tossable_item.asm`, and the AI item/switch
+text in `engine/battle/ai/items.asm`. All 4 ROMs + `-correctheader` variants build warning-clean;
+the new multi-part text structures were spot-decoded out of the ROM (opcode boundaries,
+`text_from_ram` targets, `<LINE>`/`<PROMPT>` placement all correct).
+
+**This batch was mostly a *layout* job.** The text itself is easy; what took the time is that the
+widened `MON_NAME_LENGTH` (11), `MOVE_NAME_LENGTH` (13), `ITEM_NAME_LENGTH` (13) and
+`TRAINER_CLASS_NAME_LENGTH` (13) from L0/L2 had left several **hard-coded box geometries wrong**, in
+places nothing had rendered yet. Three of those were real pre-existing bugs, not just tight fits:
+
+1. **`learn.asm` `ForgetMove`'s move-list box ran off the screen.** It draws with
+   `ld c, MOVE_NAME_LENGTH`, which L2 raised 7→13 — so `hlcoord 10, 8` + a 15-column-wide box
+   spanned cols 10-24 on a 20-column screen. Moved to `hlcoord 3, 4` (cols 3-17, interior 4-16 = the
+   13 columns it now wants: 12 for the name + 1 for the cursor), names to `hlcoord 5, 6`, cursor
+   `w2DMenuCursorInitX/Y` 11,10 → 4,6. It was also **raised from rows 8-17 to rows 4-13** so it stops
+   covering the prompt: the standard textbox prints on rows 14 and 16, and the Japanese prompt only
+   ever fit in cols 1-9 to the *left* of the old box, which no English wording can do.
+2. **The party submenu (STATS/SWITCH/ITEM/… + field moves) was 6 columns wide.** Its entries include
+   real move names via `GetMoveName` — "WATER SPORT"/"BRIGHT MOSS" are 11 characters. Widened
+   `MonSubmenu.MenuHeader` from `menu_coords 11, 0, …` to `menu_coords 6, 0, …` (strings start at
+   x1+2 = col 8, right border col 19 → 11 columns). `BattleMonMenu`'s own 3-item box was left alone —
+   SWITCH/STATS/CANCEL all fit its 6 columns.
+3. **`PrintMonTypes`' `.hide_type_2` blanked the wrong tiles.** Its offsets were hand-computed for the
+   Japanese 4-character type names *and* used `PLAYER_NAME_LENGTH - 1` as a width, which L0 changed
+   6→8. Rewritten to blank 8 columns two rows below `hl`, i.e. relative to wherever type 1 was placed.
+
+**Static-box column budgets used throughout (worth reusing):** `DrawTextBox hl, b, c` gives interior
+`[x+1, x+c]` on rows `[y+1, y+b]`; a `menu_coords x1,y1,x2,y2` vertical menu gives `x2 - x1 - 2` text
+columns *including* the cursor column; `PlaceString` never wraps, so anything past col 19 continues on
+the next tilemap row.
+
+**Per-file notes:**
+- **`party_menu.asm`** — prompts (`Choose a #.` / `Use it on which` `#?` / …), the 9 heal/level-up
+  texts, TM-HM + evo-stone `ABLE`/`NOT ABLE`, and gender `♂`/`♀` (bytes `$ef`/`$f5`, which are the
+  gender glyphs in the retail Latin sheet too). The heal texts all give the nickname its own row or
+  pair it with ≤8 characters. **`PlaceStatusString`/`PlaceNonFaintStatus` now write the retail
+  3-letter abbreviations** `FNT`/`SLP`/`PSN`/`BRN`/`FRZ`/`PAR` instead of 2-3 kana; 3 columns was
+  already the maximum the old code wrote, and the flag conventions both callers rely on (Z = "no
+  status" → the caller prints the level / "OK" instead) are untouched, since `ld` doesn't affect flags.
+- **`learn.asm`** — `AskForgetMoveText` was restructured to `A new move…` / `<MOVE>!` `<PARA>`
+  `But <MON>` / `knows 4 moves!` `<PARA>` `Forget an old move` / `to make room?`: a 12-character move
+  name plus a 10-character nickname cannot share any row with a verb. `StopLearningMoveText` drops the
+  move name entirely (`Well then…` / `stop learning it?`) — it was just named one box earlier.
+- **`pokemart_menu.asm`** (the debug-field mart, the only mart implementation that exists — M1d's Old
+  City mart will build on it) — menu is **BUY / SELL / GOODBYE**, not "BUY ITEMS/SELL ITEMS": its box
+  is `menu_coords 0, 0, 10, 8` = 8 text columns and it **cannot be widened past col 11**, because
+  `PlaceMoneyTopRight` puts the money box at `menu_coords 11, 0, 19, 2`. Note `ld [hl], '円'` (byte
+  `$f0`) renders as **¥** in the Latin font, so the money display already reads as yen — but *after*
+  the number (`1000¥`), which is the Japanese order; changing it means restructuring the `PrintNumber`
+  call sites, so it was left. One `jr` had to become `jp` after the strings grew.
+- **`stats_screen.asm`** — `STATUS/` + `TYPE/`, `OK`, `EXP POINTS`, `TO NEXT`, `ITEM`/`NONE`/`MOVES`,
+  `ID/`/`OT/`, `STATS`. Layout changes: status value `hlcoord 15,4`→`16,4`; **types moved to
+  `hlcoord 11, 7`** (rows 7 and 9, under the label) because English type names print in full up to 8
+  characters and could not sit beside a label in a 12-column half-screen; `EXP POINTS` moved to col 9
+  (exactly the box's 10-column interior); the remaining-EXP label + the level it counts towards moved
+  up to row 12 (`TO NEXT` at col 9, `PrintLevel` at col 16) with the figure still on row 13, and the
+  Japanese trailing particle `StatusText_De` ("で") was **deleted** — English has nothing for it.
+  The **green page's move box was widened to `hlcoord 7, 4` / `c = 11`** so 12-character move names
+  fit; that covers the vertical divider column, so **the divider draw was moved out of the
+  first-load-only block into `.draw_page`** and is now redrawn on every page switch. Item name moved
+  from `hlcoord 11,2` to `8,2` (item names are up to 12 characters).
+- **`mon_stats.asm`** — `ATTACK/DEFENSE/SP.ATK/SP.DEF/SPEED`, matching `data/battle/stat_names.asm`
+  so both surfaces agree. The value column offset went 6→7 (DEFENSE is 7 characters) and the
+  **level-up variant's box widened left one column** (`hlcoord 9,0 / c=9` → `8,0 / c=10`) so both
+  layouts share the same 10-column interior.
+- **`evolve.asm`** — `Congratulations!` / `It's a <NEW>!`. The two texts print into the *same* box
+  (the second via `PrintTextBoxText`, opening with `text_start` + `line`), so there are only two rows
+  for "old name + evolved into + new name"; the old nickname was dropped rather than overflow.
+- **`add_mon.asm` / `move_mon.asm`** — party-full → BOX messages, `<PLAYER> got <MON>!`, the PC
+  transfer lines (`<MON> went to` / `BILL's <PC>!`, matching the wording already used in
+  `item_effects.asm`), and the dex-record + nickname prompt. Note `GotItText` **falls through** into
+  `AskGiveNicknameText`; the "unreferenced" comment there was wrong and has been corrected.
+- **`ai/items.asm`** — the enemy trainer's item/switch lines. `<CLASS> used <ITEM>` and
+  `The foe recalled <MON>!` both had to shed one of their three name slots (class 12 + mon 10 + item
+  12 characters cannot fit two rows).
+- Reclaimed **+62 B Bank 14** and **+119 B Bank 3f** (first pass), then **+8 B Bank 03, +31 B Bank 04,
+  +7 B Bank 09, +19 B Bank 10, +6 B Bank 14** (second pass).
+
+**Known layout issue left open (needs a real redesign, not a translation tweak):** the stats screen's
+**left column is only 7 columns wide** (cols 0-6, bounded by the divider at col 7 and by the 7×7 front
+pic), but it renders the **nickname** at `hlcoord 1, 10` and the **species name** at `hlcoord 2, 12`,
+both now up to 10 characters. Anything past col 6 is overwritten by the divider (col 7) and then
+cleared by `.draw_page`'s `ClearBox` (cols 8+), so long names visibly truncate at ~6 characters and
+the gender symbol that `PlaceString` leaves after the nickname lands in the cleared area. Fixing it
+means moving the divider/rebalancing the two halves of that page — do it with screenshots, not blind.
+
+**PLAYTEST for this batch:** (a) party menu — open it from the field and in battle (prompts, the
+3-letter status tags after poisoning/paralysing a mon, level + HP bar alignment unchanged); (b) pick a
+mon → the submenu (STATS/SWITCH/ITEM/CANCEL, plus a field-move name if the mon knows one — check the
+wider box doesn't look wrong over the party list); (c) **STATS screen, all three pages** (◀▶): pink
+(STATUS/TYPE with both a single- and a **dual-type** mon, so `.hide_type_2` gets exercised; EXP POINTS
+/ TO NEXT rows), green (ITEM/NONE, MOVES list — try a mon with a 12-character move like FLAMETHROWER,
+and check the divider column looks right when you page back to pink), blue (ID/OT/STATS box, and that
+the five stat names and values don't collide); (d) use a Rare Candy / win a level in battle → the
+level-up stats box; (e) **teach a 5th move** (TM or level-up) → the "A new move…" prompt, then the
+forget-move list box, then "Poof!"/"forgot" — this is the box that used to run off-screen; (f) **evolve
+a starter at L16** (M1f restored those) → Congratulations! / It's a X!; (g) toss an item from the PACK
+and try to toss a key item; (h) catch a mon with a full party (BOX message) and with a free slot
+(Got it! / Give it a name?).
+
+**Next: Phase 4 dialogue** — the system text a player can actually reach is now essentially all
+English. What remains in Phase 3 is unreachable content: `poker_minigame.asm` (27),
+`pokecenter_pc.asm` (21), `bills_pc.asm` (16), `link*.asm`, `trade_animation.asm`,
+`breeder.asm`, `tm_holder.asm`, the debug menus — pick these up only when the feature that uses them
+becomes reachable (`pokecenter_pc.asm` and `bills_pc.asm` become relevant with M1d + M1e). Also still
+Japanese: `data/maps/landmark_names.asm` (Town Map), `oak_speech.asm` (10 keys — this is M1b's intro,
+so it belongs with Phase 4), `text_entry.asm` leftovers, `field_moves.asm`, `events/std_scripts.asm`.
+Keep applying the text-engine rules above (`text_start` before a bare `line` after
+`text_from_ram`/`deciram`; 18-column interior; give a name its own row whenever it would share one
+with more than ~8 characters), plus the static-box column budgets recorded in this section.
 
 ## Session log
 - **2026-08-06** — M0 (boot GameStart, byte-verified), M1a (rival party fix), M1f (evolutions restored + 32B garbage reclaim). All build-verified, all playtest-pending. M1e investigated & deferred (unsafe blind). Established gotcha: **must test the `-correctheader` (MBC3/RTC) debug ROM on SameBoy** — the base MBC1 ROM doesn't run. First SameBoy test also surfaced the main-menu label bug (only showed "Play Pokemon") → fixed to show real New Game / Continue. Remaining: M1b/c/d content (playtest-led), then M1e.
@@ -591,3 +698,4 @@ for the hard 16 KB section wall in any near-full bank.
 - **2026-08-07 (Phase 3 start)** — Translated all 76 `core.asm` glossary strings (the battle master text — fled/fainted/status/weather/perish-song/safeguard/spikes/held-items/PP/disabled/no-moves/encore/exp/level-up/send-out/recall/escape/no-will-to-fight/trainer-switch/rival-win-loss/out-of-mons/move-info-box). All 4 ROMs build warning-clean; +314B reclaimed from `Bank 0f Garbage`. See the new **"L-system continuation — core.asm battle master text"** subsection above for the full text-engine mechanics writeup (the `PlaceString`/`TextCommandProcessor` opcode-boundary rules — required reading before translating any more battle/menu text files) and a real pre-existing crash bug found+fixed in `TrainerAboutToUseText` (bare `line` after `text_from_ram` reads the `<LINE>` byte as a garbage top-level opcode; fixed by inserting `text_start`). Build-verified, playtest-pending — see that section's PLAYTEST checklist. _Next: `effect_commands.asm` (89 keys, move-effect messages seen almost every turn) is the next-highest-value file, then `start_battle.asm`/`used_move_text.asm`, then down the glossary's per-file key counts toward Phase 4 dialogue._
 - **2026-08-07 (Phase 3 cont.)** — Translated all 89 `effect_commands.asm` glossary strings (every move-effect message: status conditions, confusion, stat changes, multi-hit, charge-move flavor text, substitute, screens, held items) plus `data/battle/stat_names.asm` (needed by the very common stat-change text, not itself a glossary entry). Hit and resolved a new class of problem: the "Effect Commands" section is a hard-capped 16 KB RGBDS section (can't span banks) and was already nearly full — garbage-padding trimming alone couldn't fix the 387-byte overflow. Fixed via reclaiming the 128B of `Bank 0d Garbage`, deleting a pret-flagged zero-caller dead subroutine (`Unreferenced_OldSleepTarget`, ~230B, verified via codebase-wide grep before removing), and tightening wording on ~20 of the wordier messages. See the new **"L-system continuation — effect_commands.asm move-effect text"** subsection above for the full writeup and the "hard 16KB wall" lesson for future files. All 4 ROMs build warning-clean. Build-verified, playtest-pending. _Next: `start_battle.asm`/`used_move_text.asm`, then `item_effects.asm`/`start_menu.asm`, watching for the same bank-size wall in any near-full bank._
 - **2026-08-08 (Phase 3 cont.)** — Translated `start_battle.asm` (11 keys), `used_move_text.asm` (8), `item_effects.asm` (50) and `start_menu.asm` (44) — the battle-start banners, the per-turn "X used MOVE!" line, every ball/capture/item-refusal message, and the whole PACK + party-details + Trainer Card menu surface. All 4 ROMs + `-correctheader` variants build warning-clean; emitted bytes spot-verified in the ROM. Reclaimed +187 B `Bank 03 Garbage` and +139 B `Bank 04 Garbage`; `used_move_text.asm` shrank ~30 B, which put 38 B of slack back into the wall-bound bank `$0d` "Effect Commands" section. Three structural notes worth carrying forward: the JP move-grammar machinery in `used_move_text.asm` is kept even though English ignores it (its `GetMoveGrammar` side effect drives COUNTER, and `wMoveGrammar` is a union alias of `wNumSetBits`); static menu boxes give `x2 - x1 - 2` text columns, so `SelectedItemMenu` needed its left edge widened for "TOSS"; and the party move-details pane now puts TYPE and POWER on separate rows because English type names print in full (up to 8 chars) and collided with the old shared-row layout. See the new **"L-system continuation — start_battle / used_move_text / item_effects / start_menu"** subsection for the full writeup + consolidated PLAYTEST checklist. _Next: `party_menu.asm` / `learn.asm` / `pokemart_menu.asm` (the three remaining Phase-3 files on M1d's reachable path), then the unreachable ones (`poker_minigame`, `pokecenter_pc`, `bills_pc`), then Phase 4 dialogue._
+- **2026-08-08 (Phase 3 cont. 2)** — Translated `party_menu.asm` / `learn.asm` / `pokemart_menu.asm` (the three files the last session queued) and then the rest of the party/summary surface a playtester hits alongside them: `mon_submenu.asm` + `data/mon_menu.asm`, `mon_stats.asm`, `stats_screen.asm`, `evolve.asm`, `add_mon.asm`, `move_mon.asm`, `knows_move.asm`, `check_tossable_item.asm`, `ai/items.asm`. All 4 ROMs + `-correctheader` variants build warning-clean; new text structures spot-decoded from the ROM. This batch was more layout than wording: the widened name-length constants from L0/L2 had left hard-coded box geometry wrong in code that had never been rendered yet, and three of those were outright bugs — `ForgetMove`'s move-list box drew off the right edge of the screen (`ld c, MOVE_NAME_LENGTH`, 7→13) *and* covered its own prompt; the party submenu was 6 columns wide but lists real 11-character move names; and `PrintMonTypes`' `.hide_type_2` blanked the wrong tiles (offsets hand-computed for 4-character kana type names, width taken from `PLAYER_NAME_LENGTH`, which L0 changed). Also moved the stats screen's vertical-divider draw into `.draw_page` so it survives the now-wider green-page move box. See the new **"L-system continuation — party / summary / mart surface"** subsection for the full writeup, the static-box column-budget rules, and the consolidated PLAYTEST checklist. **One layout issue deliberately left open:** the stats screen's 7-column left strip truncates 10-character nicknames/species names — that needs a redesign with screenshots, not a blind edit. _Next: Phase 4 dialogue (starting with `oak_speech.asm`, i.e. the M1b intro); the Phase-3 files that remain are all unreachable content (minigames, PC, link, breeder) and should wait until the feature that uses them exists._

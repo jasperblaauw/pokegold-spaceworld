@@ -24,13 +24,13 @@ PrintMonTypes::
 	jr PrintType
 
 .hide_type_2
+; Blank the second type's slot: the row two below hl, for the width of the
+; longest English type name (FIGHTING / ELECTRIC). The original offsets were
+; hard-coded around the Japanese four-character type names.
+	ld bc, SCREEN_WIDTH * 2
+	add hl, bc
 	ld a, '　'
-	ld bc, SCREEN_WIDTH - 3
-	add hl, bc
-	ld [hl], a
-	inc bc
-	add hl, bc
-	ld bc, PLAYER_NAME_LENGTH - 1
+	ld bc, 8
 	jp ByteFill
 
 PrintMoveType::

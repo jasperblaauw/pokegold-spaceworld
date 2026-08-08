@@ -513,17 +513,17 @@ Unreferenced_Corrupt_KnowsMove:
 	prompt
 
 if DEF(_GOLD)
-INCBIN "garbage/debug/bank03_gold.2bpp", 226 ; feature/completion: +4 OT-party nickname fill, +187 English item_effects text
+INCBIN "garbage/debug/bank03_gold.2bpp", 234 ; feature/completion: +4 OT-party nickname fill, +187 English item_effects text, +8 English add_mon/knows_move text
 endc
 if DEF(_SILVER)
-INCBIN "garbage/debug/bank03_silver.2bpp", 226 ; feature/completion: +4 OT-party nickname fill, +187 English item_effects text
+INCBIN "garbage/debug/bank03_silver.2bpp", 234 ; feature/completion: +4 OT-party nickname fill, +187 English item_effects text, +8 English add_mon/knows_move text
 endc
 else
 if DEF(_GOLD)
-INCBIN "garbage/bank03_gold.2bpp", 391 ; feature/completion: +4 OT-party nickname fill, +187 English item_effects text
+INCBIN "garbage/bank03_gold.2bpp", 399 ; feature/completion: +4 OT-party nickname fill, +187 English item_effects text, +8 English add_mon/knows_move text
 endc
 if DEF(_SILVER)
-INCBIN "garbage/bank03_silver.2bpp", 391 ; feature/completion: +4 OT-party nickname fill, +187 English item_effects text
+INCBIN "garbage/bank03_silver.2bpp", 399 ; feature/completion: +4 OT-party nickname fill, +187 English item_effects text, +8 English add_mon/knows_move text
 endc
 endc
 
@@ -534,17 +534,17 @@ if DEF(_DEBUG)
 	db $18, $00 ; leftover of previous graphics
 Unreferenced_UnusedLeaderNameGFX:: INCBIN "gfx/trainer_card/unused_leader_name.2bpp"
 	if DEF(_GOLD)
-INCBIN "garbage/debug/bank04_gold.2bpp", 447 ; feature/completion: +81 English lowercase keyboard, +139 English start_menu text
+INCBIN "garbage/debug/bank04_gold.2bpp", 478 ; feature/completion: +81 English lowercase keyboard, +139 English start_menu text, +31 English check_tossable/mon_menu text
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/debug/bank04_silver.2bpp", 447 ; feature/completion: +81 English lowercase keyboard, +139 English start_menu text
+INCBIN "garbage/debug/bank04_silver.2bpp", 478 ; feature/completion: +81 English lowercase keyboard, +139 English start_menu text, +31 English check_tossable/mon_menu text
 	endc
 else
 	if DEF(_GOLD)
-INCBIN "garbage/bank04_gold.2bpp", 381 ; feature/completion: +81 English lowercase keyboard, +139 English start_menu text
+INCBIN "garbage/bank04_gold.2bpp", 412 ; feature/completion: +81 English lowercase keyboard, +139 English start_menu text, +31 English check_tossable/mon_menu text
 endc
 	if DEF(_SILVER)
-INCBIN "garbage/bank04_silver.2bpp", 381 ; feature/completion: +81 English lowercase keyboard, +139 English start_menu text
+INCBIN "garbage/bank04_silver.2bpp", 412 ; feature/completion: +81 English lowercase keyboard, +139 English start_menu text, +31 English check_tossable/mon_menu text
 	endc
 endc
 
@@ -591,17 +591,17 @@ SECTION "Bank 09 Garbage", ROMX
 
 if DEF(_DEBUG)
 	if DEF(_GOLD)
-INCBIN "garbage/debug/bank09_gold.2bpp", 119 ; feature/completion: +3 for battle menu translation
+INCBIN "garbage/debug/bank09_gold.2bpp", 126 ; feature/completion: +3 for battle menu translation, +7 English AI item text
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/debug/bank09_silver.2bpp", 119 ; feature/completion: +3 for battle menu translation
+INCBIN "garbage/debug/bank09_silver.2bpp", 126 ; feature/completion: +3 for battle menu translation, +7 English AI item text
 	endc
 else
 	if DEF(_GOLD)
-INCBIN "garbage/bank09_gold.2bpp", 119 ; feature/completion: +3 for battle menu translation
+INCBIN "garbage/bank09_gold.2bpp", 126 ; feature/completion: +3 for battle menu translation, +7 English AI item text
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/bank09_silver.2bpp", 119 ; feature/completion: +3 for battle menu translation
+INCBIN "garbage/bank09_silver.2bpp", 126 ; feature/completion: +3 for battle menu translation, +7 English AI item text
 	endc
 endc
 
@@ -799,12 +799,12 @@ Unreferenced_Corrupt_LeafyEvosAttacks4:
 if DEF(_GOLD)
 	db $E6, $6D, $C3, $FF ; garbage
 
-INCBIN "garbage/debug/bank10_gold.2bpp", 928 ; feature/completion: +896 for English move names
+INCBIN "garbage/debug/bank10_gold.2bpp", 947 ; feature/completion: +896 for English move names, +19 English move_mon/evolve text
 endc
 if DEF(_SILVER)
 	db 0, 0, 0, 0 ; garbage
 
-INCBIN "garbage/debug/bank10_silver.2bpp", 928 ; feature/completion: +896 for English move names
+INCBIN "garbage/debug/bank10_silver.2bpp", 947 ; feature/completion: +896 for English move names, +19 English move_mon/evolve text
 endc
 else
 	if DEF(_GOLD)
@@ -849,10 +849,10 @@ else
 	db 63, MOVE_SOLARBEAM
 	db 0 ; no more level-up moves
 	db $1E, $DF, $90, $F6 ; garbage
-	INCBIN "garbage/bank10_gold.2bpp", 928 ; feature/completion: +896 for English move names
+	INCBIN "garbage/bank10_gold.2bpp", 947 ; feature/completion: +896 for English move names, +19 English move_mon/evolve text
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/bank10_silver.2bpp", 1114 ; feature/completion: +896 for English move names
+INCBIN "garbage/bank10_silver.2bpp", 1133 ; feature/completion: +896 for English move names, +19 English move_mon/evolve text
 	endc
 endc
 
@@ -916,17 +916,17 @@ SECTION "Bank 14 Garbage", ROMX
 
 if DEF(_DEBUG)
 	if DEF(_GOLD)
-	INCBIN "garbage/debug/bank14_gold.2bpp", 1421 ; feature/completion: +1255 for English Pokémon names, +10 for SGB party menu HP-bar fix
+	INCBIN "garbage/debug/bank14_gold.2bpp", 1489 ; feature/completion: +1255 for English Pokémon names, +10 for SGB party menu HP-bar fix, +62 for English party menu text, +6 English stats screen text
 	endc
 	if DEF(_SILVER)
-	INCBIN "garbage/debug/bank14_silver.2bpp", 1421 ; feature/completion: +1255 for English Pokémon names, +10 for SGB party menu HP-bar fix
+	INCBIN "garbage/debug/bank14_silver.2bpp", 1489 ; feature/completion: +1255 for English Pokémon names, +10 for SGB party menu HP-bar fix, +62 for English party menu text, +6 English stats screen text
 	endc
 else
 	if DEF(_GOLD)
-	INCBIN "garbage/bank14_gold.2bpp", 1421 ; feature/completion: +1255 for English Pokémon names, +10 for SGB party menu HP-bar fix
+	INCBIN "garbage/bank14_gold.2bpp", 1489 ; feature/completion: +1255 for English Pokémon names, +10 for SGB party menu HP-bar fix, +62 for English party menu text, +6 English stats screen text
 	endc
 	if DEF(_SILVER)
-	INCBIN "garbage/bank14_silver.2bpp", 1421 ; feature/completion: +1255 for English Pokémon names, +10 for SGB party menu HP-bar fix
+	INCBIN "garbage/bank14_silver.2bpp", 1489 ; feature/completion: +1255 for English Pokémon names, +10 for SGB party menu HP-bar fix, +62 for English party menu text, +6 English stats screen text
 	endc
 endc
 
@@ -2191,16 +2191,16 @@ if DEF(_DEBUG)
 	cpl
 	ret
 	if DEF(_GOLD)
-INCBIN "garbage/debug/bank3f_gold.2bpp", 45
+INCBIN "garbage/debug/bank3f_gold.2bpp", 164
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/debug/bank3f_silver.2bpp", 45
+INCBIN "garbage/debug/bank3f_silver.2bpp", 164
 	endc
 else
 	if DEF(_GOLD)
-INCBIN "garbage/bank3f_gold.2bpp", 43
+INCBIN "garbage/bank3f_gold.2bpp", 162
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/bank3f_silver.2bpp", 43
+INCBIN "garbage/bank3f_silver.2bpp", 162
 	endc
 endc

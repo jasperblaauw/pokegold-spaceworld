@@ -325,30 +325,29 @@ CancelEvolution:
 	jp EvolveAfterBattle_MasterLoop
 
 CongratulationsYourPokemonText:
-	text "おめでとう！　@"
-	text_from_ram wStringBuffer2
-	text "は"
+	text "Congratulations!"
 	done
 
+; Printed into the same textbox, on the row below the line above.
 EvolvedIntoText:
 	text_start
-	line "@"
+	line "It's a @"
 	text_from_ram wStringBuffer1
-	text "に　しんかした"
+	text "!"
 	done
 
 StoppedEvolvingText:
-	text "あれ<⋯⋯>？"
-	line "@"
+	text "Huh<⋯⋯>? @"
 	text_from_ram wStringBuffer2
-	text "の　へんかが　とまった！"
+	text_start
+	line "stopped evolving!"
 	prompt
 
 EvolvingText:
-	text "<⋯⋯>　おや！？"
-	line "@"
+	text "<⋯⋯> Oh!? @"
 	text_from_ram wStringBuffer2
-	text "の　ようすが<⋯⋯>！"
+	text_start
+	line "is acting odd<⋯⋯>!"
 	done
 
 Evolve_ReloadTilesetIfNotLinked:

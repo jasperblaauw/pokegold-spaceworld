@@ -21,8 +21,8 @@ KnowsMove:
 
 AlreadyKnowsMoveText:
 	text_from_ram wStringBuffer1
-	text "は　すでに"
-	line "@"
+	text " already"
+	line "knows @"
 	text_from_ram wStringBuffer2
-	text "を　おぼえています"
+	text_start
 	prompt

@@ -40,9 +40,9 @@ FieldDebug_PokemartMenu:
 .MenuData:
 	db STATICMENU_CURSOR
 	db 3 ; items
-	db "どうぐを　かう@"
-	db "どうぐを　うる@"
-	db "さようなら@"
+	db "BUY@"
+	db "SELL@"
+	db "GOODBYE@"
 
 .MenuJumptable:
 	dw DebugMart_Buy
@@ -82,17 +82,18 @@ DebugMart_BuyMenuHeader:
 	ret
 
 DebugMart_WelcomeText:
-	text "フレンドリーショップへ　"
-	line "ようこそ！"
+	text "Welcome to the"
+	line "FRIENDLY SHOP!"
 	prompt
 
 DebugMart_PokemartMenuText:
-	text "なんになさいますか？"
+	text "What can I do"
+	line "for you?"
 	done
 
 DebugMart_GoodbyeText:
-	text "またのごりようを"
-	line "おまちしています"
+	text "We hope to see"
+	line "you again!"
 	prompt
 
 DebugMart_Buy:
@@ -141,27 +142,28 @@ DebugMart_Buy:
 	ret
 
 .BuyPromptText: ; unreferenced?
-	text "なにを　おかいあげに"
-	line "なりますか"
+	text "What would you"
+	line "like to buy?"
 	done
 
 .HowManyText:
-	text "いくつ　おかいあげになりますか"
+	text "How many would"
+	line "you like?"
 	done
 
 .ConfirmPurchaseText:
 	text_from_ram wStringBuffer2
-	text "を　@"
+	text " x@"
 	deciram wItemQuantity, 1, 2
-	text "こで"
+	text_start
 	line "@"
 	deciram hMoneyTemp, 3, 6
-	text "円　おかいあげですか？"
+	text "円 Buy them?"
 	done
 
 .UnderDevelopmentText:
-	text "ごめんね"
-	line "かいはつちゅうなんだ"
+	text "Sorry, this is"
+	line "under development."
 	prompt
 
 INCLUDE "data/debug/field_debug_pokemart_items.asm"
@@ -219,7 +221,8 @@ DebugMart_Sell:
 	ret
 
 .CannotSellText:
-	text "つかえないのだ！"
+	text "That can't be"
+	line "used!"
 	prompt
 
 .BallPocket:
@@ -242,8 +245,8 @@ DebugMart_Sell:
 	ret
 
 .ImportantItemText:
-	text "それは　だいじなものです"
-	line "うることは　できません！"
+	text "That item is vital"
+	line "and can't be sold!"
 	prompt
 
 .no_items
@@ -253,8 +256,8 @@ DebugMart_Sell:
 	ret
 
 .NoItemsText:
-	text "どうぐを　ひとつも"
-	next "もっていません！"
+	text "You don't have a"
+	next "single item!"
 	prompt
 
 .ItemQuantityPrompt:
@@ -262,14 +265,15 @@ DebugMart_Sell:
 	call PrintText
 	callfar SelectQuantityToBuy
 	jr c, .got_quantity
-	jr .CannotSellItem
+	jp .CannotSellItem
 
 .got_quantity
 	and a
 	ret
 
 .HowManyItemsText:
-	text "いくつ　うりますか？"
+	text "How many will"
+	line "you sell?"
 	done
 
 DebugMart_LoadItems:
@@ -338,6 +342,6 @@ DebugMart_ShowPlaceholderText:
 	ret
 
 .PlaceholderText:
-	text "かいはつちゅうです"
+	text "Under development."
 	next ""
 	prompt

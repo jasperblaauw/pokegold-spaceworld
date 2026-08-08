@@ -115,18 +115,23 @@ ForgetMove::
 	push hl
 	ld hl, MoveAskForgetText
 	call PrintText
-	hlcoord 10, 8
+; English move names are up to MOVE_NAME_LENGTH - 1 = 12 characters, so the list
+; box needs 13 interior columns (12 for the name + 1 for the cursor). Drawn at
+; the original col 10 it would run off the right edge of the screen, so it starts
+; at col 3 instead — and it is raised to rows 4-13 so that it no longer covers
+; the prompt, which the standard textbox prints on rows 14 and 16.
+	hlcoord 3, 4
 	ld b, NUM_MOVES * 2
 	ld c, MOVE_NAME_LENGTH
 	call DrawTextBox
-	hlcoord 12, 10
+	hlcoord 5, 6
 	ld a, SCREEN_WIDTH * 2
 	ld [wListMovesLineSpacing], a
 	predef ListMoves
 	; w2DMenuData
-	ld a, 10
+	ld a, 6
 	ld [w2DMenuCursorInitY], a
-	ld a, 11
+	ld a, 4
 	ld [w2DMenuCursorInitX], a
 	ld a, [wNumMoves]
 	inc a
@@ -180,54 +185,49 @@ ForgetMove::
 
 LearnedMoveText:
 	text_from_ram wMonOrItemNameBuffer
-	text "は　あたらしく"
+	text " learned"
 	line "@"
 	text_from_ram wStringBuffer2
-	text "を　おぼえた！@"
+	text "!@"
 	sound_dex_fanfare_50_79
 	text_waitbutton
 	text_end
 
 MoveAskForgetText:
-	text "どの　わざを"
-	next "わすれさせたい？"
+	text "Which move should"
+	next "be forgotten?"
 	done
 
 StopLearningMoveText:
-	text "それでは<⋯⋯>　@"
-	text_from_ram wStringBuffer2
-	text "を"
-	line "おぼえるのを　あきらめますか？"
+	text "Well then<⋯⋯>"
+	line "stop learning it?"
 	done
 
 DidNotLearnMoveText:
 	text_from_ram wMonOrItemNameBuffer
-	text "は　@"
+	text " did not"
+	line "learn @"
 	text_from_ram wStringBuffer2
-	text "を"
-	line "おぼえずに　おわった！"
+	text_start
 	prompt
 
 AskForgetMoveText:
-	text_from_ram wMonOrItemNameBuffer
-	text "は　あたらしく"
+	text "A new move<⋯⋯>"
 	line "@"
 	text_from_ram wStringBuffer2
-	text "を　おぼえたい<⋯⋯>！"
+	text "!"
 
-	para "しかし　@"
+	para "But @"
 	text_from_ram wMonOrItemNameBuffer
-	text "は　わざを　４つ"
-	line "おぼえるので　せいいっぱいだ！"
+	text_start
+	line "knows 4 moves!"
 
-	para "@"
-	text_from_ram wStringBuffer2
-	text "の　かわりに"
-	line "ほかの　わざを　わすれさせますか？"
+	para "Forget an old move"
+	line "to make room?"
 	done
 
 Text_1_2_and_Poof:
-	text "１　２の　<⋯⋯>@"
+	text "1, 2 and<⋯⋯>@"
 	text_exit
 	start_asm
 	push de
@@ -238,21 +238,21 @@ Text_1_2_and_Poof:
 	ret
 
 MoveForgotText:
-	text "　ポカン！@"
+	text " Poof!@"
 	text_exit
 	text_start
 
 	para "@"
 	text_from_ram wMonOrItemNameBuffer
-	text "は　@"
+	text " forgot"
+	line "@"
 	text_from_ram wStringBuffer1
-	text "の"
-	line "つかいかたを　きれいに　わすれた！"
+	text "!"
 
-	para "そして<⋯⋯>！"
+	para "And<⋯⋯>!"
 	prompt
 
 MoveCantForgetHMText:
-	text "それは　たいせつなわざです"
-	line "わすれさせることは　できません！"
+	text "That move is too"
+	line "vital to forget!"
 	prompt

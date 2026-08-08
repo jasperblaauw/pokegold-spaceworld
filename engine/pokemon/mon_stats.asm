@@ -105,18 +105,22 @@ PrintTempMonStats::
 	ld c, 10
 	call DrawTextBox
 
+; The English stat names are up to 7 characters ("DEFENSE"), so the 3-digit
+; values sit 7 columns right of the name instead of the Japanese layout's 6.
 	hlcoord 9, 8
-	lb bc, 0, 6
+	lb bc, 0, 7
 	jr .next
 
 .level_up_screen
-	hlcoord 9, 0
+; Widened by one column (left edge 9 -> 8) so the names and the values fit the
+; same 10-column interior the stats-screen layout above uses.
+	hlcoord 8, 0
 	ld b, 10
-	ld c, 9
+	ld c, 10
 	call DrawTextBox
 
-	hlcoord 11, 2
-	lb bc, 0, 4
+	hlcoord 9, 2
+	lb bc, 0, 7
 
 .next
 	push bc
@@ -153,11 +157,11 @@ PrintTempMonStats::
 	ret
 
 .StatNames:
-	db   "こうげき" ; "ATTACK"
-	next "ぼうぎょ" ; "DEFENSE"
-	next "とくこう" ; "SPCL.ATK"
-	next "とくぼう" ; "SPCL.DEF"
-	next "すばやさ" ; "SPEED"
+	db   "ATTACK"
+	next "DEFENSE"
+	next "SP.ATK"
+	next "SP.DEF"
+	next "SPEED"
 	next "@"
 
 GetGender::

@@ -322,11 +322,10 @@ AI_Switch:
 	ret
 
 .EnemyWithdrewText:
-	text_from_ram wOTClassName
-	text "は"
+	text "The foe recalled"
 	line "@"
 	text_from_ram wEnemyMonNickname
-	text "をひっこめた！"
+	text "!"
 	prompt
 
 AIUseFullHeal:
@@ -457,10 +456,8 @@ PrintText_UsedItemOn:
 
 .EnemyUsedOnText
 	text_from_ram wOTClassName
-	text "は　@"
-	text_from_ram wEnemyMonNickname
-	text "に"
+	text " used"
 	line "@"
 	text_from_ram wStringBuffer1
-	text "を　つかった"
+	text "!"
 	prompt

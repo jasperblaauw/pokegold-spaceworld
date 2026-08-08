@@ -288,10 +288,10 @@ PlacePartyMember::
 	ret
 
 .string_able:
-	db "おぼえられる@" ; "ABLE"
+	db "ABLE@"
 
 .string_not_able:
-	db "おぼえられない@" ; "NOT ABLE"
+	db "NOT ABLE@"
 
 .PlacePartyMonEvoStoneCompatibility:
 	push hl
@@ -348,9 +348,9 @@ PlacePartyMember::
 	jr .PrintLevel
 
 .string_can_use
-	db "つかえる@" ; "ABLE"
+	db "ABLE@"
 .string_cant_use
-	db "つかえない@" ; "NOT ABLE"
+	db "NOT ABLE@"
 
 .PlacePartyMonGender
 	xor a
@@ -370,10 +370,10 @@ PlacePartyMember::
 	jp .PrintLevel
 
 .male
-	db "オス@"
+	db "♂@"
 
 .female
-	db "メス@"
+	db "♀@"
 
 PrintPartyText_GetSGBLayout::
 	ld b, SGB_PARTY_MENU
@@ -446,90 +446,94 @@ PrintPartyMenuText::
 	dw ChooseSecondMonString
 
 ChooseAMonString:
-	text "#を　えらんで　ください"
+	text "Choose a #."
 	done
 
 UseOnWhichPKMNString:
-	text "どの#に　つかいますか？"
+	text "Use it on which"
+	line "#?"
 	done
 
 WhichPKMNString:
-	text "どの#を　だしますか？"
+	text "Send out which"
+	line "#?"
 	done
 
 TeachWhichPKMNString:
-	text "どの#に　おしえますか？"
+	text "Teach it to which"
+	line "#?"
 	done
 
 MoveToWhereString:
-	text "どこに　いどうしますか？"
+	text "Move it to where?"
 	done
 
 ChooseFirstMonString:
-	text "１ぴきめの　#を"
-	line "えらんで　ください"
+	text "Choose the first"
+	line "#."
 	done
 
 ChooseSecondMonString:
-	text "２ひきめの　#を"
-	line "えらんで　ください"
+	text "Choose the second"
+	line "#."
 	done
 
 RecoveredSomeHPText:
 	text_from_ram wStringBuffer1
-	text "の　たいりょくが"
-	line "@"
+	text_start
+	line "recovered @"
 	deciram wHPBarHPDifference, 2, 3
-	text "　かいふくした"
+	text " HP!"
 	done
 
 CuredOfPoisonText:
 	text_from_ram wStringBuffer1
-	text "の　どくは"
-	line "きれい　さっぱり　なくなった！"
+	text " was"
+	line "cured of poison!"
 	done
 
 RidOfParalysisText:
 	text_from_ram wStringBuffer1
-	text "の　からだの"
-	line "しびれが　とれた"
+	text " was"
+	line "rid of paralysis!"
 	done
 
 BurnWasHealedText:
 	text_from_ram wStringBuffer1
-	text "の"
-	line "やけどが　なおった"
+	text "'s"
+	line "burn was healed!"
 	done
 
 _WasDefrostedText:
 	text_from_ram wStringBuffer1
-	text "の　からだの"
-	line "こおりが　とけた"
+	text " was"
+	line "thawed out!"
 	done
 
 _WokeUpText:
 	text_from_ram wStringBuffer1
-	text "は"
-	line "めを　さました"
+	text_start
+	line "woke up!"
 	done
 
 HealthReturnedText:
 	text_from_ram wStringBuffer1
-	text "は"
-	line "けんこうになった！"
+	text_start
+	line "became healthy!"
 	done
 
 RevitalizedText:
 	text_from_ram wStringBuffer1
-	text "は"
-	line "げんきを　とりもどした！"
+	text_start
+	line "regained energy!"
 	done
 
 _GrewToLevelText:
 	text_from_ram wStringBuffer1
-	text "の　レベルが@"
+	text_start
+	line "grew to level @"
 	deciram wCurPartyLevel, 1, 3
-	text "になった@"
+	text "!@"
 	sound_dex_fanfare_50_79
 	text_waitbutton
 	text_end
@@ -558,12 +562,11 @@ PlaceStatusString::
 	or b
 	pop de
 	jr nz, PlaceNonFaintStatus
-	; "FNT" equivalent string
-	ld a, 'ひ'
+	ld a, 'F'
 	ld [hli], a
-	ld a, 'ん'
+	ld a, 'N'
 	ld [hli], a
-	ld [hl], 'し'
+	ld [hl], 'T'
 	and a
 	ret
 
@@ -579,38 +582,41 @@ PlaceNonFaintStatus::
 	jr nz, .ParString
 	and SLP
 	ret z
-	; "SLP" equivalent string
-	ld a, 'ね'
+	ld a, 'S'
 	ld [hli], a
-	ld a, 'む'
+	ld a, 'L'
 	ld [hli], a
-	ld [hl], 'り'
+	ld [hl], 'P'
 	ret
 
 .PsnString
-	ld a, '<DO>'
+	ld a, 'P'
 	ld [hli], a
-	ld [hl], 'く'
+	ld a, 'S'
+	ld [hli], a
+	ld [hl], 'N'
 	ret
 
 .BrnString
-	ld a, 'や'
+	ld a, 'B'
 	ld [hli], a
-	ld a, 'け'
+	ld a, 'R'
 	ld [hli], a
-	ld [hl], '<DO>'
+	ld [hl], 'N'
 	ret
 
 .FrzString
-	ld a, 'こ'
+	ld a, 'F'
 	ld [hli], a
-	ld a, 'お'
+	ld a, 'R'
 	ld [hli], a
-	ld [hl], 'り'
+	ld [hl], 'Z'
 	ret
 
 .ParString
-	ld a, 'ま'
+	ld a, 'P'
 	ld [hli], a
-	ld [hl], 'ひ'
+	ld a, 'A'
+	ld [hli], a
+	ld [hl], 'R'
 	ret

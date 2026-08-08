@@ -1473,29 +1473,30 @@ GivePoke::
 
 WasSentToBillsPCText:
 	text_from_ram wStringBuffer1
-	text "は　マサキの　ところへ"
-	line "てんそうされた！"
+	text " went to"
+	line "BILL's <PC>!"
 	prompt
 
 WasSentToSomeonesPCText:
 	text_from_ram wStringBuffer1
-	text "は　だれかの　<PC>に" ; "was transferred to"
-	line "てんそうされた！" ; "Someone's PC!"
+	text " went to"
+	line "someone's <PC>!"
 	prompt
 
 NewDexDataText:
 	text_from_ram wStringBuffer1
-	text "の　データが　あたらしく" ; "New Dex data will"
-	line "#ずかんに　セーブされます！@" ; "be added for (MON)!"
+	text "'s data"
+	line "was recorded!@"
 	sound_slot_machine_start
 	text_waitbutton
 	text_end
 
 GotItText:
-	text "ゲットした　@" ; "Got it!"
+	text "Got it! @"
 
-AskGiveNicknameText: ; unreferenced
+; Reached by falling through from GotItText, not by its own pointer.
+AskGiveNicknameText:
 	text_from_ram wStringBuffer1
-	text "に" ; "Would you like to"
-	line "なまえを　つけますか？" ; "give it a name?"
+	text_start
+	line "Give it a name?"
 	done

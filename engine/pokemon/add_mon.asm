@@ -49,29 +49,28 @@ RecievePokemon:
 	jp PrintText
 
 RecievePokemonText:
-	text "<PLAYER>は"
+	text "<PLAYER> got"
 	line "@"
 	text_from_ram wStringBuffer1
-	text "を　てにいれた！@"
+	text "!@"
 	sound_dex_fanfare_50_79
 	text_end
 
 BoxCantHoldText:
-	text "#を　もちきれないので"
-	line "<PC>の　ボックス@"
-	text_from_ram wStringBuffer2
-	text "　に"
-	cont "@"
+	text "The party is full!"
+	line "@"
 	text_from_ram wBoxMonNicknames
-	text "を　てんそうした！"
+	text " went to"
+	cont "the <PC> BOX!"
 	done
 
 BoxFullText:
-	text "#を　もちきれません！"
+	text "The party is full!"
 
-	para "ボックスも　いっぱいで"
-	line "てんそうできません！"
+	para "The BOX is full,"
+	line "so nothing can be"
+	cont "sent there!"
 
-	para "#センターなどで"
-	line "ボックスを　かえてきて　ください"
+	para "Swap the BOX at a"
+	line "# CENTER!"
 	done

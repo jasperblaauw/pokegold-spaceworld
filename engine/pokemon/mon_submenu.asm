@@ -27,7 +27,9 @@ MonSubmenu::
 
 .MenuHeader:
 	db MENU_BACKUP_TILES ; flags
-	menu_coords 11, 0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1
+; Left edge is col 6 (not 11) so a full-width English field-move name
+; ("WATER SPORT", 11 chars, placed at col 8) fits before the right border.
+	menu_coords 6, 0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1
 	dw 0
 	db 1 ; default option
 
@@ -288,6 +290,6 @@ BattleMonMenu:
 .MenuText:
 	db STATICMENU_CURSOR | STATICMENU_NO_TOP_SPACING
 	db 3
-	db "とりかえる@"   ; Switch
-	db "つよさをみる@" ; Stats
-	db "キャンセル@"   ; Cancel
+	db "SWITCH@"
+	db "STATS@"
+	db "CANCEL@"
