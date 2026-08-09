@@ -33,7 +33,133 @@ a downstream romhack now. Correctness = **builds warning-clean + boots & plays i
 
 ---
 
-## CURRENT SESSION (2026-08-09) — lab mail gate, tooling, Pokédex UI
+## CURRENT SESSION (2026-08-09, round 14) — textbox delay, actually fixed
+
+Round 13's items 2 and 3 (Pokédex) are **PLAYTEST-CONFIRMED working**. Only the textbox delay
+survived, and rounds 11-13 had been optimising the wrong thing.
+
+### 4. Intermittent 1-frame black flash on textbox open ✅ (PLAYTEST-CONFIRMED fixed)
+Follow-up from item 1's playtest: mostly fixed, but occasionally a ~1-frame black horizontal band
+flashed across part of the screen right before the box appeared.
+
+`hWY` is only a HRAM **shadow** — `VBlank`/`VBlank2`/`VBlank3` (`home/vblank.asm`) copy it into the
+real `rWY` once per VBlank *interrupt*, on their own schedule. `ReanchorBGMap_NoOAMUpdate`
+(`engine/overworld/init_map.asm`) sets `hWY = 0` (engaging the window-as-freeze-frame) and then called
+`.Transfer` immediately — a raw `STAT_BUSY`-polled loop that blanks the live `vBGMap0` outside VBlank,
+not through the VBlank-synced copy queue. Nothing forced a VBlank to actually happen between those two
+lines, so the CPU could win the race: if `.Transfer` started before the *next* real VBlank interrupt
+fired, the real `rWY` was still the old value, the window wasn't actually covering anything yet, and
+`.Transfer` blanked the still-displayed `vBGMap0` in full view — a black band for whatever part of the
+screen the raster hadn't scanned past yet. Intermittent because it depends on exactly where in the
+VBlank cycle the reanchor happened to run.
+
+Fix: `call DelayFrame` between `ldh [hWY], a` and `call .Transfer` — the same primitive `WaitBGMap`
+already uses, guaranteeing at least one real VBlank (and thus the `rWY` copy) has happened before
+touching VRAM outside the copy queue. Costs one extra frame (~11 total now, still nowhere near
+retail's ~12). Verified in the assembled ROM: `call DelayFrame` (`$0317`) immediately precedes
+`call .Transfer` (`$6506`) in the decoded bytes.
+**Corollary for later VRAM-bandwidth work:** any raw out-of-VBlank VRAM write that depends on `hWY`/
+`hSCX`/`hSCY`/`hBGMapMode`/`hBGMapAddress` having already taken effect needs an explicit `DelayFrame`
+(or a `WaitBGMap`) after the HRAM write — setting the shadow is not the same as the hardware register
+being updated.
+
+### 5. Start menu open feels slow — attempted fix REVERTED, playtest broke the game ❌
+User's follow-up: "the start menu still feels as delayed as NPC dialogue used to." Diagnosis (still
+believed correct, just not yet fixed): `DisplayStartMenu` (`engine/menu/start_menu.asm`) calls
+`ReanchorMap` (freeze→redraw→**reveal**, all three back to back — the same shared
+`ReanchorBGMap_NoOAMUpdate`/`LoadFonts_NoOAMUpdate` pair textboxes use) and only *then* calls
+`OpenMenu`, which draws the box border and item strings live on top of the already-revealed plain map,
+via the ordinary `hBGMapMode=1`+`AutoBgMapTransfer` path with no `WaitBGMap`. So the reveal itself is
+never late here — the box is just never drawn before it. Same family of bug as item 1, mirrored: there
+content was ready early and the reveal was late; here the reveal is early and the content paints in
+live afterward, a visible two-stage "pause, then pop."
+
+**Attempted fix (BUILD-VERIFIED, byte-decoded correct, then PLAYTEST-FAILED and reverted):** split
+`OpenMenu` (`home/menu.asm`) into `OpenMenu_Draw` (box + item text + `hBGMapMode=1`) and `OpenMenu_Wait`
+(`GetStaticMenuJoypad`), and had `DisplayStartMenu`'s first open draw the menu behind the freeze before
+revealing — bankswitch to `ReanchorBGMap_NoOAMUpdate`'s bank, freeze, bankswitch back to this file's own
+bank (needed because `OpenMenu_Draw` reads this file's own ROMX string/item tables, so unlike
+`ReanchorMap`'s textbox equivalent the freeze and the draw can't share one bankswitch), `PlaySFX` +
+`LoadMenuHeader` + `GetStartMenuState` + `OpenMenu_Draw` + `WaitBGMap`, bankswitch again, reveal via
+`LoadFonts_NoOAMUpdate`, bankswitch back, `OpenMenu_Wait`. Every instruction sequence and bank target
+was confirmed correct via `.sym`-guided decode of the assembled ROM (`ReanchorBGMap_NoOAMUpdate` →
+bankswitch → `OpenMenu_Draw` → `WaitBGMap` → bankswitch → `LoadFonts_NoOAMUpdate` → bankswitch →
+`OpenMenu_Wait`, in that order) and it built warning-clean on all 8 ROMs.
+
+**On the user's playtest it broke the game outright:** pressing START opened nothing, distorted the
+BGM, and left the player free to walk around and enter buildings as if no menu were open at all. That
+combination — audio corruption plus the input state clearly never reaching the menu's joypad-wait —
+smells like a ROM-bank race rather than a logic error in the draw/reveal reordering itself (stack
+balance and label scoping were both checked by hand and looked correct; the byte decode matched intent
+exactly). Prime suspect: the *extra* bankswitch round-trips this added. `ReanchorMap`'s original,
+still-safe pattern is **one** bankswitch spanning both the freeze and the reveal, with nothing else
+running in between; this attempt needed **two** separate bankswitch pairs with real work (SFX, string
+loads, `GetStartMenuState`, `WaitBGMap`'s 3-frame halt-and-wait-for-VBlank) sandwiched *between* them,
+multiplying the window in which a VBlank interrupt — which does its own `hROMBank`-save-and-restore
+dance around `UpdateSound` (`home/vblank.asm`) — could land at a moment this code didn't anticipate.
+Static analysis didn't find the exact race, and it needs to be actually understood before trying again,
+not just avoided by luck.
+
+**Reverted in full** (`home/menu.asm`'s `OpenMenu` and `engine/menu/start_menu.asm`'s
+`DisplayStartMenu` are back to their pre-session bytes, confirmed via `git diff` — zero diff on either
+file) — all 8 ROMs rebuild clean. **The delay is still unfixed.** Do not re-attempt the same
+two-extra-bankswitch shape without first understanding why it corrupted audio; if retried, get the user
+to playtest a *minimal* change first (e.g. just moving the reveal later with no bank juggling, even if
+that alone doesn't fully fix the two-stage pop) rather than landing the whole restructure in one shot.
+
+### 1. Textbox delay: the reveal was after the font, not before it ✅ (BUILD-VERIFIED, PLAYTEST-PENDING)
+The copying was never the problem. **The finished textbox was hidden behind the window layer while
+the font uploaded.**
+
+`LCDC_DEFAULT` has `LCDC_WIN_ON | LCDC_WIN_9C00` and `hWX` = 7, so the window draws `vBGMap1` from
+screen (0,0). `ReanchorBGMap_NoOAMUpdate` uses that as a **freeze-frame**: it paints a snapshot of
+the map into `vBGMap1`, sets `hWY` = 0 so the window covers the whole screen, and only then blanks
+`vBGMap0` and repaints it — with the textbox in it. Nothing of that is seen. The box becomes visible
+at the single instruction that puts `hWY` back to `SCREEN_HEIGHT_PX`, and in this codebase that was
+the **last** thing `LoadFonts_NoOAMUpdate` did — after `LoadFontPartial`. So the box sat complete and
+invisible for the entire font copy, and box + first line of text appeared together after ~1 s.
+
+pret/pokegold's `LoadFonts_NoOAMUpdate.LoadGFX` does it in the other order — extras, `hWY` = `$90`,
+sprites, *then* `LoadStandardFont` — and that is now the order here. The font lands in the
+walking-sprite half of VRAM, which nothing on screen uses while the objects are frozen, so copying it
+in plain view is invisible; the box's own tiles (frame `┌`…`┘` = `$79`, blank `　` = `$7f`) live in
+`vChars2` above `vExteriorTileset` and are never clobbered by the overworld. Same instructions,
+reordered — no ROM cost.
+
+Frames to a visible box are now **~10 (0.17 s)**, against retail's ~12: `WaitBGMap` 3 + `.Transfer`
+~1 + `WaitBGMap` 3 + `WaitBGMap` 3. `TextboxCleanup` already revealed before `ReloadObjectGFX`, which
+is why closing never felt as bad as opening.
+
+Round 13's `.Transfer` rewrite (1024-byte `STAT_BUSY`-polled VRAM fill instead of 16 frames of
+`Request2bpp`) is **kept** — it is still 16 frames off both halves of every textbox, it is entirely
+behind the window, and it is now most of what is left of the pre-reveal cost.
+
+### 2. Pokédex `No.NNN` did not follow the cursor ✅ (round 13, PLAYTEST-CONFIRMED)
+Not a caching bug — the number reached the tilemap every time and never reached VRAM.
+`ShowPokedexMenu` ends on `WaitForAutoBgMapTransfer`, which **clears `hBGMapMode`**, so the listing
+screen runs with the automatic BG map transfer off and a tilemap write is inert until something
+redraws the whole screen (pressing A, or scrolling the list). `Pokedex_PrintSelectedNumber` now
+pushes its six tiles into `vBGMap0` itself, same `STAT_BUSY` poll, but **with interrupts off** — a
+store dropped there would leave a wrong digit on screen, where the reanchor's margin fill can afford
+to lose one. Three frames of `WaitBGMap` per cursor step was the alternative and would have felt worse.
+
+### 3. Pokédex hand cursor sat on top of the button it selected ✅ (round 13, PLAYTEST-CONFIRMED)
+The hand's anchor was never touched last round; the *buttons* moved. They used to occupy columns
+12-17 with two spare columns after them, and the hand pointed **left** at each button from its right,
+standing in that spare space. The widened listing box pushed the cluster to columns 14-19, flush with
+the screen edge: nothing to the right to stand in, so the old anchor put the hand squarely over the
+label, and its fingertip (sprite-local row 5) sat above the shorter English label instead of on it.
+
+`gfx/pokedex/cursor.png` is mirrored — it now points right, like every other cursor in the game — and
+the hand approaches from the left: anchor `depixel 5, 14, 1, 0`, landing on columns 12-13 with the
+fingertip on the button's left edge and centred on the label rows. The `+24 px / +16 px` offset table
+still matches the 3-tile, 2-row button pitch. As in the Japanese layout, the hand's body covers part
+of the *neighbouring* button on the right-hand column; with 3-tile buttons packed edge to edge there
+is nowhere else for it to go.
+
+---
+
+## PREVIOUS SESSION (2026-08-09) — lab mail gate, tooling, Pokédex UI
 
 All 8 ROMs build warning-clean; every new routine was decoded back out of
 `pokegold-spaceworld-debug.gb` and checked byte by byte.
@@ -103,9 +229,7 @@ scratchpad. **Needs a screenshot check.**
 
 Garbage reclaimed this session: Bank 34 +64, Bank 10 +96, Bank 23 +64.
 
-### ⚠️ STILL OPEN from round 11: textbox opens after a ~1 s delay (BUILD-VERIFIED, PLAYTEST-PENDING)
-
-**This is the one thing to playtest, and it is the change most likely to be wrong.**
+### Round 11's font work (still the other half of the textbox cost)
 
 The delay **cannot be cached away.** `LoadOverworldSprite` writes each sprite's standing frames at
 `hl` and its walking frames `$800` higher — which *is* `vFont`. So `TextboxCleanup` →
@@ -126,11 +250,10 @@ What was done instead — copy only what was actually lost:
 - Every routine that writes those VRAM regions must call `InvalidateVRAMFonts`: `LoadMap`,
   `LoadHPBar`, `LoadBackpackGraphics`, `LoadBirdSpriteGraphics_Old` all do now.
 
-**PLAYTEST:** talk to several NPCs in a row indoors (bedroom, lab) and outdoors (Silent Hill, Route 1),
-read signs, open/close the START menu — text must always be **letters, never sprite garbage or a mix**.
-Repeat straight after a battle, after the PACK, the summary screen, the Pokédex, and a map change.
-**Any garbled row = a VRAM writer still missing its `InvalidateVRAMFonts`.** Indoor textboxes should
-open noticeably faster; outdoor ones only a little.
+**PLAYTEST (still owed):** talk to several NPCs in a row indoors (bedroom, lab) and outdoors (Silent
+Hill, Route 1), read signs, open/close the START menu — text must always be **letters, never sprite
+garbage or a mix**. Repeat straight after a battle, after the PACK, the summary screen, the Pokédex,
+and a map change. **Any garbled row = a VRAM writer still missing its `InvalidateVRAMFonts`.**
 
 ---
 
@@ -183,6 +306,40 @@ open noticeably faster; outdoor ones only a little.
     off. Keep a `KNOWN_OK` set of hand-verified false positives so re-runs are silent.
   - a **ROM text decoder** (label → `.sym` → charmap decode, plus a hexdump mode) for verifying
     emitted bytes. Charmap note: build the byte→glyph map so later Latin aliases win over the kana.
+
+### VRAM bandwidth (read before optimising any "why is this screen slow" complaint)
+- **Before counting frames, find the frame the user actually sees.** The overworld runs with the
+  window layer enabled (`LCDC_DEFAULT` = `… | LCDC_WIN_9C00 | LCDC_WIN_ON`, `hWX` = 7), and
+  `ReanchorBGMap_NoOAMUpdate` uses it as a freeze-frame: snapshot the map into `vBGMap1`, `hWY` = 0 to
+  cover the screen, rebuild `vBGMap0` underneath, `hWY` = `SCREEN_HEIGHT_PX` to reveal. **Everything
+  before that last store is free wall-clock; everything after it is on screen.** So where the reveal
+  sits in the routine matters more than how fast any of the copying is — three rounds were spent
+  optimising copies before anyone checked (round 14). When a screen "takes ages to appear", check the
+  `hWY` ordering *first*, then start counting `DelayFrame`s. Corollary: work that writes VRAM nothing
+  on screen is currently reading (the font, which lands in the walking-sprite half while the objects
+  are frozen) belongs **after** the reveal.
+- **Count `DelayFrame`s, not routines.** Every bulk VRAM write goes through `Request2bpp`/`Request1bpp`,
+  which copy **8 tiles per VBlank and burn one extra frame draining the last chunk**. So a copy of
+  `n` tiles costs `ceil(n/8) + 1` frames. `WaitBGMap` is a flat **3** (`AutoBgMapTransfer` does a third
+  of the screen per VBlank). Add them up before theorising — the answer is usually one loop you didn't
+  suspect, not the one being blamed.
+- **Do not raise the 8-tile chunk.** `VBlankCopyDouble` costs ~65 M-cycles per tile, so 8 tiles is
+  ~520 of the ~1140 M-cycles in DMG VBlank; OAM DMA (~160), `AnimateTileset` and `Joypad` take most of
+  the rest. 12 tiles overruns VBlank and corrupts whatever it was writing. `Request1bpp`/`Request2bpp`
+  do force `hBGMapMode` to 0 for the duration, so `AutoBgMapTransfer` at least is not competing.
+- **The escape hatch is writing outside VBlank.** VRAM is only locked in mode 3, so
+  `ldh a, [rSTAT] / and STAT_BUSY / jr nz` before each store lets a fill or copy run during HBlank as
+  well — roughly a frame's worth of throughput per *four* frames of `Request2bpp`. Two live examples:
+  `ReanchorBGMap_NoOAMUpdate.Transfer` and `Pokedex_PrintSelectedNumber`.
+  - **The catch:** an interrupt landing between the test and the store drops that byte, and this build
+    takes a **STAT interrupt every scanline** (`rSTAT` = `STAT_MODE_0` at init, `IE_STAT` set), so it is
+    not a theoretical risk. Wrap the loop in `di`/`ei` when a lost byte would be visible; skip the `di`
+    only when it provably would not be (`.Transfer` writes an off-screen margin that the following
+    `WaitBGMap` repaints anyway). Never hold `di` for thousands of bytes.
+- **`hBGMapMode` is off more often than you think.** `WaitBGMap` sets it; `WaitForAutoBgMapTransfer`
+  **clears** it. Screens that end their redraw with the latter — the Pokédex listing does — leave the
+  automatic transfer off, so any later `PlaceString`/`PrintNumber` writes the tilemap and *nothing
+  happens on screen* until the next full redraw. Symptom: "it only updates when I open a menu".
 
 ### Layout / box geometry
 - `DrawTextBox hl, b, c` → interior `[x+1, x+c]` on rows `[y+1, y+b]`.
@@ -260,18 +417,25 @@ open noticeably faster; outdoor ones only a little.
 
 ## NEXT UP
 
-### Immediate — two playtests owed
-1. **Round 11's textbox change** — textboxes first and hard (see above). Nothing else is blocked on it.
-2. **The Pokédex**, which is new this session and is layout-heavy. Open the dex after Oak hands it
-   over and check, in this order: (a) the **listing** — long names like CHARMANDER/JIGGLYPUFF render
-   in full inside the box, the caught ball is in column 1, and the selection box (8 tiles) sits over
-   the name; (b) **`No.NNN` in the top-right updates as you move the cursor**, including when the list
-   scrolls past the top/bottom; (c) the **button cluster** in its new columns 14-19, with English
-   labels (DATA/CRY/AREA and NUM/A-Z/FIND/BACK), and the arrow buttons still animate when pressed;
-   (d) the **A-button menu** with the cursor on a *top* list row — the hand cursor must stay visible
-   (this is the 10-sprites-per-scanline limit); (e) **SELECT → type search**: the header, the type
-   list, the chosen-type box, SEARCH/MORE/CANCEL, and a search that finds nothing; (f) the **dex
-   entry** screen's HT/WT rows lining up with their numbers; (g) **START → Unown forms** if reachable.
+### Immediate — one playtest owed
+1. **Textboxes.** This round added a `DelayFrame` to fix an intermittent 1-frame black flash on open
+   (see item 4 above) — **needs the flash specifically retested**: talk to several NPCs in a row and
+   confirm it's gone (or rare enough it wasn't just luck of the timing before). Target behaviour is
+   retail Gold: NPC turns, **box appears almost immediately**
+   (~0.17 s), *then* the dialogue types into it. The box and the text should read as two separate
+   events — if they still appear together after a pause, the reveal is being blocked again.
+   - Check **both halves** (opening and closing) and both **indoors and outdoors**. Outdoors dirties
+     more of the font, but that now happens *after* the box is up, so the box should appear at the
+     same speed either way; only the wait before the first character differs.
+   - *Correctness:* the round-11 VRAM checklist above still applies — text must always be letters,
+     never sprite garbage. Retest after a battle, the PACK, the summary screen, the Pokédex and a map
+     change.
+   - **New this round:** the font now uploads while the screen is visible. It writes the walking-sprite
+     half of VRAM, so the frozen NPCs and player should be completely still and correct for the whole
+     ~0.15 s after the box opens — **any flicker or garbled sprite in that window** means something on
+     screen is reading OBJ tiles `$80-$ff` and the reveal has to move back after `LoadFontPartial`.
+   - Also still worth a glance (round 13, untested): the reanchor fills the BG map outside VBlank, so
+     watch the **screen edges** right after a textbox closes and as you take the first step.
 
 ### Milestone 1 content (playtest-led; do not dump large untested assembly)
 - **M1c — first route.** `maps/QuietHills.asm` has 5 `InitTrainerBattle` calls + wild grass, reachable

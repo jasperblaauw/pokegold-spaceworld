@@ -223,7 +223,35 @@ Pokedex_PrintSelectedNumber:
 	hlcoord 16, 1
 	ld de, wTempSpecies
 	lb bc, PRINTNUM_LEADINGZEROS | 1, 3
-	jp PrintNumber
+	call PrintNumber
+
+; Writing the tilemap is not enough here. The listing screen runs with the
+; automatic BG map transfer switched *off* -- ShowPokedexMenu ends on
+; WaitForAutoBgMapTransfer, which clears hBGMapMode -- so nothing carries these
+; tiles into VRAM until something redraws the whole screen. That is why the
+; number appeared to change only when the A menu opened or the list scrolled.
+; Turning the transfer back on would cost three frames on every cursor step for
+; six tiles, so push those six across by hand instead, each one while the PPU is
+; not reading VRAM. Interrupts are held off: unlike the reanchor's throwaway
+; margin fill, a store dropped here would leave a wrong digit on screen.
+	hlcoord 13, 1
+	ld de, vBGMap0 + 1 * TILEMAP_WIDTH + 13
+	ld c, 6
+	di
+.copy
+	ld a, [hli]
+	ld b, a
+.wait
+	ldh a, [rSTAT]
+	and STAT_BUSY
+	jr nz, .wait
+	ld a, b
+	ld [de], a
+	inc de
+	dec c
+	jr nz, .copy
+	ei
+	ret
 
 String_DexNumber:
 	db "No.@"
@@ -491,7 +519,7 @@ Pokedex_InitAButtonMenu:
 	ld a, A_BUTTON_MENU_NO_UNOWN
 .DisplayButtons
 	call ShowPokedexMenu
-	depixel 4, 16, 4, 4
+	depixel 5, 14, 1, 0 ; see Pokedex_HandCursorControls.PositionOffsetTable
 	ld a, SPRITE_ANIM_OBJ_POKEDEX_HAND_CURSOR
 	call InitSpriteAnimStruct
 	ld a, c
@@ -645,7 +673,7 @@ Pokedex_InitSelectButtonMenu:
 	ld a, SELECT_BUTTON_MENU
 	call ShowPokedexMenu
 
-	depixel 4, 16, 4, 4
+	depixel 5, 14, 1, 0 ; see Pokedex_HandCursorControls.PositionOffsetTable
 	ld a, SPRITE_ANIM_OBJ_POKEDEX_HAND_CURSOR
 	call InitSpriteAnimStruct
 
@@ -1157,8 +1185,25 @@ Pokedex_HandCursorControls:
 	ld [hl], a
 	ret
 
+; The hand sits beside the button it selects, not on it: the two calls that place
+; it (Pokedex_InitAButtonMenu, Pokedex_InitSelectButtonMenu) anchor it so its
+; 2x2 tiles land on screen columns 12-13, with the fingertip on column 13's last
+; pixel and the buttons starting at column 14. Row-wise it is centred on the
+; label, whose five pixel rows sit in the middle of each cell's twelve-pixel
+; interior.
+;
+; feature/completion: the buttons used to occupy columns 12-17 and the hand
+; pointed *left* at them from columns 14-16 and 17-19, i.e. from their right,
+; using the two spare columns at the end of the row. Widening the listing box
+; pushed the cluster to columns 14-19, flush with the screen edge -- there is no
+; longer anything to the right of a button to stand in, and the old anchor left
+; the hand sitting squarely on top of the label it was pointing at. So
+; gfx/pokedex/cursor.png is mirrored (it now points right, the way every other
+; cursor in the game does) and the hand approaches from the left instead. As
+; before, the hand's body covers part of the *neighbouring* button on the right
+; column; with 3-tile buttons packed edge to edge there is nowhere else for it.
 .PositionOffsetTable:
-	; x offset, y offset
+	; x offset, y offset -- one button across (3 tiles) and one button down (2 rows)
 	db 0,     0
 	db 0,     8 * 2
 	db 8 * 3, 0
