@@ -375,18 +375,31 @@ db 27
 	db 1
 	dbsprite -1, -1,  7,  7, $00, 0
 
+; feature/completion: widened from five tiles to eight, following the Pokedex
+; listing's name field (columns 2-11 now that English names are up to ten
+; characters). Eight is the ceiling, not a design choice: the Game Boy draws at
+; most ten sprites per scanline, and the A-button menu's hand cursor is two tiles
+; wide on the same scanlines, so a wider box would make the hand cursor disappear.
+; The box therefore covers columns 2-9; the last two columns of a ten-character
+; name sit just outside it.
 .OAMData_PokedexCursor:
-	db 10
+	db 16
 	dbsprite  0, -1,  0,  0, $00, 0
 	dbsprite  1, -1,  0,  0, $01, 0
 	dbsprite  2, -1,  0,  0, $01, 0
 	dbsprite  3, -1,  0,  0, $01, 0
-	dbsprite  4, -1,  0,  0, $00, 0 | OAM_XFLIP
+	dbsprite  4, -1,  0,  0, $01, 0
+	dbsprite  5, -1,  0,  0, $01, 0
+	dbsprite  6, -1,  0,  0, $01, 0
+	dbsprite  7, -1,  0,  0, $00, 0 | OAM_XFLIP
 	dbsprite  0,  0,  0,  0, $00, 0 | OAM_YFLIP
 	dbsprite  1,  0,  0,  0, $01, 0 | OAM_YFLIP
 	dbsprite  2,  0,  0,  0, $01, 0 | OAM_YFLIP
 	dbsprite  3,  0,  0,  0, $01, 0 | OAM_YFLIP
-	dbsprite  4,  0,  0,  0, $00, 0 | OAM_XFLIP | OAM_YFLIP
+	dbsprite  4,  0,  0,  0, $01, 0 | OAM_YFLIP
+	dbsprite  5,  0,  0,  0, $01, 0 | OAM_YFLIP
+	dbsprite  6,  0,  0,  0, $01, 0 | OAM_YFLIP
+	dbsprite  7,  0,  0,  0, $00, 0 | OAM_XFLIP | OAM_YFLIP
 
 .OAMData_PokedexSlowpoke1:
 	db 15

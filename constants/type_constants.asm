@@ -38,4 +38,5 @@ DEF TYPES_END EQU const_value ; 1c
 
 DEF NUM_TYPES EQU TYPES_END + UNUSED_TYPES - UNUSED_TYPES_END ; 12
 
-DEF POKEDEX_TYPE_STRING_LENGTH EQU 5
+; Stride of data/types/search_strings.asm: 7 characters + "@".
+DEF POKEDEX_TYPE_STRING_LENGTH EQU 8

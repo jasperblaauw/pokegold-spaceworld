@@ -251,14 +251,14 @@ Pokedex_DisplaySearchOptions:
 	ld [hl], '　'
 
 	; Place new cursor
-	hlcoord 13, 12
+	hlcoord 12, 12
 	ld [hl], '▶'
 	xor a
 	ld [wDexArrowCursorPosIndex], a
 	pop de
 
 	; Place the options loaded at de
-	hlcoord 14, 12
+	hlcoord 13, 12
 	call PlaceString
 	call Pokedex_WaitBGMap
 
@@ -288,16 +288,20 @@ Pokedex_DisplayTypeSearch:
 	lb bc, 2, 6
 	call ClearBox
 
+; The vertical split moved one column left (list box 0-11 -> 0-10, right boxes
+; 12-19 -> 11-19) so the selected-type box has a 7-column interior (12-18), which
+; is what the longest English search string (PSYCHIC) needs. This matches the
+; split the Unown screen below already uses.
 	hlcoord 0, 2
-	lb bc, 16, 12
+	lb bc, 16, 11
 	call Pokedex_PlaceBorder
 
-	hlcoord 12, 2
-	lb bc, 6, 8
+	hlcoord 11, 2
+	lb bc, 6, 9
 	call Pokedex_PlaceBorder
 
-	hlcoord 12, 10
-	lb bc, 8, 8
+	hlcoord 11, 10
+	lb bc, 8, 9
 	call Pokedex_PlaceBorder
 
 	hlcoord 1, 1
@@ -315,21 +319,28 @@ Pokedex_DisplayTypeSearch:
 	call Pokedex_WaitBGMap
 	ret
 
+; Row 1, columns 1-11 (the ClearBox above the list box covers 1-10; column 11 is
+; screen background). Must stay on one row — <NEXT> steps two rows, which would
+; land on the list box's top border.
 .SearchByTypeString:
-	db "ぞくせい　で　さがす@"
+	db "TYPE SEARCH@"
 
+; Row 1, columns 13-18 (its own ClearBox).
 .SelectedString:
-	db "えらんだもの@"
+	db "CHOSEN@"
 
+; Drawn at column 13 inside the options box (interior 12-18), so six columns.
+; <NEXT> steps two rows, which is what puts these on rows 12/14/16 to match
+; Pokedex_GetTypeSelectedMenuCursorPos.
 FirstTypeSelectedMenu:
-	db   "さがす"
-	next "もうひとつ"
-	next "やめる@"
+	db   "SEARCH"
+	next "MORE"
+	next "CANCEL@"
 
 SecondTypeSelectedMenu:
-	db   "さがす"
-	next "やりなおし"
-	next "やめる@"
+	db   "SEARCH"
+	next "REDO"
+	next "CANCEL@"
 
 Pokedex_PlaceSearchScreenTypeList:
 	ld a, [wDexListingCursor]
@@ -356,12 +367,12 @@ endr
 Pokedex_PlaceSearchScreenTypeStrings:
 	ld a, [wDexSearchMonType1]
 	call .check_type
-	hlcoord 14, 4
+	hlcoord 12, 4
 	call PlaceString
 
 	ld a, [wDexSearchMonType2]
 	call .check_type
-	hlcoord 14, 6
+	hlcoord 12, 6
 	call PlaceString
 	ret
 
@@ -377,7 +388,7 @@ Pokedex_PlaceSearchScreenTypeStrings:
 	ret
 
 .NoTypeString
-db "ーーーー@"
+db "-------@" ; fills the same seven columns a type name would
 
 Pokedex_GetTypeString:
 	ld e, a
@@ -547,9 +558,9 @@ Pokedex_GetTypeSelectedMenuCursorPos:
 	ret
 
 .CursorPosTable:
-	dwcoord 13, 12
-	dwcoord 13, 14
-	dwcoord 13, 16
+	dwcoord 12, 12
+	dwcoord 12, 14
+	dwcoord 12, 16
 
 Pokedex_SearchForMons:
 	ld a, [wDexSearchMonType2]
@@ -802,11 +813,14 @@ Pokedex_InitUnownMode:
 	ret
 
 .UnownVariantsString:
-	db "アンノーン　の　しゅるい@"
+	db "UNOWN'S FORMS@"
 
+; Row 4 is overwritten at columns 13-14 by the two-digit count printed straight
+; after this, so it only supplies the blanks. <NEXT> steps two rows, putting
+; "FOUND!" on row 6 in the box's six usable columns (13-18).
 .VariantsDiscoveredString:
-	db   "　　しゅるい"
-	next "　はっけん！@"
+	db   "      "
+	next "FOUND!@"
 
 PrintUnownList:
 	ld a, [wDexUnownCount]
@@ -846,8 +860,10 @@ PrintUnownListEntry:
 	call PrintNumber
 	ret
 
+; Five characters, with the two-digit index printed immediately after it — seven
+; columns, the same width the Japanese name occupied.
 .UnownString:
-	db "アンノーン@"
+	db "UNOWN@"
 
 Pokedex_UnownModeHandleDPadInput:
 	ld hl, hJoySum

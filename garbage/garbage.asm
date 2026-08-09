@@ -790,12 +790,12 @@ Unreferenced_Corrupt_LeafyEvosAttacks4:
 if DEF(_GOLD)
 	db $E6, $6D, $C3, $FF ; garbage
 
-INCBIN "garbage/debug/bank10_gold.2bpp", 947 ; feature/completion: +896 for English move names, +19 English move_mon/evolve text
+INCBIN "garbage/debug/bank10_gold.2bpp", 1043 ; feature/completion: +896 English move names, +19 move_mon/evolve text, +32 Pokedex type search strings, +64 Pokedex list layout
 endc
 if DEF(_SILVER)
 	db 0, 0, 0, 0 ; garbage
 
-INCBIN "garbage/debug/bank10_silver.2bpp", 947 ; feature/completion: +896 for English move names, +19 English move_mon/evolve text
+INCBIN "garbage/debug/bank10_silver.2bpp", 1043 ; feature/completion: +896 English move names, +19 move_mon/evolve text, +32 Pokedex type search strings, +64 Pokedex list layout
 endc
 else
 	if DEF(_GOLD)
@@ -840,10 +840,10 @@ else
 	db 63, MOVE_SOLARBEAM
 	db 0 ; no more level-up moves
 	db $1E, $DF, $90, $F6 ; garbage
-	INCBIN "garbage/bank10_gold.2bpp", 947 ; feature/completion: +896 for English move names, +19 English move_mon/evolve text
+	INCBIN "garbage/bank10_gold.2bpp", 1043 ; feature/completion: +896 English move names, +19 move_mon/evolve text, +32 Pokedex type search strings, +64 Pokedex list layout
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/bank10_silver.2bpp", 1133 ; feature/completion: +896 for English move names, +19 English move_mon/evolve text
+INCBIN "garbage/bank10_silver.2bpp", 1229 ; feature/completion: +896 English move names, +19 move_mon/evolve text, +32 Pokedex type search strings, +64 Pokedex list layout
 	endc
 endc
 
@@ -1194,17 +1194,17 @@ SECTION "Bank 23 Garbage", ROMX
 
 if DEF(_DEBUG)
 	if DEF(_GOLD)
-	INCBIN "garbage/debug/bank23_gold.2bpp", 45
+	INCBIN "garbage/debug/bank23_gold.2bpp", 109
 	endc
 	if DEF(_SILVER)
-	INCBIN "garbage/debug/bank23_silver.2bpp", 45
+	INCBIN "garbage/debug/bank23_silver.2bpp", 109
 	endc
 else
 	if DEF(_GOLD)
-	INCBIN "garbage/bank23_gold.2bpp", 45
+	INCBIN "garbage/bank23_gold.2bpp", 109
 	endc
 	if DEF(_SILVER)
-	INCBIN "garbage/bank23_silver.2bpp", 45
+	INCBIN "garbage/bank23_silver.2bpp", 109
 	endc
 endc
 
@@ -1962,11 +1962,11 @@ DEF Bank34StarterDexOffset EQU 13
 DEF Bank34CorruptOffset EQU $17
 	if DEF(_GOLD)
 	DEF Bank34OldOffset EQU 5
-INCBIN "garbage/debug/bank34_gold.2bpp", 3246 ; feature/completion: +3000 reclaimed (Phase 4 English map dialogue)
+INCBIN "garbage/debug/bank34_gold.2bpp", 3310 ; feature/completion: +3064 reclaimed (Phase 4 map dialogue; +64 lab PC mail gate)
 	endc
 	if DEF(_SILVER)
 	DEF Bank34OldOffset EQU 0
-	INCBIN "garbage/debug/bank34_silver.2bpp", 3246 ; feature/completion: +3000 reclaimed (Phase 4 English map dialogue)
+	INCBIN "garbage/debug/bank34_silver.2bpp", 3310 ; feature/completion: +3064 reclaimed (Phase 4 map dialogue; +64 lab PC mail gate)
 	endc
 else
 DEF Bank34NonDebugOffset EQU $1E
@@ -1974,10 +1974,10 @@ DEF Bank34OldOffset EQU -4
 DEF Bank34CorruptOffset EQU -7
 DEF Bank34StarterDexOffset EQU 37
 	if DEF(_GOLD)
-	INCBIN "garbage/bank34_gold.2bpp", 3246 ; feature/completion: +3000 reclaimed (Phase 4 English map dialogue)
+	INCBIN "garbage/bank34_gold.2bpp", 3310 ; feature/completion: +3064 reclaimed (Phase 4 map dialogue; +64 lab PC mail gate)
 	endc
 	if DEF(_SILVER)
-	INCBIN "garbage/bank34_silver.2bpp", 3280 ; feature/completion: +3000 reclaimed (Phase 4 English map dialogue)
+	INCBIN "garbage/bank34_silver.2bpp", 3344 ; feature/completion: +3064 reclaimed (Phase 4 map dialogue; +64 lab PC mail gate)
 	endc
 endc
 

@@ -152,25 +152,31 @@ ShowPokedexMenu:
 	lb bc, 1, 3
 	call PrintNumber
 
-	hlcoord 12, 12
+	hlcoord 14, 12
 	ld de, String_SEEN
 	call PlaceString
-	hlcoord 12, 15
+	hlcoord 14, 15
 	ld de, String_OWN
 	call PlaceString
+
+	; Redrawing the screen wipes the number, so force it to be re-printed.
+	ld a, -1
+	ld [wDexShownNumber], a
+	call Pokedex_PrintSelectedNumber
 
 	call WaitBGMap
 	call WaitForAutoBgMapTransfer
 	ret
 
+; Both sit in the counts box (interior columns 14-18), one row above the number
+; PrintNumber right-aligns at columns 16-18.
 String_SEEN:
-	db "みつけたかず@"
+	db "SEEN@"
 
 String_OWN:
-	db "つかまえたかず@"
+	db "OWN@"
 
 Pokedex_PlaceStartOrSelectString:
-	hlcoord 11, 9
 	and a
 	jr z, .Select_SEARCH
 	cp $03
@@ -179,21 +185,56 @@ Pokedex_PlaceStartOrSelectString:
 
 .Select_SEARCH:
 	ld de, String_SELECT_SEARCH
-	call PlaceString
+	call .PlaceTwoRows
 	xor a
 	ret
 
 .Start_TYPE:
 	ld de, String_START_VARIANTS
-	call PlaceString
+	call .PlaceTwoRows
 	ld a, $03
 	ret
 
+; The button name and the action it performs do not fit together in the nine
+; columns (11-19) left free beside the listing box, and <NEXT> steps two rows,
+; which would land on the counts box's top border at row 10. So each prompt is
+; two "@"-terminated strings placed by two calls, on rows 8 and 9.
+.PlaceTwoRows:
+	hlcoord 13, 8
+	call PlaceString
+	inc de ; step past the terminator PlaceString stopped on
+	hlcoord 14, 9
+	jp PlaceString
+
+; The dex number of the entry under the cursor, in the free rows above the button
+; cluster. The listing itself no longer has room for it. Cheap to call every frame:
+; it only touches the tilemap when the selection actually changed.
+Pokedex_PrintSelectedNumber:
+	call Pokedex_GetSelectedMon
+	ld a, [wTempSpecies]
+	ld hl, wDexShownNumber
+	cp [hl]
+	ret z
+	ld [hl], a
+
+	hlcoord 13, 1
+	ld de, String_DexNumber
+	call PlaceString
+	hlcoord 16, 1
+	ld de, wTempSpecies
+	lb bc, PRINTNUM_LEADINGZEROS | 1, 3
+	jp PrintNumber
+
+String_DexNumber:
+	db "No.@"
+
 String_SELECT_SEARCH:
-	db "セレクト▶けんさく@"
+	db "SELECT▶@"
+	db "SEARCH@"
 
 String_START_VARIANTS:
-	db "スタート▶しゅるい@"
+	db "START▶@"
+	db "FORMS@"
 
 Pokedex_ClearScreen:
 	ld hl, wTileMap
@@ -206,11 +247,18 @@ Pokedex_ClearScreen:
 	or b
 	jr nz, .loop
 
+; The listing box was eleven columns wide (interior 1-9), which gave the species
+; name the five columns a kana name needed. English names are up to
+; MON_NAME_LENGTH - 1 = 10, so it is now thirteen wide (interior 1-11): the caught
+; ball sits in column 1 and the name gets columns 2-11. The dex number no longer
+; fits on the row and is shown for the selected entry in the right panel instead
+; (Pokedex_PrintSelectedNumber). Everything on the right shifts two columns over,
+; which leaves exactly the six the button cluster needs (columns 14-19).
 	hlcoord 0, 0
-	lb bc, 18, 11
+	lb bc, 18, 13
 	call Pokedex_PlaceBorder
-	hlcoord 11, 10
-	lb bc, 8, 9
+	hlcoord 13, 10
+	lb bc, 8, 7
 	call Pokedex_PlaceBorder
 	ret
 
@@ -280,7 +328,9 @@ Pokedex_RunJumptable:
 	dw Pokedex_Exit
 
 .Init:
-	depixel 4, 6, 4, 0
+; The selection box follows the name field, which moved from columns 5-9 to 2-11.
+; Its x tile is one more than the leftmost column it covers.
+	depixel 4, 3, 4, 0
 	ld a, SPRITE_ANIM_OBJ_POKEDEX_CURSOR
 	call InitSpriteAnimStruct
 
@@ -301,6 +351,7 @@ Pokedex_InitList:
 	ret
 
 Pokedex_List:
+	call Pokedex_PrintSelectedNumber
 	ld hl, wPokedexInputFlags
 	ld a, [hl]
 	bit PRESSED_B_F, a
@@ -700,9 +751,9 @@ Pokedex_PrintListing:
 	and a
 	jr z, .unidentified
 
-	ld de, wTempByteValue
-	lb bc, PRINTNUM_LEADINGZEROS | 1, 3
-	call PrintNumber
+; The dex number used to be printed here, ahead of the ball and the name. It moved
+; to the right panel so the name can use the full width; the store above still
+; matters, because wTempByteValue is wTempSpecies, which the two calls below read.
 
 ; Here, only seen Pokémon are listed in the first place, so this effectively does nothing.
 	call Pokedex_PlaceDefaultStringIfNotSeen
@@ -753,7 +804,7 @@ Pokedex_PlaceDefaultStringIfNotSeen:
 	ret
 
 .NameNotSeen:
-db "ーーーーー@"
+db "-----@" ; same bytes as the kana dashes it replaces ('ー' and '-' share $e3)
 
 ; Gets the species of the currently selected Pokémon. This corresponds to the
 ; position of the cursor in the main listing.
@@ -873,8 +924,9 @@ Pokedex_PlaceBorder:
 
 Pokedex_PlaceButtons:
 ; Fill 6-by-6 tile area with gray/orange space.
+; Columns 14-19: the widened listing box now owns everything up to column 12.
 	push af
-	hlcoord 12, 2
+	hlcoord 14, 2
 	ld a, $10
 	ld de, SCREEN_WIDTH - 6
 	ld b, 6
@@ -903,22 +955,22 @@ Pokedex_PlaceButtons:
 
 PlaceArrowButtons:
 ; Up
-	hlcoord 14, 6
+	hlcoord 16, 6
 	ld a, $40
 	call .PutButton
 
 ; Down
-	hlcoord 14, 2
+	hlcoord 16, 2
 	ld a, $42
 	call .PutButton
 
 ; Previous page
-	hlcoord 16, 4
+	hlcoord 18, 4
 	ld a, $44
 	call .PutButton
 
 ; Next page
-	hlcoord 12, 4
+	hlcoord 14, 4
 	ld a, $46
 	call .PutButton
 	ret
@@ -938,39 +990,39 @@ PlaceArrowButtons:
 
 PlaceOptionButtons_A:
 ; DATA
-	hlcoord 12, 2
+	hlcoord 14, 2
 	ld a, $5
 	call PutOptionButton
 ; CRY
-	hlcoord 15, 2
+	hlcoord 17, 2
 	ld a, $8
 	call PutOptionButton
 ; AREA
-	hlcoord 12, 4
+	hlcoord 14, 4
 	ld a, $b
 	call PutOptionButton
 ; Notably uses the Select Button menu's BACK button, instead of とじる ("CLOSE"),
 ; likely due to how it's split in the graphics data.
-	hlcoord 15, 4
+	hlcoord 17, 4
 	ld a, $2a
 	call PutOptionButton
 	ret
 
 PlaceOptionButtons_Select:
 ; NUMBER
-	hlcoord 12, 2
+	hlcoord 14, 2
 	ld a, $24
 	call PutOptionButton
 ; ABCDE
-	hlcoord 15, 2
+	hlcoord 17, 2
 	ld a, $27
 	call PutOptionButton
 ; SEARCH
-	hlcoord 12, 4
+	hlcoord 14, 4
 	ld a, $21
 	call PutOptionButton
 ; BACK
-	hlcoord 15, 4
+	hlcoord 17, 4
 	ld a, $2a
 	call PutOptionButton
 	ret
@@ -1323,19 +1375,19 @@ Pokedex_CursorControls:
 Pokedex_PressButtonSprites:
 	ld a, [wPokedexInputFlags]
 
-	hlcoord 14, 6
+	hlcoord 16, 6
 	bit PRESSED_DOWN_F, a
 	jr nz, .PressButton
 
-	hlcoord 14, 2
+	hlcoord 16, 2
 	bit PRESSED_UP_F, a
 	jr nz, .PressButton
 
-	hlcoord 16, 4
+	hlcoord 18, 4
 	bit PRESSED_RIGHT_F, a
 	jr nz, .PressButton
 
-	hlcoord 12, 4
+	hlcoord 14, 4
 	bit PRESSED_LEFT_F, a
 	jr nz, .PressButton
 	ret

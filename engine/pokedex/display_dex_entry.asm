@@ -124,9 +124,13 @@ _DisplayDexEntry:
 	call PlaceString
 	ret
 
+; Both rows start at column 9. The placeholder '?' columns must line up with the
+; digits PrintNumber writes over them: height at columns 13-16 + 'm' at 17,
+; weight at columns 12-16 + "kg" at 17-18. <NEXT> steps TWO rows in this engine
+; (home/text.asm), which is why the weight row is row 8, not row 7.
 PokedexText_HeightWeight:
-	db   "たかさ　　？？？", POKEDEX_m
-	next "おもさ　　？？？", POKEDEX_k, POKEDEX_g
+	db   "HT  ????", POKEDEX_m
+	next "WT ?????", POKEDEX_k, POKEDEX_g
 	text_end
 
 PokedexText_Pokemon:

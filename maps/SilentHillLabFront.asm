@@ -694,9 +694,39 @@ SilentHillLabFrontTextPointers2:
 	dw SilentHillLabFrontText3
 
 SilentHillLabFrontText1:
+; feature/completion: the authored mail is an M3 story beat — Oak's assistant writing
+; that the world is in an uproar over Oak going missing — which reads oddly while Oak
+; is standing in this very room. Gated on OAK_MISSING; before that beat the same
+; assistant's mail carries only the search report, which foreshadows it either way.
+	CheckEvent OAK_MISSING
 	ld hl, SilentHillLabFrontTextString1
+	jr nz, .ok
+	ld hl, SilentHillLabFrontTextString1Early
+.ok
 	call OpenTextbox
 	ret
+
+SilentHillLabFrontTextString1Early:
+	text "Looking at the"
+	line "<PC>, there was"
+	cont "mail!"
+
+	para "<⋯⋯> <⋯⋯> <⋯⋯>"
+	line "PROF.OAK! That"
+	cont "certain #"
+	cont "you asked me to"
+	cont "find: far from"
+	cont "finding it, I"
+	cont "can't even grasp"
+	cont "a single clue."
+
+	para "Maybe that thing"
+	line "really is a"
+	cont "fictitious #"
+	cont "after all<⋯⋯>"
+	cont "<⋯⋯> From your"
+	cont "assistant"
+	done
 
 SilentHillLabFrontTextString1:
 	text "Looking at the"

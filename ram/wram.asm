@@ -304,7 +304,11 @@ wDexConvertedMonType:: db
 
 wDexSearchResultCount:: db
 
-	ds 4
+; Last dex number Pokedex_PrintSelectedNumber drew, so it only redraws on a change.
+; Taken from this arm's own padding, so nothing after it moves.
+wDexShownNumber:: db
+
+	ds 3
 
 wDexPlaySlowpokeAnimation:: db
 
