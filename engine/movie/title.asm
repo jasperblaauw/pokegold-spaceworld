@@ -90,6 +90,7 @@ TitleSequenceInit::
 	ld a, BANK(TitleScreenHoOhGFX)
 	call FarCopyData
 
+	call InvalidateVRAMFonts ; the logo goes where the font lives
 	ld hl, TitleScreenLogoGFX
 	ld de, vChars1
 	ld bc, 58 tiles

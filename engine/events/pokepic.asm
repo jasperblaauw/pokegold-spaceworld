@@ -12,6 +12,7 @@ Pokepic::
 	ld a, [wCurPartySpecies]
 	ld [wCurSpecies], a
 	call GetBaseData
+	call InvalidateVRAMFonts ; the front sprite goes where the font lives
 	ld de, vChars1
 	call LoadMonFrontSprite
 	ld a, [wMenuBorderTopCoord]

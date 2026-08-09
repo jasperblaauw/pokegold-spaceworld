@@ -158,7 +158,7 @@ ItemNames::
 	db "TM HOLDER@" ; TM_HOLDER
 	db "MAIL@" ; MAIL
 	db "BALL HOLDER@" ; BALL_HOLDER
-	db "BAG@" ; BAG
+	db "PACK@" ; BAG
 	db "IMPORTANT BA@" ; IMPORTANT_BAG
 	db "POISON STONE@" ; POISON_STONE
 	db "?@" ; A3

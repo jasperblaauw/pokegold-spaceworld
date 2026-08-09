@@ -7,34 +7,19 @@
 	const PCITEM_TURN_OFF
 
 PokemonCenterPC::
-; Also used for player's PC (both in debug and in demo mode)
-
-	ld a, [wDebugFlags]
-	bit DEBUG_FIELD_F, a
-	jp z, PC_Demo
+; Also used for player's PC.
+;
+; feature/completion: the demo gated the whole thing behind DEBUG_FIELD_F --
+; normal play fell straight through to PC_Demo, the YOROIDORI news page, so the
+; bedroom PC (and every Pokémon Center PC) did nothing. Removed that gate, and
+; with it the _DEBUG "wasn't connected" branch, which tested the same flag and
+; would now refuse in normal play. The demo's no-party refusal is gone too: the
+; item storage this menu leads to is useful before you have a Pokémon.
 	call PC_PlayBootSound
-
-; Return if there are no mons in party
-	ret c
 
 ; Open the player's PC menu
 	ld hl, .TurnOnText
 	call MenuTextBoxBackup
-
-if DEF(_DEBUG)
-	ld hl, wDebugFlags
-	bit DEBUG_FIELD_F, [hl]
-	jr nz, .DisplayMenu
-	ld hl, .NotConnectedText
-	call MenuTextBoxBackup
-	ret
-
-.NotConnectedText:
-	text "<⋯⋯> It seems it"
-	line "wasn't connected"
-	cont "<⋯⋯>"
-	prompt
-endc
 
 .DisplayMenu:
 	ld hl, .TopMenu
@@ -89,30 +74,21 @@ endc
 	dw TurnOffPC
 
 .WhichPC:
-	db 4
+; PCITEM_BILLS_PC (the box system) is deliberately left out: it is still
+; untranslated and boxes do not survive a save, so depositing a Pokémon there
+; would lose it. Put it back once M1e lands.
+	db 3
 	db PCITEM_PLAYERS_PC
-	db PCITEM_BILLS_PC
 	db PCITEM_OAKS_PC
 	db PCITEM_TURN_OFF
 	db -1
 
 PC_PlayBootSound:
-	ld a, [wPartyCount]
-	and a
-
-; Don't play the bootup sound if player has at least one mon
-	ret nz
-
 	ld de, SFX_CHOOSE_PC_OPTION
 	call PlaySFX
-	ld hl, .NoPokemonText
-	call OpenTextbox
-
-; Return carry when there are no mons in party
-	scf
 	ret
 
-.NoPokemonText:
+Unreferenced_NoPokemonText: ; the demo refused to boot the PC without a party
 	text "Beep!"
 	line "People without"
 	cont "# can't use"
@@ -120,7 +96,7 @@ PC_PlayBootSound:
 	text_end
 	text_end
 
-PC_Demo:
+PC_Demo: ; unreferenced (see PokemonCenterPC)
 	ld de, SFX_CHOOSE_PC_OPTION
 	call PlaySFX
 	ld hl, .SkarmoryText
@@ -339,7 +315,7 @@ PlayerDepositItemMenu:
 	callfar GetPocket2Status
 	callfar DrawBackpack
 .loop
-	callfar DebugBackpackLoop
+	callfar BackpackLoop
 	jr c, .quit
 	call .TryDepositItem
 	jr .loop

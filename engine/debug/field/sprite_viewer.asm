@@ -280,6 +280,7 @@ FieldDebug_SpriteViewer:
 	ld c, a
 	callfar LoadOverworldSprite_PlayerSlot
 
+	call InvalidateVRAMFonts ; copies the sprite over the font
 	ld hl, vSprites tile $0c
 	ld de, vFont
 	ld bc, 12

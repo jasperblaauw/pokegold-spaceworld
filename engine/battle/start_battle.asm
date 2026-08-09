@@ -423,9 +423,9 @@ AddBattleMoneyToAccount:
 
 BattleText_PlayerPickedUpPayDayMoney:
 	text "<PLAYER> picked up"
-	line "@"
+	line "¥@"
 	deciram wPayDayMoney, 3, 6
-	text " yen!"
+	text "!"
 	prompt
 
 ShowLinkBattleParticipantsAfterEnd:

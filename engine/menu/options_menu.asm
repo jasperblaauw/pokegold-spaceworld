@@ -343,6 +343,7 @@ DisplayOptionsMenu:
 	ret
 
 .LoadGFX_DrawDisplay
+	call InvalidateVRAMFonts ; overwrites a vChars1 font tile
 	ld de, vChars1 tile $70
 	ld hl, TrainerCardGFX
 	ld bc, 1 tiles

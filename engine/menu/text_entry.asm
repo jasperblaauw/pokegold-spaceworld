@@ -649,6 +649,7 @@ LoadNamingScreenGFX:
 	call ClearSprites
 	callfar ClearSpriteAnims
 	call LoadFont
+	call InvalidateVRAMFonts ; the keyboard glyphs below overwrite vChars1 tiles
 
 	ld de, TextScreenGFX_End
 	ld hl, vChars1 tile $70

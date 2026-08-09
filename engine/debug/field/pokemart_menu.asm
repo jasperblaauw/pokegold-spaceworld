@@ -76,9 +76,12 @@ DebugMart_BuyMenuHeader:
 	ld d, h
 	ld e, l
 	pop hl
+; English writes the currency symbol before the figure; the six digits still
+; end on the same column as before.
+	ld [hl], '¥'
+	inc hl
 	ld c, 3 | PRINTNUM_LEADINGZEROS
 	call PrintBCDNumber
-	ld [hl], '円'
 	ret
 
 DebugMart_WelcomeText:
@@ -156,9 +159,9 @@ DebugMart_Buy:
 	text " x@"
 	deciram wItemQuantity, 1, 2
 	text_start
-	line "@"
+	line "¥@"
 	deciram hMoneyTemp, 3, 6
-	text "円 Buy them?"
+	text " Buy them?"
 	done
 
 .UnderDevelopmentText:
@@ -181,7 +184,7 @@ DebugMart_Sell:
 	ld [wActiveBackpackPocket], a
 .bag_loop
 	callfar DrawBackpack
-	callfar DebugBackpackLoop
+	callfar BackpackLoop
 	jr c, .close_bag
 	call .DoBagFunctions
 	jr nc, .bag_loop

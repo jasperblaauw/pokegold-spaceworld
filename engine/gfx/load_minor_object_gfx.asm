@@ -44,6 +44,9 @@ _LoadMinorObjectGFX::
 	ld a, d
 	ld [wVBCopyFarDst+1], a
 .ContinueFarCopy:
+; Emotes, jump shadows and the Gramps/Clefairy walk frames all land in vChars1,
+; on top of the text font -- every real copy in this file funnels through here.
+	call InvalidateVRAMFonts
 	ld a, b
 	ld [wVBCopyFarSize], a
 	ret

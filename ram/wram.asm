@@ -1216,7 +1216,21 @@ wCurMartCount:: db
 ; per step taken on encounter terrain by TryWildBattle. (Repurposed padding.)
 wWildEncounterCooldown:: db
 
-	ds 14
+; feature/completion: how many tiles at the start of vFont may no longer hold
+; the text font, so PrepareTextbox can re-upload just that much instead of all
+; NUM_FONT_TILES of it. The overworld's walking sprite frames share this VRAM,
+; so LoadOverworldSprite records exactly how far into the font it reached;
+; anything else that writes there calls InvalidateVRAMFonts, which marks the
+; whole font dirty. 0 = the font is intact. (Repurposed padding.)
+wDirtyFontTiles:: db
+
+; Nonzero while the font-extra tiles and the textbox frame are known to be
+; sitting at vChars2 $60+. Nothing in the overworld touches that region (the
+; tilesets end just below it), so unlike the font it survives from one textbox
+; to the next. (Repurposed padding.)
+wFontExtraInVRAM:: db
+
+	ds 12
 
 wListPointer:: dw
 wNamesPointer:: dw

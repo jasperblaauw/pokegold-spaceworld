@@ -5,17 +5,17 @@ SECTION "High Home Garbage", ROM0
 
 if DEF(_DEBUG)
 	if DEF(_GOLD)
-	INCBIN "garbage/debug/high_home_gold.2bpp", 8
+	INCBIN "garbage/debug/high_home_gold.2bpp", 56 ; feature/completion: +32 ROM0 for InvalidateVRAMFonts and its call sites
 	endc
 	if DEF(_SILVER)
-	INCBIN "garbage/debug/high_home_silver.2bpp", 8
+	INCBIN "garbage/debug/high_home_silver.2bpp", 56 ; feature/completion: +32 ROM0 for InvalidateVRAMFonts and its call sites
 	endc
 else
 	if DEF(_GOLD)
-	INCBIN "garbage/high_home_gold.2bpp", 8
+	INCBIN "garbage/high_home_gold.2bpp", 56 ; feature/completion: +32 ROM0 for InvalidateVRAMFonts and its call sites
 	endc
 	if DEF(_SILVER)
-	INCBIN "garbage/high_home_silver.2bpp", 8
+	INCBIN "garbage/high_home_silver.2bpp", 56 ; feature/completion: +32 ROM0 for InvalidateVRAMFonts and its call sites
 	endc
 endc
 
@@ -26,12 +26,10 @@ if DEF(_DEBUG)
 
 DEF Old_FarCallFunctionAddress EQU $2f91
 
-Unreferenced_Corrupt__InterlaceMergeSpriteBuffers.interlaceLoopFlipped:
-	xor a
-	dec a
-	ldh [hConnectionStripLength], a
-	jr nz, @ - 25 ; Unknown function
-	ret
+; feature/completion: removed a 7-byte corrupt-data reconstruction of
+; _InterlaceMergeSpriteBuffers.interlaceLoopFlipped (zero references; the real
+; routine lives in home/uncompress.asm) to make ROM0 room for
+; InvalidateVRAMFonts and its call sites.
 
 Unreferenced_Corrupt_GetPartyParamLocation_Old:
 	push bc
@@ -50,17 +48,10 @@ Unreferenced_Corrupt_DoItemEffect_Old:
 	ld hl, $67C4 ; Early location for _DoItemEffect
 	jp Old_FarCallFunctionAddress
 
-Unreferenced_Corrupt_CheckTossableItem_Old:
-	push hl
-	push de
-	push bc
-	ld hl, $53E5 ; Early location for _CheckTossableItem
-	ld a, BANK(_CheckTossableItem)
-	call Old_FarCallFunctionAddress
-	pop bc
-	pop de
-	pop hl
-	ret
+; feature/completion: removed a 15-byte corrupt-data reconstruction of
+; _CheckTossableItem's old farcall wrapper (zero references, same as the
+; _InterlaceMergeSpriteBuffers one above) to make ROM0 room for the split
+; font/font-extra invalidation. Recoverable from git.
 
 Unreferenced_Corrupt_GetBattleAnimPointer_Old:
 	ld a, BANK(BattleAnimations)
@@ -412,10 +403,10 @@ Unreferenced_Corrupt_GetMapMusic::
 .not_route
 	ld de, MUSIC_VIRIDIAN_CITY
 	ret
-INCBIN "garbage/home_gold.2bpp", 50
+INCBIN "garbage/home_gold.2bpp", 74 ; feature/completion: +8 ROM0 for InvalidateVRAMFonts
 endc
 if DEF(_SILVER)
-INCBIN "garbage/home_silver.2bpp", 246
+INCBIN "garbage/home_silver.2bpp", 270 ; feature/completion: +8 ROM0 for InvalidateVRAMFonts
 endc
 endc
 
@@ -534,17 +525,17 @@ if DEF(_DEBUG)
 	db $18, $00 ; leftover of previous graphics
 Unreferenced_UnusedLeaderNameGFX:: INCBIN "gfx/trainer_card/unused_leader_name.2bpp"
 	if DEF(_GOLD)
-INCBIN "garbage/debug/bank04_gold.2bpp", 478 ; feature/completion: +81 English lowercase keyboard, +139 English start_menu text, +31 English check_tossable/mon_menu text
+INCBIN "garbage/debug/bank04_gold.2bpp", 678 ; feature/completion: +81 English lowercase keyboard, +139 English start_menu text, +31 English check_tossable/mon_menu text
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/debug/bank04_silver.2bpp", 478 ; feature/completion: +81 English lowercase keyboard, +139 English start_menu text, +31 English check_tossable/mon_menu text
+INCBIN "garbage/debug/bank04_silver.2bpp", 678 ; feature/completion: +81 English lowercase keyboard, +139 English start_menu text, +31 English check_tossable/mon_menu text
 	endc
 else
 	if DEF(_GOLD)
-INCBIN "garbage/bank04_gold.2bpp", 412 ; feature/completion: +81 English lowercase keyboard, +139 English start_menu text, +31 English check_tossable/mon_menu text
+INCBIN "garbage/bank04_gold.2bpp", 612 ; feature/completion: +81 English lowercase keyboard, +139 English start_menu text, +31 English check_tossable/mon_menu text
 endc
 	if DEF(_SILVER)
-INCBIN "garbage/bank04_silver.2bpp", 412 ; feature/completion: +81 English lowercase keyboard, +139 English start_menu text, +31 English check_tossable/mon_menu text
+INCBIN "garbage/bank04_silver.2bpp", 612 ; feature/completion: +81 English lowercase keyboard, +139 English start_menu text, +31 English check_tossable/mon_menu text
 	endc
 endc
 
@@ -629,17 +620,17 @@ SECTION "Bank 0b Garbage", ROMX
 
 if DEF(_DEBUG)
 	if DEF(_GOLD)
-INCBIN "garbage/debug/bank0b_gold.2bpp", 111
+INCBIN "garbage/debug/bank0b_gold.2bpp", 211 ; feature/completion: +100 English tm_holder text
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/debug/bank0b_silver.2bpp", 111
+INCBIN "garbage/debug/bank0b_silver.2bpp", 211 ; feature/completion: +100 English tm_holder text
 	endc
 else
 	if DEF(_GOLD)
-INCBIN "garbage/bank0b_gold.2bpp", 111
+INCBIN "garbage/bank0b_gold.2bpp", 211 ; feature/completion: +100 English tm_holder text
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/bank0b_silver.2bpp", 111
+INCBIN "garbage/bank0b_silver.2bpp", 211 ; feature/completion: +100 English tm_holder text
 	endc
 endc
 
@@ -1203,17 +1194,17 @@ SECTION "Bank 23 Garbage", ROMX
 
 if DEF(_DEBUG)
 	if DEF(_GOLD)
-	INCBIN "garbage/debug/bank23_gold.2bpp", 37
+	INCBIN "garbage/debug/bank23_gold.2bpp", 45
 	endc
 	if DEF(_SILVER)
-	INCBIN "garbage/debug/bank23_silver.2bpp", 37
+	INCBIN "garbage/debug/bank23_silver.2bpp", 45
 	endc
 else
 	if DEF(_GOLD)
-	INCBIN "garbage/bank23_gold.2bpp", 37
+	INCBIN "garbage/bank23_gold.2bpp", 45
 	endc
 	if DEF(_SILVER)
-	INCBIN "garbage/bank23_silver.2bpp", 37
+	INCBIN "garbage/bank23_silver.2bpp", 45
 	endc
 endc
 
@@ -1222,17 +1213,17 @@ SECTION "Bank 24 Garbage", ROMX
 
 if DEF(_DEBUG)
 	if DEF(_GOLD)
-	INCBIN "garbage/debug/bank24_gold.2bpp", 66 ; feature/completion: 23 reclaimed (English clock dialog)
+	INCBIN "garbage/debug/bank24_gold.2bpp", 98 ; feature/completion: 23 reclaimed (English clock dialog)
 	endc
 	if DEF(_SILVER)
-	INCBIN "garbage/debug/bank24_silver.2bpp", 66 ; feature/completion: 23 reclaimed (English clock dialog)
+	INCBIN "garbage/debug/bank24_silver.2bpp", 98 ; feature/completion: 23 reclaimed (English clock dialog)
 	endc
 else
 	if DEF(_GOLD)
-	INCBIN "garbage/bank24_gold.2bpp", 66 ; feature/completion: 23 reclaimed (English clock dialog)
+	INCBIN "garbage/bank24_gold.2bpp", 98 ; feature/completion: 23 reclaimed (English clock dialog)
 	endc
 	if DEF(_SILVER)
-	INCBIN "garbage/bank24_silver.2bpp", 66 ; feature/completion: 23 reclaimed (English clock dialog)
+	INCBIN "garbage/bank24_silver.2bpp", 98 ; feature/completion: 23 reclaimed (English clock dialog)
 	endc
 endc
 
@@ -2055,17 +2046,17 @@ SECTION "Bank 38 Garbage", ROMX
 
 if DEF(_DEBUG)
 	if DEF(_GOLD)
-	INCBIN "garbage/debug/bank38_gold.2bpp", 87
+	INCBIN "garbage/debug/bank38_gold.2bpp", 119 ; feature/completion: +32 for InvalidateVRAMFonts call sites
 	endc
 	if DEF(_SILVER)
-	INCBIN "garbage/debug/bank38_silver.2bpp", 87
+	INCBIN "garbage/debug/bank38_silver.2bpp", 119 ; feature/completion: +32 for InvalidateVRAMFonts call sites
 	endc
 else
 	if DEF(_GOLD)
-	INCBIN "garbage/bank38_gold.2bpp", 87
+	INCBIN "garbage/bank38_gold.2bpp", 119 ; feature/completion: +32 for InvalidateVRAMFonts call sites
 	endc
 	if DEF(_SILVER)
-	INCBIN "garbage/bank38_silver.2bpp", 87
+	INCBIN "garbage/bank38_silver.2bpp", 119 ; feature/completion: +32 for InvalidateVRAMFonts call sites
 	endc
 endc
 
@@ -2074,17 +2065,17 @@ SECTION "Bank 39 Garbage", ROMX
 
 if DEF(_DEBUG)
 	if DEF(_GOLD)
-INCBIN "garbage/debug/bank39_gold.2bpp", 159
+INCBIN "garbage/debug/bank39_gold.2bpp", 191 ; feature/completion: +32 for InvalidateVRAMFonts call sites
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/debug/bank39_silver.2bpp", 159
+INCBIN "garbage/debug/bank39_silver.2bpp", 191 ; feature/completion: +32 for InvalidateVRAMFonts call sites
 	endc
 else
 	if DEF(_GOLD)
-INCBIN "garbage/bank39_gold.2bpp", 159
+INCBIN "garbage/bank39_gold.2bpp", 191 ; feature/completion: +32 for InvalidateVRAMFonts call sites
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/bank39_silver.2bpp", 159
+INCBIN "garbage/bank39_silver.2bpp", 191 ; feature/completion: +32 for InvalidateVRAMFonts call sites
 	endc
 endc
 
@@ -2170,17 +2161,17 @@ SECTION "Bank 3e Garbage", ROMX
 
 if DEF(_DEBUG)
 	if DEF(_GOLD)
-INCBIN "garbage/debug/bank3e_gold.2bpp", 53 ; feature/completion: +11 for the caught-ball tile load
+INCBIN "garbage/debug/bank3e_gold.2bpp", 93 ; feature/completion: +11 for the caught-ball tile load
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/debug/bank3e_silver.2bpp", 53 ; feature/completion: +11 for the caught-ball tile load
+INCBIN "garbage/debug/bank3e_silver.2bpp", 93 ; feature/completion: +11 for the caught-ball tile load
 	endc
 else
 	if DEF(_GOLD)
-INCBIN "garbage/bank3e_gold.2bpp", 53 ; feature/completion: +11 for the caught-ball tile load
+INCBIN "garbage/bank3e_gold.2bpp", 93 ; feature/completion: +11 for the caught-ball tile load
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/bank3e_silver.2bpp", 53 ; feature/completion: +11 for the caught-ball tile load
+INCBIN "garbage/bank3e_silver.2bpp", 93 ; feature/completion: +11 for the caught-ball tile load
 	endc
 endc
 

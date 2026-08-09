@@ -162,6 +162,7 @@ PikachuMiniGame_ClearBothTilemaps:
 	ret
 
 PikachuMiniGame_LoadFont:
+	call InvalidateVRAMFonts ; loads its own font layout into vFont
 	ld hl, FontGFX
 	ld de, vFont tile $10
 	ld bc, 112 * TILE_1BPP_SIZE

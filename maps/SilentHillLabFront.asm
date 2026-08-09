@@ -628,6 +628,18 @@ SilentHillLabFrontScript17:
 	ld hl, SilentHillLabFrontTextString23
 	call OpenTextbox
 	SetEvent SILENT_HILL_LAB_FRONT_RIVAL_BATTLED
+; feature/completion: the demo only handed over the six POKé BALLS, so NANAMI's
+; speech promised a PACK with a BALL HOLDER, a TM HOLDER and a bonus TM that
+; never arrived. All four now exist as real items; ReceiveItem routes each one
+; to its own pocket by its ItemAttributes entry.
+	ld a, ITEM_BAG
+	call SilentHillLabFrontGiveOne
+	ld a, ITEM_BALL_HOLDER
+	call SilentHillLabFrontGiveOne
+	ld a, ITEM_TM_HOLDER
+	call SilentHillLabFrontGiveOne
+	ld a, ITEM_TM24 ; FALSE SWIPE -- all three starters can learn it
+	call SilentHillLabFrontGiveOne
 	ld hl, wNumBagItems
 	ld a, ITEM_POKE_BALL
 	ld [wCurItem], a
@@ -637,6 +649,15 @@ SilentHillLabFrontScript17:
 	call UnfreezeEverything
 	ld a, SCENE_SILENT_HILL_LAB_FRONT_GOT_POKEBALLS
 	ld [wMapScriptNumber], a
+	ret
+
+SilentHillLabFrontGiveOne:
+; Gives one of item a, letting ReceiveItem pick the pocket.
+	ld [wCurItem], a
+	ld a, 1
+	ld [wItemQuantity], a
+	ld hl, wNumBagItems
+	call ReceiveItem
 	ret
 
 SilentHillLabFrontScript18:

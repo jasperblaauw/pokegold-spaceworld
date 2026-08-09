@@ -236,6 +236,7 @@ DoFlyAnimation_Old:
 	ret
 
 LoadBirdSpriteGraphics_Old:
+	call InvalidateVRAMFonts ; vNPCSprites2 below is vFont
 	ld de, PidgeySpriteGFX
 	ld hl, vNPCSprites
 	lb bc, BANK(PidgeySpriteGFX), 12

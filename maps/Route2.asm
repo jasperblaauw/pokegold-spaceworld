@@ -3,7 +3,6 @@
 	connection east, Route1, ROUTE_1, 9
 
 	object_const_def
-	const ROUTE_2_RIVAL
 	const ROUTE_2_KIMONO_GIRL
 
 Route2_MapEvents::
@@ -19,7 +18,9 @@ Route2_MapEvents::
 	bg_event 10, 20, 1
 
 	def_object_events
-	object_event  8,  6, SPRITE_SILVER, SPRITEMOVEFN_TURN_DOWN, 0, 0, -1, -1, 0, 0, 0, 0, 0, 0
+; feature/completion: the demo's rival stood at (8,6), directly under the gate's
+; two warp tiles, and ended the demo when you reached him. Removed so the gate
+; is walkable; see maps/scripts/Route2.asm.
 	object_event  7, 15, SPRITE_TEACHER, SPRITEMOVEFN_TURN_RIGHT, 0, 0, -1, -1, 0, 0, 0, 3, 0, 0
 
 Route2_Blocks::

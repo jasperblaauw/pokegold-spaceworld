@@ -1484,9 +1484,9 @@ WinTrainerBattle:
 
 GotMoneyForWinningText:
 	text "<PLAYER> got"
-	line "@"
+	line "¥@"
 	deciram wBattleReward, 3, 6
-	text " yen!"
+	text "!"
 	prompt
 
 BattleText_EnemyWasDefeated:
@@ -3363,7 +3363,7 @@ BattleMenu_Pack:
 	ld b, 8
 	ld c, 15
 	call DrawTextBox
-	call Call_DebugBackpackLoop
+	call Call_BackpackLoop
 	jr c, .didnt_use_item
 	call BattleMenuPack_SelectItem
 	ld a, [wItemEffectSucceeded]
@@ -3427,8 +3427,8 @@ StopUsingTrappingMove:
 .done
 	ret
 
-Call_DebugBackpackLoop:
-	callfar DebugBackpackLoop
+Call_BackpackLoop:
+	callfar BackpackLoop
 	ret
 
 BattleMenuPack_SelectItem:

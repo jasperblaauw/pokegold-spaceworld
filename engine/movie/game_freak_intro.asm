@@ -62,6 +62,7 @@ GameFreakIntro::
 	xor a
 	call ByteFill
 
+	call InvalidateVRAMFonts ; the logo goes where the font lives
 	ld de, GameFreakLogoGFX
 	ld hl, vChars1
 	lb bc, BANK(GameFreakLogoGFX), 28

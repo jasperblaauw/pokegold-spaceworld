@@ -57,8 +57,7 @@ TestWildBattleStart::
 
 OverworldLoop_StartBattle::
 	predef StartBattle
-	ld a, MAPSETUP_RELOADMAP
-	ldh [hMapEntryMethod], a
+	call SetPostBattleMapEntry
 	ld hl, wGameModeFlags
 	set 5, [hl]
 	ld hl, wJoypadFlags
@@ -71,22 +70,23 @@ OverworldLoop_StartBattle::
 OverworldLoop_05::
 	ret
 
-OverworldLoop_ExitBattle::
-	ld a, [wBattleResult]
-	cp LOSE
-	jr z, .Lost
-.ReturnToMain:
-	ld a, MAPSTATUS_RETURN_TO_MAIN
-	call SetMapStatus
-	ret
-
-.Lost:
+SetPostBattleMapEntry:
 ; feature/completion: replaced the demo's game-over reset. A scripted "can lose"
 ; battle (the first rival fight) continues the story in-place; any other loss
 ; (wild/trainer) whites out the player back to their last respawn point.
+;
+; This runs in OverworldLoop_StartBattle rather than OverworldLoop_ExitBattle
+; because OverworldLoop's `call LoadMap` fires between the two: deciding the
+; entry method later meant the battle's own map was reloaded and faded in
+; (MAPSETUP_RELOADMAP) for about half a second before the teleport took over.
+	ld a, MAPSETUP_RELOADMAP
+	ldh [hMapEntryMethod], a
+	ld a, [wBattleResult]
+	cp LOSE
+	ret nz
 	ld a, [wBattleLossContinues]
 	and a
-	jr nz, .ReturnToMain
+	ret nz
 
 ; White out: heal the party and teleport to the last respawn point. Until a
 ; Pokémon Center sets one, fall back to the hometown (Silent Hill).
@@ -99,4 +99,8 @@ OverworldLoop_ExitBattle::
 .haveSpawn:
 	ld a, MAPSETUP_TELEPORT
 	ldh [hMapEntryMethod], a
-	jr .ReturnToMain
+	ret
+
+OverworldLoop_ExitBattle::
+	ld a, MAPSTATUS_RETURN_TO_MAIN
+	jp SetMapStatus

@@ -9,7 +9,6 @@ Route2ScriptPointers::
 	script_pointer Route2Script, Route2NPCIDs, SCENE_ROUTE_2_DEFAULT
 
 Route2NPCIDs:
-	npc_id ROUTE_2_RIVAL
 	npc_id ROUTE_2_KIMONO_GIRL
 	db -1
 
@@ -17,31 +16,20 @@ Route2SignPointers:
 	dw Route2TextSign1
 
 Route2_TextPointers::
-	dw Route2Text1
 	dw Route2Text2
 
 Route2Script::
-	ld a, [wYCoord]
-	cp $06
-	jr nz, .skipCheck
-	ld a, [wXCoord]
-	cp $09
-	jr nz, .skipCheck
-	ld a, 0 ; player
-	ld d, LEFT
-	call SetObjectFacing
-	ld a, 2
-	ld d, RIGHT
-	call SetObjectFacing
-	jr .endDemo
-.skipCheck
+; feature/completion: the demo checked for the player standing at (9,6), in
+; front of the ROUTE 2 gate, and ran Route2Text1 -- the rival's "turn back
+; here" speech followed by `jp Init` (a soft reset), i.e. the end of the demo.
+; That, plus the rival object itself blocking (8,6), sealed the gate. Both are
+; gone; the gate's warps at (8,5)/(9,5) are now reachable.
 	ld hl, Route2NPCIDs ;data
 	ld de, Route2SignPointers ;start of textld pointers?
 	call CallMapTextSubroutine
 	ret
 
-.endDemo
-Route2Text1:
+Route2Text1: ; unreferenced (the demo's end-of-demo rival, see Route2Script)
 	ld hl, Route2TextString4
 	call OpenTextbox
 	call GBFadeOutToBlack
@@ -120,7 +108,7 @@ Route2TextString3:
 	done
 endc
 
-Route2TextString4:
+Route2TextString4: ; unreferenced (see Route2Text1)
 if DEF(_GOLD)
 	text "SHIGERU: Oh, if it"
 	line "isn't SATOSHI!"

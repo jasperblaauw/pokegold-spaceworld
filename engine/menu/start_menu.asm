@@ -327,6 +327,11 @@ CheckItemsQuantity:
 	ld a, [wNumKeyItems]
 	and a
 	ret nz
+; Balls live in their own pocket now, so a bag holding nothing else still has
+; something worth opening.
+	ld a, [wNumBallItems]
+	and a
+	ret nz
 	scf
 	ret
 
@@ -358,7 +363,7 @@ StartMenu_Backpack:
 	ld [wSelectedSwapPosition], a
 	call GetPocket2Status
 .loop
-	call DebugBackpackLoop
+	call BackpackLoop
 	jr c, .jump
 	call BackpackSelected
 	jr nc, .loop
@@ -383,13 +388,14 @@ StartMenu_Backpack:
 	ld a, 0
 	ret
 
-DebugBackpackLoop:
-; checks the field debug flag, if set this runs
-; otherwise NondebugBackpackLoop runs
-; if wActiveBackpackPocket is 1 (doesn't have key items) then jumps below
-	ld a, [wDebugFlags]
-	bit DEBUG_FIELD_F, a
-	jp z, NondebugBackpackLoop
+BackpackLoop:
+; Draws whichever pocket wActiveBackpackPocket selects: 2 = ITEMS, 1 = KEY
+; ITEMS. LEFT/RIGHT flips between them (see HandleBackpackInput).
+;
+; feature/completion: the demo took NondebugBackpackLoop for all normal,
+; non-debug play -- a single un-switchable "PACK" list showing only wNumBagItems
+; -- exactly the way GetStartMenuState forced the no-SAVE field menu (M1-bug4).
+; Removed the shortcut, so normal play gets the same two pockets debug had.
 	ld a, [wActiveBackpackPocket]
 	cp 2
 	jr nz, .NoTools
@@ -432,7 +438,7 @@ DebugBackpackLoop:
 KeyItemsPocketText:
 	db "     KEY ITEMS      @" ; 20 columns
 
-NondebugBackpackLoop:
+NondebugBackpackLoop: ; unreferenced (see BackpackLoop)
 	ld hl, BackpackMenuHeader
 	call CopyMenuHeader
 	ld de, BackpackHeaderText
@@ -477,7 +483,7 @@ HandleBackpackInput:
 	jp .exit
 
 .exit
-	jp DebugBackpackLoop
+	jp BackpackLoop
 
 .UnusedNoItems
 	call DrawNoItemsText
@@ -1000,7 +1006,7 @@ PartyHeldItem:
 	call ClearPalettes
 	call GetPocket2Status
 	call DrawBackpack
-	call DebugBackpackLoop
+	call BackpackLoop
 	ld a, [wMenuJoypad]
 	cp 2
 	jp z, .ExitGiveItem
@@ -2118,10 +2124,13 @@ DrawTrainerCardMainPage:
 	lb bc, 2, 5
 	call PrintNumber
 	hlcoord 7, 6
+; English writes the currency symbol before the figure; the digits still end on
+; the same column.
+	ld [hl], '¥'
+	inc hl
 	ld de, wMoney
 	lb bc, 3, 6
 	call PrintNumber
-	ld [hl], $F0
 	ld hl, wPokedexCaught
 	ld b, $1C
 	call CountSetBits

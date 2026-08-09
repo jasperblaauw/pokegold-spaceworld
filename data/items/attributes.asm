@@ -6,16 +6,22 @@ MACRO item_attribute
 ENDM
 
 ItemAttributes::
+; feature/completion: the four balls listed in BallItems (engine/items/
+; inventory.asm) sat in the ITEM pocket, so the BALL HOLDER screen -- which
+; reads wNumBallItems/wBallQuantities and is fully implemented -- was always
+; empty and balls cluttered the item list. Their pocket is now BALL;
+; _ReceiveItem/_TossItem route by pocket, so giving, buying and throwing a ball
+; all still go through the same wNumBagItems entry points.
 ; ITEM_MASTER_BALL
-	item_attribute 0, HELD_NONE, 0, CANT_SELECT, ITEM, ITEMMENU_NOUSE, ITEMMENU_CLOSE
+	item_attribute 0, HELD_NONE, 0, CANT_SELECT, BALL, ITEMMENU_NOUSE, ITEMMENU_CLOSE
 ; ITEM_ULTRA_BALL
-	item_attribute 1200, HELD_NONE, 0, CANT_SELECT, ITEM, ITEMMENU_NOUSE, ITEMMENU_CLOSE
+	item_attribute 1200, HELD_NONE, 0, CANT_SELECT, BALL, ITEMMENU_NOUSE, ITEMMENU_CLOSE
 ; ITEM_03
 	item_attribute 0, HELD_NONE, 0, NO_LIMITS, 0, ITEMMENU_NOUSE, ITEMMENU_NOUSE
 ; ITEM_GREAT_BALL
-	item_attribute 600, HELD_NONE, 0, CANT_SELECT, ITEM, ITEMMENU_NOUSE, ITEMMENU_CLOSE
+	item_attribute 600, HELD_NONE, 0, CANT_SELECT, BALL, ITEMMENU_NOUSE, ITEMMENU_CLOSE
 ; ITEM_POKE_BALL
-	item_attribute 200, HELD_NONE, 0, CANT_SELECT, ITEM, ITEMMENU_NOUSE, ITEMMENU_CLOSE
+	item_attribute 200, HELD_NONE, 0, CANT_SELECT, BALL, ITEMMENU_NOUSE, ITEMMENU_CLOSE
 ; ITEM_TOWN_MAP
 	item_attribute 0, HELD_NONE, 0, CANT_TOSS, KEY_ITEM, ITEMMENU_CLOSE, ITEMMENU_NOUSE
 ; ITEM_BICYCLE

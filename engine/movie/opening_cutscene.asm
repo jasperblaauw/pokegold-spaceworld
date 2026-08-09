@@ -796,6 +796,7 @@ IntroScene10:
 	lb bc, BANK(IntroCharizard1GFX), 8 tiles
 	call Request2bpp
 
+	call InvalidateVRAMFonts ; intro graphics go where the font lives
 	ld hl, vFont
 	ld de, IntroCharizard2GFX tile $40
 	lb bc, BANK(IntroCharizard2GFX), 8 tiles

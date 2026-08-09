@@ -56,6 +56,7 @@ PicrossMinigame:
 	ret
 
 .InitGFX:
+	call InvalidateVRAMFonts ; vPicrossBackground overlaps vFont
 	ld hl, PicrossBackgroundGFX
 	ld de, vPicrossBackground
 	ld bc, 4 tiles

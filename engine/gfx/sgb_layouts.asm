@@ -1,4 +1,6 @@
 LoadSGBLayout:
+; SGB border/palette transfers stage their data through vChars1, over the font.
+	call InvalidateVRAMFonts
 	ld a, b
 	cp SGB_RAM
 	jr nz, .not_ram
@@ -720,6 +722,7 @@ UpdateSGBBorder:
 	ret
 
 PushSGBBorder:
+	call InvalidateVRAMFonts ; the border transfer stages through vChars1
 	call .LoadSGBBorderPointers
 	push de
 	call SGBBorder_YetMorePalPushing
@@ -800,6 +803,7 @@ endr
 	jp SGBDelayCycles
 
 SGBBorder_PushBGPals:
+	call InvalidateVRAMFonts ; the palette transfer stages through vChars1
 	call DisableLCD
 	ld a, %11100100
 	ldh [rBGP], a

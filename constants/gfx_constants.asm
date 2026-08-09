@@ -1,5 +1,8 @@
 DEF TILE_1BPP_SIZE EQU TILE_SIZE / 2 ; bytes
 
+; The text font fills vFont ($8800-$8fff). LoadFontGraphics asserts this.
+DEF NUM_FONT_TILES EQU $80 ; tiles
+
 DEF PALRGB_WHITE EQUS "palred 31 + palgreen 31 + palblue 31" ; $7fff
 
 DEF METATILE_WIDTH EQU 4 ; tiles

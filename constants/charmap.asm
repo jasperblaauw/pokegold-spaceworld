@@ -277,6 +277,7 @@
 	charmap "▼", $ee
 	charmap "♂", $ef
 	charmap "円", $f0
+	charmap "¥", $f0 ; the retail Latin sheet draws this tile as a yen sign
 	charmap "×", $f1
 	charmap "．", $f2
 	charmap "／", $f3

@@ -1030,6 +1030,146 @@ POKéDEX over during the intro, so a playtester reaches all of it. Left for a fr
 deliberately: every one of these is a hard-coded `PlaceString` coordinate, which is exactly the class
 of change that has bitten this project before.
 
+### Playtest round 11 — seven items ✅ (BUILD-VERIFIED, playtest-pending, 2026-08-09)
+
+Six of the seven are content/UI fixes that landed cleanly. The seventh (the textbox delay) needed a
+rework — the first attempt was based on a wrong model of the overworld's VRAM and would have
+garbled every textbox after the first. That one is written up last, at length, because the VRAM
+budget it uncovered constrains anything that ever wants to touch `$8800-$8fff`.
+
+**1. Half-second map flash before a whiteout teleport** (`home/std_scripts.asm`). The whiteout
+decision moved out of `OverworldLoop_ExitBattle` and into `OverworldLoop_StartBattle`, as the
+M1-bug2 writeup predicted it would have to. `OverworldLoop`'s `call LoadMap` fires *between* those
+two, so deciding at exit meant the battle's own map had already been reloaded and faded in under
+`MAPSETUP_RELOADMAP` before `MAPSETUP_TELEPORT` replaced it. New `SetPostBattleMapEntry` sets
+`RELOADMAP`, and overrides it to `TELEPORT` when the loss was a real whiteout. `ExitBattle` is now
+just `MAPSTATUS_RETURN_TO_MAIN`.
+
+**2. `¥` printed after the figure instead of before.** Fixed in all five places that print money:
+`PlaceMoneyTextbox` (`menu_2.asm`), `BuySellToss_UpdateQuantityDisplayAndPrice`, the debug mart, the
+Trainer Card, and the two battle reward texts (`GotMoneyForWinningText`,
+`BattleText_PlayerPickedUpPayDayMoney`). The symbol is written before `PrintNumber`/`PrintBCDNumber`
+rather than after, so the six digits still end on the same column and no box geometry moved.
+`charmap "¥", $f0` is a second name for the existing `円` tile — the retail Latin sheet draws that
+slot as a yen sign, so this is a rename, not a new tile.
+
+**3. Woman in Silent Hill talking about a PACK you don't have** (`maps/scripts/SilentHill.asm`).
+Gated on `CheckEvent SILENT_HILL_LAB_FRONT_RIVAL_BATTLED`, with a new pre-PACK line about the
+TRAINER GEAR. Gold only, deliberately: Silver's version of that NPC already talks about the TRAINER
+GEAR and never mentions the PACK.
+
+**4. PACK only showed six Poké Balls, with no way into the other holders.** Three separate causes:
+- `DebugBackpackLoop` → **`BackpackLoop`**. It tested `DEBUG_FIELD_F` and sent all normal play to
+  `NondebugBackpackLoop`, a single un-switchable list of `wNumBagItems` — the exact same shape of
+  demo scope-limiting as M1-bug4's forced no-SAVE menu. Removing the shortcut gives normal play the
+  two pockets (ITEMS / KEY ITEMS, LEFT/RIGHT to flip) that debug always had. Renamed at all six call
+  sites; `NondebugBackpackLoop` kept and marked unreferenced.
+- The four balls in `BallItems` had pocket `ITEM` in `data/items/attributes.asm`, so the fully
+  implemented BALL HOLDER screen (`BallPocket`, reading `wNumBallItems`) was always empty and the
+  balls cluttered the item list. Their pocket is now `BALL`. `_ReceiveItem`/`_TossItem` route by
+  pocket, so giving, buying and throwing a ball all still enter through `wNumBagItems`.
+- NANAMI's speech promised a PACK, a BALL HOLDER, a TM HOLDER and a TM, and handed over only the six
+  balls. `SilentHillLabFrontScript17` now gives all four (`ITEM_BAG`, `ITEM_BALL_HOLDER`,
+  `ITEM_TM_HOLDER`, `ITEM_TM24` FALSE SWIPE — learnable by all three starters) via a small
+  `SilentHillLabFrontGiveOne` helper. **The holders are items you USE, not pockets you scroll to:**
+  their `ItemAttributes` menu-action values are the unnamed `const_skip 3` slots 1/2/3, which
+  `.BagSelectJumptable` dispatches to `_TMHolder`, `BallPocketLoop` and `FlipPocket2Status`.
+  `CheckItemsQuantity` also had to learn about `wNumBallItems`, or a bag holding only balls still
+  reported itself empty. `tm_holder.asm` was translated on the way past (it was on the deferred list
+  and is now reachable), including a TYPE/POWER row split of the same kind the party pane needed.
+
+**5. The bedroom PC only ever showed mail, then the YOROIDORI page** (`pokecenter_pc.asm`).
+`PokemonCenterPC` opened with `bit DEBUG_FIELD_F` → `jp z, PC_Demo`, so normal play never reached
+the real menu. Gate removed, along with the `_DEBUG` "it wasn't connected" branch that tested the
+same flag and would now refuse in normal play, and the demo's no-party refusal (item storage is
+useful before you have a Pokémon). **`PCITEM_BILLS_PC` is deliberately left off the menu** — it is
+untranslated *and* boxes do not survive a save, so depositing a Pokémon there would lose it. Put it
+back with M1e. Note this is the *player's* PC (item storage + Oak's PC); healing is a Pokémon Center
+nurse, still M1d.
+
+**6. The demo rival blocking the Route 2 gate.** `maps/Route2.asm` loses the `ROUTE_2_RIVAL`
+object_event at (8,6), which sat directly under the gate's two warp tiles, and `Route2Script` loses
+the (9,6) position check that ran `Route2Text1` — SHIGERU's "turn back" speech followed by
+`jp Init`, i.e. the end of the demo. Both the text and the script are kept and marked unreferenced
+(pret convention, one line to restore). The warps at (8,5)/(9,5) are now walkable.
+
+**7. The one-second delay before every textbox — reworked from the ground up.**
+
+The previous attempt cached the font behind a `wFontsInVRAM` boolean, on the belief that the
+overworld only clobbers `vChars1` occasionally (emotes, jump shadows). **That is wrong, and the
+cache as written would have rendered every textbox after the first in sprite graphics.**
+`LoadOverworldSprite` (`engine/sprites/sprites.asm`) writes each sprite's standing frames at `hl`
+and then does `ld bc, vChars1 - vChars0 / add hl, bc` and writes the *walking* frames $800 higher —
+which is `vFont`. So the font is destroyed by `TextboxCleanup` → `ReloadObjectGFX` →
+`LoadWalkingSpritesGFX` **on every single textbox close**.
+
+**The VRAM budget, which is the real constraint and worth writing down:** the overworld arm of the
+`ram/vram.asm` UNION needs `vNPCSprites` (120 tiles of standing frames) + `vNPCSprites2` (120 of
+walking frames) + the tilesets (96) + the font (128) + the font extras (32) = **496 tiles in 384
+tiles of VRAM**. BG text bytes `$80-$ff` resolve to `$8800-$8fff` in the signed addressing mode the
+overworld uses, and OBJ tiles `$80-$ff` resolve to the same bytes, so the font and the walking
+frames are competing for one region and *cannot* both be resident. Swapping them per textbox is not
+an oversight in the prototype; it is forced. **A ~0.3 s textbox delay cannot be cached away.**
+
+What *can* be avoided is copying more than was actually lost, so the boolean became two pieces of
+state (`ram/wram.asm`):
+- **`wDirtyFontTiles`** — how many tiles at the start of `vFont` may be stale.
+  `MarkFontTilesClobbered` (new, in `LoadOverworldSprite`, right before the walking-frame copy)
+  converts `hl` to a tile index, adds the `c` tiles about to be written, clamps to `NUM_FONT_TILES`
+  and keeps the maximum. `LoadFontGraphicsPartial` (new, `load_gfx.asm`) re-uploads exactly that
+  many tiles and clears the counter; `LoadFontGraphics` now just sets it to the full font and falls
+  through, so every existing caller still gets a complete load. Putting the bookkeeping in
+  `LoadOverworldSprite` rather than in `LoadUsedSpritesGFX` means `_RedrawPlayerSprite`,
+  `LoadOverworldSprite_PlayerSlot` and the debug sprite viewer are all covered by construction.
+  **Payoff is map-shaped:** an interior with three or four sprite slots in use dirties ~48 of the
+  128 tiles (6 frames instead of 16), while an outdoor map is a fixed 10-slot `SpriteSets` entry and
+  dirties 120 — so towns and routes will still feel slower than houses. That is expected.
+- **`wFontExtraInVRAM`** — a genuine boolean, and the part that helps everywhere. The font extras
+  and the textbox frame live at `vChars2 $60+` = `$9600+`, which is *above* `vExteriorTileset`, so
+  nothing in the overworld writes there and they survive from one textbox to the next. Worth ~5 of
+  the ~21 frames on every textbox, indoors and out.
+
+**Two audit findings that came out of this and generalise:**
+- **`GetSGBLayout` returns immediately when `wSGB` is clear, i.e. on every DMG and CGB.** The
+  previous round left a comment in `home/map.asm` asserting that map setup always invalidates
+  because it "ends up in GetSGBLayout" — true only on a Super Game Boy. `LoadMap` now calls
+  `InvalidateVRAMFonts` itself (re-reading `hMapEntryMethod` afterwards, since the call clobbers
+  `a`). This is the catch-all for battle intros, evolution and trade animations, the opening
+  cutscene and the title screen. **Do not use `GetSGBLayout` as a proxy for "the screen was
+  repainted".**
+- `LoadHPBar` and `LoadBackpackGraphics` write `vChars2 $60+` and were missing invalidations;
+  `LoadBirdSpriteGraphics_Old` (reachable via the `EnterMapAnim_Old` predef) writes `vNPCSprites2`
+  directly. All three now invalidate.
+
+Emitted code for `InvalidateVRAMFonts`, `LoadFontPartial`, `MarkFontTilesClobbered`,
+`LoadFontGraphicsPartial`, `LoadMap` and `LoadFonts_NoOAMUpdate` was decoded back out of
+`pokegold-spaceworld-debug.gb` and checked instruction by instruction.
+
+**ROM space:** ROM0 had no padding left in the debug branch of `Home Garbage`, so a 15-byte
+zero-reference corrupt reconstruction (`Unreferenced_Corrupt_CheckTossableItem_Old`) was deleted,
+matching the precedent set for `_InterlaceMergeSpriteBuffers` in the same section. Non-debug ROM0
++16 from `home_gold`/`home_silver` padding, plus Bank 23 +8 and Bank 3e +8.
+
+**PLAYTEST for this round** (`*-debug-correctheader.gb`):
+(a) **Textboxes first, and check them hard** — this is the change most likely to be wrong. Talk to
+several NPCs in a row indoors (the bedroom, the lab) and outdoors (Silent Hill town, Route 1), read
+signs, open the START menu and come back, and confirm the text is always **letters, never sprite
+garbage or a mix**. Then do it again straight after a battle, after the PACK, after the summary
+screen, after the Pokédex, and after a map change. Any garbled row means a VRAM writer is still
+missing its `InvalidateVRAMFonts`. Indoor textboxes should open noticeably faster than before;
+outdoor ones only a little.
+(b) Faint to a wild Pokémon — the teleport should be one clean fade, with no flash of the battle
+map first.
+(c) Money reads `¥123` in the mart, the Trainer Card, the PACK, and after winning a trainer battle.
+(d) Talk to the Silent Hill woman **before** the rival battle (TRAINER GEAR line) and **after** it
+(PACK line).
+(e) After NANAMI: the PACK has ITEMS and KEY ITEMS (LEFT/RIGHT flips), balls are gone from ITEMS and
+live in the BALL HOLDER, and USE on the TM HOLDER opens the TM list with FALSE SWIPE in it and a
+readable TYPE / POWER pane.
+(f) The bedroom PC: mail first, then open it again for the real menu — item storage withdraw /
+deposit / toss, Oak's PC, TURN OFF. There should be no Bill's PC entry.
+(g) Route 2: no rival at the gate, walk straight in, both gate floors reachable.
+
 ## Session log
 - **2026-08-06** — M0 (boot GameStart, byte-verified), M1a (rival party fix), M1f (evolutions restored + 32B garbage reclaim). All build-verified, all playtest-pending. M1e investigated & deferred (unsafe blind). Established gotcha: **must test the `-correctheader` (MBC3/RTC) debug ROM on SameBoy** — the base MBC1 ROM doesn't run. First SameBoy test also surfaced the main-menu label bug (only showed "Play Pokemon") → fixed to show real New Game / Continue. Remaining: M1b/c/d content (playtest-led), then M1e.
 - **2026-08-07** — Playtest round 1 feedback (3 lab bugs). Fixed **rival battle** properly (M1a rewrite: real trainer format + `DEX_` species, byte-verified; my earlier MON_ attempt was wrong) and by analysis the **loss-reset** (bug #3, was a garbage-battler side effect). Also fixed the **main-menu** to show real New Game/Continue. Still open: **bug #1** (chosen Poké Ball doesn't vanish in lab-back) — cosmetic, needs playtest to confirm intended behavior. Reclaimed 6B from `Bank 0e Garbage` for the reformatted rival party. _Next: user re-tests the rival battle (win AND lose) on `pokegold-spaceworld-debug-correctheader.gb`; if good, fix bug #1 then proceed to M1c/M1d._
@@ -1071,3 +1211,4 @@ of change that has bitten this project before.
 - **2026-08-08 (playtest round 9)** — User playtested the previous three batches and reported 12 items. Fixed 11; one is blocked on a design decision. The headline is a real data-corruption bug, not a layout nit: **`SkipNames` was still stepping 6 bytes**, the JP uniform name-table stride, so every party nickname and OT name was written over the tail of the previous entry (`HONOGU`+`HANEKO` = the `HONOGUHANE` the user saw, plus the `?` nickname and `?` OT that followed). Split into `SkipNames` (11) / `SkipOTNames` (8) with box tables still at 6, audited all 21 call sites, and gave `GetNicknamePointer` and `GetNick` explicit width parameters — they were each serving two tables that are no longer the same width. Also fixed a latent `SendMonIntoBox` overflow found on the way. Net ROM0 change was negative. Byte-verified the emitted strides. Beyond that: battle HUD level moved to its own right-aligned row under the name (per the user's retail screenshot), FIGHT list widened to 12 columns with `MoveInfoBox` relocated to the top-left, stats screen given two full-width name rows by shrinking the EXP box and skipping the divider there (plus moving the whole tilemap block into `.draw_page`, since `ClearBox` wipes cols 8-20 on every page load), rival "sent out" wording, empty-pack `CANCEL`, YES/NO, a 5-step wild-encounter cooldown, and MOM now heals. All 4 ROMs + `-correctheader` variants build warning-clean. See the **"Playtest round 9"** subsection above for the full writeup, the measured box-widening numbers for M1e, and the two items deliberately left undone (**EXP bar colour** — no free SGB palette, needs a user decision; **HUD gender symbol** — needs the enemy's base data in a hot battle path). _Next: user playtests round 9 (capture bug first — it needs 3+ catches in a row), then decide the EXP-bar trade-off, then Phase 4 dialogue starting with `oak_speech.asm`._
 - **2026-08-08 (playtest round 10)** — Four playtest items, all fixed; all 8 ROMs build warning-clean and every new code block was decoded back out of the ROM and checked. Two were real bugs with non-obvious causes. **(1) The "lab is closed" block was in `maps/scripts/SilentHill.asm`, not the lab map** — `CheckLabDoor`/`LabClosed` off `SilentHillScript7`, firing one tile *below* the warp tiles so the door never opened; it's demo scope-limiting and it made the lab front's fully authored `FINISHED` scene (Oak + both aides + the PC mail) unreachable, so per the user's decision the door is now open (the routines are kept, marked unreferenced, so it's a one-line revert; the back room stays locked). **(2) The summary screen's front-sprite clipping was a `ClearBox` sized from a ROM0 label address** — `ld bc, TextCommands` = `$120d` = 18 rows × **13** columns from `hlcoord 8, 0`, and column 20 of a 20-wide tilemap is column 0 of the next row, so every page load wiped the leftmost column of the 7×7 front pic (and wrote one byte past the tilemap). Replaced with an explicit `lb bc, SCREEN_HEIGHT, SCREEN_WIDTH - 8` in all three page loaders — **note that any ROM0 edit was silently resizing that box**. Plus **(3)** a caught-species Poké Ball on the wild-battle enemy HUD (`PokeBallsGFX` tile 0 parked in the free BG tile `$5d` by `LoadHPBar`, so it survives the battle-from-menu return path, + a `wPokedexCaught` `CHECK_FLAG` in `UpdateEnemyHUD`) and **(4)** gender symbols one column right of the level tag on the battle HUD, party screen and summary screen — which closes the round-9 "deliberately not done" HUD-gender item. The enemy HUD reads its gender ratio straight from `BaseData` with `GetFarByte` rather than calling `GetBaseData`, precisely to keep `wMonHeader` holding the player's mon (the risk round 9 flagged); the new helpers also blank genderless species instead of reporting them female like the shared `GetGender` does. Reclaimed Bank 0f +92, Bank 14 +45, Bank 3e +11. _Next: user playtests round 10 (see its PLAYTEST checklist — the lab re-entry and the summary paging are the two to check first), then the EXP-bar colour decision is still open, then Phase 4 dialogue starting with `oak_speech.asm`._
 - **2026-08-08 (Phase 4 — map dialogue)** — Picked up three files the previous session left modified mid-work (`oak_speech.asm`, `set_clock_dialog.asm`, `garbage.asm`): they were complete and building, so they were verified (the clock dialog's day-of-week now places `SUN`…`SAT` as ordinary font text instead of the double-height kanji, and its `HUD_GFX` tile load is gone) and the session moved on. **Then translated every remaining `maps/*.asm` file** — the whole first act, from the bedroom through Silent Hill, the lab, Route 1/2 and Quiet Hills — plus the shared engine text a player reaches alongside it. Two discoveries worth carrying forward: **`pokecenter_pc.asm` is reachable from the first room** (the bedroom PC `callfar`s it), not unreachable as the handover claimed, and **~35 per-turn battle messages live in `engine/battle/move_effects/*.asm`** rather than `effect_commands.asm`, so Phase 3 had missed them. A width linter written this session also caught **four latent row overflows in files earlier sessions had signed off**. Structurally, the Silent Hill town map + its scripts were split into a new `SECTION "Silent Hill Town"` in the empty bank `$35` (a map's attributes/blocks/text/scripts must share one bank — see the writeup), which is the template for the next full map bank, and the bank-`$0d` 16 KB wall was cleared again by deleting the zero-caller `Unreferenced_Gen1HealEffect`. All 8 ROMs build warning-clean; emitted text spot-decoded from the ROM. See the **"Phase 4 — map dialogue"** subsection above for the full writeup and the start-to-finish playtest walkthrough. _Next: user playtests the first act end to end; then the **Pokédex UI** (reachable — Oak gives the dex in the intro), which needs its `PlaceString` column arithmetic checked rather than a blind swap._
+- **2026-08-09 (playtest round 11)** — The previous session had implemented all seven of the user's round-11 items but left them uncommitted, undocumented and untested. Six were verified as complete and correct on review: the whiteout map flash (decision moved into `OverworldLoop_StartBattle`, because `LoadMap` runs between start and exit), `¥` before the figure in all five money printers, the Silent Hill woman gated on the rival-battle event, the PACK's pockets (`DebugBackpackLoop` → `BackpackLoop`, balls moved to the `BALL` pocket, NANAMI now hands over the PACK/BALL HOLDER/TM HOLDER/TM she promises), the bedroom PC (the `DEBUG_FIELD_F` gate on `PokemonCenterPC` removed; Bill's PC deliberately withheld until M1e), and the Route 2 rival + his end-of-demo script. **The seventh was broken and was reworked.** The font cache assumed the overworld rarely touches `vChars1`; in fact `LoadOverworldSprite` writes every sprite's walking frames $800 past its standing frames — straight over `vFont` — so `TextboxCleanup` destroys the font on *every* textbox close and the cache would have rendered all but the first textbox as sprite garbage. Overworld VRAM is oversubscribed 496 tiles into 384, so the font/sprite swap is forced and **the delay cannot be cached away**; the boolean was replaced with `wDirtyFontTiles` (a watermark recorded by the sprite loader, so only the clobbered part of the font is re-uploaded — big win indoors, small outdoors, since outdoor maps use all 10 sprite slots) plus `wFontExtraInVRAM` (the `vChars2 $60+` extras sit above the tilesets, are never clobbered in the overworld, and are worth ~5 frames everywhere). Two audit findings worth remembering: **`GetSGBLayout` no-ops on DMG/CGB**, so the previous round's comment claiming map setup always invalidates through it was wrong — `LoadMap` now invalidates directly; and `LoadHPBar`/`LoadBackpackGraphics`/`LoadBirdSpriteGraphics_Old` were missing invalidations. All 8 ROMs build warning-clean; every new routine was decoded back out of the ROM and checked. ROM0 needed a 15-byte zero-reference corrupt reconstruction deleted (no padding left in the debug branch); also Bank 23 +8, Bank 3e +8, non-debug ROM0 +16. _Next: user playtests round 11 — **textboxes first and thoroughly** (garbled text = a VRAM writer still missing its invalidation), then the other six items per the round-11 checklist. After that, the Pokédex UI is still the queued translation target._

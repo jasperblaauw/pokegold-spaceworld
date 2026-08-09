@@ -251,6 +251,15 @@ LoadMap::
 	ldh a, [hMapEntryMethod]
 	and a ; Possible bug: if the entry method is $X0, this will overflow
 	ret z
+; Condemn the cached font and font extras on any map entry. This is the catch
+; -- all for everything that repaints the screen and then hands control back to
+; the overworld without going through one of the annotated loaders: battle
+; intros and evolution/trade animations, the opening cutscene, the title
+; screen. Doing it here rather than relying on GetSGBLayout matters, because
+; GetSGBLayout returns immediately when wSGB is clear, i.e. on every DMG and
+; CGB. One flag write per map load costs nothing.
+	call InvalidateVRAMFonts ; clobbers a, so re-read the entry method
+	ldh a, [hMapEntryMethod]
 	and $0F
 	dec a
 	ld hl, .jumptable

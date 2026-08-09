@@ -437,9 +437,32 @@ SilentHillTextPokemonInGrassString:
 	done
 
 SilentHillTextBackpack:
+if DEF(_GOLD)
+; feature/completion: NANAMI hands over the PACK after the rival battle, so
+; this townswoman can't comment on it before then.
+	CheckEvent SILENT_HILL_LAB_FRONT_RIVAL_BATTLED
+	jr nz, .hasPack
+	ld hl, SilentHillTextNoBackpackString
+	call OpenTextbox
+	ret
+
+.hasPack
+endc
 	ld hl, SilentHillTextBackpackString
 	call OpenTextbox
 	ret
+
+if DEF(_GOLD)
+SilentHillTextNoBackpackString:
+	text "Isn't that a"
+	line "TRAINER GEAR on"
+	cont "your wrist?"
+
+	para "My, everyone's a"
+	line "# TRAINER"
+	cont "these days."
+	done
+endc
 
 SilentHillTextBackpackString:
 if DEF(_GOLD)

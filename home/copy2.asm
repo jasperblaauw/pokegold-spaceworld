@@ -1,8 +1,26 @@
 RedrawPlayerSprite::
 	jpfar _RedrawPlayerSprite
 
+InvalidateVRAMFonts::
+; feature/completion: call after writing anything into vFont/vChars1 ($8800-
+; $8fff) or over the font-extra tiles at vChars2 $60+, so the next textbox
+; re-uploads them instead of trusting what is already there. This is the
+; blunt version -- it condemns the whole font. Overworld sprite loading, which
+; is by far the most frequent clobberer, instead records the exact extent it
+; overwrote (see LoadOverworldSprite).
+	ld a, NUM_FONT_TILES
+	ld [wDirtyFontTiles], a
+	xor a
+	ld [wFontExtraInVRAM], a
+	ret
+
 LoadFont::
 	jpfar LoadFontGraphics
+
+LoadFontPartial::
+; Re-upload only the part of the font that was overwritten. Does nothing at
+; all when wDirtyFontTiles is 0.
+	jpfar LoadFontGraphicsPartial
 
 LoadFontsBattleExtra::
 	jpfar LoadPokemonMenuGraphics

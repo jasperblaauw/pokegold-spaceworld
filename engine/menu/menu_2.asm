@@ -189,10 +189,13 @@ PlaceMoneyTextbox:
 	call MenuBoxCoord2Tile
 	ld de, SCREEN_WIDTH + 1
 	add hl, de
+; English writes the currency symbol before the figure, not after it. The box
+; interior is 7 columns, which is exactly ¥ + six digits.
+	ld [hl], '¥'
+	inc hl
 	ld de, wMoney
 	lb bc, PRINTNUM_LEFTALIGN | 3, 6
 	call PrintNumber
-	ld [hl], '円'
 	ret
 
 MoneyTopRightMenuHeader:

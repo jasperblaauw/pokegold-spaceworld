@@ -214,7 +214,48 @@ LoadOverworldSprite:
 	ld a, [wSpriteFlags]
 	bit SPRITES_SKIP_WALKING_GFX_F, a
 	ret nz
+	call MarkFontTilesClobbered
 	call Get2bpp
+	ret
+
+MarkFontTilesClobbered:
+; feature/completion: hl points $800 past the standing frames, which is vFont
+; -- every walking frame is written straight over the text font. Record how far
+; into the font this copy reaches (hl converted to a tile index, plus the c
+; tiles about to be written) so PrepareTextbox re-uploads only that much
+; instead of all NUM_FONT_TILES. See LoadFontGraphicsPartial.
+;
+; This is the one place worth being precise about, because it runs on every
+; textbox close (TextboxCleanup -> LoadWalkingSpritesGFX) and on every map
+; load. Everything else that writes over the font just calls
+; InvalidateVRAMFonts and condemns the lot.
+	push hl
+	push bc
+	ld a, l
+	swap a
+	and $0f
+	ld b, a
+	ld a, h
+	sub HIGH(vFont)
+	swap a
+	and $f0
+	or b ; hl as a tile index into vFont
+	add c ; ...through to the end of this copy
+	jr c, .clamp ; static sprites never get here, but do not run off vFont
+	cp NUM_FONT_TILES
+	jr c, .got_extent
+.clamp
+	ld a, NUM_FONT_TILES
+.got_extent
+; Only ever grow the dirty range: an earlier InvalidateVRAMFonts may already
+; have condemned more of the font than this copy touches.
+	ld hl, wDirtyFontTiles
+	cp [hl]
+	jr c, .done
+	ld [hl], a
+.done
+	pop bc
+	pop hl
 	ret
 
 ; get the data for overworld sprite in a

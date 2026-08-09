@@ -37,6 +37,7 @@ SetClockDialog_Init:
 ; glyphs (日月火水木金土). SetClockDialog_PrintDayOfWeek now places the day as
 ; ordinary font text, so that tile load is no longer needed.
 
+	call InvalidateVRAMFonts ; the arrow replaces a vFont tile
 	ld de, UpArrowGFX
 	ld hl, vFont tile (TIMESET_UP_ARROW - $80)
 	lb bc, BANK(UpArrowGFX), 1

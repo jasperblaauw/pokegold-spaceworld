@@ -96,34 +96,30 @@ _TMHolder:
 	ret
 
 BootedTMText:
-	text "<TM>を　きどうした！"
+	text "Booted up the <TM>!"
 	prompt
 
 Unreferenced_BootedHMText:
-	text "ひでんマシンを　きどうした！"
+	text "Booted up the HM!"
 
 ContainedMoveText:
-	text "なかには　@"
+	text "It contains"
+	line "@"
 	text_from_ram wStringBuffer2
-	text "が"
-	line "きろくされていた！"
+	text "!"
 
-	para "@"
-	text_from_ram wStringBuffer2
-	text "を"
-	line "#に　おぼえさせますか？"
+	para "Teach it to a"
+	line "#?"
 	done
 
 TMHMNotCompatibleText:
+	text "Sorry, @"
 	text_from_ram wStringBuffer1
-	text "と　@"
+	text_start
+	line "can't learn"
+	cont "@"
 	text_from_ram wStringBuffer2
-	text "は"
-	line "あいしょうが　わるかった！"
-
-	para "@"
-	text_from_ram wStringBuffer2
-	text "は　おぼえられない！"
+	text "!"
 	prompt
 	db $02, $04, $00, $01
 	db $0c, $20
@@ -199,6 +195,10 @@ TMHolder_ShowTMMoveDescription:
 	jr nc, TMHolder_JoypadLoop_SkipDisplay
 
 	ld [wTempTMHM], a
+; TYPE and POWER used to share row 12 (type value at col 5, POWER/ at col 11).
+; PrintMoveType places the full English type name, up to 8 columns, so they now
+; get a row each. Row 13 was blank -- the box interior is rows 11-16 and the
+; description starts on row 14.
 	hlcoord 1, 12
 	ld de, TMHM_TypeString
 	call PlaceString
@@ -207,12 +207,12 @@ TMHolder_ShowTMMoveDescription:
 
 	ld [wSelectedItem], a
 	ld b, a
-	hlcoord 5, 12
+	hlcoord 6, 12
 	predef PrintMoveType
 	hlcoord 1, 14
 	call PrintMoveDescription
 
-	hlcoord 11, 12
+	hlcoord 1, 13
 	ld de, TMHM_PowerString
 	call PlaceString
 
@@ -224,7 +224,7 @@ TMHolder_ShowTMMoveDescription:
 
 	ld a, BANK(Moves)
 	call GetFarByte
-	hlcoord 16, 12
+	hlcoord 8, 13
 	cp 2
 	jr c, .no_power
 ; Store the power of the move in wTempByteValue.
@@ -296,13 +296,13 @@ TMHM_ScrollHolder:
 	jp TMHolder_ShowTMMoveDescription
 
 TMHM_PowerString:
-	db "いりょく／@"
+	db "POWER/@"
 
 TMHM_ThreeDashesString:
-	db "ーーー@"
+	db "---@"
 
 TMHM_TypeString:
-	db "タイプ／@"
+	db "TYPE/@"
 
 TMHolder_DisplayItems:
 	hlcoord 3, 0
@@ -368,14 +368,13 @@ TMHolder_DisplayItems:
 
 .cancel
 	call .GetCurrentLineCoord
-; Write "CANCEL"
-	ld a, 'や'
-	ld [hli], a
-	ld a, 'め'
-	ld [hli], a
-	ld [hl], 'る'
+	ld de, .CancelString
+	call PlaceString
 .done
 	ret
+
+.CancelString:
+	db "CANCEL@"
 
 .GetCurrentLineCoord:
 	hlcoord 5, 0
@@ -417,13 +416,14 @@ Unreferenced_VerboseReceiveTMHM_Old:
 
 .NoRoomTMHMText:
 	text_from_ram wStringBuffer1
-	text "は　これいじょう"
-	line "もてません！"
+	text_start
+	line "won't fit!"
 	prompt
 
 .ReceivedTMHMText:
 	text_from_ram wStringBuffer1
-	text "を　てにいれた！"
+	text_start
+	line "was obtained!"
 	prompt
 
 .CheckHaveRoomForTMHM:

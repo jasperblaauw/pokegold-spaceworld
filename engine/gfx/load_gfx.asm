@@ -1,8 +1,31 @@
+	assert (FontGFX.End - FontGFX) / TILE_1BPP_SIZE == NUM_FONT_TILES
+
 LoadFontGraphics::
+; Unconditionally re-upload the whole font.
+	ld a, NUM_FONT_TILES
+	ld [wDirtyFontTiles], a
+	; fallthrough
+
+LoadFontGraphicsPartial::
+; Re-upload the first [wDirtyFontTiles] tiles of the font, then mark it clean.
+; The tiles past that point were never overwritten, so copying them again would
+; just cost frames -- at 8 tiles per VBlank a full 128-tile font is 16 of them,
+; which is what made every textbox pause before it opened.
+	ld a, [wDirtyFontTiles]
+	and a
+	ret z
+	cp NUM_FONT_TILES
+	jr c, .got_count
+	ld a, NUM_FONT_TILES
+.got_count
+	ld c, a
+	ld b, BANK(FontGFX)
 	ld de, FontGFX
 	ld hl, vFont
-	lb bc, BANK(FontGFX), (FontGFX.End - FontGFX) / TILE_1BPP_SIZE
-	jp Get1bpp
+	call Get1bpp
+	xor a
+	ld [wDirtyFontTiles], a
+	ret
 
 LoadFontExtraGraphicsWithCursor::
 	ld de, FontExtraCDEFGHIVSLM_GFX
@@ -16,6 +39,7 @@ LoadFontExtraGraphicsWithCursor::
 	jr LoadActiveFrameGraphics
 
 LoadPokemonMenuGraphics::
+	call InvalidateVRAMFonts ; overwrites vChars2 $60+, the font-extra tiles
 	ld de, BattleHPBarGFX
 	ld hl, vChars2 tile $60
 	lb bc, BANK(BattleHPBarGFX), (LevelUpGFX.End - BattleHPBarGFX) / TILE_SIZE
@@ -23,6 +47,7 @@ LoadPokemonMenuGraphics::
 	jr LoadActiveFrameGraphics
 
 LoadToolgearGraphicsDebug::
+	call InvalidateVRAMFonts ; overwrites vChars2 $66/$70, i.e. font-extra tiles
 	call LoadActiveFrameGraphics
 	ld hl, wTimeOfDayDebugFlags
 	bit TOOLGEAR_COORDS_F, [hl]
@@ -92,6 +117,7 @@ LoadBattleFontsHPBar::
 	; fallthrough
 
 LoadHPBar::
+	call InvalidateVRAMFonts ; overwrites vChars2 $6c/$73, the font-extra tiles
 	ld de, HpExpBarParts0GFX
 	ld hl, vChars2 tile $6c
 	lb bc, BANK(HpExpBarParts0GFX), (HpExpBarParts0GFX.End - HpExpBarParts0GFX) / TILE_1BPP_SIZE
@@ -141,6 +167,7 @@ LoadOnlyPokemonStatsGraphics::
 	ret
 
 LoadBackpackGraphics::
+	call InvalidateVRAMFonts ; overwrites vChars2 $60+, the font-extra tiles
 	ld de, BlackTileAndCursor1bppGFX
 	ld hl, vChars2 tile '■' ; $60
 	lb bc, BANK(BlackTileAndCursor1bppGFX), (BlackTileAndCursor1bppGFX.End - BlackTileAndCursor1bppGFX) / TILE_1BPP_SIZE

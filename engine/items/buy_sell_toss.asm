@@ -161,10 +161,13 @@ BuySellToss_UpdateQuantityDisplayAndPrice:
 	ld [hl], a
 	pop hl
 	inc hl
+; English writes the currency symbol before the figure. The six digits still
+; end on the same column, so the box geometry is unchanged.
+	ld [hl], '¥'
+	inc hl
 	ld de, hMoneyTemp
 	lb bc, 4, 6
 	call PrintNumber
-	ld [hl], '円'
 	call WaitBGMap
 	ret
 
