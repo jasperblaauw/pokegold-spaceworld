@@ -1,9 +1,29 @@
 DisplayStartMenu::
-	call ReanchorMap
+; feature/completion: retail Gold (pret/pokegold StartMenu::) freezes the
+; screen, draws the box and item text while still hidden behind the window,
+; and only then reveals -- farcall ReanchorBGMap_NoOAMUpdate, draw, farcall
+; LoadFonts_NoOAMUpdate. ReanchorMap does freeze+draw+reveal as one call, so
+; the box+text used to get revealed blank and painted live on top afterward,
+; an extra visible pop-in beyond the panel-open effect. Splitting the two
+; farcalls around OpenMenu_Draw fixes that on the first open only; a reopen
+; (.RefreshStartDisplay, e.g. returning from the PACK or Pokedex) is already
+; on a normal live screen and still just calls OpenMenu directly.
+	call ClearWindowData
+	callfar ReanchorBGMap_NoOAMUpdate
 	ld de, SFX_MENU
 	call PlaySFX
 	ld hl, .StartMenuHeader
 	call LoadMenuHeader
+	call UpdateTimePals
+	call UpdateSprites
+	call ClearJoypad
+	call GetStartMenuState
+	ld a, [wStartmenuCursor]
+	ld [wMenuCursorPosition], a
+	call OpenMenu_Draw
+	callfar LoadFonts_NoOAMUpdate
+	call OpenMenu_Wait
+	jr .GotSelection
 .RefreshStartDisplay
 	call UpdateTimePals
 	call UpdateSprites
@@ -12,6 +32,7 @@ DisplayStartMenu::
 	ld a, [wStartmenuCursor]
 	ld [wMenuCursorPosition], a
 	call OpenMenu
+.GotSelection
 	jr c, .MainReturn
 	ld a, [wMenuCursorPosition]
 	ld [wStartmenuCursor], a
@@ -81,6 +102,7 @@ DisplayStartMenu::
 	db "EXIT@"
 	db "FRAME@"
 	db "RESET@"
+	db "GEAR@"
 
 StartMenuJumpTable:
 	dw StartMenu_Pokedex
@@ -92,26 +114,41 @@ StartMenuJumpTable:
 	dw StartMenu_Exit
 	dw StartMenu_SetFrame
 	dw StartMenu_Reset
+	dw StartMenu_Gear
 
 StartMenuItems:
-	db 4
-	db START_SAVE
-	db START_OPTIONS
-	db START_TRAINERCARD
-	db START_EXIT
-	db -1
-
 	db 5
-	db START_PARTY
-	db START_TRAINERCARD
 	db START_SAVE
 	db START_OPTIONS
+	db START_GEAR
+	db START_TRAINERCARD
 	db START_EXIT
 	db -1
 
 	db 6
+	db START_PARTY
+	db START_GEAR
+	db START_TRAINERCARD
+	db START_SAVE
+	db START_OPTIONS
+	db START_EXIT
+	db -1
+
+	db 7
 	db START_POKEDEX
 	db START_PARTY
+	db START_GEAR
+	db START_TRAINERCARD
+	db START_SAVE
+	db START_OPTIONS
+	db START_EXIT
+	db -1
+
+	db 8
+	db START_POKEDEX
+	db START_PARTY
+	db START_BACKPACK
+	db START_GEAR
 	db START_TRAINERCARD
 	db START_SAVE
 	db START_OPTIONS
@@ -122,16 +159,7 @@ StartMenuItems:
 	db START_POKEDEX
 	db START_PARTY
 	db START_BACKPACK
-	db START_TRAINERCARD
-	db START_SAVE
-	db START_OPTIONS
-	db START_EXIT
-	db -1
-
-	db 6
-	db START_POKEDEX
-	db START_PARTY
-	db START_BACKPACK
+	db START_GEAR
 	db START_TRAINERCARD
 	db START_OPTIONS
 	db START_EXIT
@@ -226,6 +254,23 @@ _TrainerCard:
 	call UpdateTimePals
 	pop af
 	ldh [hMapAnims], a
+	ret
+
+StartMenu_Gear:
+; Opens the TRAINER GEAR (shown as "GEAR" for width). Same full-screen SGB submenu
+; shape as the Trainer Card; OpenTrainerGear saves/restores hMapAnims itself, so this
+; wrapper doesn't. The gear opens on its clock; the MAP card is gated on Ken's upgrade
+; (see engine/trainer_gear/trainer_gear.asm).
+	call LoadStandardMenuHeader
+	callfar OpenTrainerGear
+	call ClearPalettes
+	call LoadFont
+	call ReloadFontAndTileset
+	call Call_ExitMenu
+	call GetMemSGBLayout
+	call WaitBGMap
+	call UpdateTimePals
+	ld a, 0
 	ret
 
 StartMenu_Pokedex:
@@ -2153,12 +2198,36 @@ DrawTrainerCardMainPage:
 	hlcoord 0, 13
 	ld de, TrainerCardBadgesOutlineTiles
 	call PlaceTrainerCardTiles
+; feature/completion: row 16 is a two-tab selector chosen with Left/Right; the arrow
+; at col 4 / col 11 points at the active tab (see TrainerCardMainInputs). The Japanese
+; labels were kana glyph tiles (blanked above); print English ones with the font. Left
+; tab = CARD (A here closes the card), right tab = BADGES (A here opens the badge page).
 	hlcoord 5, 16
-	ld de, TrainerCardBadgesTextTiles
-	call PlaceTrainerCardTiles
+	ld de, TrainerCardCardTabLabel
+	call PlaceString
+	hlcoord 12, 16
+	ld de, TrainerCardBadgesTabLabel
+	call PlaceString
 	hlcoord 4, 16
 	ld [hl], '▶'
+; The badges box caption was the baked kana motto "ポケモンリーグ　バッジをもとめて"
+; (roughly "in pursuit of League Badges"), drawn from custom glyph tiles in the list
+; above. Those glyph tiles (including the trailing $FE/$BA that rendered as a stray "8")
+; are now blanked ($7F) and the caption is printed with the normal font instead: the
+; band interior is white, so ordinary black-on-white text matches the old glyphs' style,
+; and English needs more room than the 13 kana cells.
+; Printed last so the (blanked) tile lists above don't overwrite it.
+	hlcoord 1, 14
+	ld de, TrainerCardBadgesCaption
+	call PlaceString
 	ret
+
+TrainerCardBadgesCaption:
+	db "COLLECT BADGES@"
+TrainerCardCardTabLabel:
+	db "CARD@"
+TrainerCardBadgesTabLabel:
+	db "BADGES@"
 
 ; `next` steps two rows here, so these land on rows 2 / 6 / 10, matching the
 ; player name (6,2), the money (7,6) and the dex count printed alongside them.
@@ -2185,11 +2254,12 @@ TrainerCardNameUnderlineTiles:
 TrainerCardStatusTiles:
 	db $0A, $10, $11, $12, $13, $FF
 
+; Caption kana glyph cells ($14-$1D on row 14) and the trailing $FE/$BA that rendered
+; as a stray "8" are all blanked to $7F; the box frame ($01-$05) is unchanged. The
+; English caption is printed over row 14 by TrainerCardBadgesCaption; the row-16 tab
+; labels are printed by TrainerCardCardTabLabel / TrainerCardBadgesTabLabel.
 TrainerCardBadgesOutlineTiles:
-	db $03, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $02, $7F, $14, $15, $16, $17, $18, $19, $1A, $1B, $1C, $1D, $7F, $7F, $7F, $FE, $BA, $7F, $7F, $7F, $05, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $FF
-
-TrainerCardBadgesTextTiles:
-	db $1E, $1F, $20, $7F, $7F, $7F, $7F, $1B, $1C, $1D, $FF
+	db $03, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $02, $7F, $7F, $7F, $7F, $7F, $7F, $7F, $7F, $7F, $7F, $7F, $7F, $7F, $7F, $7F, $7F, $7F, $7F, $7F, $05, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $FF
 
 DrawTrainerCaseBadgePage:
 	hlcoord 0, 0

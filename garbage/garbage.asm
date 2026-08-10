@@ -29,19 +29,10 @@ DEF Old_FarCallFunctionAddress EQU $2f91
 ; feature/completion: removed a 7-byte corrupt-data reconstruction of
 ; _InterlaceMergeSpriteBuffers.interlaceLoopFlipped (zero references; the real
 ; routine lives in home/uncompress.asm) to make ROM0 room for
-; InvalidateVRAMFonts and its call sites.
-
-Unreferenced_Corrupt_GetPartyParamLocation_Old:
-	push bc
-	ld hl, wPartyMons
-	ld c, a
-	ld b, 0
-	add hl, bc
-	ld bc, PARTYMON_STRUCT_LENGTH
-	ld a, [wCurPartyMon]
-	call $3412 ; Early position for AddNTimes
-	pop bc
-	ret
+; InvalidateVRAMFonts and its call sites. Also removed a 12-byte corrupt-data
+; reconstruction of the old GetPartyParamLocation (zero references, same as
+; above) to make ROM0 room for splitting OpenMenu into OpenMenu_Draw/
+; OpenMenu_Wait (start menu open delay fix). Recoverable from git.
 
 Unreferenced_Corrupt_DoItemEffect_Old:
 	ld a, BANK(_DoItemEffect)
@@ -851,17 +842,17 @@ SECTION "Bank 11 Garbage", ROMX
 
 if DEF(_DEBUG)
 	if DEF(_GOLD)
-	INCBIN "garbage/debug/bank11_gold.2bpp", 49
+	INCBIN "garbage/debug/bank11_gold.2bpp", 912
 	endc
 	if DEF(_SILVER)
-	INCBIN "garbage/debug/bank11_silver.2bpp", 49
+	INCBIN "garbage/debug/bank11_silver.2bpp", 912
 	endc
 else
 	if DEF(_GOLD)
-	INCBIN "garbage/bank11_gold.2bpp", 49
+	INCBIN "garbage/bank11_gold.2bpp", 912
 	endc
 	if DEF(_SILVER)
-	INCBIN "garbage/bank11_silver.2bpp", 49
+	INCBIN "garbage/bank11_silver.2bpp", 912
 	endc
 endc
 

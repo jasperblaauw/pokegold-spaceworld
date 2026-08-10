@@ -182,6 +182,14 @@ _OffsetMenuHeader::
 	ret
 
 OpenMenu::
+	call OpenMenu_Draw
+	call OpenMenu_Wait
+	ret
+
+; Split so a caller can draw the box+items while still hidden behind the
+; window (see DisplayStartMenu) and reveal only afterward. Ordinary callers
+; just want OpenMenu, which chains both halves back to back as before.
+OpenMenu_Draw::
 	call CopyMenuData
 	call GetMenuIndexSet
 	push de
@@ -195,14 +203,10 @@ OpenMenu::
 	call MenuBox
 	pop de
 	call GetMenuIndexSet
-	push de
 	call RunMenuItemPrintingFunction
 	ld a, 1
 	ldh [hBGMapMode], a
 	call UpdateSprites
-	call GetMenuIndexSet
-	pop de
-	call GetStaticMenuJoypad
 	ret
 
 ; Unlike _ExitMenu, there is no error for trying to pop a window when none are available.
@@ -224,6 +228,15 @@ OpenMenu::
 	call CloseSRAM
 	ld hl, wWindowStackSize
 	dec [hl]
+	ret
+
+OpenMenu_Wait::
+; wMenuDataItems/the index-set base pointer are pure functions of WRAM state
+; set up by OpenMenu_Draw, so recomputing them here is cheap insurance against
+; threading a live register across whatever a caller does between the two
+; halves, rather than trying to keep it alive across that gap.
+	call GetMenuIndexSet
+	call GetStaticMenuJoypad
 	ret
 
 AutomaticGetMenuBottomCoord::

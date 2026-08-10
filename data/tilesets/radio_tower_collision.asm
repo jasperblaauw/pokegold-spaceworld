@@ -1,3 +1,7 @@
+; feature/completion: walls/shelves/counters here were authored with the *old* collision
+; subtypes (OLD_WALL/$01, OLD_WALL_INSIDE/$04, OLD_MART_ITEM/$72, OLD_COUNTER/$73), which
+; CollisionTypeTable marks LAND (passable) -- see docs/completion/HANDOVER.md 'Collision'.
+; Converted to the working WALL ($07, solid) / COUNTER ($90, solid + talk-across) constants.
 	tilecoll FF, FF, FF, FF ; 00
 	tilecoll FLOOR, FLOOR, FLOOR, FLOOR ; 01
 	tilecoll WALL, STRAIGHT_SIGNPOST | COLLFLAG_ENCOUNTER, FLOOR, FLOOR ; 02
@@ -20,7 +24,7 @@
 	tilecoll FLOOR, FLOOR, FLOOR, FLOOR ; 13
 	tilecoll FLOOR, FLOOR, FLOOR, FLOOR ; 14
 	tilecoll FLOOR, FLOOR, WALL, WALL ; 15
-	tilecoll OLD_FLOOR_INSIDE, OLD_COUNTER, OLD_FLOOR_INSIDE, OLD_WALL_INSIDE, ; 16
+	tilecoll OLD_FLOOR_INSIDE, COUNTER, OLD_FLOOR_INSIDE, WALL, ; 16
 	tilecoll FLOOR, FLOOR, COUNTER, FLOOR ; 17
 	tilecoll FLOOR, WALL, FLOOR, FLOOR ; 18
 	tilecoll WALL, WALL, FLOOR, STRAIGHT_SIGNPOST | COLLFLAG_ENCOUNTER ; 19

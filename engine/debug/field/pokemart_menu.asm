@@ -101,6 +101,18 @@ DebugMart_GoodbyeText:
 
 DebugMart_Buy:
 	ld de, DebugMart_ItemList
+	call RunMartBuyMenu
+	and a
+	ret
+
+RunMartBuyMenu::
+; feature/completion: pulled out of DebugMart_Buy so a real town mart
+; (maps/OldCityMart.asm) can share the same scrolling-list/quantity/purchase
+; UI instead of duplicating it -- ROM is at 100% capacity, and this was the
+; only mart implementation to begin with. Also finishes the purchase itself,
+; which this never did before (see .UnderDevelopmentText, now gone): the
+; debug field mart could browse and pick a quantity but never actually buy.
+; IN: de = pointer to a -1-terminated list of item IDs to sell.
 	call DebugMart_LoadItems
 	call LoadStandardMenuHeader
 	call ClearTileMap
@@ -108,7 +120,6 @@ DebugMart_Buy:
 	call .BuyMenu
 	jr nc, .buy_loop
 	call ExitMenu
-	and a
 	ret
 
 .BuyMenu:
@@ -134,8 +145,54 @@ DebugMart_Buy:
 	call PrintText
 	call YesNoBox
 	jr c, .done
-	ld hl, .UnderDevelopmentText
+
+; hMoneyTemp (3 bytes, MSB-first, set by SelectQuantityToBuy's live price *
+; quantity) vs wMoney, same layout. CompareBytes (home/util.asm) walks both
+; MSB-first and returns on the first differing byte; carry set there means
+; wMoney's byte was smaller, i.e. not enough money.
+	ld hl, hMoneyTemp
+	ld de, wMoney
+	ld c, 3
+	call CompareBytes
+	jr c, .not_enough_money
+
+; Give the item before charging for it, so a full pocket costs nothing.
+; Poké Balls live in their own pocket (wNumBallItems), same as the PACK UI.
+	ld a, [wCurItem]
+	cp ITEM_POKE_BALL
+	ld hl, wNumBagItems
+	jr nz, .not_ball
+	ld hl, wNumBallItems
+.not_ball
+	call ReceiveItem
+	jr nc, .pack_full
+
+	ld hl, hMoneyTemp + 2
+	ld de, wMoney + 2
+	ld c, 3
+	and a
+.pay_loop
+	ld a, [de]
+	sbc a, [hl]
+	ld [de], a
+	dec de
+	dec hl
+	dec c
+	jr nz, .pay_loop
+
+	ld hl, .ThanksText
 	call MenuTextBoxBackup
+	jr .done
+
+.not_enough_money
+	ld hl, .NotEnoughMoneyText
+	call MenuTextBoxBackup
+	jr .done
+
+.pack_full
+	ld hl, .PackFullText
+	call MenuTextBoxBackup
+
 .done
 	and a
 	ret
@@ -164,9 +221,18 @@ DebugMart_Buy:
 	text " Buy them?"
 	done
 
-.UnderDevelopmentText:
-	text "Sorry, this is"
-	line "under development."
+.ThanksText:
+	text "Thank you!"
+	prompt
+
+.NotEnoughMoneyText:
+	text "You don't have"
+	line "enough money!"
+	prompt
+
+.PackFullText:
+	text "Your PACK is"
+	line "full!"
 	prompt
 
 INCLUDE "data/debug/field_debug_pokemart_items.asm"

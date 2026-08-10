@@ -170,14 +170,12 @@ PrintSaveScreenText::
 	db 1
 
 .MenuData:
-	db STATICMENU_PLACE_TITLE
+	db 0 ; feature/completion: was STATICMENU_PLACE_TITLE with a "TEST" debug title on the box border
 	db 4
 	db "PLAYER <PLAYER>@"
 	db "BADGES@"
 	db "POKéDEX@"
 	db "TIME@"
-	db 6
-	db "TEST@"
 
 SaveOptionsAndGameData::
 	ld a, BANK(sOptions)

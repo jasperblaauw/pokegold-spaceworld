@@ -106,796 +106,1099 @@ PokedexEntryPointers1::
 	dw KinglerDexEntry
 
 BulbasaurDexEntry:
-	db "たね@"
+	db "SEED@"
 	db 7
 	dw 69
-	db   "うまれたときから　せなかに"
-	next "なにかの　タネが　うえてあり"
-	next "からだと　いっしょに　そだつ。@"
+	db "The day it is@"
+	db "born, a seed is@"
+	db "set on its back;@"
+	db "the two grow up@"
+	db "together.@"
+	db "@"
 
 IvysaurDexEntry:
-	db "たね@"
+	db "SEED@"
 	db 10
 	dw 130
-	db   "せなかに　ハナのつぼみが　あり"
-	next "ようぶんを　きゅうしゅう　すると"
-	next "だんだん　そだってくる。@"
+	db "A flower bud grows@"
+	db "on its back. As it@"
+	db "absorbs nutrients,@"
+	db "the bud gradually@"
+	db "develops.@"
+	db "@"
 
 VenusaurDexEntry:
-	db "たね@"
+	db "SEED@"
 	db 20
 	dw 1000
-	db   "おおきな　はなを　いじするため"
-	next "ひなたをみつけると　まるで"
-	next "ひきよせられるように　いどうする。@"
+	db "To feed its huge@"
+	db "flower, it moves@"
+	db "toward sunny spots@"
+	db "as if drawn to@"
+	db "them.@"
+	db "@"
 
 CharmanderDexEntry:
-	db "とかげ@"
+	db "LIZARD@"
 	db 6
 	dw 85
-	db   "あついものを　このむ　せいかく。"
-	next "しっぽの　ほのおは　こうふんすると"
-	next "おんどが　あがっていく。@"
+	db "It loves hot@"
+	db "things. The flame@"
+	db "on its tail burns@"
+	db "hotter when@"
+	db "excited.@"
+	db "@"
 
 CharmeleonDexEntry:
-	db "かえん@"
+	db "FLAME@"
 	db 11
 	dw 190
-	db   "もえる　シッポを　ふりまわすと"
-	next "まわりの　おんどが　どんどん"
-	next "あがって　あいてを　くるしめる。@"
+	db "Whipping its@"
+	db "blazing tail, it@"
+	db "raises the heat@"
+	db "nearby to torment@"
+	db "its foe.@"
+	db "@"
 
 CharizardDexEntry:
-	db "かえん@"
+	db "FLAME@"
 	db 17
 	dw 905
-	db   "がんせきも　もえあがるような　"
-	next "こうねつの　ほのおを　はいて"
-	next "やまかじを　おこすことも　ある。@"
+	db "It breathes flames@"
+	db "hot enough to melt@"
+	db "rock and has@"
+	db "started forest@"
+	db "fires.@"
+	db "@"
 
 SquirtleDexEntry:
-	db "かめのこ@"
+	db "TINYTURTL@"
 	db 5
 	dw 90
-	db   "うまれたあと　せなかが　ふくらんで"
-	next "かたい　こうらが　できる。くちから"
-	next "きょうりょくな　あわを　だす。@"
+	db "After birth its@"
+	db "back swells into a@"
+	db "hard shell. It@"
+	db "shoots foam from@"
+	db "its mouth.@"
+	db "@"
 
 WartortleDexEntry:
-	db "かめ@"
+	db "TURTLE@"
 	db 10
 	dw 225
-	db   "しばしば　すいちゅうに　かくれ"
-	next "えものを　ねらう。はやく　およぐとき"
-	next "みみを　うごかして　バランスをとる。@"
+	db "It hides@"
+	db "underwater to@"
+	db "stalk prey,@"
+	db "steering with its@"
+	db "ears when@"
+	db "swimming.@"
+	db "@"
 
 BlastoiseDexEntry:
-	db "こうら@"
+	db "SHELLFISH@"
 	db 16
 	dw 855
-	db   "おもたくて　カラが　かたいため"
-	next "のしかかられると　たいていの"
-	next "ポケモンは　きを　うしなってしまう。@"
+	db "So heavy and@"
+	db "hard-shelled that@"
+	db "most foes it@"
+	db "body-slams are@"
+	db "knocked out.@"
+	db "@"
 
 CaterpieDexEntry:
-	db "いもむし@"
+	db "WORM@"
 	db 3
 	dw 29
-	db   "みどりの　ひふに　おおわれている。"
-	next "だっぴして　せいちょうすると"
-	next "いとを　かけて　サナギに　かわる。@"
+	db "Clad in green@"
+	db "skin, it molts as@"
+	db "it grows, then@"
+	db "spins silk into a@"
+	db "cocoon.@"
+	db "@"
 
 MetapodDexEntry:
-	db "さなぎ@"
+	db "COCOON@"
 	db 7
 	dw 99
-	db   "うすい　カラに　つつまれているが"
-	next "なかみは　とても　やわらかく"
-	next "つよい　こうげきには　たえられない。@"
+	db "Wrapped in a thin@"
+	db "shell whose@"
+	db "insides are soft;@"
+	db "it cannot take a@"
+	db "hard hit.@"
+	db "@"
 
 ButterfreeDexEntry:
-	db "ちょうちょ@"
+	db "BUTTERFLY@"
 	db 11
 	dw 320
-	db   "ハネは　みずを　はじく　りんぷんに"
-	next "まもられている。あめの　ひでも"
-	next "そらを　とぶことが　できる。@"
+	db "Its wings are@"
+	db "protected by@"
+	db "water-repellent@"
+	db "scales, so it can@"
+	db "fly even on rainy@"
+	db "days.@"
+	db "@"
 
 WeedleDexEntry:
-	db "けむし@"
+	db "HAIRY BUG@"
 	db 3
 	dw 32
-	db   "もりに　おおく　ハッパを　たべる。"
-	next "あたまに　するどい　ハリをもち"
-	next "さされると　どくに　おかされる。@"
+	db "Common in forests,@"
+	db "it eats leaves.@"
+	db "Its sharp head@"
+	db "stinger poisons@"
+	db "whatever it@"
+	db "stings.@"
+	db "@"
 
 KakunaDexEntry:
-	db "さなぎ@"
+	db "COCOON@"
 	db 6
 	dw 100
-	db   "おとなの　からだを　つくるため"
-	next "カラのなかで　へんしんちゅう。"
-	next "ほとんど　うごけない。@"
+	db "It is transforming@"
+	db "inside its shell@"
+	db "to build its adult@"
+	db "body. It can@"
+	db "barely move.@"
+	db "@"
 
 BeedrillDexEntry:
-	db "どくばち@"
+	db "POISONBEE@"
 	db 10
 	dw 295
-	db   "しゅうだんで　あらわれることもある。"
-	next "もうスピードで　とびまわり"
-	next "おしりの　どくばりで　さしまくる。@"
+	db "Often in swarms,@"
+	db "it flies at@"
+	db "ferocious speed@"
+	db "and stings with@"
+	db "its rear barb.@"
+	db "@"
 
 PidgeyDexEntry:
-	db "ことり@"
+	db "TINY BIRD@"
 	db 3
 	dw 18
-	db   "もりや　はやしに　おおく　ぶんぷ。"
-	next "ちじょうに　おりてきたとき"
-	next "はばたいて　すなを　かけたりする。@"
+	db "Widely spread@"
+	db "through woods and@"
+	db "forests. On@"
+	db "landing, it flaps@"
+	db "to kick up sand.@"
+	db "@"
 
 PidgeottoDexEntry:
-	db "とり@"
+	db "BIRD@"
 	db 11
 	dw 300
-	db   "あしの　ツメが　はったつしている。"
-	next "エサの　タマタマを　つかんで"
-	next "１００キロさきの　す　まで　はこぶ。@"
+	db "Its claws are well@"
+	db "developed. It@"
+	db "carries prey up to@"
+	db "100 km to its@"
+	db "nest.@"
+	db "@"
 
 PidgeotDexEntry:
-	db "とり@"
+	db "BIRD@"
 	db 15
 	dw 395
-	db   "うつくしい　ハネを　ひろげて"
-	next "あいてを　いかくする。"
-	next "マッハ２で　そらを　とびまわる。@"
+	db "It spreads its@"
+	db "fine wings to@"
+	db "daunt foes and@"
+	db "flies at Mach 2.@"
+	db "@"
 
 RattataDexEntry:
-	db "ねずみ@"
+	db "MOUSE@"
 	db 3
 	dw 35
-	db   "なんでも　かじって　こうげき。"
-	next "ちいさいうえに　うごきが　すばやく"
-	next "いろんな　ところに　しゅつぼつする。@"
+	db "It gnaws on@"
+	db "anything. Small@"
+	db "and quick, it@"
+	db "turns up almost@"
+	db "anywhere.@"
+	db "@"
 
 RaticateDexEntry:
-	db "ねずみ@"
+	db "MOUSE@"
 	db 7
 	dw 185
-	db   "うしろあしの　ゆびは　３ぼんで"
-	next "ちいさな　みずかきが　ついている。"
-	next "かわを　およいで　わたる。@"
+	db "Its hind feet have@"
+	db "three toes with@"
+	db "small webbing, and@"
+	db "it swims across@"
+	db "rivers.@"
+	db "@"
 
 SpearowDexEntry:
-	db "ことり@"
+	db "TINY BIRD@"
 	db 3
 	dw 20
-	db   "くさむらの　むしなどを　たべる。"
-	next "はねが　みじかいために　いつも"
-	next "いそがしく　はばたいている。@"
+	db "It eats bugs in@"
+	db "the grass. With@"
+	db "short wings, it@"
+	db "flaps them busily.@"
+	db "@"
 
 FearowDexEntry:
-	db "くちばし@"
+	db "BEAK@"
 	db 12
 	dw 380
-	db   "おおきな　つばさで　おおぞらを"
-	next "とびつづけることが　できる。"
-	next "１かいも　おりなくても　へいきだ。@"
+	db "With large wings@"
+	db "it stays aloft in@"
+	db "open sky, fine@"
+	db "without ever@"
+	db "landing.@"
+	db "@"
 
 EkansDexEntry:
-	db "へび@"
+	db "SNAKE@"
 	db 20
 	dw 69
-	db   "くさちに　おおく　かくれている。"
-	next "こどもの　アーボは　どくをもたない。"
-	next "かまれても　だいじょうぶだ。@"
+	db "It hides in grassy@"
+	db "fields. A young@"
+	db "Ekans has no@"
+	db "poison, so being@"
+	db "bitten is@"
+	db "harmless.@"
+	db "@"
 
 ArbokDexEntry:
-	db "コブラ@"
+	db "COBRA@"
 	db 35
 	dw 650
-	db   "おなかの　もようが　こわいかおに"
-	next "みえる。よわいてきは　そのもようを"
-	next "みただけで　にげだしてしまう。@"
+	db "Its belly pattern@"
+	db "looks like a scary@"
+	db "face; weak foes@"
+	db "flee at the sight.@"
+	db "@"
 
 PikachuDexEntry:
-	db "ねずみ@"
+	db "MOUSE@"
 	db 4
 	dw 60
-	db   "ほっぺたの　りょうがわに"
-	next "ちいさい　でんきぶくろを　もっていて"
-	next "ピンチのときに　ほうでんする。@"
+	db "It has small@"
+	db "electric sacs on@"
+	db "both cheeks and@"
+	db "discharges them@"
+	db "when in a pinch.@"
+	db "@"
 
 RaichuDexEntry:
-	db "ねずみ@"
+	db "MOUSE@"
 	db 8
 	dw 300
-	db   "でんげきは　１０まんボルトに"
-	next "たっする。シッポに　さわると"
-	next "インドぞうでも　きぜつする。@"
+	db "Its shocks reach@"
+	db "100,000 volts.@"
+	db "Touch its tail and@"
+	db "even an elephant@"
+	db "faints.@"
+	db "@"
 
 SandshrewDexEntry:
-	db "ねずみ@"
+	db "MOUSE@"
 	db 6
 	dw 120
-	db   "みずけの　すくない　ばしょに"
-	next "ふかい　あなを　ほって　かくれる。"
-	next "えものを　ねらうときは　でてくる。@"
+	db "It digs a deep@"
+	db "burrow to hide in@"
+	db "dry places, coming@"
+	db "out only to hunt@"
+	db "prey.@"
+	db "@"
 
 SandslashDexEntry:
-	db "ねずみ@"
+	db "MOUSE@"
 	db 10
 	dw 295
-	db   "せなかを　まるめると　トゲトゲの"
-	next "ボールみたいだ。そのまま　ころがって"
-	next "ぶつかってきたり　にげたりする。　@"
+	db "Curled up, it is@"
+	db "like a spiky ball.@"
+	db "It rolls along to@"
+	db "ram foes or to@"
+	db "escape.@"
+	db "@"
 
 NidoranFDexEntry:
-	db "どくばり@"
+	db "POISONPIN@"
 	db 4
 	dw 70
-	db   "ちいさくても　どくばりの　いりょくは"
-	next "きょうれつで　ちゅういが　ひつよう。"
-	next "メスのほうが　つのが　ちいさい。@"
+	db "Small, but its@"
+	db "poison barb is@"
+	db "potent, take care.@"
+	db "Its horn is small.@"
+	db "@"
 
 NidorinaDexEntry:
-	db "どくばり@"
+	db "POISONPIN@"
 	db 8
 	dw 200
-	db   "メスなので　ツノのそだちが　おそい。"
-	next "ひっかいたり　かみついたりと"
-	next "にくだんせんを　このむ。@"
+	db "Being female, its@"
+	db "horn grows slowly.@"
+	db "It prefers close@"
+	db "combat, scratching@"
+	db "and biting.@"
+	db "@"
 
 NidoqueenDexEntry:
-	db "ドリル@"
+	db "DRILL@"
 	db 13
 	dw 600
-	db   "せなかに　はりのような　ウロコが"
-	next "びっしりと　はえている。"
-	next "こうふんすると　はりが　さかだつ。@"
+	db "Its hard scales@"
+	db "protect its whole@"
+	db "body; it swings@"
+	db "its tail to knock@"
+	db "foes back.@"
+	db "@"
 
 NidoranMDexEntry:
-	db "どくばり@"
+	db "POISONPIN@"
 	db 5
 	dw 90
-	db   "ながい　みみを　たてて　きけんを"
-	next "かんじとる。からだの　とげが"
-	next "おおきいほど　つよい　どくをだす。@"
+	db "It lifts its long@"
+	db "ears to sense@"
+	db "danger. Bigger@"
+	db "spikes mean@"
+	db "stronger poison.@"
+	db "@"
 
 NidorinoDexEntry:
-	db "どくばり@"
+	db "POISONPIN@"
 	db 9
 	dw 195
-	db   "すぐに　おこって　たたかおうとする。"
-	next "しかも　あたまの　ツノは　ささると"
-	next "きょうれつな　どくそをだす　しくみ。@"
+	db "Quick to fight,@"
+	db "its head horn@"
+	db "injects intense@"
+	db "poison when it@"
+	db "stabs.@"
+	db "@"
 
 NidokingDexEntry:
-	db "ドリル@"
+	db "DRILL@"
 	db 14
 	dw 620
-	db   "ダイヤのように　かたい　ひふと"
-	next "ながく　のびた　ツノが　とくちょう。"
-	next "ツノに　どくがあるので　ちゅうい。@"
+	db "Its skin is@"
+	db "diamond-hard and@"
+	db "its long horn@"
+	db "poisonous. Beware@"
+	db "that horn.@"
+	db "@"
 
 ClefairyDexEntry:
-	db "ようせい@"
+	db "FAIRY@"
 	db 6
 	dw 75
-	db   "ふしぎで　かわいいので　おおくの"
-	next "ファンがいる。ただし　せいそくちが"
-	next "かぎられ　みつけるのが　たいへん。@"
+	db "Adorable and@"
+	db "mysterious, with@"
+	db "many fans, but@"
+	db "rare and hard to@"
+	db "find.@"
+	db "@"
 
 ClefableDexEntry:
-	db "ようせい@"
+	db "FAIRY@"
 	db 13
 	dw 400
-	db   "みみが　よくて　１キロ　はなれた"
-	next "ところで　おとした　はりのおとを"
-	next "みごとに　ききわけられる。@"
+	db "Its hearing is so@"
+	db "keen it can@"
+	db "distinguish a pin@"
+	db "dropped a@"
+	db "kilometer away.@"
+	db "@"
 
 VulpixDexEntry:
-	db "きつね@"
+	db "FOX@"
 	db 6
 	dw 99
-	db   "こどもだが　６ほんの　しっぽが"
-	next "うつくしい。せいちょうすると"
-	next "さらに　しっぽが　ふえる。@"
+	db "Though young, its@"
+	db "six tails are@"
+	db "beautiful. As it@"
+	db "grows, its tails@"
+	db "increase in@"
+	db "number.@"
+	db "@"
 
 NinetalesDexEntry:
-	db "きつね@"
+	db "FOX@"
 	db 11
 	dw 199
-	db   "おうごんに　かがやく　たいもうと"
-	next "９ほんの　ながい　しっぽを　もつ。"
-	next "１０００ねん　いきると　いわれる。@"
+	db "With golden fur@"
+	db "and nine long@"
+	db "tails, it is said@"
+	db "to live a thousand@"
+	db "years.@"
+	db "@"
 
 JigglypuffDexEntry:
-	db "ふうせん@"
+	db "BALLOON@"
 	db 5
 	dw 55
-	db   "つぶらな　ひとみが　ゆれるとき"
-	next "ねむけを　もよおす　ふしぎで"
-	next "きもちのいい　うたを　うたう。@"
+	db "When its round@"
+	db "eyes waver, it@"
+	db "sings a strange,@"
+	db "pleasant song that@"
+	db "makes you drowsy.@"
+	db "@"
 
 WigglytuffDexEntry:
-	db "ふうせん@"
+	db "BALLOON@"
 	db 10
 	dw 120
-	db   "キメこまかい　たいもうは"
-	next "しなやかで　さわると　きもちいい。"
-	next "けがわにすると　うれるという。@"
+	db "Its fine fur is@"
+	db "supple to the@"
+	db "touch; made into a@"
+	db "pelt, it sells@"
+	db "well.@"
+	db "@"
 
 ZubatDexEntry:
-	db "こうもり@"
+	db "BAT@"
 	db 8
 	dw 75
-	db   "くらい　ばしょに　しゅうだんで"
-	next "はっせいする。ちょうおんぱを　だして"
-	next "ターゲットに　ちかづいていく。@"
+	db "It swarms in dark@"
+	db "places, using@"
+	db "ultrasonic waves@"
+	db "to find its@"
+	db "target.@"
+	db "@"
 
 GolbatDexEntry:
-	db "こうもり@"
+	db "BAT@"
 	db 16
 	dw 550
-	db   "するどいキバで　かみついて"
-	next "いちどに　３００シーシーの"
-	next "ちを　すいとってしまう。@"
+	db "It bites with@"
+	db "sharp fangs and@"
+	db "sucks up 300 cc of@"
+	db "blood in a single@"
+	db "go.@"
+	db "@"
 
 OddishDexEntry:
-	db "ざっそう@"
+	db "WEED@"
 	db 5
 	dw 54
-	db   "ひるまは　かおを　じめんに　うめて"
-	next "あまり　うごかない。よるに　なると"
-	next "たねをまきながら　あるきまわる。@"
+	db "By day it buries@"
+	db "its face and@"
+	db "barely moves; by@"
+	db "night it walks,@"
+	db "sowing seeds.@"
+	db "@"
 
 GloomDexEntry:
-	db "ざっそう@"
+	db "WEED@"
 	db 8
 	dw 86
-	db   "めしべが　はなつ　とてつもなく"
-	next "くさい　においは　２キロさきまで"
-	next "とどき　きを　うしなわせる。@"
+	db "The foul stench@"
+	db "from its pistil@"
+	db "carries 2 km and@"
+	db "makes others@"
+	db "faint.@"
+	db "@"
 
 VileplumeDexEntry:
-	db "フラワー@"
+	db "FLOWER@"
 	db 12
 	dw 186
-	db   "せかいいち　おおきい　はなびらから"
-	next "アレルギーを　おこす　かふんを"
-	next "オニの　ように　ばらまく。@"
+	db "From the world's@"
+	db "largest petals it@"
+	db "scatters@"
+	db "allergy-inducing@"
+	db "pollen like a@"
+	db "demon.@"
+	db "@"
 
 ParasDexEntry:
-	db "きのこ@"
+	db "MUSHROOM@"
 	db 3
 	dw 54
-	db   "むしの　せなかに　はえているのは"
-	next "とうちゅうかそう　という　キノコ。"
-	next "キノコは　そだって　おおきくなる。@"
+	db "The mushrooms on@"
+	db "the bug's back are@"
+	db "a cordyceps, and@"
+	db "they grow larger@"
+	db "over time.@"
+	db "@"
 
 ParasectDexEntry:
-	db "きのこ@"
+	db "MUSHROOM@"
 	db 10
 	dw 295
-	db   "キノコの　カサから　どくほうしを"
-	next "まきちらす。しかし　ちゅうごくでは"
-	next "このほうしを　かんぽうやくに　する。@"
+	db "It scatters poison@"
+	db "spores; in China@"
+	db "those spores are@"
+	db "used as medicine.@"
+	db "@"
 
 VenonatDexEntry:
-	db "こんちゅう@"
+	db "INSECT@"
 	db 10
 	dw 300
-	db   "おおきな　きのなかに　すみかをつくり"
-	next "ほかのむしなどを　たべてるらしい。"
-	next "よるは　あかりのそばに　やってくる。@"
+	db "It nests in big@"
+	db "trees and eats@"
+	db "other bugs; at@"
+	db "night it nears@"
+	db "lights.@"
+	db "@"
 
 VenomothDexEntry:
-	db "どくが@"
+	db "PSN MOTH@"
 	db 15
 	dw 125
-	db   "はねに　りんぷんが　ついていて"
-	next "ヒラヒラと　はばたくたびに"
-	next "もうどくの　こなを　ばらまく。@"
+	db "Scales cover its@"
+	db "wings; each light@"
+	db "flutter scatters@"
+	db "highly poisonous@"
+	db "powder.@"
+	db "@"
 
 DiglettDexEntry:
-	db "もぐら@"
+	db "MOLE@"
 	db 2
 	dw 8
-	db   "ちか１メートルくらいを　ほりすすみ"
-	next "きのねっこなどを　かじって　いきる。"
-	next "たまに　ちじょうに　かおをだす。@"
+	db "It burrows a meter@"
+	db "down, gnawing tree@"
+	db "roots, and rarely@"
+	db "shows its face.@"
+	db "@"
 
 DugtrioDexEntry:
-	db "もぐら@"
+	db "MOLE@"
 	db 7
 	dw 333
-	db   "ちちゅうを　ほりすすんで"
-	next "ゆだんしている　ところを"
-	next "べつの　ばしょから　こうげきする。@"
+	db "It tunnels through@"
+	db "the earth to@"
+	db "attack the unwary@"
+	db "from an unexpected@"
+	db "direction.@"
+	db "@"
 
 MeowthDexEntry:
-	db "ばけねこ@"
+	db "GHOSTCAT@"
 	db 4
 	dw 42
-	db   "ひかる　ものが　だいすきで"
-	next "あちこち　おちている　おかねを"
-	next "ひろって　くることも　おおい。@"
+	db "It loves shiny@"
+	db "things and often@"
+	db "picks up money@"
+	db "that has fallen@"
+	db "here and there.@"
+	db "@"
 
 PersianDexEntry:
-	db "シャムネコ@"
+	db "SIAM CAT@"
 	db 10
 	dw 320
-	db   "きしょうが　はげしく　しっぽを"
-	next "まっすぐ　たてたら　よう　ちゅうい。"
-	next "とびかかって　かみつく　まえぶれだ。@"
+	db "Fierce-tempered.@"
+	db "If it lifts its@"
+	db "tail straight up,@"
+	db "it will pounce and@"
+	db "bite.@"
+	db "@"
 
 PsyduckDexEntry:
-	db "あひる@"
+	db "DUCK@"
 	db 8
 	dw 196
-	db   "いつも　ずつうに　なやまされている。"
-	next "この　ずつうが　はげしくなると"
-	next "ふしぎな　ちからを　つかいはじめる。@"
+	db "Always plagued by@"
+	db "a headache; when@"
+	db "it worsens it uses@"
+	db "strange powers.@"
+	db "@"
 
 GolduckDexEntry:
-	db "あひる@"
+	db "DUCK@"
 	db 17
 	dw 766
-	db   "てのひらが　みずかきに　なっていて"
-	next "およぐのが　とくい。みずうみなどで"
-	next "ゆうがな　すがたが　みかけられる。@"
+	db "Its webbed palms@"
+	db "make it a strong@"
+	db "swimmer, and its@"
+	db "elegant form is@"
+	db "seen at lakes.@"
+	db "@"
 
 MankeyDexEntry:
-	db "ぶたざる@"
+	db "PIGMONKEY@"
 	db 5
 	dw 280
-	db   "みのこなしが　かるく　きょうぼうな"
-	next "せいかく。おこって　あばれだすと"
-	next "てが　つけられなくなる。@"
+	db "Nimble and@"
+	db "violent. Once it@"
+	db "gets angry and@"
+	db "starts rampaging,@"
+	db "it cannot be@"
+	db "controlled.@"
+	db "@"
 
 PrimeapeDexEntry:
-	db "ぶたざる@"
+	db "PIGMONKEY@"
 	db 10
 	dw 320
-	db   "なぜか　もうれつに　おこって"
-	next "にげても　にげても　どこまでも"
-	next "おいかけてくる　せいかくだ。@"
+	db "For no reason it@"
+	db "flies into a rage@"
+	db "and chases you no@"
+	db "matter how far you@"
+	db "run.@"
+	db "@"
 
 GrowlitheDexEntry:
-	db "こいぬ@"
+	db "PUPPY@"
 	db 7
 	dw 190
-	db   "ひとなつこい　せいかくだが　ひろい"
-	next "なわばりを　もっており　ゆだんして"
-	next "ちかずくと　こうげきされる。@"
+	db "Friendly, but it@"
+	db "has a wide@"
+	db "territory, and if@"
+	db "you approach@"
+	db "carelessly it will@"
+	db "attack.@"
+	db "@"
 
 ArcanineDexEntry:
-	db "でんせつ@"
+	db "LEGENDARY@"
 	db 19
 	dw 1550
-	db   "むかしから　おおくの　ひとを"
-	next "とりこにした　うつくしい　ポケモン。"
-	next "とぶように　かろやかに　はしる。@"
+	db "A beautiful@"
+	db "Pokémon admired@"
+	db "since ancient@"
+	db "times; it runs as@"
+	db "if flying.@"
+	db "@"
 
 PoliwagDexEntry:
-	db "おたま@"
+	db "TADPOLE@"
 	db 6
 	dw 124
-	db   "スベスベした　くろいひふは　うすい。"
-	next "おなかの　なかが　すけて"
-	next "うずまきじょうに　みえる。@"
+	db "Its thin black@"
+	db "skin shows its@"
+	db "insides, seen as a@"
+	db "spiral on its@"
+	db "belly.@"
+	db "@"
 
 PoliwhirlDexEntry:
-	db "おたま@"
+	db "TADPOLE@"
 	db 10
 	dw 200
-	db   "りくでも　すいちゅうでも　くらせる。"
-	next "ちじょうでは　いつも　あせをかき"
-	next "からだを　ぬめぬめ　させている。@"
+	db "It can live on@"
+	db "land or in water;@"
+	db "on land it is@"
+	db "always sweating to@"
+	db "keep its body@"
+	db "slimy.@"
+	db "@"
 
 PoliwrathDexEntry:
-	db "おたま@"
+	db "TADPOLE@"
 	db 13
 	dw 540
-	db   "クロールや　バタフライが　とくいで"
-	next "オリンピックの　せんしゅでも　"
-	next "ぐんぐんと　おいぬいていく。@"
+	db "Skilled at the@"
+	db "crawl and@"
+	db "butterfly, it@"
+	db "steadily overtakes@"
+	db "even Olympic@"
+	db "swimmers.@"
+	db "@"
 
 AbraDexEntry:
-	db "ねんりき@"
+	db "PSI@"
 	db 9
 	dw 195
-	db   "１にち　１８じかんは　ねている。"
-	next "ねむってる　あいだでも　さまざまな"
-	next "ちょうのうりょくを　つかう。@"
+	db "It sleeps 18 hours@"
+	db "a day, using@"
+	db "various psychic@"
+	db "powers even while@"
+	db "asleep.@"
+	db "@"
 
 KadabraDexEntry:
-	db "ねんりき@"
+	db "PSI@"
 	db 13
 	dw 565
-	db   "からだから　とくべつな　アルファはが"
-	next "でていて　そばに　ちかよるだけで"
-	next "あたまが　いたくなってくる。@"
+	db "It emits alpha@"
+	db "waves so strong@"
+	db "that anyone near@"
+	db "it gets a@"
+	db "headache.@"
+	db "@"
 
 AlakazamDexEntry:
-	db "ねんりき@"
+	db "PSI@"
 	db 15
 	dw 480
-	db   "スーパーコンピュータより　すばやく"
-	next "けいさんする　ずのうを　もつ。"
-	next "ちのうしすうは　だいたい５０００。@"
+	db "Its brain@"
+	db "calculates faster@"
+	db "than a@"
+	db "supercomputer; its@"
+	db "IQ is roughly@"
+	db "5,000.@"
+	db "@"
 
 MachopDexEntry:
-	db "かいりき@"
+	db "STRENGTH@"
 	db 8
 	dw 195
-	db   "ぜんしんが　きんにくで　できている。"
-	next "こどものようで　ありながら"
-	next "おとな　１００にんを　なげとばす。@"
+	db "Its whole body is@"
+	db "muscle. Though@"
+	db "childlike, it can@"
+	db "throw a hundred@"
+	db "adults.@"
+	db "@"
 
 MachokeDexEntry:
-	db "かいりき@"
+	db "STRENGTH@"
 	db 15
 	dw 705
-	db   "つかれることのない　きょうじんな"
-	next "にくたい。すごくおもい　にもつを"
-	next "はこぶ　しごとなどを　てつだう。@"
+	db "A tough body that@"
+	db "never tires; it@"
+	db "helps with jobs@"
+	db "like hauling very@"
+	db "heavy loads.@"
+	db "@"
 
 MachampDexEntry:
-	db "かいりき@"
+	db "STRENGTH@"
 	db 16
 	dw 1300
-	db   "はったつした　４ほんの　うでは"
-	next "２びょうかんに　１０００ぱつの"
-	next "パンチを　くりだすことができる。@"
+	db "Its four developed@"
+	db "arms can throw@"
+	db "1,000 punches in@"
+	db "two seconds.@"
+	db "@"
 
 BellsproutDexEntry:
-	db "フラワー@"
+	db "FLOWER@"
 	db 7
 	dw 40
-	db   "ひとの　かおのような　ツボミから"
-	next "でんせつの　マンドラゴラの　いっしゅ"
-	next "ではないかと　ささやかれている。@"
+	db "From its@"
+	db "human-faced bud,@"
+	db "it is whispered to@"
+	db "be a kind of the@"
+	db "legendary@"
+	db "mandrake.@"
+	db "@"
 
 WeepinbellDexEntry:
-	db "ハエとり@"
+	db "FLYTRAP@"
 	db 10
 	dw 64
-	db   "ハッパの　ぶぶんは　カッターになって"
-	next "あいてを　きりさく。くちからは"
-	next "なんでも　とかす　えきたいを　はく。@"
+	db "Its leaves become@"
+	db "cutters that slice@"
+	db "foes; its mouth@"
+	db "spews a dissolving@"
+	db "fluid.@"
+	db "@"
 
 VictreebelDexEntry:
-	db "ハエとり@"
+	db "FLYTRAP@"
 	db 17
 	dw 155
-	db   "なんごくに　おおく　はっせいする"
-	next "きょうぼうな　しょくぶつ　ポケモン。"
-	next "ようかいえきで　なんでも　とかす。@"
+	db "A ferocious plant@"
+	db "Pokémon common in@"
+	db "the tropics, it@"
+	db "dissolves anything@"
+	db "with its acid.@"
+	db "@"
 
 TentacoolDexEntry:
-	db "くらげ@"
+	db "JELLYFISH@"
 	db 9
 	dw 455
-	db   "まるで　すいしょうのような"
-	next "めだまから　ふしぎな　ひかりの"
-	next "ビームを　はっしゃする。@"
+	db "From its@"
+	db "crystal-like eyes@"
+	db "it fires a beam of@"
+	db "mysterious light.@"
+	db "@"
 
 TentacruelDexEntry:
-	db "くらげ@"
+	db "JELLYFISH@"
 	db 16
 	dw 550
-	db   "８０ぽん　の　しょくしゅが　じゆうに"
-	next "うごく。さされると　どくに　おかされ"
-	next "するどい　いたみが　はしる。@"
+	db "Its 80 tentacles@"
+	db "move freely. Being@"
+	db "stung causes@"
+	db "poisoning and a@"
+	db "sharp pain.@"
+	db "@"
 
 GeodudeDexEntry:
-	db "がんせき@"
+	db "ROCK@"
 	db 4
 	dw 20
-	db   "そうげんや　やまに　せいそくする。"
-	next "いしころに　にていて　きがつかずに"
-	next "ふんだり　つまずいたり　してしまう。@"
+	db "It lives in@"
+	db "mountains and@"
+	db "fields. Looking@"
+	db "like a rock,@"
+	db "people trip over@"
+	db "it.@"
+	db "@"
 
 GravelerDexEntry:
-	db "がんせき@"
+	db "ROCK@"
 	db 10
 	dw 1050
-	db   "たかい　やまの　さかみちを"
-	next "ころがりながら　いどうするとき"
-	next "じゃまものは　おしつぶしていく。@"
+	db "Rolling down steep@"
+	db "mountain slopes,@"
+	db "it crushes@"
+	db "anything in its@"
+	db "way.@"
+	db "@"
 
 GolemDexEntry:
-	db "メガトン@"
+	db "MEGATON@"
 	db 14
 	dw 3000
-	db   "がんせきのような　かたい　からだで"
-	next "できている。ダイナマイトで"
-	next "ばくはしても　ダメージを　うけない。@"
+	db "Its body is@"
+	db "rock-hard. Even@"
+	db "blowing it up with@"
+	db "dynamite does no@"
+	db "damage.@"
+	db "@"
 
 PonytaDexEntry:
-	db "ひのうま@"
+	db "FIREHORSE@"
 	db 10
 	dw 300
-	db   "からだが　かるく　あしの　ちからが"
-	next "ものすごい。１かいの　ジャンプで"
-	next "とうきょうタワーも　とびこえる。@"
+	db "Light-bodied with@"
+	db "immense leg power,@"
+	db "it can clear even@"
+	db "Tokyo Tower in a@"
+	db "single jump.@"
+	db "@"
 
 RapidashDexEntry:
-	db "ひのうま@"
+	db "FIREHORSE@"
 	db 17
 	dw 950
-	db   "じそくは　さいこう　２４０キロ。"
-	next "メラメラ　もえながら　しんかんせんと"
-	next "おなじ　スピードで　かけぬける。@"
+	db "Top speed 240@"
+	db "km/h. Ablaze, it@"
+	db "races at the same@"
+	db "speed as the@"
+	db "bullet train.@"
+	db "@"
 
 SlowpokeDexEntry:
-	db "まぬけ@"
+	db "DOPEY@"
 	db 12
 	dw 360
-	db   "うごきが　のろく　まぬけ。"
-	next "たたかれても　５びょう　たってから"
-	next "いたさを　かんじるほどだ。@"
+	db "Slow and dopey, so@"
+	db "slow it feels pain@"
+	db "only five seconds@"
+	db "after being@"
+	db "struck.@"
+	db "@"
 
 SlowbroDexEntry:
-	db "やどかり@"
+	db "HERMIT@"
 	db 16
 	dw 785
-	db   "ヤドンが　うみへ　エサを"
-	next "とりにいったとき　シェルダーに"
-	next "しっぽをかまれ　ヤドランになった。@"
+	db "When a Slowpoke@"
+	db "went to sea for@"
+	db "food, a Shellder@"
+	db "bit its tail and@"
+	db "it became Slowbro.@"
+	db "@"
 
 MagnemiteDexEntry:
-	db "じしゃく@"
+	db "MAGNET@"
 	db 3
 	dw 60
-	db   "くうちゅうに　ういたまま　いどうして"
-	next "さゆうの　ユニットから"
-	next "でんじはなどを　ほうしゃする。@"
+	db "It moves while@"
+	db "floating,@"
+	db "radiating@"
+	db "electromagnetic@"
+	db "waves from the@"
+	db "units on either@"
+	db "side.@"
+	db "@"
 
 MagnetonDexEntry:
-	db "じしゃく@"
+	db "MAGNET@"
 	db 10
 	dw 600
-	db   "ふくすうの　コイルが　れんけつして"
-	next "きょうりょくな　じりょくせんと"
-	next "こうでんあつを　ほうしゃする。@"
+	db "Several Magnemite@"
+	db "link together,@"
+	db "radiating powerful@"
+	db "magnetic lines and@"
+	db "high voltage.@"
+	db "@"
 
 FarfetchdDexEntry:
-	db "かるがも@"
+	db "WILD DUCK@"
 	db 8
 	dw 150
-	db   "じぶんの　すを　つくるための"
-	next "しょくぶつの　クキを　１ぽん"
-	next "いつも　もって　あるいている。@"
+	db "It always walks@"
+	db "around carrying a@"
+	db "single plant stalk@"
+	db "to build its nest.@"
+	db "@"
 
 DoduoDexEntry:
-	db "ふたごどり@"
+	db "TWIN BIRD@"
 	db 14
 	dw 392
-	db   "とぶのは　にがてだが　はしるのは　"
-	next "はやく　きょだいな　あしあとを"
-	next "のこして　だいちを　かけぬける。@"
+	db "Poor at flying but@"
+	db "fast on foot, it@"
+	db "dashes across the@"
+	db "land leaving giant@"
+	db "footprints.@"
+	db "@"
 
 DodrioDexEntry:
-	db "みつごどり@"
+	db "TRI-BIRD@"
 	db 18
 	dw 852
-	db   "３つの　あたまで　こうどな"
-	next "さくせんを　あやつる。ねるときも"
-	next "どれか　１つは　おきているという。@"
+	db "Its three heads@"
+	db "manage clever@"
+	db "strategies; even@"
+	db "asleep, one head@"
+	db "is said to stay@"
+	db "awake.@"
+	db "@"
 
 SeelDexEntry:
-	db "あしか@"
+	db "SEA LION@"
 	db 11
 	dw 900
-	db   "みずいろの　たいもうに　おおわれた"
-	next "ひふは　ぶあつくて　じょうぶ。"
-	next "れいか４０ど　でも　かつどうできる。@"
+	db "Its thick, tough@"
+	db "skin is covered in@"
+	db "aqua fur; it can@"
+	db "stay active even@"
+	db "at -40C.@"
+	db "@"
 
 DewgongDexEntry:
-	db "あしか@"
+	db "SEA LION@"
 	db 17
 	dw 1200
-	db   "ぜんしんが　まっしろな　けで"
-	next "おおわれている。さむさに　つよく"
-	next "むしろ　さむいほど　げんきになる。@"
+	db "Clad in white fur,@"
+	db "it loves the cold,@"
+	db "growing livelier@"
+	db "as it gets colder.@"
+	db "@"
 
 GrimerDexEntry:
-	db "ヘドロ@"
+	db "SLUDGE@"
 	db 9
 	dw 300
-	db   "つきからの　エックスせんをあびた"
-	next "ヘドロが　ベトベターにへんかした。"
-	next "きたないモノが　だいこうぶつ。@"
+	db "Sludge hit by moon@"
+	db "X-rays became@"
+	db "Grimer. It feeds@"
+	db "on the filthiest@"
+	db "things.@"
+	db "@"
 
 MukDexEntry:
-	db "ヘドロ@"
+	db "SLUDGE@"
 	db 12
 	dw 300
-	db   "ふだんは　じめんに　まざっていて"
-	next "わからない。からだに　さわると"
-	next "もうどくに　おかされる。@"
+	db "Normally it blends@"
+	db "into the ground@"
+	db "unseen. Touch its@"
+	db "body and you are@"
+	db "poisoned.@"
+	db "@"
 
 ShellderDexEntry:
-	db "２まいがい@"
+	db "BIVALVE@"
 	db 3
 	dw 40
-	db   "ダイヤモンドよりも　かたいカラに"
-	next "おおわれている。しかし　なかは"
-	next "とても　やわらかい。@"
+	db "It is covered by a@"
+	db "shell harder than@"
+	db "diamond, though@"
+	db "its insides are@"
+	db "very soft.@"
+	db "@"
 
 CloysterDexEntry:
-	db "２まいがい@"
+	db "BIVALVE@"
 	db 15
 	dw 1325
-	db   "カラが　ひじょうに　かたく"
-	next "ナパームだんでも　こわせない。"
-	next "こうげきするときだけ　ひらく。@"
+	db "Its shell is so@"
+	db "hard not even a@"
+	db "napalm bomb can@"
+	db "break it; it opens@"
+	db "only to attack.@"
+	db "@"
 
 GastlyDexEntry:
-	db "ガスじょう@"
+	db "GAS@"
 	db 13
 	dw 1
-	db   "うすい　ガスじょうの　せいめいたい。"
-	next "ガスに　つつまれると"
-	next "インドぞうも　２びょうで　たおれる。@"
+	db "A thin gas@"
+	db "life-form. Wrapped@"
+	db "in its gas, even@"
+	db "an elephant faints@"
+	db "in seconds.@"
+	db "@"
 
 HaunterDexEntry:
-	db "ガスじょう@"
+	db "GAS@"
 	db 16
 	dw 1
-	db   "くらやみで　だれもいないのに"
-	next "みられているような　きがしたら"
-	next "そこに　ゴーストが　いるのだ。@"
+	db "If in the dark you@"
+	db "feel watched@"
+	db "though no one is@"
+	db "there, a Haunter@"
+	db "is there.@"
+	db "@"
 
 GengarDexEntry:
-	db "シャドー@"
+	db "SHADOW@"
 	db 15
 	dw 405
-	db   "やまで　そうなんしたとき"
-	next "いのちをうばいに　くらやみから"
-	next "あらわれることが　あるという。@"
+	db "It is said that on@"
+	db "a lonely mountain@"
+	db "it appears from@"
+	db "the dark to take@"
+	db "your life.@"
+	db "@"
 
 OnixDexEntry:
-	db "いわへび@"
+	db "ROCKSNAKE@"
 	db 88
 	dw 2100
-	db   "せいちょうすると　からだの"
-	next "がんせきせいぶんが　へんかして"
-	next "くろい　ダイヤモンドのようになる。@"
+	db "As it grows, the@"
+	db "rock in its body@"
+	db "changes until it@"
+	db "becomes like a@"
+	db "black diamond.@"
+	db "@"
 
 DrowzeeDexEntry:
-	db "さいみん@"
+	db "HYPNOSIS@"
 	db 10
 	dw 324
-	db   "ユメをたべるという　でんせつの　"
-	next "いきもの　バクの　しそん。"
-	next "さいみんじゅつが　とくいだ。@"
+	db "A descendant of@"
+	db "the legendary@"
+	db "Tapir said to eat@"
+	db "dreams; it is@"
+	db "skilled at@"
+	db "hypnosis.@"
+	db "@"
 
 HypnoDexEntry:
-	db "さいみん@"
+	db "HYPNOSIS@"
 	db 16
 	dw 756
-	db   "ふりこのようなものを　もちあるく。"
-	next "こどもに　さいみんじゅつを　かけて"
-	next "どこかへ　つれさるじけんが　あった。@"
+	db "It holds a@"
+	db "pendulum. One@"
+	db "child was@"
+	db "hypnotized by it@"
+	db "and spirited away.@"
+	db "@"
 
 KrabbyDexEntry:
-	db "さわがに@"
+	db "RIVERCRAB@"
 	db 4
 	dw 65
-	db   "ハサミは　きょうりょくな　ぶきであり"
-	next "よこに　あるくとき　からだの"
-	next "バランスをとる　やくめも　はたす。@"
+	db "Its pincers are@"
+	db "powerful weapons,@"
+	db "and also balance@"
+	db "its body as it@"
+	db "walks sideways.@"
+	db "@"
 
 KinglerDexEntry:
-	db "はさみ@"
+	db "PINCER@"
 	db 13
 	dw 600
-	db   "ハサミは　１まんばりきの"
-	next "スーパーパワーを　ひめているのだが"
-	next "おおきすぎて　うまく　うごかない。@"
+	db "Its pincers hide@"
+	db "10,000-horsepower@"
+	db "strength, but are@"
+	db "so big it cannot@"
+	db "move them well.@"
+	db "@"
 
 PokedexEntryPointers2::
 	dw VoltorbDexEntry
@@ -950,1219 +1253,688 @@ PokedexEntryPointers2::
 	dw DragoniteDexEntry
 	dw MewtwoDexEntry
 	dw MewDexEntry
-	dw HappaDexEntry
-	dw HanamoguraDexEntry
-	dw HanaryuDexEntry
-	dw HonogumaDexEntry
-	dw VolbearDexEntry
-	dw DynabearDexEntry
-	dw KurusuDexEntry
-	dw AquaDexEntry
-	dw AquariaDexEntry
-	dw HohoDexEntry
-	dw BoboDexEntry
-	dw PachimeeDexEntry
-	dw MokokoDexEntry
-	dw DenryuDexEntry
-	dw MikonDexEntry
-	dw MonjaDexEntry
-	dw JaranraDexEntry
-	dw HaneeiDexEntry
-	dw PukuDexEntry
-	dw ShibirefuguDexEntry
-	dw PichuDexEntry
-	dw PyDexEntry
-	dw PupurinDexEntry
-	dw MizuuoDexEntry
-	dw NatyDexEntry
-	dw NatioDexEntry
-	dw GyopinDexEntry
-	dw MarilDexEntry
-	dw Manbo1DexEntry
-	dw IkariDexEntry
-	dw GrotessDexEntry
-	dw EksingDexEntry
-	dw ParaDexEntry
-	dw KokumoDexEntry
-	dw TwoheadDexEntry
-	dw YoroidoriDexEntry
-	dw AnimonDexEntry
-	dw HinazuDexEntry
-	dw SunnyDexEntry
-	dw PaonDexEntry
-	dw DonphanDexEntry
-	dw TwinzDexEntry
-	dw KirinrikiDexEntry
-	dw PainterDexEntry
-	dw KounyaDexEntry
-	dw RinrinDexEntry
-	dw BerurunDexEntry
-	dw NyorotonoDexEntry
-	dw YadokingDexEntry
-	dw AnnonDexEntry
-	dw RedibaDexEntry
-	dw MitsuboshiDexEntry
-	dw PuchicornDexEntry
-	dw EifieDexEntry
-	dw BlackyDexEntry
-	dw TurbanDexEntry
-	dw BetbabyDexEntry
-	dw TeppouoDexEntry
-	dw OkutankDexEntry
-	dw GonguDexEntry
-	dw KapoererDexEntry
-	dw PudieDexEntry
-	dw HanekoDexEntry
-	dw PoponekoDexEntry
-	dw WatanekoDexEntry
-	dw BaririnaDexEntry
-	dw LipDexEntry
-	dw NorowaraDexEntry ; should be ElebabyDexEntry
-	dw BoobyDexEntry
-	dw KireihanaDexEntry
-	dw TsubomittoDexEntry
-	dw MiltankDexEntry
-	dw BombseekerDexEntry
-	dw GiftDexEntry
-	dw KotoraDexEntry
-	dw RaitoraDexEntry
-	dw MadameDexEntry
-	dw NorowaraDexEntry
-	dw KyonpanDexEntry
-	dw YamikarasuDexEntry
-	dw HappiDexEntry
-	dw ScissorsDexEntry
-	dw PurakkusuDexEntry
-	dw DevilDexEntry
-	dw HelgaaDexEntry
-	dw WolfmanDexEntry
-	dw WarwolfDexEntry
-	dw Porygon2DexEntry
-	dw NameilDexEntry
-	dw HaganeilDexEntry
-	dw KingdraDexEntry
-	dw RaiDexEntry
-	dw EnDexEntry
-	dw SuiDexEntry
-	dw NyulaDexEntry
-	dw HououDexEntry
-	dw TogepyDexEntry
-	dw BuluDexEntry
-	dw TailDexEntry
-	dw LeafyDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry ; should be ElebabyDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
+	dw NewcomerDexEntry
 
 VoltorbDexEntry:
-	db "ボール@"
+	db "BALL@"
 	db 5
 	dw 104
-	db   "はつでんしょなどに　あらわれる。"
-	next "モンスターボールと　まちがえて"
-	next "さわって　しびれるひとが　おおい。@"
+	db "Seen at power@"
+	db "plants. Mistaken@"
+	db "for a Poké Ball,@"
+	db "it zaps those who@"
+	db "touch it.@"
+	db "@"
 
 ElectrodeDexEntry:
-	db "ボール@"
+	db "BALL@"
 	db 12
 	dw 666
-	db   "ぼうだいな　エレクトン　エネルギーを"
-	next "ためこんでおり　ちょっとした"
-	next "しげきで　だいばくはつを　おこす。@"
+	db "It stores enormous@"
+	db "electron energy@"
+	db "and explodes at@"
+	db "the slightest@"
+	db "stimulus.@"
+	db "@"
 
 ExeggcuteDexEntry:
-	db "たまご@"
+	db "EGG@"
 	db 4
 	dw 25
-	db   "たまごの　ようだが　じつは"
-	next "しょくぶつの　タネのような"
-	next "いきものだと　いうことが　わかった。@"
+	db "It looks like@"
+	db "eggs, but was@"
+	db "found to be a@"
+	db "plant-seed-like@"
+	db "life-form.@"
+	db "@"
 
 ExeggutorDexEntry:
-	db "やしのみ@"
+	db "COCONUT@"
 	db 20
 	dw 1200
-	db   "あるく　ねったいうりん。"
-	next "みの　ひとつひとつに"
-	next "それぞれ　いしを　もっている。@"
+	db "A walking tropical@"
+	db "rainforest; each@"
+	db "of its fruits has@"
+	db "a will of its own.@"
+	db "@"
 
 CuboneDexEntry:
-	db "こどく@"
+	db "LONELY@"
 	db 4
 	dw 65
-	db   "しにわかれた　ははおやの　ほねを"
-	next "あたまに　かぶっている。さびしいとき"
-	next "おおごえで　なくという。@"
+	db "It wears its dead@"
+	db "mother's bone on@"
+	db "its head and cries@"
+	db "loudly when@"
+	db "lonely.@"
+	db "@"
 
 MarowakDexEntry:
-	db "ほねずき@"
+	db "BONEKEEP@"
 	db 10
 	dw 450
-	db   "からだも　ちいさく　もともと　"
-	next "よわかった。ホネを　つかうようになり"
-	next "せいかくが　きょうぼうか　した。@"
+	db "Small and once@"
+	db "weak, it turned@"
+	db "ferocious after it@"
+	db "began using bones.@"
+	db "@"
 
 HitmonleeDexEntry:
-	db "キック@"
+	db "KICKING@"
 	db 15
 	dw 498
-	db   "あしが　じゆうに　のびちぢみする。"
-	next "あいてが　とおく　はなれていても"
-	next "かんたんに　けりあげてしまう。@"
+	db "Its legs stretch@"
+	db "and contract@"
+	db "freely; even a@"
+	db "distant foe is@"
+	db "easily kicked.@"
+	db "@"
 
 HitmonchanDexEntry:
-	db "パンチ@"
+	db "PUNCHING@"
 	db 14
 	dw 502
-	db   "プロボクサーの　たましいが"
-	next "のりうつった。パンチのスピードは"
-	next "しんかんせんよりも　はやい。@"
+	db "The spirit of a@"
+	db "pro boxer@"
+	db "possesses it; its@"
+	db "punches are faster@"
+	db "than the bullet@"
+	db "train.@"
+	db "@"
 
 LickitungDexEntry:
-	db "なめまわし@"
+	db "LICKING@"
 	db 12
 	dw 655
-	db   "ベロが　からだの　２ばいも　のびる。"
-	next "エサをとったり　こうげきをしたりと"
-	next "まるで　てのように　うごくのだ。@"
+	db "Its tongue@"
+	db "stretches twice@"
+	db "its length,@"
+	db "working like a@"
+	db "hand to eat and@"
+	db "attack.@"
+	db "@"
 
 KoffingDexEntry:
-	db "どくガス@"
+	db "POISONGAS@"
 	db 6
 	dw 10
-	db   "うすい　バルーンじょうの　からだに"
-	next "もうどくの　ガスが　つまっている。"
-	next "ちかくに　くるだけで　くさい。@"
+	db "Its balloon body@"
+	db "is packed with@"
+	db "poison gas; it@"
+	db "reeks from nearby.@"
+	db "@"
 
 WeezingDexEntry:
-	db "どくガス@"
+	db "POISONGAS@"
 	db 12
 	dw 95
-	db   "ごくまれに　とつぜんへんいで"
-	next "ふたごの　ちいさい　ドガースが"
-	next "れんけつしたまま　でることがある。@"
+	db "Very rarely, by@"
+	db "mutation, twin@"
+	db "small Koffing come@"
+	db "out still linked@"
+	db "together.@"
+	db "@"
 
 RhyhornDexEntry:
-	db "とげとげ@"
+	db "SPIKES@"
 	db 10
 	dw 1150
-	db   "あたまは　わるいが　ちからが　つよく"
-	next "こうそうビルでも　たいあたりで"
-	next "コナゴナに　ふんさいしてしまう。@"
+	db "Dim but very@"
+	db "strong, its body@"
+	db "slam can smash@"
+	db "even a skyscraper@"
+	db "to pieces.@"
+	db "@"
 
 RhydonDexEntry:
-	db "ドリル@"
+	db "DRILL@"
 	db 19
 	dw 1200
-	db   "ぜんしんを　よろいのような　ひふで"
-	next "まもっている。２０００どの"
-	next "マグマの　なかでも　いきられる。@"
+	db "Armor-like skin@"
+	db "guards its body;@"
+	db "it can survive@"
+	db "inside 2,000C@"
+	db "magma.@"
+	db "@"
 
 ChanseyDexEntry:
-	db "たまご@"
+	db "EGG@"
 	db 11
 	dw 346
-	db   "せいそくすうが　すくない。"
-	next "つかまえた　ひとには　しあわせを"
-	next "もたらすと　いわれている。@"
+	db "Its population is@"
+	db "small, and it is@"
+	db "said to bring@"
+	db "happiness to@"
+	db "whoever catches@"
+	db "one.@"
+	db "@"
 
 TangelaDexEntry:
-	db "ツルじょう@"
+	db "VINE@"
 	db 10
 	dw 350
-	db   "ブルーの　つるしょくぶつが"
-	next "からみあい　しょうたいは　みえない。"
-	next "ちかずくものに　からみついてくる。@"
+	db "Blue vines tangle@"
+	db "together, hiding@"
+	db "its true form; it@"
+	db "coils around@"
+	db "whatever comes@"
+	db "near.@"
+	db "@"
 
 KangaskhanDexEntry:
-	db "おやこ@"
+	db "PARENT@"
 	db 22
 	dw 800
-	db   "こどもは　ははおやの　おなかにある"
-	next "ふくろから　ほとんど　でてこない。"
-	next "やく３ねんで　おやばなれする。@"
+	db "The child rarely@"
+	db "leaves its@"
+	db "mother's belly@"
+	db "pouch until about@"
+	db "three years old.@"
+	db "@"
 
 HorseaDexEntry:
-	db "ドラゴン@"
+	db "DRAGON@"
 	db 4
 	dw 80
-	db   "ぜんまいのように　クルクルまいた"
-	next "しっぽで　バランスをとる。"
-	next "スミを　はいて　こうげきする。@"
+	db "It balances with@"
+	db "its spring-coiled@"
+	db "tail, and attacks@"
+	db "by spitting ink.@"
+	db "@"
 
 SeadraDexEntry:
-	db "ドラゴン@"
+	db "DRAGON@"
 	db 12
 	dw 250
-	db   "ハネと　しっぽを　すばやく　うごかし"
-	next "まえを　むいたまま　うしろへ"
-	next "およぐことも　できる　ポケモン。@"
+	db "By moving its fins@"
+	db "and tail quickly,@"
+	db "it can even swim@"
+	db "backward while@"
+	db "facing forward.@"
+	db "@"
 
 GoldeenDexEntry:
-	db "きんぎょ@"
+	db "GOLDFISH@"
 	db 6
 	dw 150
-	db   "せビレ　むなビレが　きんにくのように"
-	next "はったつしており　すいちゅうを"
-	next "５ノットの　はやさで　およぐ。@"
+	db "Its fins are@"
+	db "muscle-like,@"
+	db "letting it swim@"
+	db "through water at 5@"
+	db "knots.@"
+	db "@"
 
 SeakingDexEntry:
-	db "きんぎょ@"
+	db "GOLDFISH@"
 	db 13
 	dw 390
-	db   "ツノが　ドリルのように　とがっていて"
-	next "いわはだを　ツノで　くりぬき"
-	next "じぶんの　すを　つくっている。@"
+	db "Its drill-sharp@"
+	db "horn bores through@"
+	db "rock faces to make@"
+	db "its nest.@"
+	db "@"
 
 StaryuDexEntry:
-	db "ほしがた@"
+	db "STARSHAPE@"
 	db 8
 	dw 345
-	db   "うみべに　おおく　あらわれ"
-	next "よるになると　ちゅうしんが"
-	next "あかく　てんめつする。@"
+	db "It appears in@"
+	db "numbers on the@"
+	db "seashore, and at@"
+	db "night its core@"
+	db "blinks red.@"
+	db "@"
 
 StarmieDexEntry:
-	db "なぞの@"
+	db "MYSTERY@"
 	db 11
 	dw 800
-	db   "きかがくてきな　ボディーから"
-	next "うちゅうせいぶつ　ではないかと"
-	next "じもとでは　うたがわれている。@"
+	db "Because of its@"
+	db "geometric body,@"
+	db "locals suspect it@"
+	db "may be an alien@"
+	db "life-form.@"
+	db "@"
 
 MrMimeDexEntry:
-	db "バリアー@"
+	db "BARRIER@"
 	db 13
 	dw 545
-	db   "ひとを　しんじこませるのが　うまい。"
-	next "パントマイムで　つくったカベが"
-	next "ほんとうに　あらわれるという。@"
+	db "Good at making@"
+	db "people believe,@"
+	db "the wall it makes@"
+	db "by pantomime is@"
+	db "said to truly@"
+	db "appear.@"
+	db "@"
 
 ScytherDexEntry:
-	db "かまきり@"
+	db "MANTIS@"
 	db 15
 	dw 560
-	db   "するどいカマで　えものを　きりさき"
-	next "いきのねを　とめる。ごくまれに"
-	next "ハネをつかって　とぶことがある。@"
+	db "It finishes prey@"
+	db "with sharp@"
+	db "scythes; very@"
+	db "rarely it flies@"
+	db "with its wings.@"
+	db "@"
 
 JynxDexEntry:
-	db "ひとがた@"
+	db "HUMANOID@"
 	db 14
 	dw 406
-	db   "こしを　ふるように　あるいている。"
-	next "ゆだんをすると　おもわず　つられて"
-	next "おどってしまうという。@"
+	db "It walks swinging@"
+	db "its hips. Drop@"
+	db "your guard and you@"
+	db "are drawn into@"
+	db "dancing.@"
+	db "@"
 
 ElectabuzzDexEntry:
-	db "でんげき@"
+	db "ELECTRIC@"
 	db 11
 	dw 300
-	db   "つよい　でんきが　だいこうぶつで"
-	next "おおきな　はつでんしょ　などに　"
-	next "しばしば　あらわれる。@"
+	db "Strong electricity@"
+	db "is its favorite@"
+	db "food, so it often@"
+	db "appears at large@"
+	db "power plants.@"
+	db "@"
 
 MagmarDexEntry:
-	db "ひふき@"
+	db "SPITFIRE@"
 	db 13
 	dw 445
-	db   "かざんの　かこうちかくで"
-	next "みつかった。くちから　ほのおをはく。"
-	next "たいおんは　１２００ど　もある。@"
+	db "Found near@"
+	db "craters; it@"
+	db "breathes fire, its@"
+	db "body reaching@"
+	db "1,200C.@"
+	db "@"
 
 PinsirDexEntry:
-	db "くわがた@"
+	db "STAGBUG@"
 	db 15
 	dw 550
-	db   "２ほんの　ながいツノに"
-	next "はさまれたら　ちぎれるまで"
-	next "はなさないという。@"
+	db "Once gripped@"
+	db "between its long@"
+	db "horns, prey is@"
+	db "said to be torn@"
+	db "clean apart.@"
+	db "@"
 
 TaurosDexEntry:
-	db "あばれうし@"
+	db "WILD BULL@"
 	db 14
 	dw 884
-	db   "えものに　ねらいを　つけると"
-	next "しっぽで　からだを　たたきながら"
-	next "まっすぐ　つっこんでくる。@"
+	db "Fixing on prey, it@"
+	db "charges straight@"
+	db "in, whipping@"
+	db "itself with its@"
+	db "tail.@"
+	db "@"
 
 MagikarpDexEntry:
-	db "さかな@"
+	db "FISH@"
 	db 9
 	dw 100
-	db   "ちからも　スピードも　ほとんどダメ。"
-	next "せかいで　いちばん　よわくて"
-	next "なさけない　ポケモンだ。@"
+	db "Almost no strength@"
+	db "or speed, the@"
+	db "weakest, most@"
+	db "pathetic Pokémon@"
+	db "in the world.@"
+	db "@"
 
 GyaradosDexEntry:
-	db "きょうあく@"
+	db "ATROCIOUS@"
 	db 65
 	dw 2350
-	db   "ひじょうに　きょうぼうで"
-	next "くちからだす　はかいこうせんは"
-	next "すべてのものを　やきつくす。@"
+	db "Extremely violent;@"
+	db "the hyper beam@"
+	db "from its mouth@"
+	db "burns everything@"
+	db "to ash.@"
+	db "@"
 
 LaprasDexEntry:
-	db "のりもの@"
+	db "TRANSPORT@"
 	db 25
 	dw 2200
-	db   "かつて　たくさん　つかまえたため"
-	next "ぜつめつ　すんぜんに　なっている。"
-	next "ひとをのせて　すすむ。@"
+	db "Once overhunted,@"
+	db "it nears@"
+	db "extinction. It@"
+	db "ferries people as@"
+	db "it swims.@"
+	db "@"
 
 DittoDexEntry:
-	db "へんしん@"
+	db "TRANSFORM@"
 	db 3
 	dw 40
-	db   "さいぼうそしきを　いっしゅんで"
-	next "コピーして　あいて　そっくりに"
-	next "へんしんする　のうりょくがある。@"
+	db "It copies a foe's@"
+	db "cell structure@"
+	db "instantly and@"
+	db "transforms to@"
+	db "match it.@"
+	db "@"
 
 EeveeDexEntry:
-	db "しんか@"
+	db "EVOLUTION@"
 	db 3
 	dw 65
-	db   "ふきそくな　いでんしを　もつ。"
-	next "いしからでる　ほうしゃせんによって"
-	next "からだが　とつぜんへんいを　おこす。@"
+	db "It has irregular@"
+	db "genes; radiation@"
+	db "from stones causes@"
+	db "its body to mutate@"
+	db "suddenly.@"
+	db "@"
 
 VaporeonDexEntry:
-	db "あわはき@"
+	db "BUBBLEJET@"
 	db 10
 	dw 290
-	db   "みずべに　すむが　しっぽには"
-	next "さかなのような　ひれが　のこっていて"
-	next "にんぎょと　まちがう　ひともいる。@"
+	db "It lives near@"
+	db "water; fins on its@"
+	db "tail lead some to@"
+	db "call it a mermaid.@"
+	db "@"
 
 JolteonDexEntry:
-	db "かみなり@"
+	db "LIGHTNING@"
 	db 8
 	dw 245
-	db   "くうきちゅうの　マイナスイオンを"
-	next "すいこんで　やく１００００ボルトの"
-	next "でんきを　はきだすことができる。@"
+	db "It breathes in@"
+	db "negative ions from@"
+	db "the air and can@"
+	db "spit out about@"
+	db "10,000 volts.@"
+	db "@"
 
 FlareonDexEntry:
-	db "ほのお@"
+	db "FLAME@"
 	db 9
 	dw 250
-	db   "からだに　ほのおを　ためてるとき"
-	next "たいおんが　１０００ど　いじょうに"
-	next "あがるので　ひじょうに　きけん。@"
+	db "Storing flame in@"
+	db "its body, its heat@"
+	db "tops 1,000C,@"
+	db "making it very@"
+	db "dangerous.@"
+	db "@"
 
 PorygonDexEntry:
-	db "バーチャル@"
+	db "VIRTUAL@"
 	db 8
 	dw 365
-	db   "さいこうの　かがくりょくを　あつめ"
-	next "ついに　じんこうの　ポケモンを"
-	next "つくることに　せいこうした。@"
+	db "Using the finest@"
+	db "science, humans at@"
+	db "last created an@"
+	db "artificial@"
+	db "Pokémon.@"
+	db "@"
 
 OmanyteDexEntry:
-	db "うずまき@"
+	db "SPIRAL@"
 	db 4
 	dw 75
-	db   "ぜつめつした　ポケモンだが　まれに"
-	next "かせきが　はっけんされ　そこから"
-	next "いきかえらせることが　できる。@"
+	db "An ancient Pokémon@"
+	db "revived from a@"
+	db "fossil; it swims@"
+	db "by waving its@"
+	db "tentacles.@"
+	db "@"
 
 OmastarDexEntry:
-	db "うずまき@"
+	db "SPIRAL@"
 	db 10
 	dw 350
-	db   "するどい　キバと　しょくしゅで"
-	next "えものに　かみついたら　さいご。"
-	next "たいえきを　すいだしてしまう。@"
+	db "With sharp fangs@"
+	db "and tentacles,@"
+	db "once it bites it@"
+	db "sucks out the body@"
+	db "fluids.@"
+	db "@"
 
 KabutoDexEntry:
-	db "こうら@"
+	db "SHELLFISH@"
 	db 5
 	dw 115
-	db   "こだい　せいぶつの　かせきから"
-	next "さいせいしたポケモン。"
-	next "かたい　カラで　みを　まもっている。@"
+	db "Regenerated from@"
+	db "an ancient fossil;@"
+	db "it shields itself@"
+	db "with its hard@"
+	db "shell.@"
+	db "@"
 
 KabutopsDexEntry:
-	db "こうら@"
+	db "SHELLFISH@"
 	db 13
 	dw 405
-	db   "すいちゅうを　じゆうに　およぎ"
-	next "するどい　カマで　えものを　とらえ"
-	next "たいえきを　すいとってしまう。@"
+	db "It swims freely@"
+	db "and catches prey@"
+	db "with its sharp@"
+	db "scythes, sucking@"
+	db "out the body@"
+	db "fluids.@"
+	db "@"
 
 AerodactylDexEntry:
-	db "かせき@"
+	db "FOSSIL@"
 	db 18
 	dw 590
-	db   "こはくに　のこされた　きょうりゅうの"
-	next "いでんしから　ふっかつさせた。"
-	next "たかいこえで　なきながら　とぶ。@"
+	db "Revived from a@"
+	db "dinosaur's genes@"
+	db "preserved in@"
+	db "amber; it flies@"
+	db "while crying@"
+	db "shrilly.@"
+	db "@"
 
 SnorlaxDexEntry:
-	db "いねむり@"
+	db "DOZING@"
 	db 21
 	dw 4600
-	db   "１にちに　たべものを　４００キロ"
-	next "たべないと　きが　すまない。"
-	next "たべおわると　ねむってしまう。@"
+	db "Unless it eats 400@"
+	db "kg a day it is@"
+	db "unhappy, then@"
+	db "sleeps once it is@"
+	db "done.@"
+	db "@"
 
 ArticunoDexEntry:
-	db "れいとう@"
+	db "FREEZE@"
 	db 17
 	dw 554
-	db   "ゆきやまで　さむくて　しにそうなとき"
-	next "めのまえに　あらわれるといわれる"
-	next "でんせつの　れいとうポケモン。@"
+	db "A legendary ice@"
+	db "bird, said to@"
+	db "appear before@"
+	db "those freezing on@"
+	db "a snowy peak.@"
+	db "@"
 
 ZapdosDexEntry:
-	db "でんげき@"
+	db "ELECTRIC@"
 	db 16
 	dw 526
-	db   "くもの　うえから　きょだいな"
-	next "いなづまを　おとしながら　あらわれる"
-	next "でんせつの　とりポケモンである。@"
+	db "A legendary bird@"
+	db "that appears@"
+	db "hurling giant@"
+	db "lightning bolts@"
+	db "from the clouds.@"
+	db "@"
 
 MoltresDexEntry:
-	db "かえん@"
+	db "FLAME@"
 	db 20
 	dw 600
-	db   "むかしから　ひのとりでんせつとして"
-	next "しられる。　はばたくたびに　はねが"
-	next "あかるく　もえあがり　うつくしい。@"
+	db "The fabled@"
+	db "firebird; each@"
+	db "flap sets its@"
+	db "wings blazing@"
+	db "brightly,@"
+	db "beautiful.@"
+	db "@"
 
 DratiniDexEntry:
-	db "ドラゴン@"
+	db "DRAGON@"
 	db 18
 	dw 33
-	db   "ながいあいだ　まぼろしの　ポケモンと"
-	next "よばれた。わずかだが　すいちゅうに"
-	next "すんでいることが　わかった。@"
+	db "Long called a@"
+	db "phantom Pokémon,@"
+	db "it was found that@"
+	db "a few do live@"
+	db "underwater.@"
+	db "@"
 
 DragonairDexEntry:
-	db "ドラゴン@"
+	db "DRAGON@"
 	db 40
 	dw 165
-	db   "ハネは　ないが　そらを　とべる。"
-	next "とぶとき　からだを　しなやかに"
-	next "くねらせて　とても　うつくしい。@"
+	db "Wingless yet able@"
+	db "to fly, it bends@"
+	db "its body supplely@"
+	db "as it goes, very@"
+	db "beautiful.@"
+	db "@"
 
 DragoniteDexEntry:
-	db "ドラゴン@"
+	db "DRAGON@"
 	db 22
 	dw 2100
-	db   "すがたを　みたひとは　すくないが"
-	next "じつざいする　うみのけしん。ちのうも"
-	next "にんげんに　ひってき　するらしい。@"
+	db "Rarely seen, this@"
+	db "sea deity truly@"
+	db "exists; its wits@"
+	db "seem to rival a@"
+	db "human's.@"
+	db "@"
 
 MewtwoDexEntry:
-	db "いでんし@"
+	db "GENETIC@"
 	db 20
 	dw 1220
-	db   "けんきゅうの　ために　いでんしを"
-	next "どんどん　くみかえていった　けっか"
-	next "きょうぼうな　ポケモンに　なった。@"
+	db "Endlessly@"
+	db "rewriting its@"
+	db "genes for research@"
+	db "turned it into a@"
+	db "ferocious Pokémon.@"
+	db "@"
 
 MewDexEntry:
-	db "しんしゅ@"
+	db "NEW KIND@"
 	db 4
 	dw 40
-	db   "いまでも　まぼろしの　ポケモンと"
-	next "いわれる。そのすがたを　みたものは"
-	next "ぜんこくでも　ほとんど　いない。@"
-
-HappaDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-HanamoguraDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-HanaryuDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-HonogumaDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-VolbearDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-DynabearDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-KurusuDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-AquaDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-AquariaDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-HohoDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-BoboDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-PachimeeDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-MokokoDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-DenryuDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-MikonDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-MonjaDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-JaranraDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-HaneeiDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-PukuDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-ShibirefuguDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-PichuDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-PyDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-PupurinDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-MizuuoDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-NatyDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-NatioDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-GyopinDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-MarilDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-Manbo1DexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-IkariDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-GrotessDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-EksingDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-ParaDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-KokumoDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-TwoheadDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-YoroidoriDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-AnimonDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-HinazuDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-SunnyDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-PaonDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-DonphanDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-TwinzDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-KirinrikiDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-PainterDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-KounyaDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-RinrinDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-BerurunDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-NyorotonoDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-YadokingDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-AnnonDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-RedibaDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-MitsuboshiDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-PuchicornDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-EifieDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-BlackyDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-TurbanDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-BetbabyDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-TeppouoDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-OkutankDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-GonguDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-KapoererDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-PudieDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-HanekoDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-PoponekoDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-WatanekoDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-BaririnaDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-LipDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-ElebabyDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-BoobyDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-KireihanaDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-TsubomittoDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-MiltankDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-BombseekerDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-GiftDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-KotoraDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-RaitoraDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-MadameDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-NorowaraDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-KyonpanDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-YamikarasuDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-HappiDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-ScissorsDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-PurakkusuDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-DevilDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-HelgaaDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-WolfmanDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-WarwolfDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-Porygon2DexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-NameilDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-HaganeilDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-KingdraDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-RaiDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-EnDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-SuiDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-NyulaDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-HououDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-TogepyDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-BuluDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-TailDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
-
-LeafyDexEntry:
-	db "？？？@"
-	db 0
-	dw 0
-	db   "はっけんされた　ばかりの　ポケモン"
-	next "げんざい　ちょうさちゅう。@"
+	db "Even now called a@"
+	db "phantom Pokémon;@"
+	db "almost no one@"
+	db "nationwide has@"
+	db "seen its form.@"
+	db "@"
+
+NewcomerDexEntry:
+	db "???@"
+	db 0
+	dw 0
+	db "A Pokémon that has@"
+	db "only just been@"
+	db "discovered.@"
+	db "Currently under@"
+	db "investigation.@"
+	db "@"

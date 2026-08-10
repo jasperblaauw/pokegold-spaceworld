@@ -133,16 +133,15 @@ INCBIN "gfx/trainer_gear/trainer_gear.tilemap"
 .End:
 
 TrainerGear_PlaceIcons:
+; feature/completion: the MAP card is unlocked by Ken's upgrade in Rival's House
+; (RIVAL_HOUSE_GOT_POKEGEAR_MAP is set by RivalHouseNPCText4). Before that the gear is
+; a clock only, so draw no icon at all. RADIO and PHONE are out of scope for this
+; romhack -- their view code is kept (reachable later per pret convention) but their
+; icons are never drawn, so the cursor can never reach them.
+	CheckEvent RIVAL_HOUSE_GOT_POKEGEAR_MAP
+	ret z
 	coord hl, 1, 0
 	ld a, TRAINERGEAR_GFX_MAP_ICON
-	call .PlaceIcon
-
-	coord hl, 4, 0
-	ld a, TRAINERGEAR_GFX_RADIO_ICON
-	call .PlaceIcon
-
-	coord hl, 7, 0
-	ld a, TRAINERGEAR_GFX_PHONE_ICON
 	call .PlaceIcon
 	ret
 
@@ -221,6 +220,16 @@ TrainerGear_Next:
 
 TrainerGear_InitPointerSprite:
 	callfar ClearSpriteAnims
+; feature/completion: this is the return point after backing out of a view, too. With
+; only one card the cursor position never changes, so DetermineView's "already in this
+; view" guard would block reopening the MAP; clear wTrainerGearCard on every return to
+; the icon screen so A can open the map again ($ff is Init's "no view" sentinel).
+	ld a, $ff
+	ld [wTrainerGearCard], a
+; No selectable card until Ken unlocks the MAP (RIVAL_HOUSE_GOT_POKEGEAR_MAP), so don't
+; create the mode-indicator cursor while locked -- the gear stays a clock (B exits).
+	CheckEvent RIVAL_HOUSE_GOT_POKEGEAR_MAP
+	jr z, .no_cursor
 	ld de, PointerGFX
 	ld hl, vChars0 tile TRAINERGEAR_GFX_POINTER
 	lb bc, BANK(PointerGFX), 4
@@ -232,6 +241,7 @@ TrainerGear_InitPointerSprite:
 	depixel 4, 3, 4, 4
 	ld a, SPRITE_ANIM_OBJ_TRAINERGEAR_POINTER
 	call InitSpriteAnimStruct
+.no_cursor
 	call TrainerGear_Next
 	ret
 
@@ -242,6 +252,11 @@ TrainerGear_Joypad:
 	jr nz, .exit
 	ld a, [hl]
 	and PAD_A
+	ret z
+; feature/completion: A only selects once the MAP card is unlocked (Ken's upgrade).
+; While locked there is nothing to open, so A is a no-op; B still exits above. This
+; also blocks A from opening the (out-of-scope) RADIO/PHONE views, which have no icon.
+	CheckEvent RIVAL_HOUSE_GOT_POKEGEAR_MAP
 	ret z
 	call TrainerGear_DetermineView
 	ret
@@ -649,10 +664,10 @@ AnimateTrainerGearModeIndicatorPointer::
 	dec [hl]
 	jr .update_position
 .move_right
-	ld a, [hl]
-	cp NUM_TRAINERGEAR_CARDS - 1
-	ret nc
-	inc [hl]
+; feature/completion: MAP is the only in-scope card, so the cursor never leaves it
+; (RADIO/PHONE are suppressed for this romhack). Right is a no-op -- was
+; cp NUM_TRAINERGEAR_CARDS - 1 / ret nc / inc [hl] for the full 3-card layout.
+	ret
 .update_position
 	ld e, [hl]
 	ld d, 0

@@ -33,7 +33,245 @@ a downstream romhack now. Correctness = **builds warning-clean + boots & plays i
 
 ---
 
-## CURRENT SESSION (2026-08-09, round 14) — textbox delay, actually fixed
+## CURRENT SESSION (2026-08-10, round 16) — finish Phase 3 GEAR + round-1 playtest fixes
+
+Four-phase pass (0: Old City Mart freeze, 1: Trainer Card localize, 2: Pokédex entries, 3: Trainer
+GEAR). Phases 0–2 landed earlier this session; this round finished Phase 3 and fixed the user's first
+playtest report. **All items below build warning-clean on all 8 ROMs and are decode-verified; every one
+is PLAYTEST-PENDING** (new/changed gameplay — the user runs SameBoy).
+
+### Phase 3 — Trainer GEAR: start-menu entry + MAP gated on Ken's upgrade ✅
+Step 1 (start-menu "GEAR") was already wired: `START_GEAR`=9 → `StartMenu_Gear` (trainer-card-style
+opener, `callfar OpenTrainerGear`), added to every story-progressive `StartMenuItems` set;
+`constants/start_menu_constants.asm` appends the const. Finished **Step 2** — gate the MAP card, suppress
+RADIO/PHONE — in `engine/trainer_gear/trainer_gear.asm`:
+- `TrainerGear_PlaceIcons`: draws the MAP icon **only when** `CheckEvent RIVAL_HOUSE_GOT_POKEGEAR_MAP`
+  (set by Ken in `maps/RivalHouse.asm`). RADIO/PHONE icons never drawn (view code kept, unreachable).
+- `TrainerGear_InitPointerSprite`: resets `wTrainerGearCard=$ff` on every return to the icon screen (the
+  single MAP card can't otherwise be reopened past DetermineView's "already here" guard), and skips
+  creating the cursor sprite while locked (clock-only; B exits).
+- `TrainerGear_Joypad`: A is a no-op until the event is set. `AnimateTrainerGearModeIndicatorPointer.move_right`
+  is now `ret` — cursor pinned to MAP so RADIO/PHONE stay unreachable even after unlock.
+- **Decode-verified**: each `CheckEvent` = `ld hl,$d46b`(wEventFlags+4)/`bit 2,[hl]` (event 34), all
+  `jr z`/`ret z` land right, `wTrainerGearCard=$ff` writes $cb94, `move_right`=`c9`.
+- **Playtest**: new game → START → GEAR = clock, no map icon; beat rival + Ken's upgrade in Rival's
+  House → reopen GEAR → selectable MAP with player icon; radio/phone never appear.
+
+### Round-1 playtest fixes
+- **Trainer Card (Phase 1)** ✅ (`engine/menu/start_menu.asm`): the bottom row is a two-tab selector
+  (CARD | BADGES, ←/→, arrow at col 4/11). The kana labels had been blanked, so both arrows pointed at
+  nothing — added English `CARD@`/`BADGES@` via `PlaceString` (bytes decode-verified). Also blanked the
+  stray `$FE/$BA` tiles that rendered as a lone "8" after "COLLECT BADGES".
+- **Pokédex species line (Phase 2)** ✅ (`engine/pokedex/display_dex_entry.asm`): `PokedexText_Pokemon`
+  was `db "#"` (7-col POKéMON token) printed flush against the category. Now `db " <PK><MN>"` — leading
+  space + the Pk/Mn ligature ($e1/$e2, part of the base 128-tile font so it renders on the dex screen).
+  Bytes `7f e1 e2 50`.
+- **Collision — swept the whole tileset set** ✅ — the big one. Player walked through walls in the mart
+  + outdoor Old City (confirmed NOT debug noclip). Root cause is a durable trap (new pitfall below):
+  tilesets that never shipped in the demo authored walls with the *old* passable subtypes. Converted
+  **every** offending file (`data/tilesets/*_collision.asm`), on `tilecoll` lines only:
+  `OLD_WALL`($01)/`OLD_WALL_INSIDE`($04)/`OLD_MART_ITEM`($72)→`WALL`($07, solid), and
+  `OLD_COUNTER`($73)→`COUNTER`($90, solid **and** the value `CheckFacingObject` keys on for talk-across —
+  fixes the mart clerk being unreachable across the counter). **22 tilesets** touched: mart, old_city,
+  gate (Route2↔Old City + all gates), plus the M2+ outdoor/dungeon/city tilesets (birdon, cave, font,
+  forest, hightech, kanto, north, office, power_plant, radio_tower, rocket_house, ruins_of_alph, ship,
+  ship_port, south, west, dept_store) and the shipped `house`/`lab` (which used mostly `WALL` already —
+  only a handful of old tiles each; walls/counters becoming solid is semantically safe but **re-playtest
+  PlayerHouse / RivalHouse / the lab** to be sure). Decode-verified mart block 09=`07 07 07 07`, mart
+  counter quarter=`90`, gate block 02=`07 07 03 03` / block 05=`90 90 90 90`. The Silent Hill town/route
+  and Old City's tower/gym/pokecenter interiors already used `WALL` and were never broken.
+  **Playtest**: walls solid in mart + outdoor Old City + the Route 2 gate; clerk/attendant talkable
+  across counters.
+
+### Reported, not done (needs its own effort)
+- **Pokédex AREA button does nothing** — `.Area` sets `VIEW_AREA_F` but **nothing consumes it**; the
+  area-display routine (`engine/pokedex/pokedex.asm:627`) is explicitly "dummied out for the demo". A
+  real fix needs the region-map area view wired up + per-mon landmark/location data. Separate feature.
+
+---
+
+## PREVIOUS SESSION (2026-08-09, round 15 cont'd #2) — M1d's second slice: Old City Mart
+
+### Old City Mart, working BUY (Poké Balls + 7 healing/field items) ✅ (BUILD-VERIFIED, byte-decoded, PLAYTEST-PENDING)
+`maps/OldCityMart.asm` had the same shape as the Pokécenter did: clerk + 2 NPCs placed, everything
+stubbed. `engine/debug/field/pokemart_menu.asm` (the debug FIELD menu's item shop) already had almost
+the whole BUY flow built — scrolling item list, quantity picker with a live running total, confirm
+prompt — but the actual purchase was **never wired up**: confirming always printed "Sorry, this is
+under development," even in the debug tool. Rather than write a second copy of that UI for a real town
+(ROM is at 100% capacity, this would have been the second such implementation), pulled the reusable
+part out into a new exported `RunMartBuyMenu::` (takes a `-1`-terminated item-ID list in `de`) and gave
+it a real purchase completion. `DebugMart_Buy` now just calls it with its own item list, so **the debug
+mart can actually buy things for the first time too**, as a side effect.
+
+Purchase completion, in order (deliberately: give the item before charging, so a full pocket costs
+nothing rather than needing a refund path):
+1. `CompareBytes` (`home/util.asm`, already existed) against `wMoney` vs `hMoneyTemp` (the live
+   price × quantity total `SelectQuantityToBuy` already leaves behind) — carry set = can't afford it.
+2. `ReceiveItem` (`home/item2.asm`) into `wNumBagItems`, or `wNumBallItems` if the item is
+   `ITEM_POKE_BALL` — Poké Balls have their own pocket, same as the PACK UI (`CheckItemsQuantity` etc.
+   in `start_menu.asm`). Carry clear = pocket full, no charge.
+3. A plain LSB-first `sbc`-chain 3-byte subtract of `hMoneyTemp` from `wMoney` (mirrors the existing
+   BCD-free money-add code in `engine/battle/core.asm` for battle winnings — `wMoney` is plain binary,
+   not packed BCD, unlike the debug mart's *static* per-row price display which repacks into BCD nibbles
+   for `PrintBCDNumber`; don't confuse the two representations if touching this again).
+
+`maps/OldCityMart.asm`'s own script: clerk opens a welcome box that **fully closes** (`prompt`) before a
+separate `OldCityMartMenu` routine draws BUY/CANCEL (mirrors `FieldDebug_PokemartMenu`/`.DoPokemartMenu`'s
+two-separate-calls shape) — deliberately *not* one continuous `start_asm`-nested text stream, because
+`prompt` ends the box and hands control back to the caller rather than falling through to more text data
+in the same block; an earlier draft of this session's own diff put a second `text` block after a `prompt`
+and it would have been dead, unreachable data. Sells POKé BALL/POTION/ANTIDOTE/PARLYZ HEAL/AWAKENING/
+BURN HEAL/ESCAPE ROPE/REPEL (8 items, same count as `DebugMart_ItemList`, a proven-safe size for the
+shared `wBattleMenuRows`/`wCurMartCount` scratch buffers). No SELL option — wiring one up means reusing
+the PACK's sell flow too, and a working BUY-only mart reads as complete on its own; SELL can come later
+without disturbing this. The room's 2 other NPCs and its sign got flavor text only.
+
+**Two real bugs caught by verification, not by the assembler** (both would have shipped silently):
+- The first draft had `call RunMartBuyMenu` instead of `callfar` — `RunMartBuyMenu` lives in
+  `main.asm`'s bank ($3f) while the map script lives in `maps.asm`'s bank ($25). RGBDS resolves `call`
+  targets to a bank+offset and happily assembles a same-opcode cross-bank call with no warning; at
+  runtime it would have jumped to whatever code happens to sit at that offset in **whichever bank the
+  map script's own bank last had mapped**, not the mart routine. Caught only by decoding the assembled
+  `call` and noticing the target address didn't match the bank actually mapped at that point. **This is
+  a general trap, not specific to this file: a plain `call`/`jp` to a cross-file label always assembles
+  without error even when it's wrong — only `callfar`/`farcall`/`predef` are bank-safe.** Grep for stray
+  bare `call`s to labels defined in a different top-level `.asm` object when something "does nothing" at
+  runtime despite building clean.
+- A copy-paste during a rewrite left two different strings both named `OldCityMartTextString4`, with two
+  callers each intending a different one (RGBDS would have caught this one at assemble time as a
+  duplicate symbol, but it's worth naming as the kind of mistake this style of incremental same-name
+  string authoring invites — number sequentially as you go, don't reuse a number after inserting text
+  earlier in the file).
+- **Verified by decode**: hand-traced every `jr`/`jp` target in `RunMartBuyMenu`'s purchase-completion
+  block (insufficient-funds branch, ball-vs-bag-pocket branch, pack-full branch, the 3-byte payment
+  loop's back-edge, all three outcomes converging on `.done`) against the `.sym` addresses — every single
+  one landed exactly on its intended label, not just "close" or "probably". Also confirmed
+  `OldCityMartItemList`'s assembled bytes (`05 12 09 0d 0c 0a 13 14 ff`) against each `ITEM_*` constant's
+  documented hex value one at a time.
+- **PLAYTEST NEEDED**: talk to the clerk, buy something (check money decreases correctly, item appears
+  in PACK — POKé BALL specifically in the ball pocket, everything else in the regular pocket), try to buy
+  more than you can afford (should decline gracefully, no partial charge), and CANCEL should just say
+  goodbye with no purchase. This is new content, first look in an emulator.
+
+---
+
+## PREVIOUS SESSION (2026-08-09, round 15 cont'd) — M1c found already done; M1d's first slice (Pokémon Center)
+
+### M1c (Quiet Hills / route to Old City) — turned out to already be complete
+Checked before writing anything: `maps/QuietHills.asm` already has all 5 trainers, wild grass, and both
+signposts (`QuietHillsSignpost1String` already reads "OLD CITY, this way"); `data/wild/maps/Route1.asm`,
+`Route2.asm`, `QuietHills.asm` all have real (non-stub) encounter tables already wired into
+`GrassWildMons`; the Route1↔QuietHills↔Route2 warp graph is fully bidirectional (checked both sides of
+every `warp_event`). This is all preserved prototype content from the original decompilation, not
+romhack-added — the **NEXT UP** note calling this out was stale. Player reaches Old City today via
+Route1 → Route2 → the map's own `connection north, OldCity` edge (Route2 already edge-connects
+directly to Old City; QuietHills is a side loop between Route1/Route2, not on that critical path).
+No changes made here. Confirmed OldCity.asm itself (warps to all its buildings — Museum, Gym, Tower,
+Bill's House, Mart, Pokécenter, Kurt's House, School — are already 100% present) and every one of its
+building interiors (Pokécenter1F, Mart, Gym, ...) already have their **geometry and NPC placement**
+from decompilation; what's actually missing for M1d is purely the **script layer** (dialogue/game logic)
+— every interior currently ends in `map_dummy_text_pointers`/`_old` (a no-op stub).
+
+### M1d, first slice: Old City Pokémon Center nurse ✅ (PLAYTEST-CONFIRMED)
+`maps/OldCityPokecenter1F.asm`: replaced the `map_dummy_text_pointers_old` stub with a real
+`map_generic_scriptloader`/`script_pointers`/`script` scaffold (same shape as `SilentHillPokecenter.asm`,
+which already builds successfully with these same macros — no `data/maps/scenes.asm` registration
+needed for this, that table is unrelated to whether a map's own `_ScriptLoader` runs; every map's
+`\1_MapAttributes` embeds `dw \1_ScriptLoader` unconditionally per `macros/scripts/maps.asm`).
+- **Nurse (object 1):** "Would you like me to heal your #?" yes/no, then `callfar
+  AnimateHealingMachine` + `predef HealParty` + `wDefaultSpawnPoint = SPAWN_POINT_OLD` (already a valid
+  spawn-point constant, and `data/maps/spawn_points.asm`'s 2nd `SpawnPoints` entry already resolves it to
+  OldCity's outdoor town coords `$1b,$1d` — nothing needed there) + `SFX_FULL_HEAL`, all inside the
+  `start_asm` hook while the box is still open — same proven pattern as `PlayerHouse2FCheckEmail`'s
+  yes/no, and the flashing-lights animation is *meant* to play alongside the dialogue on real hardware,
+  not after the box closes. Declining just gets a "take care" line.
+- **Other 3 NPCs + the room's `<PC>` sign:** flavor text only. The PC deliberately does **not** call
+  `PokemonCenterPC`/`bills_pc.asm` — that engine is still untranslated Japanese (M1e scope) and box-save
+  is separately deferred; wiring it now would surface broken/foreign text. It just describes a dark
+  screen, same spirit as Silent Hill's "under adjustment" PC.
+- Two text rows initially overflowed `TEXTBOX_INNERW`=18 with `#` expanding to 7 columns ("to heal your
+  #?" = 21, "My # got beat" = 19) — caught by hand-computing widths against the token-width table in
+  "Text engine" below, not by a tool (this session didn't rebuild the width linter/decoder scratchpad
+  tools; consider doing that before the next translation-heavy session). Fixed by moving `#` onto its own
+  `cont` row in both places.
+- **Verified by decode, not just build success**: `OldCityPokecenter1FHeal` ($25:47a3) — `call YesNoBox`,
+  `jr c` landing exactly on `.declined` ($25:47ca), `callfar AnimateHealingMachine` (`ld a,$23` = bank
+  $23, matching `layout.link`'s `ROMX $23` for the section healing_machine.asm lives in), `predef`
+  dispatch, `ld a,$02`/`ld [wDefaultSpawnPoint],a` (SPAWN_POINT_OLD=2, confirmed against
+  `constants/spawnpoint_constants.asm`'s const order), `ld de,$0002` (SFX_FULL_HEAL), `WaitPlaySFX`/
+  `WaitSFX`, `PrintText` landing on `OldCityPokecenter1FTextString3`. Also hand-traced the text control
+  bytes for both width-fixed strings against the `LINE`($4f)/`CONT`($55)/`PARA`($51) charmap tokens —
+  every row's byte-span between control tokens matches its intended character count exactly (e.g. "to
+  heal your" = 12 bytes between `LINE` and `CONT`, "#?@" = `CONT,$54("#"),$e6("?"),$50("@")` immediately
+  followed by `START_ASM`,`call $47a3`).
+- **PLAYTEST-CONFIRMED**: heal flow, animation, spawn-point respawn, and the other NPCs/PC sign all work.
+
+---
+
+## PREVIOUS SESSION (2026-08-09, round 15) — start menu delay, re-attempted with a minimal diff
+
+### Save screen had a leftover "TEST" title ✅ (BUILD-VERIFIED)
+`PrintSaveScreenText.MenuData` (`engine/menu/empty_sram.asm`) set `STATICMENU_PLACE_TITLE`, which makes
+`PlaceVerticalMenuItems` (`home/menu_window.asm`) print an extra string onto the box's top border after
+the item rows — that string was literally `"TEST@"`. Cleared the flag byte to 0 and dropped the trailing
+`db 6` (title column offset) / `db "TEST@"` pair; the PLAYER/BADGES/POKéDEX/TIME rows are unaffected.
+
+Round 14's textbox fixes (items 1 and 4 below) are now **PLAYTEST-CONFIRMED working**. This round
+picked up item 5 (start menu delay), which round 14 had reverted after it broke the game outright.
+
+### 0. Start menu open delay — re-fixed with a much smaller diff ✅ (PLAYTEST-CONFIRMED)
+Same diagnosis as before: `DisplayStartMenu` revealed the screen (via `ReanchorMap`, freeze+reveal in
+one call) *before* `OpenMenu` painted the box+items live on top — a visible two-stage "pause, then
+pop." Round 14's fix attempt used hand-rolled `ldh a,[hROMBank]/push af/ld a,BANK(x)/call Bankswitch`
+pairs to hop banks around the draw, and broke the game (audio corruption, START opened nothing, no
+input reached the menu). Root cause was never confirmed then; this round found it by comparing against
+**pret/pokegold's actual `StartMenu::`** (`engine/menus/start_menu.asm`), which does exactly this
+draw-behind-the-freeze restructure using `farcall ReanchorBGMap_NoOAMUpdate` / `farcall
+LoadFonts_NoOAMUpdate` — i.e. this codebase's existing `callfar`/`FarCall_hl` (`home/farcall.asm`), not
+manual bankswitching. Re-reading round 14's design against that: **`OpenMenu` was split into a "draw"
+half and a "wait" half with a live `de` register (the item-index-list base pointer) threaded across the
+`ret`/`call` boundary via a `push de`/`pop de` pair that no longer had matching scope** — a `push`
+without a guaranteed matching `pop` before the next `ret` corrupts the return address on the *next*
+`ret`, sending execution into arbitrary code. That explains all three symptoms: a stray jump landing in
+something that writes sound registers (BGM corruption), never reaching the joypad-wait loop (menu
+"opened nothing"), and the game continuing to run something else entirely (free walking).
+
+This round's fix avoids that class of bug entirely:
+- **`home/menu.asm`**: `OpenMenu::` is now a thin `call OpenMenu_Draw / call OpenMenu_Wait / ret`
+  wrapper (unchanged behaviour for its other five callers — bills_pc, main_menu, pokecenter_pc, both
+  debug menus). `OpenMenu_Draw::` is the original body up through drawing the box/items and setting
+  `hBGMapMode`. `OpenMenu_Wait::` **does not receive `de` from Draw at all** — it calls
+  `GetMenuIndexSet` itself (a pure function of WRAM state `OpenMenu_Draw` already set up) to get a
+  fresh copy, then `GetStaticMenuJoypad`. No register or stack value crosses the `Draw`/`Wait` boundary;
+  both are independently stack-balanced (verified by decode below).
+- **`engine/menu/start_menu.asm`**: `DisplayStartMenu`'s *first* open now does `ClearWindowData` →
+  `callfar ReanchorBGMap_NoOAMUpdate` (freeze) → SFX/header/state setup → `OpenMenu_Draw` (box+items
+  drawn while still hidden) → `callfar LoadFonts_NoOAMUpdate` (reveal) → `OpenMenu_Wait` (joypad). Only
+  **one bankswitch pattern is used, twice, and it's the codebase's existing proven-safe farcall
+  mechanism** (`FarCall_hl` already saves/restores `hROMBank` and `bc` around the call, used pervasively
+  elsewhere in this same file for e.g. `callfar CheckItemMenu`) — no hand-written `Bankswitch` pairs.
+  `.RefreshStartDisplay` (returning from a submenu like the PACK/Pokédex back to the start menu list)
+  is **untouched** — it still calls plain `OpenMenu` live, no freeze, matching round 14's minimal-diff
+  guidance of touching only the specific path the user complained about.
+- ROM0 cost: the split is +6 bytes net in `home.asm` (a `ret`/wrapper call overhead only partly offset
+  by removing a now-redundant third `GetMenuIndexSet` call and a `push de`/`pop de` pair the original
+  needed to survive `UpdateSprites` clobbering `de`). This overflowed the **debug** ROM0 by 2 bytes;
+  reclaimed by deleting `Unreferenced_Corrupt_GetPartyParamLocation_Old` (12-byte, zero-reference
+  corrupt-data reconstruction in `garbage/garbage.asm`, `if DEF(_DEBUG)` branch — safe to delete now
+  that `make compare` is abandoned, same precedent as the two prior deletions already noted there).
+- **Verified by decode**: `DisplayStartMenu` at `04:5e2e` — `ClearWindowData`, `ld hl,$64c9/ld a,$01/call
+  FarCall_hl` (bank 1 = `ReanchorBGMap_NoOAMUpdate`), SFX/header/state, `call $1e74` (`OpenMenu_Draw`),
+  `ld hl,$651d/ld a,$01/call FarCall_hl` (`LoadFonts_NoOAMUpdate`), `call $1ec0` (`OpenMenu_Wait`), `jr`
+  landing exactly on `.GotSelection` ($5e7c). `.RefreshStartDisplay`'s `call OpenMenu` ($1e6d) also
+  falls through to the same `.GotSelection`. `OpenMenu`/`OpenMenu_Draw`/`.ExitMenu_NoPoppingError`/
+  `OpenMenu_Wait` bytes hand-traced instruction by instruction: every `push` has a matching `pop` before
+  its block's `ret`, confirmed against the disassembled bytes, not just the source.
+- **PLAYTEST-CONFIRMED**: box appears with items already in it, no blank-box-then-pop, and normal menu
+  navigation/selection (SAVE, PACK, Pokédex, EXIT, reopening after a submenu) all work correctly.
+
+---
+
+## PREVIOUS SESSION (2026-08-09, round 14) — textbox delay, actually fixed
 
 Round 13's items 2 and 3 (Pokédex) are **PLAYTEST-CONFIRMED working**. Only the textbox delay
 survived, and rounds 11-13 had been optimising the wrong thing.
@@ -389,6 +627,27 @@ and a map change. **Any garbled row = a VRAM writer still missing its `Invalidat
 - Trainer party format is `db "name@", TRAINERTYPE_*`, mons, `db -1`; `ReadTrainerParty` skips entries
   by scanning for `$ff`. Red/Blue-format leftovers (`db level, species, 0`) build garbage battlers.
 
+### Collision (the "walk through walls" trap — read before adding any new map)
+- The proto carries **two collision-constant eras**. The *new* set (`COLL_WALL`=$07, `COLL_COUNTER`=$90,
+  `COLL_FLOOR`=$00, …) is what `CollisionTypeTable` (`data/collision/collision_type_table.asm`) actually
+  marks solid; the *old* set (`COLL_OLD_WALL`=$01, `COLL_OLD_WALL_INSIDE`=$04, `OLD_MART_ITEM`=$72,
+  `OLD_COUNTER`=$73, …) mostly indexes to **LAND (passable)** in that table. A tileset whose walls use
+  the OLD wall subtypes has **no wall collision at all** — the player walks straight through. The demo
+  only exercised tilesets on the NEW set, so it never showed; unshipped tilesets (`mart`, `old_city`
+  outdoor were the offenders) hid it until Old City became reachable.
+- **How to check a tileset**: `grep -oE "OLD_[A-Z_]+" data/tilesets/<name>_collision.asm`. If its walls
+  read `OLD_WALL`/`OLD_WALL_INSIDE`, they are passable — convert those `tilecoll` args to `WALL`. A
+  working reference tileset (`pokecenter`, `tower`, `gym`, `traditional_house`) uses `WALL`/`FLOOR`.
+- **Counters**: talk-across-a-counter is done by `CheckFacingObject`, which only fires on `cp
+  COLL_COUNTER` ($90). `OLD_COUNTER` ($73) is both passable *and* never matched, so an NPC behind an
+  old-counter tile is unreachable and the counter is walk-through. Use `COUNTER` ($90).
+- The collision byte the movement code sees is the raw `tilecoll` value for the facing quarter-tile
+  (`GetCoordTileCollision` → block index ×4 + quarter), fed through `IsPlayerCollisionTileSolid` →
+  `_IsObjectCollisionTileSolid` → `CollisionTypeTable[value] & WALL_TILE`. `collperm` packs each row's 8
+  args into 16 bytes (duplicated for the flag bit), so within a type only the listed subtypes are WALL.
+- **Do not "fix" this in `CollisionTypeTable`** — it's global and would flip the handful of legitimate
+  `OLD_WALL_INSIDE` tiles in shipped `house`/`lab` tilesets to solid. Fix the offending tileset's data.
+
 ### Graphics / palettes
 - This project has **no CGB palette path**; in-game colour is SGB `ATTR_BLK` packets only
   (`data/sgb/blk_packets.asm`), and there are exactly **4 palettes**, all assigned in battle
@@ -417,35 +676,31 @@ and a map change. **Any garbled row = a VRAM writer still missing its `Invalidat
 
 ## NEXT UP
 
-### Immediate — one playtest owed
-1. **Textboxes.** This round added a `DelayFrame` to fix an intermittent 1-frame black flash on open
-   (see item 4 above) — **needs the flash specifically retested**: talk to several NPCs in a row and
-   confirm it's gone (or rare enough it wasn't just luck of the timing before). Target behaviour is
-   retail Gold: NPC turns, **box appears almost immediately**
-   (~0.17 s), *then* the dialogue types into it. The box and the text should read as two separate
-   events — if they still appear together after a pause, the reveal is being blocked again.
-   - Check **both halves** (opening and closing) and both **indoors and outdoors**. Outdoors dirties
-     more of the font, but that now happens *after* the box is up, so the box should appear at the
-     same speed either way; only the wait before the first character differs.
-   - *Correctness:* the round-11 VRAM checklist above still applies — text must always be letters,
-     never sprite garbage. Retest after a battle, the PACK, the summary screen, the Pokédex and a map
-     change.
-   - **New this round:** the font now uploads while the screen is visible. It writes the walking-sprite
-     half of VRAM, so the frozen NPCs and player should be completely still and correct for the whole
-     ~0.15 s after the box opens — **any flicker or garbled sprite in that window** means something on
-     screen is reading OBJ tiles `$80-$ff` and the reveal has to move back after `LoadFontPartial`.
-   - Also still worth a glance (round 13, untested): the reanchor fills the BG map outside VBlank, so
-     watch the **screen edges** right after a textbox closes and as you take the first step.
+**Owed playtests (round 16, all decode-verified, PLAYTEST-PENDING):** Trainer GEAR (clock before Ken /
+selectable MAP after); Trainer Card CARD/BADGES tabs + no stray "8"; Pokédex species `Pk/Mn` line;
+collision sweep (walls solid in the mart, outdoor Old City, and the Route 2 gate; counters talk-through)
+**plus a regression check of the shipped PlayerHouse/RivalHouse/lab**, whose tilesets were also touched;
+Old City Mart BUY transaction (still owed from round 15).
 
 ### Milestone 1 content (playtest-led; do not dump large untested assembly)
-- **M1c — first route.** `maps/QuietHills.asm` has 5 `InitTrainerBattle` calls + wild grass, reachable
-  from Route1/Route2. Needs a signpost objective ("Old City lies west"), chain warps toward Old City,
-  and wild tables for Route1/Route2 (`data/wild/maps/`, listed in `data/wild/grassmons.asm`).
-- **M1d — Old City (the big one).** Maps exist as geometry-only stubs. Deliverables: a **working
-  Pokémon Center** (see below), a Mart roster (build on `pokemart_menu.asm`, the debug mart is the only
-  implementation), **Gym #1** (guide NPC + 1-2 trainers + leader with a new `TRAINER_*` class/party +
-  badge bit consumed by `PrintNumBadges`), and the first §3 story hooks (missing-professor radio
-  bulletin / the sealed Five-Story Pagoda + phantom-bird rumour / the High-Tech "other Oak").
+- **M1c — first route: DONE**, turned out to already be fully authored in the original decompiled
+  content (trainers, wild tables, signposts, warp graph) — see round 15 above. Nothing to do here.
+- **M1d — Old City (the big one).** Maps/warps/NPC placement are already 100% present from
+  decompilation; what's missing is purely the **script layer** (every building interior currently ends
+  in a `map_dummy_text_pointers` stub) — see round 15 above for how to read that quickly per-building.
+  - **Pokémon Center: DONE** (nurse heals + sets spawn point, PLAYTEST-CONFIRMED). The other centre
+    buildings (Route18, Kanto, Stand, Sugar, Newtype, Font, North, Blue, West, HighTech, South, Route15,
+    Kanto2 Pokecenters) are all still stubs with the same `SPRITE_NURSE` object already placed at (5,1)
+    — same recipe applies to each, later milestones.
+  - **Mart: DONE this round** (real BUY with money + pocket handling, see round 15 above,
+    PLAYTEST-PENDING). `RunMartBuyMenu::` (`engine/debug/field/pokemart_menu.asm`) is now shared,
+    reusable infrastructure — a second real town mart just needs its own item list + a few lines of
+    script calling it, not a UI rewrite.
+  - **Still needed: Gym #1.** `OldCityGym.asm` already has `SPRITE_HAYATO` — presumably the
+    Brock-equivalent leader — plus a `SPRITE_GYM_GUY` guide and 4 trainer-shaped NPCs already placed,
+    needs a new `TRAINER_*` class/party + badge bit consumed by `PrintNumBadges` + script. And the first
+    §3 story hooks (missing-professor radio bulletin / the sealed Five-Story Pagoda + phantom-bird
+    rumour / the High-Tech "other Oak").
 - **M1e — box save persistence (deferred, needs care).** **Do not just delete the `ret` in
   `Dummy_SaveBox`** (`engine/menu/empty_sram.asm`): `wBox` isn't in the saved `wPokemonData` region and
   **no `sBox`→`wBox` load exists**, so un-stubbing alone loses boxed mons on the next save. Correct fix
@@ -458,10 +713,11 @@ and a map change. **Any garbled row = a VRAM writer still missing its `Invalidat
 
 ### Pokémon Center healing + blackout respawn (M1d)
 The whiteout mechanism is **already generic and working**: on a non-scripted loss the player is healed
-and warped to `wDefaultSpawnPoint`, falling back to `SPAWN_POINT_SILENT` (Silent Hill town). No centre
-heals yet — every centre map is a stub, and Silent Hill's nurse is deliberately "under repair" (keep
-it; MOM in `PlayerHouse1F` is the first act's heal source). Each real centre's nurse script should:
-1. `AnimateHealingMachine` (`engine/overworld/healing_machine.asm`) + `predef HealParty`.
+and warped to `wDefaultSpawnPoint`, falling back to `SPAWN_POINT_SILENT` (Silent Hill town). Old City's
+centre is now wired (round 15, PLAYTEST-PENDING) as the template — see above. Every other centre map is
+still a stub, and Silent Hill's nurse is deliberately "under repair" (keep it; MOM in `PlayerHouse1F` is
+the first act's heal source). Same recipe for each remaining real centre's nurse script:
+1. `callfar AnimateHealingMachine` (`engine/overworld/healing_machine.asm`) + `predef HealParty`.
 2. **Set `wDefaultSpawnPoint`** to that town's `SPAWN_POINT_*` — the whiteout then routes there.
 3. Note `data/maps/spawn_points.asm` entries are **outdoor town** coords, so a blackout drops you in
    the town, healed. For retail-style "wake up inside the centre", add a centre-interior spawn entry.
@@ -474,6 +730,10 @@ it; MOM in `PlayerHouse1F` is the first act's heal source). Each real centre's n
   support. A 6th `attr_blk` block also costs 16 bytes (packet count 2→3 needs `ds 10` padding).
 
 ### Small known follow-ups
+- **Pokédex AREA button is a no-op.** `.Area` (`engine/pokedex/pokedex.asm:1261`) sets `VIEW_AREA_F` but
+  nothing consumes it; the real area-display routine (`pokedex.asm:627`) is explicitly "dummied out for
+  the demo". Wiring it up needs the region-map area view **plus per-mon landmark/location data** — a
+  feature, not a fix. Until then it silently does nothing (user-reported round 16).
 - **Set the `OAK_MISSING` event when M3 lands** — the lab PC's full mail is gated on it.
 - The Pokédex **species category** ("<KIND> POKéMON" on the entry screen) is still Japanese: it lives
   in `data/pokemon/dex_entries.asm`, which the localization scope defers. Note the category and

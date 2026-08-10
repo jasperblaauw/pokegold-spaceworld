@@ -1,27 +1,31 @@
+; feature/completion: walls/shelves/counters here were authored with the *old* collision
+; subtypes (OLD_WALL/$01, OLD_WALL_INSIDE/$04, OLD_MART_ITEM/$72, OLD_COUNTER/$73), which
+; CollisionTypeTable marks LAND (passable) -- see docs/completion/HANDOVER.md 'Collision'.
+; Converted to the working WALL ($07, solid) / COUNTER ($90, solid + talk-across) constants.
 	tilecoll FF, FF, FF, FF ; 00
-	tilecoll OLD_WALL, OLD_WALL, OLD_WALL, OLD_WALL ; 01
-	tilecoll OLD_FLOOR, OLD_FLOOR, OLD_WALL, OLD_FLOOR ; 02
-	tilecoll OLD_WALL, OLD_WALL, OLD_FLOOR, OLD_FLOOR ; 03
-	tilecoll OLD_WALL, OLD_WALL, OLD_WALL, OLD_WALL ; 04
-	tilecoll OLD_WALL, OLD_WALL, OLD_WALL, OLD_WALL ; 05
-	tilecoll OLD_FLOOR, OLD_WALL, OLD_WALL, OLD_WALL ; 06
-	tilecoll OLD_WALL, OLD_WALL, OLD_WALL, OLD_WALL ; 07
-	tilecoll OLD_WALL, OLD_WALL, OLD_WALL, OLD_WALL ; 08
-	tilecoll OLD_WALL, OLD_WALL, OLD_WALL, OLD_WALL ; 09
-	tilecoll OLD_WALL, OLD_WALL, OLD_WALL, OLD_WALL ; 0a
-	tilecoll OLD_WALL, OLD_WALL, OLD_WALL, OLD_WALL ; 0b
+	tilecoll WALL, WALL, WALL, WALL ; 01
+	tilecoll OLD_FLOOR, OLD_FLOOR, WALL, OLD_FLOOR ; 02
+	tilecoll WALL, WALL, OLD_FLOOR, OLD_FLOOR ; 03
+	tilecoll WALL, WALL, WALL, WALL ; 04
+	tilecoll WALL, WALL, WALL, WALL ; 05
+	tilecoll OLD_FLOOR, WALL, WALL, WALL ; 06
+	tilecoll WALL, WALL, WALL, WALL ; 07
+	tilecoll WALL, WALL, WALL, WALL ; 08
+	tilecoll WALL, WALL, WALL, WALL ; 09
+	tilecoll WALL, WALL, WALL, WALL ; 0a
+	tilecoll WALL, WALL, WALL, WALL ; 0b
 	tilecoll OLD_FLOOR, OLD_FLOOR, OLD_FLOOR, OLD_FLOOR ; 0c
-	tilecoll OLD_WALL, OLD_WALL, OLD_WALL, OLD_WALL ; 0d
-	tilecoll OLD_WALL, OLD_WALL, OLD_WALL, OLD_WALL ; 0e
-	tilecoll OLD_WALL, OLD_WALL, OLD_WALL, OLD_SIGNPOST ; 0f
-	tilecoll OLD_WALL, OLD_WALL, OLD_WALL, OLD_WALL ; 10
-	tilecoll OLD_WALL, OLD_WALL, OLD_WALL, OLD_WALL ; 11
-	tilecoll OLD_WALL, OLD_WALL, OLD_WALL, OLD_WALL ; 12
-	tilecoll OLD_WALL, OLD_WALL, OLD_WALL, OLD_WALL ; 13
-	tilecoll OLD_WALL, OLD_WALL, OLD_WALL, OLD_WALL ; 14
-	tilecoll OLD_WALL, OLD_WALL, OLD_WALL, OLD_WALL ; 15
-	tilecoll OLD_WALL, OLD_WALL, OLD_WALL, OLD_WALL ; 16
-	tilecoll OLD_WALL, OLD_WALL, OLD_WALL, OLD_WALL ; 17
+	tilecoll WALL, WALL, WALL, WALL ; 0d
+	tilecoll WALL, WALL, WALL, WALL ; 0e
+	tilecoll WALL, WALL, WALL, OLD_SIGNPOST ; 0f
+	tilecoll WALL, WALL, WALL, WALL ; 10
+	tilecoll WALL, WALL, WALL, WALL ; 11
+	tilecoll WALL, WALL, WALL, WALL ; 12
+	tilecoll WALL, WALL, WALL, WALL ; 13
+	tilecoll WALL, WALL, WALL, WALL ; 14
+	tilecoll WALL, WALL, WALL, WALL ; 15
+	tilecoll WALL, WALL, WALL, WALL ; 16
+	tilecoll WALL, WALL, WALL, WALL ; 17
 	tilecoll JUNK_36 | COLLFLAG_ENCOUNTER, JUNK_64, JUNK_36 | COLLFLAG_ENCOUNTER, JUNK_64 ; 18
 	tilecoll JUNK_36 | COLLFLAG_ENCOUNTER, JUNK_64, JUNK_36 | COLLFLAG_ENCOUNTER, JUNK_64 ; 19
 	tilecoll JUNK_36 | COLLFLAG_ENCOUNTER, JUNK_64, JUNK_36 | COLLFLAG_ENCOUNTER, JUNK_64 ; 1a

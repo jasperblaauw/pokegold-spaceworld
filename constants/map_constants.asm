@@ -56,7 +56,7 @@ ENDM
 	map_const OLD_CITY_TOWER_4F,                 4,  4 ; 11
 	map_const OLD_CITY_TOWER_5F,                 3,  3 ; 12
 	map_const OLD_CITY_BILLS_HOUSE,              4,  4 ; 13
-	map_const OLD_CITY_MART,                     6,  4 ; 14
+	map_const OLD_CITY_MART,                     8,  4 ; 14
 	map_const OLD_CITY_HOUSE,                    4,  4 ; 15
 	map_const OLD_CITY_POKECENTER_1F,            8,  4 ; 16
 	map_const OLD_CITY_POKECENTER_2F,            8,  4 ; 17

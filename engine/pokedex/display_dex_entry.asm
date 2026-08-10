@@ -120,9 +120,22 @@ _DisplayDexEntry:
 .skip_weight
 	pop de
 	inc de
-	hlcoord 1, 11
+; The description is stored as a run of '@'-terminated lines ended by an empty line
+; ("@"). Print each on its own row from (1,10) down: single-spaced (rows 10-16, up to
+; 7 lines of 18 cols) because English flavor needs far more room than the kana did, and
+; this engine's <NEXT> steps two rows while <LINE> is hardwired to (1,16) - neither can
+; give a single-spaced column here. PlaceString returns hl at the line's start, so
+; advancing one SCREEN_WIDTH lands on the next row.
+	hlcoord 1, 10
+.print_desc_line
+	ld a, [de]
+	cp '@'
+	ret z
 	call PlaceString
-	ret
+	ld bc, SCREEN_WIDTH
+	add hl, bc
+	inc de
+	jr .print_desc_line
 
 ; Both rows start at column 9. The placeholder '?' columns must line up with the
 ; digits PrintNumber writes over them: height at columns 13-16 + 'm' at 17,
@@ -134,7 +147,11 @@ PokedexText_HeightWeight:
 	text_end
 
 PokedexText_Pokemon:
-	db "#" ; "Pokémon" (ポケモン)
+; feature/completion: printed immediately after the species category on row 4, so it
+; needs a leading space (the category string ends with no trailing gap). Use the
+; compact "Pk"/"Mn" ligature tiles ($e1/$e2) rather than the "#" POKéMON token, which
+; expands to 7 columns and crowded the category off the row.
+	db " <PK><MN>"
 	text_end
 
 PokedexButtonsGFX:
