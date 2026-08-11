@@ -609,19 +609,22 @@ endc
 
 SECTION "Bank 0b Garbage", ROMX
 
+; feature/completion: the English item descriptions (data/items/descriptions.asm)
+; are much larger than the original kana, overflowing this bank. Trim the garbage
+; from offset 211 to 1700 (1489 B reclaimed) to make room; still comfortably fits.
 if DEF(_DEBUG)
 	if DEF(_GOLD)
-INCBIN "garbage/debug/bank0b_gold.2bpp", 211 ; feature/completion: +100 English tm_holder text
+INCBIN "garbage/debug/bank0b_gold.2bpp", 1700
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/debug/bank0b_silver.2bpp", 211 ; feature/completion: +100 English tm_holder text
+INCBIN "garbage/debug/bank0b_silver.2bpp", 1700
 	endc
 else
 	if DEF(_GOLD)
-INCBIN "garbage/bank0b_gold.2bpp", 211 ; feature/completion: +100 English tm_holder text
+INCBIN "garbage/bank0b_gold.2bpp", 1700
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/bank0b_silver.2bpp", 211 ; feature/completion: +100 English tm_holder text
+INCBIN "garbage/bank0b_silver.2bpp", 1700
 	endc
 endc
 

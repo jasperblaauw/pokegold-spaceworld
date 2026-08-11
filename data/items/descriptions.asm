@@ -256,920 +256,956 @@ ItemDescriptions::
 	dw ItemFFDescription
 
 MasterBallDescription:
-	db   "ポケモンを　つかまえることが　できる@"
+	db   "Throw it to catch"
+	next "a wild POKéMON.@"
 
 UltraBallDescription:
-	db   "ポケモンを　つかまえることが　できる@"
+	db   "Throw it to catch"
+	next "a wild POKéMON.@"
 
 Item03Description:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 GreatBallDescription:
-	db   "ポケモンを　つかまえることが　できる@"
+	db   "Throw it to catch"
+	next "a wild POKéMON.@"
 
 PokeBallDescription:
-	db   "ポケモンを　つかまえることが　できる@"
+	db   "Throw it to catch"
+	next "a wild POKéMON.@"
 
 TownMapDescription:
-	db   "マップを　みることが　できる@"
+	db   "Lets you check"
+	next "the TOWN MAP.@"
 
 BicycleDescription:
-	db   "２ばいの　はやさで　いどうできる"
-	next "しつないでは　のることが　できない@"
+	db   "Doubles speed but"
+	next "not indoors.@"
 
 MoonStoneDescription:
-	db   "とくていの　ポケモンを　しんかさせる@"
+	db   "Evolves certain"
+	next "POKéMON.@"
 
 AntidoteDescription:
-	db   "どく　じょうたいから　かいふくする@"
+	db   "Cures poisoning.@"
 
 BurnHealDescription:
-	db   "やけど　じょうたいから　かいふくする@"
+	db   "Cures a burn.@"
 
 IceHealDescription:
-	db   "こおり　じょうたいから　かいふくする@"
+	db   "Cures freezing.@"
 
 AwakeningDescription:
-	db   "ねむり　じょうたいから　かいふくする@"
+	db   "Cures sleep.@"
 
 ParlyzHealDescription:
-	db   "マヒ　じょうたいから　かいふくする@"
+	db   "Cures paralysis.@"
 
 FullRestoreDescription:
-	db   "すべての　ステータスいじょうと"
-	next "たいりょくを　ぜんかいふくする　　@"
+	db   "Fully heals HP"
+	next "and all status.@"
 
 MaxPotionDescription:
-	db   "たいりょくを　ぜんかいふくする　　@"
+	db   "Fully restores HP.@"
 
 HyperPotionDescription:
-	db   "たいりょくを２００　かいふくする　　@"
+	db   "Restores 200 HP.@"
 
 SuperPotionDescription:
-	db   "たいりょくを５０　かいふくする　　@"
+	db   "Restores 50 HP.@"
 
 PotionDescription:
-	db   "たいりょくを２０　かいふくする　　@"
+	db   "Restores 20 HP.@"
 
 EscapeRopeDescription:
-	db   "ダンジョンから　ぬけだす@"
+	db   "Escapes instantly"
+	next "from a dungeon.@"
 
 RepelDescription:
-	db   "１００ぽのあいだ　よわい　ポケモンと"
-	next "エンカウントしなくなる@"
+	db   "Keeps weak POKéMON"
+	next "away 100 steps.@"
 
 MaxElixerDescription:
-	db   "ポケモン　１たいの"
-	next "ピーピー　すべてを　ぜんかいふくする@"
+	db   "Fully restores PP"
+	next "of one POKéMON.@"
 
 FireStoneDescription:
-	db   "とくていの　ポケモンを　しんかさせる@"
+	db   "Evolves certain"
+	next "POKéMON.@"
 
 ThunderstoneDescription:
-	db   "とくていの　ポケモンを　しんかさせる@"
+	db   "Evolves certain"
+	next "POKéMON.@"
 
 WaterStoneDescription:
-	db   "とくていの　ポケモンを　しんかさせる@"
+	db   "Evolves certain"
+	next "POKéMON.@"
 
 Item19Description:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 HPUpDescription:
-	db   "たいりょくの　さいだいちを　ふやす@"
+	db   "Raises the max HP"
+	next "of a POKéMON.@"
 
 ProteinDescription:
-	db   "こうげきの　きそポイントを　あげる@"
+	db   "Raises ATTACK"
+	next "base points.@"
 
 IronDescription:
-	db   "ぼうぎょの　きそポイントを　あげる@"
+	db   "Raises DEFENSE"
+	next "base points.@"
 
 CarbosDescription:
-	db   "すばやさの　きそポイントを　あげる@"
+	db   "Raises SPEED"
+	next "base points.@"
 
 Item1EDescription:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 CalciumDescription:
-	db   "とくしゅの　きそポイントを　あげる@"
+	db   "Raises SPECIAL"
+	next "base points.@"
 
 RareCandyDescription:
-	db   "ポケモンの　レベルを　１つあげる@"
+	db   "Raises a POKéMON's"
+	next "level by one.@"
 
 XAccuracyDescription:
-	db   "しようした　せんとうちゅうだけ"
-	next "めいちゅうりつが　あがる@"
+	db   "Ups accuracy for"
+	next "one battle.@"
 
 LeafStoneDescription:
-	db   "とくていの　ポケモンを　しんかさせる@"
+	db   "Evolves certain"
+	next "POKéMON.@"
 
 Item23Description:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 NuggetDescription:
-	db   "きんで　できた　タマ"
-	next "たかく　うれる@"
+	db   "A gold nugget."
+	next "Sells for a lot.@"
 
 PokeDollDescription:
-	db   "エンカウントした　ポケモンから"
-	next "かならず　にげられる@"
+	db   "Escapes any wild"
+	next "POKéMON for sure.@"
 
 FullHealDescription:
-	db   "すべての　ステータスいじょうの"
-	next "じょうたいから　かいふくする@"
+	db   "Cures all status"
+	next "problems.@"
 
 ReviveDescription:
-	db   "たいりょくが　はんぶんで"
-	next "ひんしじょうたいから　かいふくする@"
+	db   "Revives to half HP"
+	next "from fainting.@"
 
 MaxReviveDescription:
-	db   "たいりょくが　ぜんかいで"
-	next "ひんしじょうたいから　かいふくする@"
+	db   "Revives to full HP"
+	next "from fainting.@"
 
 GuardSpecDescription:
-	db   "しようした　せんとうちゅうだけ"
-	next "とくしゅぼうぎょが　あがる@"
+	db   "Ups SP.DEF for"
+	next "one battle.@"
 
 SuperRepelDescription:
-	db   "２００ぽのあいだ　よわい　ポケモンと"
-	next "エンカウントしなくなる@"
+	db   "Keeps weak POKéMON"
+	next "away 200 steps.@"
 
 MaxRepelDescription:
-	db   "２５０ぽのあいだ　よわい　ポケモンと"
-	next "エンカウントしなくなる@"
+	db   "Keeps weak POKéMON"
+	next "away 250 steps.@"
 
 DireHitDescription:
-	db   "しようした　せんとうちゅうだけ"
-	next "クリティカルりつが　あがる@"
+	db   "Ups the critical"
+	next "rate this battle.@"
 
 Item2DDescription:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 FreshWaterDescription:
-	db   "たいりょくを５０　かいふくする　　@"
+	db   "Restores 50 HP.@"
 
 SodaPopDescription:
-	db   "たいりょくを６０　かいふくする　　@"
+	db   "Restores 60 HP.@"
 
 LemonadeDescription:
-	db   "たいりょくを８０　かいふくする　　@"
+	db   "Restores 80 HP.@"
 
 XAttackDescription:
-	db   "しようした　せんとうちゅうだけ"
-	next "こうげきが　あがる@"
+	db   "Ups ATTACK for"
+	next "one battle.@"
 
 Item32Description:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 XDefendDescription:
-	db   "しようした　せんとうちゅうだけ"
-	next "ぼうぎょが　あがる@"
+	db   "Ups DEFENSE for"
+	next "one battle.@"
 
 XSpeedDescription:
-	db   "しようした　せんとうちゅうだけ"
-	next "すばやさが　あがる@"
+	db   "Ups SPEED for"
+	next "one battle.@"
 
 XSpecialDescription:
-	db   "しようした　せんとうちゅうだけ"
-	next "とくしゅこうげきが　あがる@"
+	db   "Ups SP.ATK for"
+	next "one battle.@"
 
 CoinCaseDescription:
-	db   "もっていると　コインを　"
-	next "９９９９まいまで　もつことが　できる@"
+	db   "Holds up to 9999"
+	next "coins.@"
 
 ItemfinderDescription:
-	db   "かくされた　どうぐが　"
-	next "がめんないにあると　おとがなる@"
+	db   "Signals a hidden"
+	next "item on-screen.@"
 
 PokeFluteDescription:
-	db   "ねむっている　ポケモンを　おこす@"
+	db   "Wakes sleeping"
+	next "POKéMON.@"
 
 ExpShareDescription:
-	db   "たたかわなかった　ポケモンにも"
-	next "けいけんちが　ふりわけられる@"
+	db   "Splits EXP with a"
+	next "benched POKéMON.@"
 
 OldRodDescription:
-	db   "ポケモンが　つれる@"
+	db   "Use it to fish"
+	next "for POKéMON.@"
 
 GoodRodDescription:
-	db   "ポケモンが　つれる@"
+	db   "Use it to fish"
+	next "for POKéMON.@"
 
 Item3CDescription:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 SuperRodDescription:
-	db   "ポケモンが　つれる@"
+	db   "Use it to fish"
+	next "for POKéMON.@"
 
 PPUpDescription:
-	db   "わざポイントの　さいだいちが　あがる@"
+	db   "Raises the max PP"
+	next "of a move.@"
 
 EtherDescription:
-	db   "ポケモン１たいの　１つの　"
-	next "わざポイントを　１０かいふくする　　@"
+	db   "Restores 10 PP to"
+	next "one move.@"
 
 MaxEtherDescription:
-	db   "ポケモン１たいの　１つの"
-	next "わざポイントを　ぜんかいふくする　　@"
+	db   "Fully restores one"
+	next "move's PP.@"
 
 ElixerDescription:
-	db   "ポケモン１たいの　すべての"
-	next "わざポイントを　１０かいふくする　　@"
+	db   "Restores 10 PP to"
+	next "all moves.@"
 
 MysticPetalDescription:
-	db   "そうびすると　くさタイプの　"
-	next "わざのいりょくを　よわめられる@"
+	db   "Held: reduces"
+	next "GRASS damage.@"
 
 WhiteFeatherDescription:
-	db   "そうびすると　ひこうタイプの"
-	next "わざのいりょくを　よわめられる@"
+	db   "Held: reduces"
+	next "FLYING damage.@"
 
 ConfuseClawDescription:
-	db   "そうびすると　せんとうの　まえに"
-	next "てきに　ダメージを　あたえる@"
+	db   "Held: damages the"
+	next "foe pre-battle.@"
 
 WisdomOrbDescription:
-	db   "そうびすると　"
-	next "とくしゅぼうぎょが　１０あがる@"
+	db   "Held: raises"
+	next "SP.DEF by 10.@"
 
 SteelShellDescription:
-	db   "そうびすると　"
-	next "ぼうぎょが　１０あがる@"
+	db   "Held: raises"
+	next "DEFENSE by 10.@"
 
 UpGradeDescription:
-	db   "そうびすると　"
-	next "すべての　のうりょくが　５あがる@"
+	db   "Held: raises all"
+	next "stats by 5.@"
 
 StrangeThreadDescription:
-	db   "そうびすると"
-	next "てきの　こうげきを　よけることがある@"
+	db   "Held: may dodge a"
+	next "foe's move.@"
 
 BigLeafDescription:
-	db   "そうびすると　くさタイプの　"
-	next "わざのいりょくが　あがる@"
+	db   "Held: powers up"
+	next "GRASS moves.@"
 
 QuickNeedleDescription:
-	db   "そうびすると"
-	next "せんせいこうげき　することがある@"
+	db   "Held: may let you"
+	next "move first.@"
 
 Item4BDescription:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 SharpStoneDescription:
-	db   "そうびすると　いわタイプの　"
-	next "わざのいりょくが　あがる@"
+	db   "Held: powers up"
+	next "ROCK moves.@"
 
 BlackFeatherDescription:
-	db   "そうびすると　ひこうタイプの　"
-	next "わざのいりょくが　あがる@"
+	db   "Held: powers up"
+	next "FLYING moves.@"
 
 SharpFangDescription:
-	db   "そうびすると　ノーマルタイプの　"
-	next "わざのいりょくが　あがる@"
+	db   "Held: powers up"
+	next "NORMAL moves.@"
 
 SnakeskinDescription:
-	db   "そうびすると　"
-	next "どく　じょうたいに　ならない@"
+	db   "Held: prevents"
+	next "poisoning.@"
 
 ElectricPouchDescription:
-	db   "そうびすると　でんきタイプの　"
-	next "わざのいりょくを　よわめられる@"
+	db   "Held: reduces"
+	next "ELECTRIC damage.@"
 
 ToxicNeedleDescription:
-	db   "そうびすると　どくタイプの　"
-	next "わざのいりょくが　あがる@"
+	db   "Held: powers up"
+	next "POISON moves.@"
 
 KingsRockDescription:
-	db   "そうびすると"
-	next "たまに　てきが　ひるむことがある@"
+	db   "Held: the foe"
+	next "may flinch.@"
 
 StrangePowerDescription:
-	db   "そうびすると　"
-	next "すべての　タイプこうかが　むこう@"
+	db   "Held: nullifies"
+	next "type matchups.@"
 
 LifeTagDescription:
-	db   "そうびすると　せんとうごに"
-	next "ひんし　じょうたいから　かいふくする@"
+	db   "Held: revives it"
+	next "after battle.@"
 
 PoisonFangDescription:
-	db   "そうびすると　どくタイプの"
-	next "わざのいりょくが　あがる@"
+	db   "Held: powers up"
+	next "POISON moves.@"
 
 CordycepsDescription:
-	db   "りっぱな　キノコ"
-	next "たかく　うれる@"
+	db   "A fine mushroom."
+	next "Sells for a lot.@"
 
 DragonFangDescription:
-	db   "そうびすると　ドラゴンタイプの"
-	next "わざのいりょくが　あがる@"
+	db   "Held: powers up"
+	next "DRAGON moves.@"
 
 SilverpowderDescription:
-	db   "そうびすると　むしタイプの　"
-	next "わざのいりょくを　よわめられる@"
+	db   "Held: reduces"
+	next "BUG damage.@"
 
 DiggingClawDescription:
-	db   "そうびすると　せんとういがいで"
-	next "あなをほるが　つかえるようになる@"
+	db   "Held: use DIG"
+	next "in the field.@"
 
 Item5ADescription:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 AmuletCoinDescription:
-	db   "そうびすると　"
-	next "もらえる　おかねが　２ばい@"
+	db   "Held: doubles"
+	next "prize money.@"
 
 MigraineSeedDescription:
-	db   "そうびすると　エスパータイプの"
-	next "わざのいりょくが　あがる@"
+	db   "Held: powers up"
+	next "PSYCHIC moves.@"
 
 CounterCuffDescription:
-	db   "そうびすると　４ぶんの１で"
-	next "てきに　はんげきする　@"
+	db   "Held: counter for"
+	next "1/4 damage.@"
 
 TalismanTagDescription:
-	db   "そうびすると　"
-	next "エンカウント　しにくくなる@"
+	db   "Held: fewer wild"
+	next "POKéMON appear.@"
 
 StrangeWaterDescription:
-	db   "そうびすると　みずタイプの　"
-	next "わざのいりょくを　よわめられる@"
+	db   "Held: reduces"
+	next "WATER damage.@"
 
 TwistedspoonDescription:
-	db   "そうびすると　エスパータイプの　"
-	next "わざのいりょくを　よわめられる@"
+	db   "Held: reduces"
+	next "PSYCHIC damage.@"
 
 AttackNeedleDescription:
-	db   "そうびすると　むしタイプの"
-	next "わざのいりょくが　あがる@"
+	db   "Held: powers up"
+	next "BUG moves.@"
 
 PowerBracerDescription:
-	db   "そうびすると　かくとうタイプの　"
-	next "わざのいりょくが　あがる@"
+	db   "Held: powers up"
+	next "FIGHTING moves.@"
 
 HardStoneDescription:
-	db   "そうびすると　いわタイプの　"
-	next "わざのいりょくを　よわめられる@"
+	db   "Held: reduces"
+	next "ROCK damage.@"
 
 Item64Description:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 JigglingBalloonDescription:
-	db   "そうびすると　ノーマルタイプの　"
-	next "わざのいりょくを　よわめられる@"
+	db   "Held: reduces"
+	next "NORMAL damage.@"
 
 FireManeDescription:
-	db   "そうびすると　ほのおタイプの　"
-	next "わざのいりょくを　よわめられる@"
+	db   "Held: reduces"
+	next "FIRE damage.@"
 
 SlowpoketailDescription:
-	db   "とても　おいしい"
-	next "たかく　うれる@"
+	db   "A tasty tail."
+	next "Sells for a lot.@"
 
 EarthDescription:
-	db   "そうびすると"
-	next "マヒ　じょうたいに　ならない@"
+	db   "Held: prevents"
+	next "paralysis.@"
 
 StickDescription:
-	db   "そうびすると　ノーマルタイプの　"
-	next "わざのいりょくが　あがる@"
+	db   "Held: powers up"
+	next "NORMAL moves.@"
 
 FleeFeatherDescription:
-	db   "そうびすると　１ターン　かけないで"
-	next "ほかの　ポケモンと　こうたいできる@"
+	db   "Held: switch for"
+	next "no turn used.@"
 
 IceFangDescription:
-	db   "そうびすると　こおりタイプの　"
-	next "わざのいりょくが　あがる@"
+	db   "Held: powers up"
+	next "ICE moves.@"
 
 FossilShardDescription:
-	db   "そうびすると　じめんタイプの　"
-	next "わざのいりょくを　よわめられる@"
+	db   "Held: reduces"
+	next "GROUND damage.@"
 
 GrossGarbageDescription:
-	db   "そうびすると　どくタイプの　"
-	next "わざのいりょくを　よわめられる@"
+	db   "Held: reduces"
+	next "POISON damage.@"
 
 BigPearlDescription:
-	db   "きれいな　しんじゅ"
-	next "たかく　うれる@"
+	db   "A lovely pearl."
+	next "Sells for a lot.@"
 
 ChampionBeltDescription:
-	db   "そうびすると　かくとうタイプの　"
-	next "わざのいりょくを　よわめられる@"
+	db   "Held: reduces"
+	next "FIGHTING damage.@"
 
 TagDescription:
-	db   "そうびすると　ゴーストタイプの　"
-	next "わざのいりょくを　よわめられる@"
+	db   "Held: reduces"
+	next "GHOST damage.@"
 
 SpellTagDescription:
-	db   "そうびすると　"
-	next "エンカウント　しやすくなる@"
+	db   "Held: more wild"
+	next "POKéMON appear.@"
 
 FiveYenCoinDescription:
-	db   "そうびすると　エスパータイプの　"
-	next "わざのいりょくを　よわめられる@"
+	db   "Held: reduces"
+	next "PSYCHIC damage.@"
 
 GuardThreadDescription:
-	db   "そうびすると　むしタイプの　"
-	next "わざのいりょくを　よわめられる@"
+	db   "Held: reduces"
+	next "BUG damage.@"
 
 StimulusOrbDescription:
-	db   "そうびすると　"
-	next "ねむり　じょうたいに　ならない@"
+	db   "Held: prevents"
+	next "sleep.@"
 
 CalmBerryDescription:
-	db   "そうびすると　"
-	next "こんらん　じょうたいに　ならない@"
+	db   "Held: prevents"
+	next "confusion.@"
 
 ThickClubDescription:
-	db   "そうびすると　じめんタイプの　"
-	next "わざのいりょくが　あがる@"
+	db   "Held: powers up"
+	next "GROUND moves.@"
 
 FocusOrbDescription:
-	db   "そうびすると"
-	next "きぜつ　しないで　たえることがある@"
+	db   "Held: may survive"
+	next "with 1 HP.@"
 
 Item78Description:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 DetectOrbDescription:
-	db   "そうびすると"
-	next "てきの　こうげきを　よけることがある@"
+	db   "Held: may dodge a"
+	next "foe's move.@"
 
 LongTongueDescription:
-	db   "そうびすると"
-	next "ポケモンの　ほかくりつが　あがる@"
+	db   "Held: better"
+	next "catch rate.@"
 
 LottoTicketDescription:
-	db   "ふくびきが　できる@"
+	db   "Use it to enter"
+	next "the lottery.@"
 
 EverstoneDescription:
-	db   "そうびすると"
-	next "ポケモンが　しんか　しなくなる@"
+	db   "Held: stops it"
+	next "evolving.@"
 
 SharpHornDescription:
-	db   "そうびすると　"
-	next "こうげきが　１０あがる@"
+	db   "Held: raises"
+	next "ATTACK by 10.@"
 
 LuckyEggDescription:
-	db   "そうびすると　"
-	next "もらえる　けいけんちが　２ばい@"
+	db   "Held: doubles EXP.@"
 
 LongVineDescription:
-	db   "そうびすると"
-	next "ポケモンの　ほかくりつが　あがる@"
+	db   "Held: better"
+	next "catch rate.@"
 
 MomsLoveDescription:
-	db   "そうびすると　あるくたびに　　"
-	next "たいりょくが１　かいふくする@"
+	db   "Held: heals 1 HP"
+	next "with each step.@"
 
 SmokescreenItemDescription:
-	db   "そうびすると　"
-	next "エンカウントしたてきから　にげられる@"
+	db   "Held: flee any"
+	next "wild POKéMON.@"
 
 WetHornDescription:
-	db   "そうびすると　みずタイプの　"
-	next "わざのいりょくが　あがる@"
+	db   "Held: powers up"
+	next "WATER moves.@"
 
 SkateboardDescription:
-	db   "２ばいの　はやさで　いどうできる"
-	next "しつないでも　のることが　できる@"
+	db   "Doubles speed,"
+	next "even indoors.@"
 
 CrimsonJewelDescription:
-	db   "あかい　ほうせき"
-	next "たかく　うれる@"
+	db   "A red gem."
+	next "Sells for a lot.@"
 
 InvisibleWallDescription:
-	db   "そうびすると　とくしゅこうげきの"
-	next "ダメージが　はんぶんになる@"
+	db   "Held: halves"
+	next "SP.ATK damage.@"
 
 SharpScytheDescription:
-	db   "そうびすると"
-	next "クリティカルが　でやすくなる@"
+	db   "Held: raises the"
+	next "critical rate.@"
 
 Item87Description:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 IceBikiniDescription:
-	db   "そうびすると　こおりタイプの　"
-	next "わざのいりょくを　よわめられる@"
+	db   "Held: reduces"
+	next "ICE damage.@"
 
 ThunderFangDescription:
-	db   "そうびすると　でんきタイプの　"
-	next "わざのいりょくが　あがる@"
+	db   "Held: powers up"
+	next "ELECTRIC moves.@"
 
 FireClawDescription:
-	db   "そうびすると　ほのおタイプの　"
-	next "わざのいりょくが　あがる@"
+	db   "Held: powers up"
+	next "FIRE moves.@"
 
 TwinHornsDescription:
-	db   "そうびすると　"
-	next "こうげきが　１０あがる@"
+	db   "Held: raises"
+	next "ATTACK by 10.@"
 
 SpikeDescription:
-	db   "そうびすると　ゴーストタイプの　"
-	next "わざのいりょくが　あがる@"
+	db   "Held: powers up"
+	next "GHOST moves.@"
 
 BerryDescription:
-	db   "たいりょくを２０　かいふくする　　@"
+	db   "Restores 20 HP.@"
 
 AppleDescription:
-	db   "たいりょくを５０　かいふくする　　@"
+	db   "Restores 50 HP.@"
 
 MetalCoatDescription:
-	db   "そうびすると　ふつうこうげきの"
-	next "ダメージが　はんぶんになる@"
+	db   "Held: halves"
+	next "ATTACK damage.@"
 
 PrettyTailDescription:
-	db   "そうびすると　"
-	next "どく　じょうたいに　ならない@"
+	db   "Held: prevents"
+	next "poisoning.@"
 
 WaterTailDescription:
-	db   "そうびすると　"
-	next "やけど　じょうたいに　ならない@"
+	db   "Held: prevents"
+	next "burns.@"
 
 LeftoversDescription:
-	db   "そうびすると　１ターンごとに　　"
-	next "たいりょくが３０　かいふくする@"
+	db   "Held: heals 30 HP"
+	next "each turn.@"
 
 IceWingDescription:
-	db   "そうびすると　"
-	next "とくしゅぼうぎょが　１０あがる@"
+	db   "Held: raises"
+	next "SP.DEF by 10.@"
 
 ThunderWingDescription:
-	db   "そうびすると　"
-	next "すばやさが　１０あがる@"
+	db   "Held: raises"
+	next "SPEED by 10.@"
 
 FireWingDescription:
-	db   "そうびすると　"
-	next "とくしゅこうげきが　１０あがる@"
+	db   "Held: raises"
+	next "SP.ATK by 10.@"
 
 Item96Description:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 DragonScaleDescription:
-	db   "そうびすると　ドラゴンタイプの　"
-	next "わざのいりょくを　よわめられる@"
+	db   "Held: reduces"
+	next "DRAGON damage.@"
 
 BerserkGeneDescription:
-	db   "そうびすると　"
-	next "すべての　のうりょくが　１０あがる@"
+	db   "Held: raises all"
+	next "stats by 10.@"
 
 HeartStoneDescription:
-	db   "とくていの　ポケモンを　しんかさせる@"
+	db   "Evolves certain"
+	next "POKéMON.@"
 
 FireTailDescription:
-	db   "そうびすると　"
-	next "こおり　じょうたいに　ならない@"
+	db   "Held: prevents"
+	next "freezing.@"
 
 ThunderTailDescription:
-	db   "そうびすると　"
-	next "マヒ　じょうたいに　ならない@"
+	db   "Held: prevents"
+	next "paralysis.@"
 
 SacredAshDescription:
-	db   "すべてのポケモンを　たいりょく１で"
-	next "ひんし　じょうたいから　かいふくする@"
+	db   "Revives the party"
+	next "with 1 HP each.@"
 
 TMHolderDescription:
-	db   "わざマシンを　しまう　ホルダ@"
+	db   "A case for storing"
+	next "TMs.@"
 
 MailDescription:
-	db   "とくしゅ　アイテム@"
+	db   "A special item.@"
 
 BallHolderDescription:
-	db   "とくしゅ　アイテム@"
+	db   "A case for POKé"
+	next "BALLS.@"
 
 BagDescription:
-	db   "ふつうの　どうぐを　しまう　ホルダ@"
+	db   "Holds your"
+	next "everyday items.@"
 
 ImportantBagDescription:
-	db   "だいじな　どうぐを　しまう　ホルダ@"
+	db   "Holds important"
+	next "items.@"
 
 PoisonStoneDescription:
-	db   "とくていの　ポケモンを　しんかさせる@"
+	db   "Evolves certain"
+	next "POKéMON.@"
 
 ItemA3Description:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 ItemA4Description:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 ItemA5Description:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 ItemA6Description:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 ItemA7Description:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 ItemA8Description:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 ItemA9Description:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 ItemAADescription:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 ItemABDescription:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 ItemACDescription:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 ItemADDescription:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 ItemAEDescription:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 ItemAFDescription:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 ItemB0Description:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 ItemB1Description:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 ItemB2Description:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 ItemB3Description:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 ItemB4Description:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 ItemB5Description:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 ItemB6Description:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 ItemB7Description:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 ItemB8Description:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 ItemB9Description:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 ItemBADescription:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 ItemBBDescription:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 ItemBCDescription:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 ItemBDDescription:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 ItemBEDescription:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 ItemBFDescription:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 ItemC0Description:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 ItemC1Description:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 ItemC2Description:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 ItemC3Description:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 TM01Description:
-	db   "わざマシン０１@"
+	db   "TECHNICAL MACHINE"
+	next "No. 01.@"
 
 TM02Description:
-	db   "わざマシン０２@"
+	db   "TECHNICAL MACHINE"
+	next "No. 02.@"
 
 TM03Description:
-	db   "わざマシン０３@"
+	db   "TECHNICAL MACHINE"
+	next "No. 03.@"
 
 TM04Description:
-	db   "わざマシン０４@"
+	db   "TECHNICAL MACHINE"
+	next "No. 04.@"
 
 ItemC8Description:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 TM05Description:
-	db   "わざマシン０５@"
+	db   "TECHNICAL MACHINE"
+	next "No. 05.@"
 
 TM06Description:
-	db   "わざマシン０６@"
+	db   "TECHNICAL MACHINE"
+	next "No. 06.@"
 
 TM07Description:
-	db   "わざマシン０７@"
+	db   "TECHNICAL MACHINE"
+	next "No. 07.@"
 
 TM08Description:
-	db   "わざマシン０８@"
+	db   "TECHNICAL MACHINE"
+	next "No. 08.@"
 
 TM09Description:
-	db   "わざマシン０９@"
+	db   "TECHNICAL MACHINE"
+	next "No. 09.@"
 
 TM10Description:
-	db   "わざマシン１０@"
+	db   "TECHNICAL MACHINE"
+	next "No. 10.@"
 
 TM11Description:
-	db   "わざマシン１１@"
+	db   "TECHNICAL MACHINE"
+	next "No. 11.@"
 
 TM12Description:
-	db   "わざマシン１２@"
+	db   "TECHNICAL MACHINE"
+	next "No. 12.@"
 
 TM13Description:
-	db   "わざマシン１３@"
+	db   "TECHNICAL MACHINE"
+	next "No. 13.@"
 
 TM14Description:
-	db   "わざマシン１４@"
+	db   "TECHNICAL MACHINE"
+	next "No. 14.@"
 
 TM15Description:
-	db   "わざマシン１５@"
+	db   "TECHNICAL MACHINE"
+	next "No. 15.@"
 
 TM16Description:
-	db   "わざマシン１６@"
+	db   "TECHNICAL MACHINE"
+	next "No. 16.@"
 
 TM17Description:
-	db   "わざマシン１７@"
+	db   "TECHNICAL MACHINE"
+	next "No. 17.@"
 
 TM18Description:
-	db   "わざマシン１８@"
+	db   "TECHNICAL MACHINE"
+	next "No. 18.@"
 
 TM19Description:
-	db   "わざマシン１９@"
+	db   "TECHNICAL MACHINE"
+	next "No. 19.@"
 
 TM20Description:
-	db   "わざマシン２０@"
+	db   "TECHNICAL MACHINE"
+	next "No. 20.@"
 
 TM21Description:
-	db   "わざマシン２１@"
+	db   "TECHNICAL MACHINE"
+	next "No. 21.@"
 
 TM22Description:
-	db   "わざマシン２２@"
+	db   "TECHNICAL MACHINE"
+	next "No. 22.@"
 
 TM23Description:
-	db   "わざマシン２３@"
+	db   "TECHNICAL MACHINE"
+	next "No. 23.@"
 
 TM24Description:
-	db   "わざマシン２４@"
+	db   "TECHNICAL MACHINE"
+	next "No. 24.@"
 
 TM25Description:
-	db   "わざマシン２５@"
+	db   "TECHNICAL MACHINE"
+	next "No. 25.@"
 
 TM26Description:
-	db   "わざマシン２６@"
+	db   "TECHNICAL MACHINE"
+	next "No. 26.@"
 
 TM27Description:
-	db   "わざマシン２７@"
+	db   "TECHNICAL MACHINE"
+	next "No. 27.@"
 
 TM28Description:
-	db   "わざマシン２８@"
+	db   "TECHNICAL MACHINE"
+	next "No. 28.@"
 
 ItemE1Description:
-	db   "？"
-	next "？@"
+	db   "?@"
 
 TM29Description:
-	db   "わざマシン２９@"
+	db   "TECHNICAL MACHINE"
+	next "No. 29.@"
 
 TM30Description:
-	db   "わざマシン３０@"
+	db   "TECHNICAL MACHINE"
+	next "No. 30.@"
 
 TM31Description:
-	db   "わざマシン３１@"
+	db   "TECHNICAL MACHINE"
+	next "No. 31.@"
 
 TM32Description:
-	db   "わざマシン３２@"
+	db   "TECHNICAL MACHINE"
+	next "No. 32.@"
 
 TM33Description:
-	db   "わざマシン３３@"
+	db   "TECHNICAL MACHINE"
+	next "No. 33.@"
 
 TM34Description:
-	db   "わざマシン３４@"
+	db   "TECHNICAL MACHINE"
+	next "No. 34.@"
 
 TM35Description:
-	db   "わざマシン３５@"
+	db   "TECHNICAL MACHINE"
+	next "No. 35.@"
 
 TM36Description:
-	db   "わざマシン３６@"
+	db   "TECHNICAL MACHINE"
+	next "No. 36.@"
 
 TM37Description:
-	db   "わざマシン３７@"
+	db   "TECHNICAL MACHINE"
+	next "No. 37.@"
 
 TM38Description:
-	db   "わざマシン３８@"
+	db   "TECHNICAL MACHINE"
+	next "No. 38.@"
 
 TM39Description:
-	db   "わざマシン３９@"
+	db   "TECHNICAL MACHINE"
+	next "No. 39.@"
 
 TM40Description:
-	db   "わざマシン４０@"
+	db   "TECHNICAL MACHINE"
+	next "No. 40.@"
 
 TM41Description:
-	db   "わざマシン４１@"
+	db   "TECHNICAL MACHINE"
+	next "No. 41.@"
 
 TM42Description:
-	db   "わざマシン４２@"
+	db   "TECHNICAL MACHINE"
+	next "No. 42.@"
 
 TM43Description:
-	db   "わざマシン４３@"
+	db   "TECHNICAL MACHINE"
+	next "No. 43.@"
 
 TM44Description:
-	db   "わざマシン４４@"
+	db   "TECHNICAL MACHINE"
+	next "No. 44.@"
 
 TM45Description:
-	db   "わざマシン４５@"
+	db   "TECHNICAL MACHINE"
+	next "No. 45.@"
 
 TM46Description:
-	db   "わざマシン４６@"
+	db   "TECHNICAL MACHINE"
+	next "No. 46.@"
 
 TM47Description:
-	db   "わざマシン４７@"
+	db   "TECHNICAL MACHINE"
+	next "No. 47.@"
 
 TM48Description:
-	db   "わざマシン４８@"
+	db   "TECHNICAL MACHINE"
+	next "No. 48.@"
 
 TM49Description:
-	db   "わざマシン４９@"
+	db   "TECHNICAL MACHINE"
+	next "No. 49.@"
 
 TM50Description:
-	db   "わざマシン５０@"
+	db   "TECHNICAL MACHINE"
+	next "No. 50.@"
 
 HM01Description:
-	db   "ひでんマシン０１@"
+	db   "HIDDEN MACHINE"
+	next "No. 01.@"
 
 HM02Description:
-	db   "ひでんマシン０２@"
+	db   "HIDDEN MACHINE"
+	next "No. 02.@"
 
 HM03Description:
-	db   "ひでんマシン０３@"
+	db   "HIDDEN MACHINE"
+	next "No. 03.@"
 
 HM04Description:
-	db   "ひでんマシン０４@"
+	db   "HIDDEN MACHINE"
+	next "No. 04.@"
 
 HM05Description:
-	db   "ひでんマシン０５@"
+	db   "HIDDEN MACHINE"
+	next "No. 05.@"
 
 HM06Description:
-	db   "ひでんマシン０６@"
+	db   "HIDDEN MACHINE"
+	next "No. 06.@"
 
 HM07Description:
-	db   "ひでんマシン０７@"
+	db   "HIDDEN MACHINE"
+	next "No. 07.@"
 
 ItemFFDescription:
-	db   "？"
-	next "？@"
+	db   "?@"

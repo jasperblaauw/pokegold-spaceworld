@@ -630,10 +630,11 @@ SilentHillLabFrontScript17:
 	SetEvent SILENT_HILL_LAB_FRONT_RIVAL_BATTLED
 ; feature/completion: the demo only handed over the six POKé BALLS, so NANAMI's
 ; speech promised a PACK with a BALL HOLDER, a TM HOLDER and a bonus TM that
-; never arrived. All four now exist as real items; ReceiveItem routes each one
-; to its own pocket by its ItemAttributes entry.
-	ld a, ITEM_BAG
-	call SilentHillLabFrontGiveOne
+; never arrived. The BALL HOLDER, TM HOLDER and bonus TM are given as real items;
+; ReceiveItem routes each to its own pocket by its ItemAttributes entry. The PACK
+; itself is NOT an item -- it's the start-menu BACKPACK option, unlocked by the
+; RIVAL_BATTLED event set just above (see GetStartMenuState, start_menu.asm), so
+; ITEM_BAG is no longer handed out (it would just sit dead in the KEY ITEMS pocket).
 	ld a, ITEM_BALL_HOLDER
 	call SilentHillLabFrontGiveOne
 	ld a, ITEM_TM_HOLDER

@@ -57,7 +57,11 @@ DebugMart_BuyMenuHeader:
 
 .BuyMenuParams:
 	db STATICMENU_WRAP
-	db 4, 8 ; rows, columns
+; English item names are far longer than the Japanese ones (up to 12 tiles), so
+; the price column is pushed to the far right of the row: offset 12 from the
+; row start (col 2) puts the ¥ + four digits at cols 14-18, leaving cols 2-13
+; for the name. See .PrintAmount.
+	db 4, 12 ; rows, price column offset
 	db SCROLLINGMENU_ITEMS_NORMAL
 	dbw 0, wCurMartCount
 	dba PlaceMenuItemName
@@ -72,15 +76,18 @@ DebugMart_BuyMenuHeader:
 	add hl, bc
 	add hl, bc
 	add hl, bc
+; The precomputed price is a 3-byte (6-digit) BCD, MSB first. Item prices never
+; exceed 4 digits, so skip the high byte and print only the low two (4 digits):
+; ¥ + 4 digits = 5 tiles, which sits flush at the right edge of the row (cols
+; 14-18) so the full English item name has cols 2-13 to itself.
+	inc hl
 	push de
 	ld d, h
 	ld e, l
 	pop hl
-; English writes the currency symbol before the figure; the six digits still
-; end on the same column as before.
 	ld [hl], '¥'
 	inc hl
-	ld c, 3 | PRINTNUM_LEADINGZEROS
+	ld c, 2 | PRINTNUM_LEADINGZEROS
 	call PrintBCDNumber
 	ret
 
