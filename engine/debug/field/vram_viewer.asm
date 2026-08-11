@@ -208,8 +208,8 @@ FieldDebug_DoClearEventFlags:
 	ret
 
 .NoMapFlagsText:
-	text "このマップは　シーケンスの"
-	line "とうろくが　ありません"
+	text "This map has no"
+	line "scene registered."
 	prompt
 
 .MenuHeader:
@@ -221,8 +221,8 @@ FieldDebug_DoClearEventFlags:
 .MenuData:
 	db STATICMENU_CURSOR
 	db 2
-	db "フラグを　クリア@"
-	db "フラグを　うめる@"
+	db "CLEAR@"
+	db "FILL@"
 
 .CheckMapFlags:
 	ld a, [wMapGroup]

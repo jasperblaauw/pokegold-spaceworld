@@ -30,36 +30,40 @@
 	const FIELDDEBUG_VRAM_VIEWER             ; $1b
 	const FIELDDEBUG_TRAINER_GEAR            ; $1c
 
+; feature/completion: English labels for the in-field debug menu (reachable in
+; debug ROMs via START+B). The menu box is only ~5 columns of text wide (the
+; longest original kana label, ツールギア, was 5), so each label is capped at 5
+; characters. Order matches the FIELDDEBUG_* constants above.
 FieldDebug_MenuStrings:
-	db "リセット@"
-	db "とじる@"
-	db "わくせん@"
-	db "ゲーム@"
-	db "のりもの@"
-	db "セル@"
-	db "ちず@"
-	db "キャラ@"
-	db "なまえ@"
-	db "ツールギア@"
-	db "イベント@"
-	db "かいふく@"
-	db "つうしん@"
-	db "つぎ▶@"
-	db "アニメ@"
-	db "つれてく@"
-	db "つれてけ@"
-	db "ワープ@"
-	db "くさかり@"
-	db "あしもと@"
-	db "じどう@"
-	db "うごき@"
-	db "マッパー@"
-	db "アイテム@"
-	db "パソコン@"
-	db "ショップ@"
-	db "テレポ！@"
-	db "テスト@"
-	db "じっけん@"
+	db "RESET@"  ; リセット   - soft reset dialog
+	db "CLOSE@"  ; とじる     - close the debug menu
+	db "FRAME@"  ; わくせん   - text frame type
+	db "GAMES@"  ; ゲーム     - minigames
+	db "RIDE@"   ; のりもの   - change transportation
+	db "TILES@"  ; セル       - change tileset
+	db "MAP@"    ; ちず       - town map
+	db "CHARA@"  ; キャラ     - sprite viewer
+	db "NAME@"   ; なまえ     - name player
+	db "TOOL@"   ; ツールギア - toolgear
+	db "EVENT@"  ; イベント   - clear event flags
+	db "HEAL@"   ; かいふく   - heal party
+	db "LINK@"   ; つうしん   - cable club
+	db "NEXT▶@"  ; つぎ▶      - go to next page
+	db "NPCMV@"  ; アニメ     - NPC movement test
+	db "FOLLW@"  ; つれてく   - pokemon following
+	db "NPCFL@"  ; つれてけ   - follow NPC test
+	db "WARP@"   ; ワープ     - warp
+	db "CUT@"    ; くさかり   - field cut
+	db "CHKTL@"  ; あしもと   - check tile underfoot
+	db "ENTR@"   ; じどう     - move to Route 1 entrance
+	db "TOGMV@"  ; うごき     - toggle NPC movement
+	db "MAPVW@"  ; マッパー   - map viewer
+	db "ITEM@"   ; アイテム   - item test
+	db "PC@"     ; パソコン   - PC menu
+	db "SHOP@"   ; ショップ   - pokemart menu
+	db "TPORT@"  ; テレポ！   - teleport
+	db "VRAM@"   ; テスト     - VRAM viewer
+	db "GEAR@"   ; じっけん   - trainer gear
 
 FieldDebug_Jumptable:
 	dw FieldDebug_Reset

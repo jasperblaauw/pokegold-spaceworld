@@ -14,10 +14,10 @@ FieldDebug_UnusedFlagMenu: ; unused?
 .MenuData:
 	db STATICMENU_CURSOR
 	db 4
-	db "フラグ１@"
-	db "フラグ２@"
-	db "フラグ３@"
-	db "フラグ４@"
+	db "FLAG1@"
+	db "FLAG2@"
+	db "FLAG3@"
+	db "FLAG4@"
 
 	call LoadStandardMenuHeader
 	bccoord 0, 14

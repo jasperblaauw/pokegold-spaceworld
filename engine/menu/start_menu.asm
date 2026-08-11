@@ -1965,6 +1965,19 @@ HandleTrainerCardJumptable:
 	dw .SetPalAndIncJumpTable
 	dw TrainerCardBadgeInput
 	dw TrainerCardSetClearFlag
+; feature/completion: reverse (BADGES -> CARD) slide, entered from
+; TrainerCardBadgeInput.to_card by setting wJumptableIndex to 18. Reuses the same
+; window-scroll workers as the forward CARD -> BADGES slide (indices 5-11) but
+; ends on the main card page (index 0) instead of the badge page (index 12), so
+; the two tab transitions animate the same way rather than the card snapping in.
+	dw TrainerCardScroll         ; 18: snapshot current page to vBGMap1, window off
+	dw .IncreaseJumpTableIndex   ; 19: wait for the BG-map transfer
+	dw .IncreaseJumpTableIndex   ; 20
+	dw TrainerCardClearTileMap   ; 21: window covers screen, clear vBGMap0
+	dw .IncreaseJumpTableIndex   ; 22: wait for the clear to transfer
+	dw .IncreaseJumpTableIndex   ; 23
+	dw TrainerCardSetWindowY     ; 24: walk the window down, revealing vBGMap0
+	dw .ReturnToMainPage         ; 25: redraw the card page (jumptable index 0)
 
 .SetPalAndIncJumpTable:
 	call SetDefaultBGPAndOBP
@@ -1974,11 +1987,25 @@ HandleTrainerCardJumptable:
 	ld [wJumptableIndex], a
 	ret
 
+.ReturnToMainPage:
+	xor a
+	ld [wJumptableIndex], a
+	and a
+	ret
+
 TrainerCardMainPage:
 	call ClearPalettes
+; feature/completion: DisableLCD moved above TrainerCardDrawProtag so the protag
+; pic's decompress + VRAM upload run with the LCD off. Get2bpp (home/copy2.asm) does
+; a direct copy when the LCD is off instead of the ~8-frame VBlank queue, so the card
+; no longer sits on a cleared (white) screen while it loads. The BADGES->CARD reverse
+; slide now reveals the finished card instantly, matching the CARD->BADGES flip (whose
+; TrainerCardBadgePage already draws entirely under LCD-off). Also cleans up the white
+; flash on the very first card open. Everything here is VRAM/tilemap work that is safe
+; (and faster) with the LCD off -- the badge page proves the same call set works.
+	call DisableLCD
 	call ClearTileMap
 	call TrainerCardDrawProtag
-	call DisableLCD
 	call PlaceMiscTilesTrainerCard
 	ld hl, AllTrainerCardGFX
 	ld de, vTileset
@@ -2111,11 +2138,53 @@ TrainerCardBadgeInput:
 	call GetJoypad
 	ld hl, hJoyDown
 	ld a, [hl]
-	and 3
-	jr z, .skip
+	and PAD_LEFT
+	jr nz, .left
+	ld a, [hl]
+	and PAD_RIGHT
+	jr nz, .right
+	ld a, [hl]
+	and PAD_A
+	jr nz, .a
+	ld a, [hl]
+	and PAD_B
+	jr nz, .exit
+	and a
+	ret
+.a
+; Mirrors the main page: pressing A on the tab you are already viewing (BADGES)
+; exits to the start menu; pressing A on the other tab (CARD) slides back to the
+; card page via the reverse-scroll sequence (index 18), the same animation the
+; forward CARD -> BADGES flip uses.
+	ld a, [wFlyDestination]
+	and a
+	jr z, .to_card
+.exit
 	ld a, $11
 	ld [wJumptableIndex], a
-.skip
+	and a
+	ret
+.to_card
+	ld a, 18 ; start the reverse (BADGES -> CARD) slide
+	ld [wJumptableIndex], a
+	and a
+	ret
+.left
+	hlcoord 4, 16
+	ld [hl], '▶'
+	hlcoord 11, 16
+	ld [hl], '　'
+	xor a
+	ld [wFlyDestination], a
+	and a
+	ret
+.right
+	hlcoord 4, 16
+	ld [hl], '　'
+	hlcoord 11, 16
+	ld [hl], '▶'
+	ld a, 1
+	ld [wFlyDestination], a
 	and a
 	ret
 
@@ -2153,7 +2222,15 @@ DrawTrainerCardMainPage:
 	hlcoord 0, 8
 	ld d, 6
 	call PlaceTrainerCardBGTile
-	hlcoord 2, 2
+; feature/completion: NAME label sits at col 1 with a "/" separator so a full
+; 7-char English name fits inside the underline (cols 6-12) with a gap after the
+; label. The JP card was "なまえ／" -- localization dropped the slash and left
+; "NAME" jammed against the value ("NAMEAAAAAAA"). MONEY / POKéDEX keep their
+; col-2 position, so they are placed as a separate string starting on row 6.
+	hlcoord 1, 2
+	ld de, TrainerCardNameLabel
+	call PlaceString
+	hlcoord 2, 6
 	ld de, TrainerCardText
 	call PlaceString
 ; "caught" is 6 columns wide where the Japanese "ひき" was 2, so the count and
@@ -2232,10 +2309,14 @@ TrainerCardBadgesTabLabel:
 ; `next` steps two rows here, so these land on rows 2 / 6 / 10, matching the
 ; player name (6,2), the money (7,6) and the dex count printed alongside them.
 ; "NAME" stops at column 5 because the player name is placed at column 6.
+TrainerCardNameLabel:
+	db "NAME/@"
+
+; MONEY / POKéDEX only; NAME is placed separately (see DrawTrainerCardMainPage).
+; `next` steps two rows, so from row 6 these land on rows 6 / 10, matching the
+; money (7,6) and the dex count (10,10) printed alongside them.
 TrainerCardText:
-	db   "NAME"
-	next ""
-	next "MONEY"
+	db   "MONEY"
 	next ""
 	next "POKéDEX@"
 
@@ -2274,6 +2355,20 @@ DrawTrainerCaseBadgePage:
 	hlcoord 0, 3
 	ld de, TrainerCardBadgeSilhouettesTiles
 	call PlaceTrainerCardTiles
+; feature/completion: draw the same CARD | BADGES tab selector as the main page on
+; row 16 (the badge grid ends at row 15), so the two pages flip back and forth with
+; Left/Right + A instead of having to exit to the start menu. The arrow starts on
+; BADGES since this is the badge page; TrainerCardBadgeInput handles the switch.
+	hlcoord 5, 16
+	ld de, TrainerCardCardTabLabel
+	call PlaceString
+	hlcoord 12, 16
+	ld de, TrainerCardBadgesTabLabel
+	call PlaceString
+	hlcoord 11, 16
+	ld [hl], '▶'
+	ld a, 1
+	ld [wFlyDestination], a
 	ret
 
 TrainerCardLeagueBadgesTextTiles:

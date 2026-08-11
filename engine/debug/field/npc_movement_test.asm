@@ -50,5 +50,5 @@ FieldDebug_NPCMovementTest:
 	ret
 
 .NotHereText:
-	text "ここではだめです！"
+	text "Not usable here!"
 	done

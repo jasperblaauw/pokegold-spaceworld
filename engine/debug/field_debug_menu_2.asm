@@ -40,8 +40,8 @@ FieldDebug_HealPokemon:
 	ret
 
 .HealedText:
-	text "#の　たいりょくを"
-	line "かいふくしました"
+	text "#"
+	line "were fully healed!"
 	prompt
 
 FieldDebug_CableClub:

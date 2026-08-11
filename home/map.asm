@@ -44,6 +44,21 @@ ClearMapBuffer::
 
 SetUpMapBuffer::
 	call ClearMapBuffer
+; feature/completion (Fix B, the mart/pokecenter/Route2-gate entry crash):
+; clear the talking-target state on every map load. QueueMapTextSubroutine arms
+; wTalkingTargetType + hCurMapTextSubroutinePtr from the CURRENT map's wMapTextPtr
+; when you press A facing an object. Maps with a dummy `ret` script loader (Old
+; City outdoor uses map_dummy_script_bank27) never run CallMapTextSubroutine, so
+; that armed pointer is left set -- pointing into the outdoor map's dummy text
+; table (GameFreakText, raw text data). On warping into a building whose loader
+; IS generic (the mart/pokecenter/gate), its per-frame CallMapTextSubroutine then
+; executes that stale pointer as code on the first frame -> jp into GameFreakText
+; -> RST $20 runaway. Clearing the bits makes CallMapTextSubroutine short-circuit
+; (both bits clear -> immediate ret) until a talk is legitimately armed on THIS
+; map, so the stale pointer/hLastTalked are never read. ClearMapBuffer already
+; resets wMapScriptNumber the same way; wTalkingTargetType lives outside that buffer.
+	xor a
+	ld [wTalkingTargetType], a
 	ldh a, [hROMBank]
 	push af
 	ld a, BANK(MapScenes)

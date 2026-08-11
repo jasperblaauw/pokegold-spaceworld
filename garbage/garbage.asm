@@ -394,10 +394,10 @@ Unreferenced_Corrupt_GetMapMusic::
 .not_route
 	ld de, MUSIC_VIRIDIAN_CITY
 	ret
-INCBIN "garbage/home_gold.2bpp", 74 ; feature/completion: +8 ROM0 for InvalidateVRAMFonts
+INCBIN "garbage/home_gold.2bpp", 82 ; feature/completion: +8 ROM0 for InvalidateVRAMFonts, +4 ROM0 for the map-load talking-target reset (mart crash Fix B)
 endc
 if DEF(_SILVER)
-INCBIN "garbage/home_silver.2bpp", 270 ; feature/completion: +8 ROM0 for InvalidateVRAMFonts
+INCBIN "garbage/home_silver.2bpp", 278 ; feature/completion: +8 ROM0 for InvalidateVRAMFonts, +4 ROM0 for the map-load talking-target reset (mart crash Fix B)
 endc
 endc
 
@@ -516,17 +516,17 @@ if DEF(_DEBUG)
 	db $18, $00 ; leftover of previous graphics
 Unreferenced_UnusedLeaderNameGFX:: INCBIN "gfx/trainer_card/unused_leader_name.2bpp"
 	if DEF(_GOLD)
-INCBIN "garbage/debug/bank04_gold.2bpp", 678 ; feature/completion: +81 English lowercase keyboard, +139 English start_menu text, +31 English check_tossable/mon_menu text
+INCBIN "garbage/debug/bank04_gold.2bpp", 726 ; feature/completion: +81 English lowercase keyboard, +139 English start_menu text, +31 English check_tossable/mon_menu text, +32 Trainer Card badge-page tabs, +16 Trainer Card BADGES->CARD reverse slide
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/debug/bank04_silver.2bpp", 678 ; feature/completion: +81 English lowercase keyboard, +139 English start_menu text, +31 English check_tossable/mon_menu text
+INCBIN "garbage/debug/bank04_silver.2bpp", 726 ; feature/completion: +81 English lowercase keyboard, +139 English start_menu text, +31 English check_tossable/mon_menu text, +32 Trainer Card badge-page tabs, +16 Trainer Card BADGES->CARD reverse slide
 	endc
 else
 	if DEF(_GOLD)
-INCBIN "garbage/bank04_gold.2bpp", 612 ; feature/completion: +81 English lowercase keyboard, +139 English start_menu text, +31 English check_tossable/mon_menu text
+INCBIN "garbage/bank04_gold.2bpp", 660 ; feature/completion: +81 English lowercase keyboard, +139 English start_menu text, +31 English check_tossable/mon_menu text, +32 Trainer Card badge-page tabs, +16 Trainer Card BADGES->CARD reverse slide
 endc
 	if DEF(_SILVER)
-INCBIN "garbage/bank04_silver.2bpp", 612 ; feature/completion: +81 English lowercase keyboard, +139 English start_menu text, +31 English check_tossable/mon_menu text
+INCBIN "garbage/bank04_silver.2bpp", 660 ; feature/completion: +81 English lowercase keyboard, +139 English start_menu text, +31 English check_tossable/mon_menu text, +32 Trainer Card badge-page tabs, +16 Trainer Card BADGES->CARD reverse slide
 	endc
 endc
 
@@ -2173,16 +2173,16 @@ if DEF(_DEBUG)
 	cpl
 	ret
 	if DEF(_GOLD)
-INCBIN "garbage/debug/bank3f_gold.2bpp", 414 ; feature/completion: +250 Phase 4
+INCBIN "garbage/debug/bank3f_gold.2bpp", 574 ; feature/completion: +250 Phase 4, +160 round 20 (debug-menu localization + OldCityMartItemList moved into bank 3f)
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/debug/bank3f_silver.2bpp", 414 ; feature/completion: +250 Phase 4
+INCBIN "garbage/debug/bank3f_silver.2bpp", 574 ; feature/completion: +250 Phase 4, +160 round 20 (debug-menu localization + OldCityMartItemList moved into bank 3f)
 	endc
 else
 	if DEF(_GOLD)
-INCBIN "garbage/bank3f_gold.2bpp", 412 ; feature/completion: +250 Phase 4
+INCBIN "garbage/bank3f_gold.2bpp", 572 ; feature/completion: +250 Phase 4, +160 round 20 (debug-menu localization + OldCityMartItemList moved into bank 3f)
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/bank3f_silver.2bpp", 412 ; feature/completion: +250 Phase 4
+INCBIN "garbage/bank3f_silver.2bpp", 572 ; feature/completion: +250 Phase 4, +160 round 20 (debug-menu localization + OldCityMartItemList moved into bank 3f)
 	endc
 endc

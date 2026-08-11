@@ -62,12 +62,12 @@ FieldDebug_FollowNPCTest:
 .MenuData:
 	db STATICMENU_CURSOR
 	db 2
-	db "はじめる@"
-	db "おわる@"
+	db "GO@"
+	db "END@"
 
 .CannotUseWithPokemonText:
-	text "ポケモンを　つれているときは"
-	next "だめです"
+	text "A POKéMON is"
+	next "following you!"
 	prompt
 
 .MovementData:
@@ -95,7 +95,7 @@ MenuHeaderCutsceneTest: ; unreferenced
 .MenuData:
 	db STATICMENU_WRAP | STATICMENU_CURSOR
 	db 4
-	db "ポケモンつれあるき@"
-	db "つれあるかれデモ@"
-	db "ライバルおねえさん@"
-	db "さくせいちゅう@"
+	db "MON WALK@"
+	db "FOLLOWED@"
+	db "RIVAL SIS@"
+	db "WIP@"

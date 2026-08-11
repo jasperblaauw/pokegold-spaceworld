@@ -30,8 +30,8 @@ FieldDebug_OpenMapViewer:
 	ret
 
 .MapViewPrompt:
-	text "マップビューワーを"
-	line "しようしますか？"
+	text "Use the map"
+	line "viewer?"
 	done
 
 .MapViewScript:
@@ -182,8 +182,8 @@ DebugMapViewer_ShowViewerPrompt:
 	ret
 
 .ChangeViewerPrompt:
-	text "ビューワーモードを"
-	line "かいじょ　しますか？"
+	text "Exit viewer"
+	line "mode?"
 	done
 
 DebugMapViewer_ShowSelectedDetails:
@@ -239,12 +239,12 @@ DebugMapViewer_ShowSelectedDetails:
 	ret
 
 .ActorCastText:
-	text "アクターナンバー　　　　"
-	line "キャストナンバー　　　　"
+	text "ACTOR:      "
+	line "CAST:       "
 	done
 
 .NoneText:
-	db "なし@"
+	db "NONE@"
 
 DebugMapViewer_DoMovement:
 	ld bc, wObjectStructs
@@ -392,7 +392,7 @@ DisplayBGEventDetails:
 	ret
 
 .TableText:
-	text "テーブル"
+	text "TABLE"
 	done
 
 .PrintTableDetails:

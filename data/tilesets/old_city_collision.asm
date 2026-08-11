@@ -2,21 +2,24 @@
 ; which CollisionTypeTable treats as LAND (passable) -- Old City was unreachable in the
 ; demo, so its walls were never solid. Converted to WALL ($07, solid), the value the
 ; shipped town tilesets use. Water/ledges/cut-trees already had solid/special values.
+; The 6 OLD_SIGNPOST ($70) quarters (the 11 Old City signs) were a passable subtype
+; the earlier wall sweep missed, so the player walked onto/through signs -- also
+; converted to WALL. Signs are read from the adjacent tile you face, so solid is correct.
 	tilecoll FF, FF, FF, FF ; 00
 	tilecoll OLD_FLOOR, OLD_FLOOR, OLD_FLOOR, OLD_FLOOR ; 01
 	tilecoll WALL, WALL, WALL, WALL ; 02
-	tilecoll OLD_SIGNPOST, WALL, OLD_FLOOR, OLD_FLOOR ; 03
+	tilecoll WALL, WALL, OLD_FLOOR, OLD_FLOOR ; 03
 	tilecoll OLD_FLOOR, OLD_FLOOR, OLD_FLOOR, OLD_FLOOR ; 04
 	tilecoll WALL, OLD_DOOR, OLD_FLOOR, OLD_FLOOR ; 05
-	tilecoll OLD_SIGNPOST, WALL, OLD_FLOOR, OLD_FLOOR ; 06
-	tilecoll OLD_SIGNPOST, OLD_FLOOR, OLD_FLOOR, OLD_FLOOR ; 07
+	tilecoll WALL, WALL, OLD_FLOOR, OLD_FLOOR ; 06
+	tilecoll WALL, OLD_FLOOR, OLD_FLOOR, OLD_FLOOR ; 07
 	tilecoll WALL, WALL, WALL, WALL ; 08
 	tilecoll OLD_FLOOR, OLD_FLOOR, OLD_FLOOR, OLD_FLOOR ; 09
 	tilecoll OLD_FLOOR, OLD_FLOOR, OLD_FLOOR, OLD_FLOOR ; 0a
 	tilecoll WALL, WALL, WALL, WALL ; 0b
 	tilecoll WALL, WALL, OLD_FLOOR, OLD_FLOOR ; 0c
 	tilecoll OLD_DOOR, WALL, OLD_FLOOR, OLD_FLOOR ; 0d
-	tilecoll WALL, OLD_DOOR, OLD_SIGNPOST, OLD_FLOOR ; 0e
+	tilecoll WALL, OLD_DOOR, WALL, OLD_FLOOR ; 0e
 	tilecoll WALL, WALL, OLD_FLOOR, OLD_FLOOR ; 0f
 	tilecoll WALL, WALL, WALL, WALL ; 10
 	tilecoll WALL, WALL, WALL, WALL ; 11
@@ -41,11 +44,11 @@
 	tilecoll WALL, WALL, WALL, OLD_FLOOR ; 24
 	tilecoll WALL, WALL, OLD_FLOOR, OLD_FLOOR ; 25
 	tilecoll WALL, WALL, OLD_FLOOR, WALL ; 26
-	tilecoll OLD_FLOOR, OLD_FLOOR, OLD_SIGNPOST, WALL ; 27
+	tilecoll OLD_FLOOR, OLD_FLOOR, WALL, WALL ; 27
 	tilecoll WALL, OLD_FLOOR, WALL, OLD_FLOOR ; 28
 	tilecoll WALL, WALL, WALL, WALL ; 29
 	tilecoll OLD_FLOOR, WALL, OLD_FLOOR, WALL ; 2a
-	tilecoll OLD_SIGNPOST, WALL, OLD_FLOOR, OLD_FLOOR ; 2b
+	tilecoll WALL, WALL, OLD_FLOOR, OLD_FLOOR ; 2b
 	tilecoll WALL, OLD_FLOOR, WALL, WALL ; 2c
 	tilecoll OLD_FLOOR, OLD_FLOOR, WALL, WALL ; 2d
 	tilecoll OLD_FLOOR, WALL, WALL, WALL ; 2e

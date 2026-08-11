@@ -113,6 +113,17 @@ RunMartBuyMenu::
 ; which this never did before (see .UnderDevelopmentText, now gone): the
 ; debug field mart could browse and pick a quantity but never actually buy.
 ; IN: de = pointer to a -1-terminated list of item IDs to sell.
+; feature/completion: disable overworld tile animation while this full-screen menu
+; is up, then restore it -- the same save/xor/restore every other full-screen menu
+; does (trainer card, party, pokedex, ...). Standard hygiene for a menu opened over a
+; live overworld. (The "BUY hangs the game" crash was NOT this or any VBlank/STAT
+; race -- it was a cross-bank read of the caller's item list corrupting WRAM; see
+; DebugMart_LoadItems below and OldCityMartItemList's bank note. Keeping this because
+; it is correct regardless, not because it fixes the crash.)
+	ldh a, [hMapAnims]
+	push af
+	xor a
+	ldh [hMapAnims], a
 	call DebugMart_LoadItems
 	call LoadStandardMenuHeader
 	call ClearTileMap
@@ -120,6 +131,8 @@ RunMartBuyMenu::
 	call .BuyMenu
 	jr nc, .buy_loop
 	call ExitMenu
+	pop af
+	ldh [hMapAnims], a
 	ret
 
 .BuyMenu:
@@ -130,8 +143,11 @@ RunMartBuyMenu::
 	ld a, [wMenuJoypad]
 	cp PAD_B
 	jr z, .cancel_buy
+; Only A confirms a purchase. ScrollingMenu only ever returns A or B here (SELECT/
+; START are filtered out unless their enable flags are set), so this is a guard --
+; but the original `jr z, .buy_item` jumped to the very next line, buying on any key.
 	cp PAD_A
-	jr z, .buy_item
+	jr nz, .cancel_buy
 .buy_item
 	ld a, MAX_ITEM_STACK
 	ld [wItemQuantityBuffer], a
@@ -157,13 +173,12 @@ RunMartBuyMenu::
 	jr c, .not_enough_money
 
 ; Give the item before charging for it, so a full pocket costs nothing.
-; Poké Balls live in their own pocket (wNumBallItems), same as the PACK UI.
-	ld a, [wCurItem]
-	cp ITEM_POKE_BALL
+; Always pass wNumBagItems: _ReceiveItem (engine/items/inventory.asm) routes by the
+; item's pocket attribute, so a POKé BALL dispatches to the ball pocket (ReceiveBall)
+; on its own. The old code hand-routed balls to wNumBallItems, which made
+; DoesHLEqualwNumBagItems fail -> the ball fell through to PutItemInPocket (regular-
+; item format) and never landed in the ball pocket (money charged, ball vanished).
 	ld hl, wNumBagItems
-	jr nz, .not_ball
-	ld hl, wNumBallItems
-.not_ball
 	call ReceiveItem
 	jr nc, .pack_full
 

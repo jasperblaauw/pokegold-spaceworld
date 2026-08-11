@@ -95,8 +95,7 @@ FieldDebug_ShowWarpToText:
 
 .WarpToText:
 	text_from_ram wStringBuffer2
-	text "に"
-	line "ワープします！"
+	line "Warp there!"
 	done
 
 DoTeleportAnimation:

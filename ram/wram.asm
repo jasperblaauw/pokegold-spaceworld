@@ -1124,11 +1124,15 @@ wSGBPals::  ds PALPACKET_LENGTH * 3
 
 wMonOrItemNameBuffer:: ds MON_NAME_LENGTH
 
-	ds MON_NAME_LENGTH
+	ds MON_NAME_LENGTH - 4
 
-wTMHMMoveNameBackup:: ds 8
-
-	ds 1
+; Must hold a full English move name (MOVE_NAME_LENGTH = 13, was 8 for JP kana):
+; tm_holder.asm backs up/restores wStringBuffer2 through here across the party
+; menu, copying MOVE_NAME_LENGTH bytes. At ds 8 the copy overflowed into
+; wStringBuffer1 and the restore read back the party menu's leftover nickname
+; (e.g. "FALSE SWIPE" came back "FALSE SWIHONO"). The 4 bytes come out of the
+; padding above so wStringBuffer1 keeps its address.
+wTMHMMoveNameBackup:: ds MOVE_NAME_LENGTH
 
 wStringBuffer1:: ds STRING_BUFFER_LENGTH
 
@@ -1214,6 +1218,13 @@ wBattleLossContinues:: db
 
 wChosenStarter:: db
 wCurMartCount:: db
+; DebugMart_LoadItems copies the mart's item list (a count byte, up to ~10 item
+; IDs, and a -1 terminator) starting at wCurMartCount, so the bytes immediately
+; after it are that list's scratch and must NOT hold anything live. The three
+; feature/completion vars below used to sit here (repurposed from this padding)
+; and were being clobbered every time a mart loaded its items; they now sit past
+; the scratch. Keep this gap >= the longest mart list.
+	ds 11
 
 ; feature/completion: steps left before another wild encounter may be rolled.
 ; Set to WILD_ENCOUNTER_COOLDOWN when an encounter triggers and counted down one
@@ -1234,7 +1245,7 @@ wDirtyFontTiles:: db
 ; to the next. (Repurposed padding.)
 wFontExtraInVRAM:: db
 
-	ds 12
+	ds 1
 
 wListPointer:: dw
 wNamesPointer:: dw

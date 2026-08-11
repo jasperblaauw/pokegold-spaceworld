@@ -20,9 +20,9 @@ FieldDebug_MoveToRoute1Entrance:
 	ret
 
 .CantUseText:
-	text "ここでは　できません"
+	text "Can't use here."
 
-	para "ロード１でじっこうできます"
+	para "Use it on Route 1."
 	done
 
 .DoMove:
@@ -41,6 +41,6 @@ FieldDebug_MoveToRoute1Entrance:
 	ret
 
 .MoveText:
-	text "とくていちてん　まで"
-	next "うごかします"
+	text "Moving to a"
+	next "set point..."
 	done

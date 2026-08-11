@@ -51,9 +51,9 @@ FieldDebug_PokemonFollowing:
 .MenuData:
 	db STATICMENU_CURSOR
 	db 2
-	db "つける@"
-	db "はずす@"
+	db "ADD@"
+	db "DROP@"
 
 .UnableText:
-	text "だめです！！"
+	text "Can't do that!"
 	done

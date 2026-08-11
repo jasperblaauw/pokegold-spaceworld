@@ -6,9 +6,14 @@ if DEF(_DEBUG)
 	and PAD_START | PAD_B
 	cp PAD_START | PAD_B
 	jr nz, .regularMenu
-	ld a, [wDebugFlags]
-	bit DEBUG_FIELD_F, a
-	ret z ; debug disabled
+; feature/completion: open the in-field debug menu on START+B in any _DEBUG build,
+; instead of only when DEBUG_FIELD_F is set. DEBUG_FIELD_F is the *demo's*
+; pre-completed-story field mode (set by the title debug menu's FIELD option via
+; DebugSetUpPlayer/SetDemoEventFlags), which we don't want on a normal authored
+; playthrough -- but we still want the debug menu (warp-testing etc.) reachable.
+; Removed the old `bit DEBUG_FIELD_F / ret z` gate. This grants menu ACCESS only:
+; it does not set DEBUG_FIELD_F, so no demo behaviour (noclip, story precompletion,
+; no map music, attract mode) is enabled by pressing START+B. Debug ROMs only.
 	farcall FieldDebugMenu
 	jr CheckStartmenuSelectHook
 .regularMenu

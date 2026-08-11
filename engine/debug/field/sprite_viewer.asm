@@ -392,7 +392,7 @@ FieldDebug_SpriteViewer:
 	ret
 
 .FollowPromptString:
-	text "これを　せんたくしますか？"
+	text "Select this one?"
 	done
 
 .SetStartingPoint:
@@ -409,7 +409,7 @@ FieldDebug_SpriteViewer:
 	ret
 
 .String:
-	db "かいはつちゅう@"
+	db "UNDER DEV@"
 
 SetupSpriteViewerSpriteWalkingTilemap:
 	ld de, wShadowOAM

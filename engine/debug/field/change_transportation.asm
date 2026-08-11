@@ -79,28 +79,28 @@ FieldDebug_ChangeTransportation:
 .ChangeTransportationMenuData:
 	db STATICMENU_WRAP | STATICMENU_CURSOR
 	db 4
-	db "あるき@"
-	db "じてんしゃ@"
-	db "スケボー@"
-	db "ラプラス@"
+	db "WALK@"
+	db "BIKE@"
+	db "SKATE@"
+	db "SURF@"
 
 .PlayerTransportationString1:
-	text "<PLAYER>は@"
+	text "<PLAYER> got off @"
 	text_low
 	text_from_ram wStringBuffer2
-	text "から　おりた"
+	text "!"
 	prompt
 
 .PlayerTransportationString2:
-	text "<PLAYER>は@"
+	text "<PLAYER> got on @"
 	text_low
 	text_from_ram wStringBuffer2
-	text "に　のった"
+	text "!"
 	prompt
 
 .CannotSurfString:
-	text "ここでは　のることが"
-	next "できません"
+	text "You can't ride"
+	next "here!"
 	prompt
 
 SetTransportation:

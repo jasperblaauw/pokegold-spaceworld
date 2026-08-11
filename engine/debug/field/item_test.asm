@@ -99,8 +99,8 @@ FieldDebug_ItemTest:
 	jr .key_item_menu
 
 .CannotUsePCToolsText:
-	text "パソコンの　どうぐ　は"
-	next "つかえません"
+	text "Can't use PC"
+	next "items here."
 	prompt
 
 .restart
@@ -131,7 +131,7 @@ FieldDebug_ItemTest:
 	jp .restart
 
 .ItemPickedText:
-	text "アイテムを　えらんだ！"
+	text "Chose an item!"
 	done
 
 .ClearMenu:
@@ -149,15 +149,15 @@ FieldDebug_ItemTest:
 
 .UseOrTossMenuHeader:
 	db MENU_BACKUP_TILES
-	menu_coords 14, 10, 19, 14
+	menu_coords 13, 10, 19, 14
 	dw .UseOrTossMenuData
 	db 1
 
 .UseOrTossMenuData:
 	db $c0
 	db 2
-	db "つかう@"
-	db "すてる@"
+	db "USE@"
+	db "TOSS@"
 
 .toss_item
 	ld hl, wItems
@@ -217,19 +217,19 @@ FieldDebug_ItemTest:
 
 .TossConfirmText:
 	text_from_ram wStringBuffer2
-	text "を　すてます"
-	line "ほんとに　よろしいですか？"
+	text ":"
+	line "Throw it away?"
 	prompt
 
 .ItemTossedText:
 	text_from_ram wStringBuffer1
-	text "を"
-	line "すてました！"
+	text " was"
+	line "thrown away!"
 	prompt
 
 .CannotTossText:
-	text "それは　とても　たいせつなモノです"
-	line "すてることは　できません！"
+	text "It's too important"
+	line "to throw away!"
 	prompt
 
 .continue

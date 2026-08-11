@@ -88,9 +88,9 @@ OpenToolgearMenu:
 .MenuData:
 	db STATICMENU_CURSOR
 	db 6
-	db "とけい@"
-	db "ざひょう@"
-	db "アジャスト@"
-	db "６０びょう@"
-	db "２４じかん@"
-	db "けす@"
+	db "CLOCK@"
+	db "COORD@"
+	db "RTC@"
+	db "60SEC@"
+	db "24HR@"
+	db "OFF@"

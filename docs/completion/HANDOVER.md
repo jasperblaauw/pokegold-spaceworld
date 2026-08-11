@@ -33,7 +33,261 @@ a downstream romhack now. Correctness = **builds warning-clean + boots & plays i
 
 ---
 
-## CURRENT SESSION (2026-08-10, round 16) — finish Phase 3 GEAR + round-1 playtest fixes
+## CURRENT SESSION (2026-08-11, round 20) — Old City mart BUY crash ROOT-caused (cross-bank list) + debug menu fully localized
+
+### A — Old City mart BUY crash: it was a cross-bank item-list read ✅ (BUILD-VERIFIED, PLAYTEST-PENDING)
+**The real root cause, found after two misdirections.** The user's isolation test was decisive: the
+**debug field mart works, only the Old City (live) mart crashes** — yet both run the *identical*
+`RunMartBuyMenu`/`DebugMart_LoadItems`. That pointed at the *item list*, not the shared code:
+- `DebugMart_LoadItems` (bank **$3f**) copies the caller's list with a plain `ld a,[de]` loop.
+- `OldCityMartItemList` lived in `maps/OldCityMart.asm` = bank **$25** (`25:46de`). `OldCityMartMenu`
+  did `ld de, OldCityMartItemList` (address load — bank-agnostic, fine) then `callfar RunMartBuyMenu`,
+  which **switches the ROM bank to $3f**. So `ld a,[de]` read bank $3f's bytes at `$46de` (garbage),
+  not the list. The loop copied garbage into `wCurMartCount` until it randomly hit a `$ff`, **overrunning
+  `wCurMartCount` and corrupting WRAM upward** ($cda4 → $d6f3 `wTilesetAnim` → the stack) → crash.
+- `DebugMart_ItemList` is at `3f:562f`, already in bank $3f, so the debug mart read it correctly and
+  never corrupted anything. That's the *entire* difference between the two.
+- This retroactively explains **every** earlier crash: round-19's AnimateTileset (`wTilesetAnim` was the
+  first thing the overrun clobbered), and round-20's earlier `$dfb4` illegal-opcode (the overrun reaching
+  the stack). Round 19 even suspected "a runaway write loop up through WRAM" but dismissed it after
+  decoding the list correctly *in bank $25* — never noticing it's *read* from bank $3f. This is the
+  round-15 cross-bank trap, but for a **data read via `de`** rather than a `call` (an address load
+  assembles fine; the read just happens in the wrong bank).
+- **Fix**: moved `OldCityMartItemList` into bank $3f, next to `DebugMart_ItemList`
+  (`data/debug/field_debug_pokemart_items.asm`, `::`-exported); `maps/OldCityMart.asm` keeps only the
+  `ld de` reference. Now `de` points into the bank mapped during the load.
+  **General rule: every mart's item list MUST live in bank $3f** (or pass the bank and read it far).
+- **Decode-verified** `OldCityMartItemList` now at `3f:5685` = `08 05 12 09 0d 0c 0a 13 14 ff` (count 8 +
+  the 8 items + terminator), read same-bank.
+- The round-19 `hMapAnims` save/disable is **kept** (standard full-screen-menu hygiene, matches trainer
+  card/party/dex; low-risk save/restore), but it does NOT fix the crash. The `hLCDCPointer` /
+  `hRedrawRowOrColumnMode` clears I briefly added this session were **reverted** — they were treating
+  symptoms of the WRAM corruption, are unnecessary once the list is read correctly, and the live overworld
+  context is demonstrably safe (the welcome box + BUY/CANCEL menu already drew fine over it).
+- **PLAYTEST-CONFIRMED**: mart no longer crashes; can buy items and money decreases (user, round-20).
+
+### A-followup — POKé BALL purchase now reaches the ball pocket ✅ (BUILD-VERIFIED, decode-verified)
+Playtest surfaced: buying a POKé BALL charged money but the ball landed in **no** pocket. Round-15 had
+hand-routed balls to `wNumBallItems` before `ReceiveItem`, but `_ReceiveItem` (`engine/items/inventory.asm`)
+**auto-routes by the item's pocket attribute only when given `wNumBagItems`**: `DoesHLEqualwNumBagItems`
+must match for it to dispatch a ball to `.Ball`→`ReceiveBall` (the real ball-pocket structure,
+`wBallQuantities`/`GetBallIndex`). Passing `wNumBallItems` failed that check → fell through to
+`PutItemInPocket`, writing a raw item ID into the ball pocket in the wrong (item,qty) format → the ball
+vanished. **Fix**: `RunMartBuyMenu` always passes `ld hl, wNumBagItems` now; `_ReceiveItem` routes the ball
+itself (`engine/debug/field/pokemart_menu.asm`). Decode `3f`: `21 e9 d1`(ld hl,wNumBagItems $d1e9)
+`cd 44 32`(call ReceiveItem) `30 ..`(jr nc,.pack_full). **PLAYTEST-CONFIRMED**: buying a POKé BALL now puts
+it in the ball pocket with money decreasing (user, round-20). (The transient "blank slot below CANCEL in the ball pocket" the user saw was
+just this mis-formatted ball; it clears on reset. The ball-pocket cursor is correctly clamped to CANCEL —
+no menu change needed/made.)
+
+### B — Overworld (field) debug menu fully localized to English ✅ (BUILD-VERIFIED)
+User asked to translate the START+B debug menu **and every submenu/UI reachable from it**.
+- Main 3-page menu: `data/debug/field_debug_entries.asm` `FieldDebug_MenuStrings` — all 29 kana labels →
+  English, **capped at 5 chars** (box is ~5 text cols; longest original `ツールギア` was 5). `つぎ▶` →
+  `NEXT▶` keeps the arrow (`▶`=`$ed`).
+- All field submenus: 18 files under `engine/debug/field/` + `field_debug_menu_2.asm` (heal text), 64
+  string replacements — menu labels sized to each box's width, textbox lines ≤ `TEXTBOX_INNERW` (18).
+  Covers change_tileset/transportation, follow_npc/mon_following, item_test (also widened its USE/TOSS
+  popup 1 col: `menu_coords 14→13`), map_viewer, minigames, move_to_entrance, npc_movement_test,
+  sprite_viewer, teleport, toggle_npc_movement, toolgear, vram_viewer, warp, the two unused menus, etc.
+- Space: the English strings + the relocated `OldCityMartItemList` overflowed bank $3f by 97 B; reclaimed
+  by trimming `Bank 3f Garbage` (`garbage/garbage.asm`, all 4 INCBIN, offset `+160`, debug `414→574` /
+  non-debug `412→572`). All 8 ROMs build warning-clean.
+- **PLAYTEST**: debug ROM, START+B → every menu option and its submenus now read in English.
+
+---
+
+## PREVIOUS SESSION (2026-08-11, round 19) — mart crash + BUY hang + Trainer Card + debug menu
+
+First batch (items 1–4) was playtested; **items 1 & 3 PLAYTEST-CONFIRMED fixed**, items 2 & 4 had
+follow-up defects the playtest surfaced, both now fixed (see the **round-19 follow-up** subsection after
+item 5). Item 5 (in-field debug menu) is this round's addition. All BUILD-VERIFIED (8 ROMs
+warning-clean) + decode-verified. Space reclaimed: +16 B Bank 04 Garbage (all 4 INCBIN,
+`,710→726`/`,644→660`) for the CARD slide; +4 B (of +8 skipped) Home Garbage ROM0
+(`home_gold ,74→82` / `home_silver ,270→278`) for the map-load reset. The debug-menu change *removed*
+6 B of `_DEBUG`-only ROM0.
+
+### 1 — Mart / Pokécenter 1F / Route 2 gate entry crash: FIXED at root (Fix B, not Fix A) ✅
+The user asked for **Fix B** (the deep root), not the Fix-A band-aid, so `dummy_text_pointers.asm` is
+**untouched** (`GameFreakText` still there). Refined the round-18 diagnosis by reading the actual
+dispatch (`home/talk_to_npc.asm`): the crash is **stale talking-target state surviving a warp**, not a
+stale `wMapTextPtr`. `QueueMapTextSubroutine` arms `wTalkingTargetType` bit 0 + `hCurMapTextSubroutinePtr`
+from the **current** map's `wMapTextPtr` the instant you press A facing an object. Old City **outdoor**
+uses `map_dummy_script_bank27` → `OldCity_ScriptLoader:: ret`, which **never runs
+`CallMapTextSubroutine`**, so pressing A near an outdoor NPC arms the pointer to that map's dummy table
+(`OldCity_TextPointers` = ten × `GameFreakText`, raw text data) but never consumes or resets it. Nothing
+in the map-load path cleared it: `ClearMapBuffer` zeroes `wMapScriptNumber` (inside `wMapBuffer`) but
+`wTalkingTargetType` ($cdf4) is outside that buffer, and `hCurMapTextSubroutinePtr`/`hLastTalked` are
+HRAM. Warp into a building whose loader **is** generic (`map_generic_script` → per-frame
+`CallMapTextSubroutine`): on the first frame it sees bit 0 still set, `CheckAllMapObjects` matches the
+stale `hLastTalked` against the new map's NPC ids (intermittent — depends on which outdoor object you
+last faced), and `jp hl` executes `$304c`=`GameFreakText` as code → `!`=`$e7`=`RST $20` runaway. "Never
+recurs once loaded" = once any legit talk on the new map runs `ResetTalkingTarget`, the leftover is gone.
+- **Fix**: `xor a / ld [wTalkingTargetType], a` at the top of `SetUpMapBuffer` (`home/map.asm`), right
+  after `ClearMapBuffer` — the one routine all four `MapSetup_*` paths call. With both talk bits clear,
+  `CallMapTextSubroutine` short-circuits (`bit 0`→`TalkingToBGObject`→`bit 1`→`ret z`) so the stale
+  pointer/`hLastTalked` are never read until a talk is armed on **this** map. Covers mart, pokecenter 1F,
+  and the gate uniformly. Safe because a talk always completes synchronously inside `TextboxIdle` before
+  any warp executes — the only state that ever survives is the pathological dummy-`ret`-loader leftover.
+- **Decode-verified** `00:214a`: `cd 3e 21`(call ClearMapBuffer) `af`(xor a) `ea f4 cd`(ld [$cdf4],a =
+  wTalkingTargetType) then `f0 98`(ldh a,[hROMBank]) as before.
+- **PLAYTEST-CONFIRMED**: mart now enters without crashing (user, round-19 playtest).
+
+### 2 — Trainer Card BADGES→CARD now slides (was an instant snap) ✅ + white-flash follow-up ✅
+Round 17's `.to_card` set `wJumptableIndex=0` = instant redraw. Added a **reverse-scroll sequence**
+(new jumptable indices 18–25 in `HandleTrainerCardJumptable`, `engine/menu/start_menu.asm`) that reuses
+the forward CARD→BADGES workers (`TrainerCardScroll`/`ClearTileMap`/`SetWindowY`) but ends on the main
+card page (index 0) via a new `.ReturnToMainPage` instead of the badge page (index 12). `.to_card` now
+sets `wJumptableIndex=18`. So both tab flips animate identically.
+- **Decode-verified**: table idx 18=`TrainerCardScroll`(6f95), 19/20/22/23=`.IncreaseJumpTableIndex`(6f02),
+  21=`ClearTileMap`(6fa6), 24=`SetWindowY`(6fb9), 25=`.ReturnToMainPage`(6f0a = `xor a`/`ld
+  [wJumptableIndex],a`/`and a`/`ret`); `.to_card` = `3e 12`(ld a,18)/`ea 92 cb`/`a7`/`c9`.
+- Playtest (round 19): slide works, but the card then **sat on a white screen for ~8 frames** before
+  appearing (the forward flip is instant). **Follow-up fix**: `TrainerCardMainPage` cleared palettes and
+  then ran the slow protagonist-pic load (`TrainerCardDrawProtag`) with the LCD *on* — its
+  `InterlaceMergeSpriteBuffers`→`Get2bpp` used the ~8-frame VBlank copy queue (`Get2bpp` only does a
+  direct copy when the LCD is off, `home/copy2.asm`). Moved `call DisableLCD` **above** ClearTileMap/
+  DrawProtag so the whole draw runs LCD-off (direct copies, no VBlank wait), mirroring
+  `TrainerCardBadgePage` which already does. Card now pops in instantly after the slide (and the first
+  card open no longer flashes white either). Decode `04:6f10`: `cd 53 36`(ClearPalettes) `cd 01 04`
+  (**DisableLCD, moved up**) `cd 3c 0e`(ClearTileMap) `cd 4e 70`(DrawProtag). **Re-playtest** the slide.
+
+### 3 — Old City signs are now solid ✅ PLAYTEST-CONFIRMED
+`data/tilesets/old_city_collision.asm`: the 6 `OLD_SIGNPOST` ($70, a passable subtype the round-16 wall
+sweep didn't cover) quarters → `WALL`. Signs are read from the adjacent tile you face, so solid is
+correct. **User confirmed fixed** (round-19 playtest).
+
+### 4 — Mart BUY hang: root-caused (AnimateTileset VBlank crash) and FIXED ✅
+The user's round-19 `backtrace` (bottom frames `RunMartBuyMenu` → `DebugMart_LoadItems.load_loop2` →
+`.GetPrice` → `VBlank0.ok` → `AnimateTileset+8` → `$00:$0000` → runaway in OAM/`$fexx`) cracked it. The
+mart opens straight off an overworld textbox with `hMapAnims` **still on**, so VBlank kept calling
+`_AnimateTileset`, which `jp hl`s through `wTilesetAnim`/`hTileAnimFrame`. During the long per-item
+`GetPrice` precompute a VBlank landed there against tileset-anim state the full-screen menu had
+disturbed → `jp $0000`. The mart was the **only full-screen menu not saving/disabling `hMapAnims`**
+(trainer card, party, pokédex, stats all do). **Fix**: `RunMartBuyMenu` now does the standard
+`ldh a,[hMapAnims] / push af / xor a / ldh [hMapAnims],a` at entry and `pop af / ldh [hMapAnims],a`
+before `ret` (`engine/debug/field/pokemart_menu.asm`) — covers the real mart and the debug field mart.
+Decode `3f:54db`: `f0 e8 f5 af e0 e8`(save/push/xor/store hMapAnims=$ffe8) then `cd 41 57`(LoadItems).
+- Also (unrelated to the hang): the two round-17 "BUY defects" were re-examined and **were not live
+  bugs** — `BuyItem_MenuHeader`'s `dw $ff` makes the price compute correctly, and `ScrollingMenu` only
+  returns `PAD_A`/`PAD_B` here so the `.buy_item` fall-through never mis-bought. Kept the cheap guard
+  (`cp PAD_A / jr nz, .cancel_buy`) as future-proofing; no price change.
+- **Re-playtest**: buy from the mart clerk (browse, pick quantity, confirm) — no hang; money decreases,
+  item lands in the right pocket (POKé BALL in the ball pocket).
+
+### 5 — In-field debug menu restored in debug ROMs (START+B), no demo functionality ✅
+User request: reach the **in-field debug menu** during normal play in the debug ROMs. It was already
+wired (`OverworldStartButtonCheck`, `home/overworld.asm`, `if DEF(_DEBUG)`) on **START+B**, but gated by
+`bit DEBUG_FIELD_F / ret z` — and `DEBUG_FIELD_F` is the *demo's* pre-completed-story field mode (set
+only by the title debug menu's FIELD option → `DebugSetUpPlayer`/`SetDemoEventFlags`), which we don't
+want on an authored playthrough. Removed just that gate, so **START+B opens `FieldDebugMenu` in any
+_DEBUG build**. This grants menu **access only** — it does not set `DEBUG_FIELD_F`, so no demo behaviour
+(noclip, story precompletion, no-map-music, attract mode) is enabled, and the demo still can't play.
+Decode `00:2c29`: after the START+B compare, straight to `3e 3f 21 e9 40 cd c6 2f`(farcall FieldDebugMenu
+$3f:$40e9) — the `DEBUG_FIELD_F` check is gone. **Trigger: hold B, press START, during overworld play,
+debug ROM only.** (`DEBUG_FIELD_F`-gated *demo* features like noclip in `player_movement.asm` stay off,
+so some individual debug options that assume that mode may behave differently — the menu itself opens
+and warp-testing works.) **Playtest**: in a debug `-correctheader` ROM, during normal gameplay, hold B +
+START → the field debug menu opens; plain START still opens the normal start menu.
+
+---
+
+## PREVIOUS SESSION (2026-08-11, round 17) — round-2 playtest fixes (3 of 4 landed)
+
+All four items are from the user's round-2 playtest. **Three are fixed, build warning-clean on
+all 8 ROMs, and decode-verified; the fourth (intermittent entry crash) is diagnosed only as far as
+static analysis allows and needs the crash PC from SameBoy.** All PLAYTEST-PENDING.
+
+### Issue 4 — "HONOGUMA learned FALSE SWIHONO!" ✅ (a stride bug)
+`wTMHMMoveNameBackup` (`ram/wram.asm`) was `ds 8` — sized for JP 8-byte kana move names — but
+`engine/items/tm_holder.asm` backs up/restores `wStringBuffer2` through it at `MOVE_NAME_LENGTH`
+(13) across the party menu. The 13-byte copy overflowed the 8-byte buffer into `wStringBuffer1`;
+on restore it read the party menu's leftover nickname ("HONO…") back into the move name's tail.
+Widened to `ds MOVE_NAME_LENGTH`, taking 4 bytes from the anonymous padding above so
+`wStringBuffer1` keeps its address (**verified: still `$cd64`; backup now `$cd57`–`$cd63`, 13 B**).
+This is the same L0/L2 stride class as everything in "Name widths & strides" below — a buffer left
+at the old JP width overflowing its neighbour.
+
+### Issue 3a — Trainer Card 7-char name showed "NAMEAAAAAAA" ✅
+The JP label was `"なまえ／"` (label + `／` separator); localization dropped the slash, jamming
+`"NAME"` against the value. The name field is capped at cols 6–12 (protagonist pic starts col 13),
+so a separator only fits if the label starts at col 1. `engine/menu/start_menu.asm`: new
+`TrainerCardNameLabel` = `"NAME/@"` placed at `hlcoord 1, 2`; MONEY/POKéDEX split into their own
+`TrainerCardText` at `hlcoord 2, 6` (kept at col 2). Value `wPlayerName` unchanged at `hlcoord 6, 2`
+→ 7 chars land in cols 6–12, inside the underline. **Decoded: `8d 80 8c 84 f3 50` = "NAME/@".**
+
+### Issue 3b — CARD/BADGES tabs now on the Badges page too ✅
+The badge grid ends at row 15, so row 16 was free. `DrawTrainerCaseBadgePage` now draws the same
+`CARD | BADGES` selector (arrow starts on BADGES, `wFlyDestination=1`). `TrainerCardBadgeInput`
+rewritten to mirror the main page: ←/→ move the arrow; **A on the *other* tab (CARD) flips back to
+the card page** (`wJumptableIndex=0`, instant redraw — no reverse-scroll animation, acceptable); A
+on the current tab (BADGES) or B exits to the start menu (`wJumptableIndex=$11` =
+TrainerCardSetClearFlag). **Decode-verified**: `.to_card`→`ld [wJumptableIndex],0`, `.exit`→`$11`,
+arrows at `$c3e4`/`$c3eb` (cols 4/11 row 16), `wFlyDestination=$cb93`. Cost +23 B in Bank 04 (start
+menu's bank) → reclaimed +32 from `Bank 04 Garbage` (all 4 INCBIN variants) in `garbage/garbage.asm`.
+
+### Issue 2 — Mart menu: sprite-garbage font ✅, then BUY item-list bugs ✅ (round-2 follow-up)
+Font garbage (round-2 first report): the welcome box is an overworld textbox; closing it runs
+`TextboxCleanup → ReloadObjectGFX → LoadWalkingSpritesGFX`, which reloads walking-sprite frames
+**over the font in `vFont`**. `OldCityMartMenu` then `PrintText`ed with a clobbered font. Fix:
+`call LoadFont` at the top of `OldCityMartMenu` (`maps/OldCityMart.asm`). **General rule (pitfall
+below): any menu opened right after an overworld textbox closes must reload the font first.**
+**PLAYTEST-CONFIRMED fixed** (user: font now correct).
+
+BUY item-list bugs (round-2 second report, "still hanging after pressing buy"): two real defects in
+the shared mart-list code, both now fixed:
+- **Missing count byte.** `RunMartBuyMenu`/`DebugMart_LoadItems` treat the list's first byte as the
+  item count (`InitScrollingMenuCursor` reads `wScrollingMenuListSize` from `[wCurMartCount]`; items
+  are read from `wCurMartCount+1`). Neither `OldCityMartItemList` nor `DebugMart_ItemList` had a
+  count byte, so the first item was consumed as the count: the mart misread `ITEM_POKE_BALL`(5) as
+  "5 items" and showed the wrong five (POKé BALL / ESCAPE ROPE / REPEL never appeared — a mart that
+  couldn't sell POKé BALLS). The debug list worked only by luck (`ITEM_BICYCLE`=7 = its 7 items).
+  Added `db 8` to both lists. Decoded: `08 05 12 09 0d 0c 0a 13 14 ff`.
+- **Buffer overflow into font state.** `DebugMart_LoadItems` copies the list into `wCurMartCount`,
+  and feature/completion had repurposed the padding right after it into `wWildEncounterCooldown` /
+  `wDirtyFontTiles` / `wFontExtraInVRAM` — so every BUY press corrupted the font-tracking vars.
+  Moved those three past an 11-byte item-list scratch in `ram/wram.asm` (verified `wCurMartCount`
+  `$cda4`, vars now `$cdb0`–`$cdb2`, `wListPointer` unchanged at `$cdb4`).
+- **Note on the "hang":** static analysis of the whole BUY→quantity→confirm→purchase path shows
+  only bounded loops and valid jumps, joypad polls under VBlank0 (works), and the debug mart shares
+  the code and runs — so I could not isolate a pure infinite loop. The two fixes above are the
+  concrete defects (wrong items + font-state corruption on every BUY); re-test the mart. If it still
+  locks up **after** these, it is a context/timing issue and needs the crash PC (see issue 1 steps).
+
+### Issue 1 — intermittent HARD CRASH on entry (mart / pokecenter 1F / Route 2 gate) ❌ NOT FIXED
+User: full room draws, **then** hard-crashes (music left buzzing one note = CPU executing
+garbage / corrupted `ret`); intermittent; **never recurs on that map once it has loaded once in a
+session.** Ruled out by static analysis, all three maps vs the non-crashing Old City buildings:
+- **Not tileset** — MART / POKECENTER / GATE are three different tilesets.
+- **Not map structure** — headers identical in shape to the non-crashing museum/gym/houses.
+- **Not the script layer** — `SetUpMapBuffer` clears `wMapScriptNumber` every load, and on plain
+  entry (no A-press) `QueueMapTextSubroutine`/`CallMapTextSubroutine` do nothing, so `RunMapScript`
+  can't `jp hl` through a stale index; the generic script path is bank-safe for these maps.
+- **Not music** — Mart/Pokecenter share `MUSIC_VIRIDIAN_CITY` with the non-crashing museum/gym; the
+  gate uses `MUSIC_ROUTE_1`.
+- The three maps share **no** static differentiator the non-crashing buildings lack, so this looks
+  like a **runtime timing/VRAM race in the map-load path** (same class as round 14's black-flash
+  race), not map data. Intermittent + "resolves after first success per session" fits a race whose
+  outcome depends on where in the frame the CPU is, and/or an interrupt landing at a bad moment
+  (this build takes a STAT interrupt every scanline — see "VRAM bandwidth" below).
+- **Latent bug found while investigating (NOT confirmed as the cause, left untouched):** for maps
+  using `map_generic_scriptloader` that are **not** registered in `data/maps/scenes.asm` (mart,
+  pokecenter 1F, museum, gym, houses…), `SetUpMapBuffer` finds no match, so `wMapScriptNumberLocation`
+  stays `$0000` (cleared), and `WriteBackMapScriptNumber` then writes to `$0000` every frame — an MBC
+  RAM/RTC-enable-register write (writes 0 = disable). Probably benign (SRAM unused in the overworld;
+  `UpdateTime` re-latches), and it does **not** explain the gate (which is registered, valid
+  location), so it is likely not the crash — but it is clearly unintended. Do not "fix" it blind: it
+  affects every generic unregistered map and changing `WriteBackMapScriptNumber` is global.
+- **NEXT STEP: get the crash PC.** Simplest capture in SameBoy: open the debugger console
+  (Cmd-click the game window → "Show Console", or the debugger window), leave it open, and reproduce.
+  On a garbage-execution crash SameBoy usually breaks on an illegal opcode and prints the `PC`; if
+  not, hit Break while frozen and `reg` to read `PC`/`SP`. Map the PC through
+  `pokegold-spaceworld-debug.sym` (or `-correctheader.sym`) to the routine and this is solvable
+  immediately. Without it, any fix is a guess and would burn a playtest cycle.
+
+---
+
+## PREVIOUS SESSION (2026-08-10, round 16) — finish Phase 3 GEAR + round-1 playtest fixes
 
 Four-phase pass (0: Old City Mart freeze, 1: Trainer Card localize, 2: Pokédex entries, 3: Trainer
 GEAR). Phases 0–2 landed earlier this session; this round finished Phase 3 and fixed the user's first
@@ -545,6 +799,23 @@ and a map change. **Any garbled row = a VRAM writer still missing its `Invalidat
   - a **ROM text decoder** (label → `.sym` → charmap decode, plus a hexdump mode) for verifying
     emitted bytes. Charmap note: build the byte→glyph map so later Latin aliases win over the kana.
 
+### Menus opened straight after an overworld textbox (read before adding any shop/menu to a map)
+- Closing an overworld textbox runs `TextboxCleanup → ReloadObjectGFX → LoadWalkingSpritesGFX`,
+  which reloads the walking-sprite frames **over the font in `vFont`**. So a menu drawn immediately
+  after (e.g. a mart's BUY/CANCEL box opened right after the "Welcome!" `prompt` closes) renders its
+  text as **sprite garbage**. Fix: `call LoadFont` before the first `PrintText`/menu draw (see
+  `OldCityMartMenu` in `maps/OldCityMart.asm`). The box-frame tiles and font-extras live in
+  `vChars2` and survive, so only the main font needs restoring; a downstream `callfar` menu inherits
+  it as long as nothing between clobbers `vFont` again. The **debug** field mart never showed this
+  because it runs inside an already-fonted menu context, not off the overworld.
+- **Also disable `hMapAnims` for the duration.** A full-screen menu opened off the overworld leaves
+  `hMapAnims` on, so VBlank keeps calling `_AnimateTileset`, which `jp hl`s through
+  `wTilesetAnim`/`hTileAnimFrame` — state a full-screen redraw disturbs → intermittent `jp $0000` crash
+  when a VBlank lands during a long CPU stretch (this was the round-19 mart BUY hang). Every other
+  full-screen menu (trainer card, party, pokédex, stats) does `ldh a,[hMapAnims] / push af / xor a /
+  ldh [hMapAnims],a` on entry and restores on exit; `RunMartBuyMenu` now does too. Do the same for any
+  new full-screen menu reached from the overworld.
+
 ### VRAM bandwidth (read before optimising any "why is this screen slow" complaint)
 - **Before counting frames, find the frame the user actually sees.** The overworld runs with the
   window layer enabled (`LCDC_DEFAULT` = `… | LCDC_WIN_9C00 | LCDC_WIN_ON`, `hWX` = 7), and
@@ -627,6 +898,22 @@ and a map change. **Any garbled row = a VRAM writer still missing its `Invalidat
 - Trainer party format is `db "name@", TRAINERTYPE_*`, mons, `db -1`; `ReadTrainerParty` skips entries
   by scanning for `$ff`. Red/Blue-format leftovers (`db level, species, 0`) build garbage battlers.
 
+### Overworld talk dispatch (read before adding a map with a real generic script loader)
+- Talking is two steps, one frame apart. `QueueMapTextSubroutine` (overworld loop, on A-press facing an
+  object) **arms** `wTalkingTargetType` bit 0 (NPC) or 1 (sign) + `hCurMapTextSubroutinePtr` from the
+  **current** map's `wMapTextPtr`; the map's `_ScriptLoader` (via `map_generic_script` →
+  `CallMapTextSubroutine`) then **consumes** it and `jp hl`s to the text routine, which returns through
+  `ResetTalkingTarget` (clears the bits).
+- **Trap:** a map whose loader is a **dummy `ret`** (`map_dummy_script_bank27` / `map_dummy_text_pointers`)
+  never consumes the armed pointer, so it's left set. Nothing in the map-load path used to clear it
+  (`ClearMapBuffer` only zeroes `wMapScriptNumber`, inside `wMapBuffer`; `wTalkingTargetType`=$cdf4 and
+  the HRAM `hCurMapTextSubroutinePtr`/`hLastTalked` are outside it). Warp into a map with a **real**
+  generic loader and its first-frame `CallMapTextSubroutine` executes that stale pointer → the round-18
+  `jp GameFreakText` crash. **Fixed round 19**: `SetUpMapBuffer` now `xor a / ld [wTalkingTargetType],a`.
+  Keep that reset if you touch `SetUpMapBuffer`; don't re-introduce the leak.
+- `CallMapTextSubroutine` is safe with both bits clear (short-circuits to `ret`), so the reset makes a
+  stale `hCurMapTextSubroutinePtr`/`hLastTalked` harmless — you don't need to clear those too.
+
 ### Collision (the "walk through walls" trap — read before adding any new map)
 - The proto carries **two collision-constant eras**. The *new* set (`COLL_WALL`=$07, `COLL_COUNTER`=$90,
   `COLL_FLOOR`=$00, …) is what `CollisionTypeTable` (`data/collision/collision_type_table.asm`) actually
@@ -676,11 +963,25 @@ and a map change. **Any garbled row = a VRAM writer still missing its `Invalidat
 
 ## NEXT UP
 
+**Owed playtests (round 17, all decode-verified, PLAYTEST-PENDING):** Trainer Card — 7-char name now
+reads "NAME/xxxxxxx" and fits; CARD/BADGES tabs on the *badge* page flip back to the card page (←/→ +
+A) without exiting to the start menu. Mart clerk — "What can I do for you?" and the BUY list render as
+**text, not sprites**, and a purchase completes. Teach the FALSE SWIPE TM (or any TM) to a
+long-named mon — the "learned" line must show the **full move name**, not the mon name spliced in.
+
+**Crash FIXED at root in round 19 (Fix B) — PLAYTEST-PENDING.** The round-18 "stale `wMapTextPtr`"
+framing was slightly off; the real mechanism is stale **talking-target state** surviving a warp — see
+CURRENT SESSION item 1 above for the full write-up and the durable pitfall below. Fix A
+(`GameFreakText`→`MapDefaultText` in `dummy_text_pointers.asm`) was **deliberately NOT applied** (the
+user asked for the deep fix, not the band-aid), so those dummy tables still print/execute
+`GameFreakText` — but with the talk-state reset they are never reached from a freshly-loaded map. If a
+future map with a real generic loader needs its outdoor NPCs/signs to actually respond, populate that
+map's own text table with real routines (the dummy `ret` loaders don't dispatch at all today).
+
 **Owed playtests (round 16, all decode-verified, PLAYTEST-PENDING):** Trainer GEAR (clock before Ken /
-selectable MAP after); Trainer Card CARD/BADGES tabs + no stray "8"; Pokédex species `Pk/Mn` line;
-collision sweep (walls solid in the mart, outdoor Old City, and the Route 2 gate; counters talk-through)
-**plus a regression check of the shipped PlayerHouse/RivalHouse/lab**, whose tilesets were also touched;
-Old City Mart BUY transaction (still owed from round 15).
+selectable MAP after); Pokédex species `Pk/Mn` line; collision sweep (walls solid in the mart, outdoor
+Old City, and the Route 2 gate; counters talk-through) **plus a regression check of the shipped
+PlayerHouse/RivalHouse/lab**, whose tilesets were also touched; Old City Mart BUY transaction.
 
 ### Milestone 1 content (playtest-led; do not dump large untested assembly)
 - **M1c — first route: DONE**, turned out to already be fully authored in the original decompiled
@@ -730,6 +1031,14 @@ the first act's heal source). Same recipe for each remaining real centre's nurse
   support. A 6th `attr_blk` block also costs 16 bytes (packet count 2→3 needs `ds 10` padding).
 
 ### Small known follow-ups
+- **Trainer GEAR town map is not navigable (NEXT-SESSION action point, user-reported round 18).** The
+  GEAR flow is correct (clock before Ken's upgrade, selectable MAP after) but the MAP card just renders
+  — there is no region-map cursor. Retail lets you arrow a cursor across every landmark on the town map
+  with the location name shown. This is a **feature, not a fix** (same class as the dummied Pokédex AREA
+  view): needs a region-map cursor sprite + arrow-key movement stepping through landmark coordinates +
+  per-landmark name display. `AnimateTrainerGearModeIndicatorPointer.move_right` was pinned to `ret` in
+  round 16 to lock the cursor to MAP; that pin (and `TrainerGear_Joypad`'s A no-op) is where a real map
+  view would hook in. Larger piece of work — schedule its own session.
 - **Pokédex AREA button is a no-op.** `.Area` (`engine/pokedex/pokedex.asm:1261`) sets `VIEW_AREA_F` but
   nothing consumes it; the real area-display routine (`pokedex.asm:627`) is explicitly "dummied out for
   the demo". Wiring it up needs the region-map area view **plus per-mon landmark/location data** — a

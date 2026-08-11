@@ -63,6 +63,13 @@ OldCityMartTextString2:
 
 OldCityMartMenu:
 	call LoadStandardMenuHeader
+; The welcome box was an overworld textbox; closing it (TextboxCleanup ->
+; ReloadObjectGFX -> LoadWalkingSpritesGFX) reloaded the walking-sprite frames
+; over the text font in vFont, so drawing the menu now would render the prompt
+; and the BUY list as sprite garbage. Re-upload the font first. The font extras
+; and box-frame tiles live in vChars2 and survive, so only the main font needs
+; restoring; RunMartBuyMenu inherits it and never clobbers it.
+	call LoadFont
 	callfar PlaceMoneyTopRight
 	ld hl, OldCityMartTextString3
 	call PrintText
@@ -76,6 +83,10 @@ OldCityMartMenu:
 	ld a, [wMenuCursorY]
 	cp 1
 	jr nz, .goodbye
+; OldCityMartItemList lives in bank $3f (data/debug/field_debug_pokemart_items.asm),
+; NOT here in the maps bank ($25): DebugMart_LoadItems reads it with `ld a,[de]` after
+; callfar has mapped bank $3f, so the list must be resident in $3f at read time. Loading
+; its address here with `ld de` is bank-agnostic and fine.
 	ld de, OldCityMartItemList
 	callfar RunMartBuyMenu
 	jp OldCityMartMenu
@@ -106,17 +117,6 @@ OldCityMartTextString4:
 	text "We hope to see"
 	line "you again!"
 	prompt
-
-OldCityMartItemList:
-	db ITEM_POKE_BALL
-	db ITEM_POTION
-	db ITEM_ANTIDOTE
-	db ITEM_PARLYZ_HEAL
-	db ITEM_AWAKENING
-	db ITEM_BURN_HEAL
-	db ITEM_ESCAPE_ROPE
-	db ITEM_REPEL
-	db -1
 
 OldCityMartNPCText2:
 	ld hl, OldCityMartTextString5
