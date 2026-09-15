@@ -94,6 +94,17 @@ OldCityMartMenu:
 .goodbye
 	ld hl, OldCityMartTextString4
 	call MenuTextBoxBackup
+; RunMartBuyMenu ran ClearTileMap + a full-screen menu and LoadFont reloaded the
+; text font over the walking-sprite frames in vFont. MenuTextBoxBackup only closes
+; the window (restores backed-up tiles); it neither reanchors the map nor reloads
+; the object GFX, so returning straight to the overworld left the NPC/player sprites
+; drawn from clobbered VRAM (garbage tiles) and stale menu tiles on the map -- the
+; glitch cleared only once the start menu forced a full ReanchorMap. CloseText is the
+; canonical "done with textboxes, return to overworld" call (== the closetext script
+; command): TextboxCleanup reanchors the map + UpdateSprites + ReloadObjectGFX, then
+; ClearWindowData/InitToolgearBuffer. The debug field mart never needed this because
+; its caller (the field debug menu) reloads the overworld on exit.
+	call CloseText
 	ret
 
 .MenuHeader:

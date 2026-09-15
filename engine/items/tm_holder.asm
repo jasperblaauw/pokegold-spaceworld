@@ -131,7 +131,10 @@ TM_HolderLoop:
 	call TMHolder_DisplayItems
 	ld a, 2
 	ld [w2DMenuCursorInitY], a
-	ld a, 4
+; feature/completion: the TM list box is now full-width (col 0..19) so the number +
+; whole TM/HM name + quantity fit; the cursor sits in interior col 1. (Was col 4 for
+; a box that started at col 3.)
+	ld a, 1
 	ld [w2DMenuCursorInitX], a
 	ld a, 1
 	ld [w2DMenuNumCols], a
@@ -192,7 +195,13 @@ TMHolder_ShowTMMoveDescription:
 
 	ld a, [wCurItem]
 	cp NUM_TM_HM + 1
-	jr nc, TMHolder_JoypadLoop_SkipDisplay
+; feature/completion: on CANCEL, fall through to the full TMHolder_JoypadLoop (which
+; re-runs TMHolder_DisplayItems) rather than _SkipDisplay. The list redraw is this
+; menu's only cursor-erase path -- StaticMenuJoypad returns the instant a filtered
+; key (UP/DOWN) is pressed, before Move2DMenuCursor re-runs, so the old '▶' is wiped
+; by the next DrawTextBox, not by the cursor mover. Skipping the redraw for CANCEL
+; left the previous row's cursor on screen, so it looked duplicated onto CANCEL.
+	jr nc, TMHolder_JoypadLoop
 
 	ld [wTempTMHM], a
 ; TYPE and POWER used to share row 12 (type value at col 5, POWER/ at col 11).
@@ -305,9 +314,12 @@ TMHM_TypeString:
 	db "TYPE/@"
 
 TMHolder_DisplayItems:
-	hlcoord 3, 0
+; feature/completion: full-width box (cols 0..19) so the number + a 12-char TM/HM
+; name + quantity all fit. Line reads <border><cursor col1><NN col2-3><name col4-15>
+; <x NN col16-18><border>, cramped (no gaps) to fit 18 interior columns.
+	hlcoord 0, 0
 	ld b, 8
-	ld c, 15
+	ld c, 18
 	call DrawTextBox
 	call TMHM_GetCurrentHolderPosition
 	ld d, 4
@@ -330,26 +342,26 @@ TMHolder_DisplayItems:
 	call .GetCurrentLineCoord
 	push hl
 
-	ld de, wTempTMHM
+; Line (cramped, full width): <cursor col1><NN col2-3><name col4-15><x NN col16-18>.
+	ld de, wTempTMHM ; = the TM/HM index (set above)
 	lb bc, PRINTNUM_LEADINGZEROS | 1, 2
-	call PrintNumber
+	call PrintNumber ; two-digit number at cols 2-3
 	predef GetTMHMMove
 	ld a, [wTempTMHM]
 	ld [wPutativeTMHMMove], a
 	call GetMoveName
 
 	pop hl
-	ld bc, $3
-	add hl, bc
+	ld bc, 2
+	add hl, bc ; col 2 -> col 4 = name start
 	push hl
 	call PlaceString
 
 	pop hl
-	ld bc, $8
+	ld bc, 12 ; name start col 4; +12 -> col 16 = start of "x NN"
 	add hl, bc
 	ld [hl], '×'
 	inc hl
-	ld a, '０'
 
 	pop bc
 	push bc
@@ -367,9 +379,14 @@ TMHolder_DisplayItems:
 	jr .done
 
 .cancel
+; Preserve d: .GetCurrentLineCoord clobbers it, and TM_HolderLoop reads d back to
+; size w2DMenuNumRows (5 - d). Without this push/pop the CANCEL draw left d = 0, so
+; NumRows capped at 4 -> the cursor walked onto empty rows and scrolled forever.
+	push de
 	call .GetCurrentLineCoord
 	ld de, .CancelString
 	call PlaceString
+	pop de
 .done
 	ret
 
@@ -377,7 +394,7 @@ TMHolder_DisplayItems:
 	db "CANCEL@"
 
 .GetCurrentLineCoord:
-	hlcoord 5, 0
+	hlcoord 2, 0
 	ld bc, SCREEN_WIDTH * 2
 	ld a, 5
 	sub d

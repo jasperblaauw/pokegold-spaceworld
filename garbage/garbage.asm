@@ -516,17 +516,17 @@ if DEF(_DEBUG)
 	db $18, $00 ; leftover of previous graphics
 Unreferenced_UnusedLeaderNameGFX:: INCBIN "gfx/trainer_card/unused_leader_name.2bpp"
 	if DEF(_GOLD)
-INCBIN "garbage/debug/bank04_gold.2bpp", 726 ; feature/completion: +81 English lowercase keyboard, +139 English start_menu text, +31 English check_tossable/mon_menu text, +32 Trainer Card badge-page tabs, +16 Trainer Card BADGES->CARD reverse slide
+INCBIN "garbage/debug/bank04_gold.2bpp", 734 ; feature/completion: +81 English lowercase keyboard, +139 English start_menu text, +31 English check_tossable/mon_menu text, +32 Trainer Card badge-page tabs, +16 Trainer Card BADGES->CARD reverse slide, +8 protag decompress split (2 needed, 6 margin)
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/debug/bank04_silver.2bpp", 726 ; feature/completion: +81 English lowercase keyboard, +139 English start_menu text, +31 English check_tossable/mon_menu text, +32 Trainer Card badge-page tabs, +16 Trainer Card BADGES->CARD reverse slide
+INCBIN "garbage/debug/bank04_silver.2bpp", 734 ; feature/completion: +81 English lowercase keyboard, +139 English start_menu text, +31 English check_tossable/mon_menu text, +32 Trainer Card badge-page tabs, +16 Trainer Card BADGES->CARD reverse slide, +8 protag decompress split (2 needed, 6 margin)
 	endc
 else
 	if DEF(_GOLD)
-INCBIN "garbage/bank04_gold.2bpp", 660 ; feature/completion: +81 English lowercase keyboard, +139 English start_menu text, +31 English check_tossable/mon_menu text, +32 Trainer Card badge-page tabs, +16 Trainer Card BADGES->CARD reverse slide
+INCBIN "garbage/bank04_gold.2bpp", 668 ; feature/completion: +81 English lowercase keyboard, +139 English start_menu text, +31 English check_tossable/mon_menu text, +32 Trainer Card badge-page tabs, +16 Trainer Card BADGES->CARD reverse slide, +8 protag decompress split (2 needed, 6 margin)
 endc
 	if DEF(_SILVER)
-INCBIN "garbage/bank04_silver.2bpp", 660 ; feature/completion: +81 English lowercase keyboard, +139 English start_menu text, +31 English check_tossable/mon_menu text, +32 Trainer Card badge-page tabs, +16 Trainer Card BADGES->CARD reverse slide
+INCBIN "garbage/bank04_silver.2bpp", 668 ; feature/completion: +81 English lowercase keyboard, +139 English start_menu text, +31 English check_tossable/mon_menu text, +32 Trainer Card badge-page tabs, +16 Trainer Card BADGES->CARD reverse slide, +8 protag decompress split (2 needed, 6 margin)
 	endc
 endc
 

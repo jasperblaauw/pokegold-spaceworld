@@ -252,998 +252,998 @@ MoveDescriptions::
 	dw BounceDescription
 
 PoundDescription:
-	db   "てや　しっぽなどを　つかい"
-	next "てきを　はたいて　こうげき@"
+	db   "Pounds with the"
+	next "tail or forelegs.@"
 
 KarateChopDescription:
-	db   "チョップで　てきを　こうげき"
-	next "クリティカルヒットが　でやすい@"
+	db   "A chop with a high"
+	next "critical-hit rate.@"
 
 DoubleslapDescription:
-	db   "てきを　おうふくビンタで"
-	next "２ー５かい　れんぞくで　こうげき@"
+	db   "Slaps the foe"
+	next "2-5 times.@"
 
 CometPunchDescription:
-	db   "てきを　れんぞくで　なぐりつけ"
-	next "２ー５かい　れんぞくで　こうげき@"
+	db   "Pummels the foe"
+	next "2-5 times.@"
 
 MegaPunchDescription:
-	db   "ものすごい　ちからをこめた　パンチで"
-	next "てきを　なぐって　こうげき@"
+	db   "A punch of great"
+	next "power.@"
 
 PayDayDescription:
-	db   "こばんをなげて　てきを　こうげき"
-	next "せんとうごに　おかねが　てにはいる@"
+	db   "Throws coins. Get"
+	next "them after battle.@"
 
 FirePunchDescription:
-	db   "ほのおをこめた　パンチで　こうげき"
-	next "てきを　やけどさせることがある@"
+	db   "A fiery punch. May"
+	next "burn the foe.@"
 
 IcePunchDescription:
-	db   "れいきをこめた　パンチで　こうげき"
-	next "てきを　こおらせることがある@"
+	db   "An icy punch. May"
+	next "freeze the foe.@"
 
 ThunderpunchDescription:
-	db   "でんげきをこめた　パンチで　こうげき"
-	next "てきを　マヒさせることがある@"
+	db   "An electric punch."
+	next "May paralyze.@"
 
 ScratchDescription:
-	db   "するどいツメを　つかい"
-	next "てきを　ひっかいて　こうげき@"
+	db   "Scratches with"
+	next "sharp claws.@"
 
 VicegripDescription:
-	db   "おおきなハサミを　つかい"
-	next "てきを　はさんで　こうげき@"
+	db   "Grips with large"
+	next "pincers.@"
 
 GuillotineDescription:
-	db   "おおきなハサミを　つかって"
-	next "てきを　はさみ　せんとうふのうにする@"
+	db   "A one-hit faint"
+	next "if it lands.@"
 
 RazorWindDescription:
-	db   "１ターンめで　かぜのやいばを　つくり"
-	next "つぎのターンで　てきを　こうげき@"
+	db   "Whirlwind turn 1,"
+	next "attacks turn 2.@"
 
 SwordsDanceDescription:
-	db   "たたかいの　おどりを　おどって"
-	next "こうげきを　グーンとあげる@"
+	db   "Sharply raises"
+	next "ATTACK.@"
 
 CutDescription:
-	db   "するどいカマや　ツメなどを　つかって"
-	next "てきを　きりつけて　こうげき@"
+	db   "Cuts with claws"
+	next "or a scythe.@"
 
 GustDescription:
-	db   "つばさで　つよいかぜを　おこし"
-	next "それを　てきにぶつけて　こうげき@"
+	db   "Strikes with a"
+	next "strong wind.@"
 
 WingAttackDescription:
-	db   "つばさを　おおきく　ひろげて"
-	next "そのまま　てきに　たいあたりする@"
+	db   "Body-slams with"
+	next "wide wings.@"
 
 WhirlwindDescription:
-	db   "つよいかぜで　てきを　ふきとばす"
-	next "ふきとばすと　せんとうは　おわる@"
+	db   "Blows the foe"
+	next "away. Ends battle.@"
 
 FlyDescription:
-	db   "１ターンめで　そらに　とびたって"
-	next "つぎのターンで　てきを　こうげき@"
+	db   "Flies up turn 1,"
+	next "attacks turn 2.@"
 
 BindDescription:
-	db   "２ー５ターンのあいだ　ながいからだや"
-	next "つるを　つかって　てきを　しめつける@"
+	db   "Binds the foe for"
+	next "2-5 turns.@"
 
 SlamDescription:
-	db   "ながいシッポや　ツルなどを"
-	next "てきに　たたきつけて　こうげき@"
+	db   "Slams with a tail"
+	next "or vine.@"
 
 VineWhipDescription:
-	db   "ムチのように　ほそながい　つるを　"
-	next "てきに　たたきつけて　こうげき@"
+	db   "Whips with slender"
+	next "vines.@"
 
 StompDescription:
-	db   "おおきなあしで　ふみつけて　こうげき"
-	next "てきを　ひるませることがある@"
+	db   "Stomps. May cause"
+	next "flinching.@"
 
 DoubleKickDescription:
-	db   "２ほんの　あしをつかって　てきを"
-	next "２かい　れんぞくで　こうげき@"
+	db   "Kicks twice with"
+	next "two legs.@"
 
 MegaKickDescription:
-	db   "ものすごい　ちからをこめた　キックで"
-	next "てきを　けっとばして　こうげき@"
+	db   "A kick of great"
+	next "power.@"
 
 JumpKickDescription:
-	db   "ジャンプした　いきおいで　キックを"
-	next "くりだす　はずすと　ダメージをうける@"
+	db   "A jump kick. Hurts"
+	next "if it misses.@"
 
 RollingKickDescription:
-	db   "からだを　すばやく　１かいてんさせ"
-	next "そのいきおいで　キックを　くりだす@"
+	db   "Spins fast and"
+	next "kicks.@"
 
 SandAttackDescription:
-	db   "てきの　かおなどに　すなをかけて　"
-	next "めいちゅうりつを　さげさせる@"
+	db   "Throws sand to"
+	next "lower accuracy.@"
 
 HeadbuttDescription:
-	db   "あたまから　つっこんで　こうげき"
-	next "てきを　ひるませることがある@"
+	db   "A head-on charge."
+	next "May flinch.@"
 
 HornAttackDescription:
-	db   "とがった　ツノを　つかい"
-	next "てきを　つついて　こうげき@"
+	db   "Jabs with a"
+	next "pointed horn.@"
 
 FuryAttackDescription:
-	db   "とがった　ツノを　つかい"
-	next "２ー５かい　れんぞくで　こうげき@"
+	db   "Jabs 2-5 times"
+	next "with a horn.@"
 
 HornDrillDescription:
-	db   "ツノを　ドリルのように　かいてんさせ"
-	next "てきを　つつき　せんとうふのうにする@"
+	db   "A one-hit faint"
+	next "if it lands.@"
 
 TackleDescription:
-	db   "からだぜんたいを　つかって"
-	next "てきに　たいあたりして　こうげき@"
+	db   "Charges with the"
+	next "whole body.@"
 
 BodySlamDescription:
-	db   "からだごと　たおれこんで　こうげき"
-	next "てきを　マヒさせることがある@"
+	db   "A full-body slam."
+	next "May paralyze.@"
 
 WrapDescription:
-	db   "２ー５ターンのあいだ　ながいからだや"
-	next "ツルをつかって　てきを　しめつける@"
+	db   "Wraps the foe for"
+	next "2-5 turns.@"
 
 TakeDownDescription:
-	db   "いきおいをつけて　てきに　たいあたり"
-	next "じぶんもすこし　ダメージをうける@"
+	db   "A reckless charge."
+	next "Hurts the user.@"
 
 ThrashDescription:
-	db   "２ー３ターンのあいだ　あばれつづける"
-	next "あばれたあとは　こんらんしてしまう@"
+	db   "Rampages, then"
+	next "gets confused.@"
 
 DoubleEdgeDescription:
-	db   "いのちをかけて　てきに　たいあたり"
-	next "じぶんもすこし　ダメージをうける@"
+	db   "A tackle that also"
+	next "hurts the user.@"
 
 TailWhipDescription:
-	db   "てきに　しっぽをふって　ゆだんさせて"
-	next "ぼうぎょを　さげさせる@"
+	db   "Lowers the foe's"
+	next "DEFENSE.@"
 
 PoisonStingDescription:
-	db   "どくのある　ハリや　ツノで　こうげき"
-	next "てきに　どくをあたえることがある@"
+	db   "A stinger that"
+	next "may poison.@"
 
 TwineedleDescription:
-	db   "りょうての　ハリを　つかって"
-	next "てきを　２かい　れんぞくで　こうげき@"
+	db   "Stabs twice with"
+	next "twin stingers.@"
 
 PinMissileDescription:
-	db   "するどいハリを　てきに　はっしゃして"
-	next "２ー５かい　れんぞくで　こうげき@"
+	db   "Fires spikes"
+	next "2-5 times.@"
 
 LeerDescription:
-	db   "てきを　にらんで　おびえさせて　"
-	next "ぼうぎょを　さげさせる@"
+	db   "Lowers the foe's"
+	next "DEFENSE.@"
 
 BiteDescription:
-	db   "するどい　はで　かみついて　こうげき"
-	next "てきを　ひるませることがある@"
+	db   "Bites. May cause"
+	next "flinching.@"
 
 GrowlDescription:
-	db   "かわいくないて　てきを　ゆだんさせて"
-	next "こうげきを　さげさせる@"
+	db   "Lowers the foe's"
+	next "ATTACK.@"
 
 RoarDescription:
-	db   "ほえて　てきを　にげださせる"
-	next "てきが　にげると　せんとうは　おわる@"
+	db   "Scares the foe"
+	next "away. Ends battle.@"
 
 SingDescription:
-	db   "ここちよい　うたごえで"
-	next "てきを　ふかいねむりへと　さそう@"
+	db   "A song that puts"
+	next "the foe to sleep.@"
 
 SupersonicDescription:
-	db   "からだから　かいおんぱを　はっして"
-	next "てきを　こんらんさせることがある　@"
+	db   "Sound waves that"
+	next "may confuse.@"
 
 SonicboomDescription:
-	db   "しょうげきはで　てきを　こうげき"
-	next "２０の　きまったダメージを　あたえる@"
+	db   "Always deals"
+	next "20 damage.@"
 
 DisableDescription:
-	db   "ちょうのうりょくで　てきの　うごきを"
-	next "とめて　わざを　１つ　つかえなくする@"
+	db   "Disables one of"
+	next "the foe's moves.@"
 
 AcidDescription:
-	db   "つよいさんで　てきの　ひふを　とかす"
-	next "ぼうぎょを　さげることがある@"
+	db   "Melts with acid."
+	next "May lower DEFENSE.@"
 
 EmberDescription:
-	db   "ちいさな　ほのおで　こうげき"
-	next "てきを　やけどさせることがある@"
+	db   "A weak flame. May"
+	next "burn the foe.@"
 
 FlamethrowerDescription:
-	db   "すごい　ほのおで　こうげき"
-	next "てきを　やけどさせることがある@"
+	db   "A strong flame."
+	next "May burn.@"
 
 MistDescription:
-	db   "しろいきりで　からだを　おおい"
-	next "のうりょくを　さげられないようにする@"
+	db   "Prevents stat"
+	next "reduction.@"
 
 WaterGunDescription:
-	db   "みずを　はっしゃして"
-	next "てきを　こうげき@"
+	db   "Squirts water to"
+	next "attack.@"
 
 HydroPumpDescription:
-	db   "みずを　ものすごい　いきおいで"
-	next "はっしゃして　てきを　こうげき@"
+	db   "Blasts water with"
+	next "great force.@"
 
 SurfDescription:
-	db   "みずに　なみを　おこし　それを"
-	next "ものすごい　ちからで　たたきつける@"
+	db   "A huge wave"
+	next "crashes down.@"
 
 IceBeamDescription:
-	db   "れいきを　はっしゃして　こうげき"
-	next "てきを　こおらせることがある@"
+	db   "An icy beam. May"
+	next "freeze the foe.@"
 
 BlizzardDescription:
-	db   "ゆきを　つよいかぜにのせて　こうげき"
-	next "てきを　こおらせることがある@"
+	db   "An icy blast. May"
+	next "freeze the foe.@"
 
 PsybeamDescription:
-	db   "ふしぎな　ひかりを　はっしゃする"
-	next "てきを　こんらんさせることがある@"
+	db   "A strange beam."
+	next "May confuse.@"
 
 BubblebeamDescription:
-	db   "みずを　いきおいよく　はっしゃする"
-	next "てきの　すばやさを　さげることがある@"
+	db   "Blasts bubbles."
+	next "May lower SPEED.@"
 
 AuroraBeamDescription:
-	db   "にじいろの　ひかりを　はっしゃする"
-	next "こうげきを　さげることがある@"
+	db   "A rainbow beam."
+	next "May lower ATTACK.@"
 
 HyperBeamDescription:
-	db   "ダメージは　おおきいが　つかうと"
-	next "つぎのターン　うごけなくなってしまう@"
+	db   "Big damage, then"
+	next "must recharge.@"
 
 PeckDescription:
-	db   "ながい　くちばしを　つかって　"
-	next "てきを　つついて　こうげき@"
+	db   "Jabs with a long"
+	next "beak.@"
 
 DrillPeckDescription:
-	db   "くちばしを　ちゅうしんに　からだを"
-	next "かいてんさせて　てきに　とっしんする@"
+	db   "A corkscrewing"
+	next "peck attack.@"
 
 SubmissionDescription:
-	db   "じぶんごと　じめんに　たたきつける"
-	next "じぶんにも　すこしダメージ@"
+	db   "Slams down. Hurts"
+	next "the user too.@"
 
 LowKickDescription:
-	db   "タイミングよく　あしを　ひっかける"
-	next "てきを　ひるませることがある@"
+	db   "Trips the foe."
+	next "May flinch.@"
 
 CounterDescription:
-	db   "てきからうけた　ぶつりこうげきの"
-	next "ダメージを　ばいにしてかえす@"
+	db   "Returns a physical"
+	next "blow doubled.@"
 
 SeismicTossDescription:
-	db   "いんりょくを　りようして　なげる"
-	next "レベルぶんの　ダメージを　あたえる@"
+	db   "Damage equals the"
+	next "user's LEVEL.@"
 
 StrengthDescription:
-	db   "ぜんしんに　すごいちからを　ためて"
-	next "てきを　こうげき@"
+	db   "Builds power and"
+	next "attacks.@"
 
 AbsorbDescription:
-	db   "てきに　あたえた　ダメージの"
-	next "はんぶん　たいりょくを　かいふくする@"
+	db   "Drains half the"
+	next "damage as HP.@"
 
 MegaDrainDescription:
-	db   "てきに　あたえた　ダメージの"
-	next "はんぶん　たいりょくを　かいふくする@"
+	db   "Drains half the"
+	next "damage as HP.@"
 
 LeechSeedDescription:
-	db   "てきの　からだに　タネをうえて"
-	next "ターンごとに　たいりょくを　すいとる@"
+	db   "Saps HP each turn"
+	next "with a seed.@"
 
 GrowthDescription:
-	db   "いっきに　からだを　せいちょうさせて"
-	next "とくしゅこうげきを　あげる@"
+	db   "Raises SPECIAL.@"
 
 RazorLeafDescription:
-	db   "はっぱで　てきを　きりつける"
-	next "クリティカルヒットが　でやすい@"
+	db   "Cuts with leaves."
+	next "High crit rate.@"
 
 SolarbeamDescription:
-	db   "１ターンめで　ひかりを　きゅうしゅう"
-	next "つぎのターンで　てきを　こうげき@"
+	db   "Gathers light,"
+	next "then hits turn 2.@"
 
 PoisonpowderDescription:
-	db   "どくそを　ふくんだ　こなを　ふりまき"
-	next "てきに　どくをあたえる@"
+	db   "A powder that"
+	next "poisons the foe.@"
 
 StunSporeDescription:
-	db   "しびれる　こなを　ふりまき"
-	next "てきを　マヒさせてしまう@"
+	db   "A powder that"
+	next "paralyzes.@"
 
 SleepPowderDescription:
-	db   "ねむくなる　こなを　ふりまき"
-	next "てきを　ねむらせてしまう@"
+	db   "A powder that"
+	next "causes sleep.@"
 
 PetalDanceDescription:
-	db   "２ー３ターンのあいだ　あばれつづける"
-	next "あばれたあとは　こんらんしてしまう@"
+	db   "Rampages, then"
+	next "gets confused.@"
 
 StringShotDescription:
-	db   "いとを　てきの　からだに　まきつけ"
-	next "すばやさを　さげさせる@"
+	db   "Lowers the foe's"
+	next "SPEED.@"
 
 DragonRageDescription:
-	db   "しょうげきはで　てきを　こうげき"
-	next "４０の　きまったダメージを　あたえる@"
+	db   "Always deals"
+	next "40 damage.@"
 
 FireSpinDescription:
-	db   "２ー５ターンのあいだ　てきを"
-	next "ほのおの　ちゅうしんに　とじこめる@"
+	db   "Traps in flames"
+	next "for 2-5 turns.@"
 
 ThundershockDescription:
-	db   "でんげきを　あびせて　こうげき"
-	next "てきを　マヒさせることがある@"
+	db   "A jolt. May"
+	next "paralyze the foe.@"
 
 ThunderboltDescription:
-	db   "つよいでんげきを　あびせて　こうげき"
-	next "てきを　マヒさせることがある@"
+	db   "A strong jolt."
+	next "May paralyze.@"
 
 ThunderWaveDescription:
-	db   "よわいでんげきを　てきに　ぶつけて"
-	next "マヒさせてしまう@"
+	db   "A weak jolt that"
+	next "paralyzes.@"
 
 ThunderDescription:
-	db   "てきに　むかって　かみなりを　おとす"
-	next "マヒさせることがある@"
+	db   "A lightning bolt."
+	next "May paralyze.@"
 
 RockThrowDescription:
-	db   "ちいさな　いわを　なげつけて"
-	next "てきを　こうげき@"
+	db   "Hurls small rocks"
+	next "at the foe.@"
 
 EarthquakeDescription:
-	db   "じめんを　ゆらして　こうげき"
-	next "とんでる　てきいがいに　だいダメージ@"
+	db   "A quake. Misses"
+	next "airborne foes.@"
 
 FissureDescription:
-	db   "じわれを　おこして　てきを　のみこむ"
-	next "のみこまれると　せんとうふのうになる@"
+	db   "A one-hit faint"
+	next "if it lands.@"
 
 DigDescription:
-	db   "１ターンめで　じめんに　もぐり"
-	next "つぎのターンで　てきを　こうげき@"
+	db   "Burrows turn 1,"
+	next "attacks turn 2.@"
 
 ToxicDescription:
-	db   "じょじょに　ダメージがふえる　どくを"
-	next "てきに　あたえる@"
+	db   "Badly poisons."
+	next "Damage grows.@"
 
 ConfusionDescription:
-	db   "ちょうのうりょくで　こうげき"
-	next "てきを　こんらんさせることがある@"
+	db   "A psychic hit."
+	next "May confuse.@"
 
 PsychicMDescription:
-	db   "つよいねんりきで　てきを　こうげき"
-	next "とくしゅぼうぎょを　さげることがある@"
+	db   "A psychic hit."
+	next "May lower SP.DEF.@"
 
 HypnosisDescription:
-	db   "てきに　あんじを　かけて"
-	next "ふかい　ねむりへと　さそう@"
+	db   "Puts the foe"
+	next "into deep sleep.@"
 
 MeditateDescription:
-	db   "ヨガのポーズで　ねむった　ちからを"
-	next "ひきだし　こうげきを　あげる@"
+	db   "Raises ATTACK.@"
 
 AgilityDescription:
-	db   "ちからを　ぬいて　からだを　かるくし"
-	next "すばやさを　グーンとあげる@"
+	db   "Sharply raises"
+	next "SPEED.@"
 
 QuickAttackDescription:
-	db   "ものすごい　はやさで　うごいて　"
-	next "かならず　せんせいこうげきする@"
+	db   "Always strikes"
+	next "first.@"
 
 RageDescription:
-	db   "こうげきされるたびに　いかりで"
-	next "こうげきが　あがっていく@"
+	db   "ATTACK rises when"
+	next "the user is hit.@"
 
 TeleportDescription:
-	db   "ちょうのうりょくを　つかって"
-	next "せんとうから　だっしゅつする@"
+	db   "Flees from a wild"
+	next "battle.@"
 
 NightShadeDescription:
-	db   "てきに　おそろしい　まぼろしを　みせ"
-	next "レベルぶんの　ダメージを　あたえる@"
+	db   "Damage equals the"
+	next "user's LEVEL.@"
 
 MimicDescription:
-	db   "てきが　つかった　わざが　"
-	next "そのときだけ　じぶんの　わざになる@"
+	db   "Copies the foe's"
+	next "move.@"
 
 ScreechDescription:
-	db   "いやなおとを　だして　てきの"
-	next "ぼうぎょを　ガクッとさげさせる@"
+	db   "Harshly lowers"
+	next "DEFENSE.@"
 
 DoubleTeamDescription:
-	db   "ぶんしんで　てきを　まどわせ"
-	next "めいちゅうりつを　さげさせる@"
+	db   "Makes copies to"
+	next "lower accuracy.@"
 
 RecoverDescription:
-	db   "キズついた　からだを　たいりょくの"
-	next "はんぶんだけ　かいふくする@"
+	db   "Restores half of"
+	next "max HP.@"
 
 HardenDescription:
-	db   "ぜんしんに　ちからをこめ　かたくなり"
-	next "ぼうぎょを　あげる@"
+	db   "Raises DEFENSE.@"
 
 MinimizeDescription:
-	db   "からだを　ちぢめて　ちいさくなり"
-	next "てきの　めいちゅうりつを　さげさせる@"
+	db   "Raises evasiveness"
+	next "by shrinking.@"
 
 SmokescreenDescription:
-	db   "けむりや　スミなどで　てきの　"
-	next "めいちゅうりつを　さげさせる@"
+	db   "Lowers the foe's"
+	next "accuracy.@"
 
 ConfuseRayDescription:
-	db   "あやしいひかりで　てきを　まどわし"
-	next "こんらんさせてしまう@"
+	db   "An eerie light"
+	next "that confuses.@"
 
 WithdrawDescription:
-	db   "かたいからに　もぐりこんで"
-	next "ぼうぎょを　あげる@"
+	db   "Withdraws to raise"
+	next "DEFENSE.@"
 
 DefenseCurlDescription:
-	db   "からだを　まるめて　きゅうしょを"
-	next "かくし　ぼうぎょを　あげる@"
+	db   "Curls up to raise"
+	next "DEFENSE.@"
 
 BarrierDescription:
-	db   "めのまえに　かべを　つくりだし"
-	next "ぼうぎょを　グーンとあげる@"
+	db   "Sharply raises"
+	next "DEFENSE.@"
 
 LightScreenDescription:
-	db   "ひかりのかべを　つくり　とくしゅ"
-	next "こうげきの　ダメージを　よわめる@"
+	db   "Weakens special"
+	next "attacks.@"
 
 HazeDescription:
-	db   "くろいきりが　からだを　おおい"
-	next "からだの　いじょうを　もとにもどす@"
+	db   "Resets all stat"
+	next "changes.@"
 
 ReflectDescription:
-	db   "ひかりのかべを　つくり　ぶつり"
-	next "こうげきの　ダメージを　よわめる@"
+	db   "Weakens physical"
+	next "attacks.@"
 
 FocusEnergyDescription:
-	db   "こうげきに　きあいを　こめて"
-	next "クリティカルヒットを　でやすくする@"
+	db   "Raises the"
+	next "critical-hit rate.@"
 
 BideDescription:
-	db   "２ー３ターン　こうげきに　たえて"
-	next "うけたダメージを　ばいにしてかえす@"
+	db   "Endures, then hits"
+	next "back doubled.@"
 
 MetronomeDescription:
-	db   "ゆびを　ふって　のうを　しげきして"
-	next "いろんな　ワザを　ランダムでくりだす@"
+	db   "Uses a random"
+	next "move.@"
 
 MirrorMoveDescription:
-	db   "てきの　わざを　まねして　"
-	next "おなじわざで　てきを　こうげき@"
+	db   "Copies the foe's"
+	next "last move.@"
 
 SelfdestructDescription:
-	db   "てきに　だいダメージを　あたえるが"
-	next "つかうと　せんとうふのうに　なる@"
+	db   "Big damage, but"
+	next "the user faints.@"
 
 EggBombDescription:
-	db   "タマゴを　おもいっきり　なげつけて"
-	next "てきを　こうげき@"
+	db   "Hurls a large egg"
+	next "at the foe.@"
 
 LickDescription:
-	db   "ながいしたで　なめまわして　こうげき"
-	next "てきを　マヒさせることがある@"
+	db   "Licks. May"
+	next "paralyze the foe.@"
 
 SmogDescription:
-	db   "はいきガスを　ふきかけて　こうげき"
-	next "てきに　どくをあたえることがある@"
+	db   "Exhaust gas that"
+	next "may poison.@"
 
 SludgeDescription:
-	db   "ヘドロを　なげつけて　こうげき"
-	next "てきに　どくをあたえることがある@"
+	db   "Hurls sludge."
+	next "May poison.@"
 
 BoneClubDescription:
-	db   "てにもった　ホネで　てきを　こうげき"
-	next "てきを　ひるませることがある@"
+	db   "Clubs with a bone."
+	next "May flinch.@"
 
 FireBlastDescription:
-	db   "だいの　もじが　すべてを　やきつくす"
-	next "てきを　やけどさせることがある@"
+	db   "A huge fire blast."
+	next "May burn.@"
 
 WaterfallDescription:
-	db   "たきを　さかのぼるような　いきおいで"
-	next "てきに　とっしんする@"
+	db   "Charges up a"
+	next "waterfall.@"
 
 ClampDescription:
-	db   "２ー５ターンのあいだ　てきを"
-	next "からに　はさみこんでしまう　@"
+	db   "Clamps the foe"
+	next "for 2-5 turns.@"
 
 SwiftDescription:
-	db   "ぜったいに　よけられない　ほしがたの"
-	next "こうせんを　むすうに　はっしゃする@"
+	db   "An unavoidable"
+	next "star attack.@"
 
 SkullBashDescription:
-	db   "１ターンめで　あたまを　ひっこめて"
-	next "つぎのターンで　てきを　こうげき@"
+	db   "Guards turn 1,"
+	next "attacks turn 2.@"
 
 SpikeCannonDescription:
-	db   "するどいハリを　てきに　はっしゃして"
-	next "２ー５かい　れんぞくで　こうげき@"
+	db   "Fires spikes"
+	next "2-5 times.@"
 
 ConstrictDescription:
-	db   "２ー５ターンのあいだ　ながいからだや"
-	next "ツルをつかって　てきを　しめつける@"
+	db   "Squeezes for"
+	next "2-5 turns.@"
 
 AmnesiaDescription:
-	db   "いっしゅん　なにかを　わすれることで"
-	next "とくしゅぼうぎょを　グーンとあげる@"
+	db   "Sharply raises"
+	next "SP.DEF.@"
 
 KinesisDescription:
-	db   "てきの　めを　スプーンに　むけさせて"
-	next "めいちゅうりつを　さげさせる@"
+	db   "Lowers the foe's"
+	next "accuracy.@"
 
 SoftboiledDescription:
-	db   "キズついた　からだを　たいりょくの"
-	next "はんぶんだけ　かいふくする@"
+	db   "Restores half of"
+	next "max HP.@"
 
 HiJumpKickDescription:
-	db   "ジャンプした　いきおいで　ひざげりを"
-	next "くりだす　はずすと　ダメージをうける@"
+	db   "A knee kick. Hurts"
+	next "if it misses.@"
 
 GlareDescription:
-	db   "おなかの　もようで　てきを　いかくし"
-	next "おびえさせて　マヒさせてしまう@"
+	db   "A glare that"
+	next "paralyzes.@"
 
 DreamEaterDescription:
-	db   "てきに　あたえた　ダメージの"
-	next "はんぶん　たいりょくを　かいふくする@"
+	db   "Drains a sleeping"
+	next "foe's HP.@"
 
 PoisonGasDescription:
-	db   "どくガスを　てきに　ふきかけて"
-	next "どくをあたえる@"
+	db   "Gas that poisons"
+	next "the foe.@"
 
 BarrageDescription:
-	db   "まるいものを　てきに　なげつけて"
-	next "２ー５かい　れんぞくで　こうげき@"
+	db   "Hurls orbs"
+	next "2-5 times.@"
 
 LeechLifeDescription:
-	db   "てきに　あたえた　ダメージの"
-	next "はんぶん　たいりょくを　かいふくする@"
+	db   "Drains half the"
+	next "damage as HP.@"
 
 LovelyKissDescription:
-	db   "こわい　かおで　キスを　せまる"
-	next "キスされると　ねむってしまう@"
+	db   "A scary kiss that"
+	next "causes sleep.@"
 
 SkyAttackDescription:
-	db   "１ターンめで　じゃくてんを　さがし"
-	next "つぎのターンで　てきを　こうげき@"
+	db   "Glows turn 1,"
+	next "attacks turn 2.@"
 
 TransformDescription:
-	db   "てきの　ポケモンと　おなじ　すがたに"
-	next "さいぼうを　へんかさせ　へんしんする@"
+	db   "Transforms into"
+	next "the foe.@"
 
 BubbleDescription:
-	db   "あわを　ふきかけて　こうげき"
-	next "てきの　すばやさを　さげることがある@"
+	db   "Bubbles. May"
+	next "lower SPEED.@"
 
 DizzyPunchDescription:
-	db   "おやこどうじに　パンチで　こうげき"
-	next "てきを　こんらんさせることがある@"
+	db   "A punch that may"
+	next "confuse.@"
 
 SporeDescription:
-	db   "さいみんこうかのある　ほうしを"
-	next "ふりまき　てきを　ねむらせる@"
+	db   "Spores that cause"
+	next "sleep.@"
 
 FlashDescription:
-	db   "つよい　ひかりで　めを　くらませて"
-	next "てきの　めいちゅうりつを　さげさせる@"
+	db   "Lowers the foe's"
+	next "accuracy.@"
 
 PsywaveDescription:
-	db   "てきに　１ーレベル×１．５の"
-	next "ダメージを　ランダムで　あたえる@"
+	db   "Deals random"
+	next "damage.@"
 
 SplashDescription:
-	db   "はねるだけで　なにもおこらない⋯@"
+	db   "Just bounces."
+	next "Nothing happens.@"
 
 AcidArmorDescription:
-	db   "からだを　えきじょうに　へんかさせて"
-	next "ぼうぎょを　グーンとあげる@"
+	db   "Sharply raises"
+	next "DEFENSE.@"
 
 CrabhammerDescription:
-	db   "ハサミを　てきに　たたきつける"
-	next "クリティカルヒットが　でやすい@"
+	db   "A hammer with a"
+	next "high crit rate.@"
 
 ExplosionDescription:
-	db   "てきに　だいダメージを　あたえるが"
-	next "つかうと　せんとうふのうに　なる@"
+	db   "Huge damage, but"
+	next "the user faints.@"
 
 FurySwipesDescription:
-	db   "てきを　するどいツメで　ひっかいて"
-	next "２ー５かい　れんぞくで　こうげき@"
+	db   "Scratches 2-5"
+	next "times.@"
 
 BonemerangDescription:
-	db   "ホネを　なげつけて　いきと　かえりで"
-	next "２かい　れんぞくで　こうげき@"
+	db   "A bone that hits"
+	next "twice.@"
 
 RestDescription:
-	db   "２ターン　ねむって　たいりょくと"
-	next "からだのいじょうを　かいふくする@"
+	db   "Sleeps to fully"
+	next "heal and cure.@"
 
 RockSlideDescription:
-	db   "おおきな　いわを　なげつける"
-	next "てきを　ひるませることがある@"
+	db   "Hurls boulders."
+	next "May flinch.@"
 
 HyperFangDescription:
-	db   "するどいまえばで　てきを　こうげき"
-	next "ひるませることがある@"
+	db   "Bites hard. May"
+	next "cause flinching.@"
 
 SharpenDescription:
-	db   "ポリゴンを　へらし　カクカクになって"
-	next "こうげきを　あげる@"
+	db   "Raises ATTACK.@"
 
 ConversionDescription:
-	db   "じぶんに　テクスチャーを　はりつけて"
-	next "てきと　おなじ　ぞくせいに　かわる@"
+	db   "Changes type to"
+	next "match a move.@"
 
 TriAttackDescription:
-	db   "３しゅるいの　こうせんを"
-	next "１つにまとめて　てきに　はっしゃする@"
+	db   "Fires three beams"
+	next "in one.@"
 
 SuperFangDescription:
-	db   "するどいまえばで　こうげきして"
-	next "てきの　たいりょくを　はんぶんにする@"
+	db   "Halves the foe's"
+	next "HP.@"
 
 SlashDescription:
-	db   "するどいカマや　ツメなどで　こうげき"
-	next "クリティカルヒットが　でやすい@"
+	db   "Slashes. High"
+	next "crit rate.@"
 
 SubstituteDescription:
-	db   "たいりょくの　４ぶんの１を　つかって"
-	next "じぶんの　ぶんしんをだす@"
+	db   "Uses HP to make"
+	next "a decoy.@"
 
 StruggleDescription:
-	db   "わざポイントがなくなると　でるわざ"
-	next "じぶんもすこし　ダメージをうける@"
+	db   "Used with no PP."
+	next "Hurts the user.@"
 
 SketchDescription:
-	db   "てきが　つかったわざを　スケッチして"
-	next "そのわざを　じぶんのものに　する@"
+	db   "Copies a move"
+	next "permanently.@"
 
 TripleKickDescription:
-	db   "てきを　３かい　れんぞくで　こうげき"
-	next "あてるたびに　ダメージが　あがる@"
+	db   "Kicks 3 times,"
+	next "harder each hit.@"
 
 ThiefDescription:
-	db   "こうげきの　さいちゅうに　すきをみて"
-	next "てきが　もっている　どうぐを　ぬすむ@"
+	db   "Attacks and"
+	next "steals an item.@"
 
 SpiderWebDescription:
-	db   "ネバネバとした　いとを　からませて"
-	next "てきを　にげられなく　してしまう@"
+	db   "Stops the foe"
+	next "from fleeing.@"
 
 MindReaderDescription:
-	db   "てきの　うごきを　こころで　かんじて"
-	next "つぎの　こうげきを　かならず　あてる@"
+	db   "Ensures the next"
+	next "attack hits.@"
 
 NightmareDescription:
-	db   "てきが　ねてるあいだ　たいりょくを"
-	next "まいターン　８ぶんの１　へらしていく@"
+	db   "Saps a sleeping"
+	next "foe's HP.@"
 
 FlameWheelDescription:
-	db   "ほのおを　まとって　とっしんする"
-	next "てきを　やけどさせることがある@"
+	db   "A fiery charge."
+	next "May burn.@"
 
 SnoreDescription:
-	db   "ねているときだけ　つかえる　わざ"
-	next "すごいいびきで　てきを　こうげき@"
+	db   "Attacks while"
+	next "asleep.@"
 
 NailDownDescription:
-	db   "じぶんを　こうげきすることで　てきに"
-	next "まいターン　ダメージを　あたえる@"
+	db   "Hurts the foe"
+	next "each turn.@"
 
 FlailDescription:
-	db   "たいりょくが　すくないほど"
-	next "てきに　おおきなダメージを　あたえる@"
+	db   "Stronger at low"
+	next "HP.@"
 
 Conversion2Description:
-	db   "てきに　テクスチャーを　はりつけて"
-	next "ぞくせいを　ランダムでかえてしまう@"
+	db   "Changes type to"
+	next "resist the foe.@"
 
 CoinHurlDescription:
-	db   "おかねを　つかって　てきを　こうげき"
-	next "かいぬしが　リッチなほど　つよいワザ@"
+	db   "Attacks with"
+	next "money.@"
 
 CottonSporeDescription:
-	db   "ほうしを　まとわりつかせ　てきにの"
-	next "ぼうぎょを　ガクッとさげさせる@"
+	db   "Harshly lowers the"
+	next "DEFENSE.@"
 
 ReversalDescription:
-	db   "たいりょくが　すくないほど"
-	next "てきに　おおきなダメージを　あたえる@"
+	db   "Stronger at low"
+	next "HP.@"
 
 SpiteDescription:
-	db   "さいごに　うけた　わざを　うらんで　"
-	next "その　わざポイントを　へらしてしまう@"
+	db   "Cuts the PP of"
+	next "the foe's move.@"
 
 PowderSnowDescription:
-	db   "ゆきを　かぜにのせて　こうげき"
-	next "てきを　こおらせることがある@"
+	db   "An icy wind. May"
+	next "freeze.@"
 
 ProtectDescription:
-	db   "つぎのターンの　こうげきを　うけない@"
+	db   "Blocks attacks"
+	next "this turn.@"
 
 MachPunchDescription:
-	db   "ものすごいはやさで　パンチをくりだし"
-	next "かならず　せんせいこうげきする@"
+	db   "Always strikes"
+	next "first.@"
 
 ScaryFaceDescription:
-	db   "こわいかおで　てきを　おびえさせて　"
-	next "ぼうぎょを　ガクッとさげさせる@"
+	db   "Harshly lowers the"
+	next "DEFENSE.@"
 
 FaintAttackDescription:
-	db   "てきを　ゆだんさせて　ちかづき"
-	next "よけられない　こうげきを　くりだす@"
+	db   "An unavoidable"
+	next "sneak attack.@"
 
 SweetKissDescription:
-	db   "かわいい　かおで　キスを　せまる"
-	next "キスされると　こんらんしてしまう@"
+	db   "A cute kiss that"
+	next "confuses.@"
 
 BellyDrumDescription:
-	db   "おなかを　たたいて　てきを　いかく"
-	next "こうげきを　グーンとあげる@"
+	db   "Cuts HP to max"
+	next "out ATTACK.@"
 
 SludgeBombDescription:
-	db   "ヘドロを　なげつけて　こうげき"
-	next "てきに　どくをあたえることがある@"
+	db   "Hurls sludge."
+	next "May poison.@"
 
 MudSlapDescription:
-	db   "てきの　かおなどに　ドロをかけて　"
-	next "めいちゅうりつを　さげさせる@"
+	db   "Mud that lowers"
+	next "accuracy.@"
 
 OctazookaDescription:
-	db   "すみの　かたまりを　はっしゃして"
-	next "めいちゅうりつを　さげさせる　@"
+	db   "Ink that lowers"
+	next "accuracy.@"
 
 SpikesDescription:
-	db   "てきが　にげるときに　わなを　しかけ"
-	next "こうたいした　てきを　こうげきする@"
+	db   "Hurts foes that"
+	next "switch in.@"
 
 ZapCannonDescription:
-	db   "あたりにくいが　ダメージは　おおきい"
-	next "あたれば　かならず　マヒさせる@"
+	db   "Big damage."
+	next "Always paralyzes.@"
 
 ForesightDescription:
-	db   "ゴーストタイプの　てきに　"
-	next "ノーマルタイプの　わざが　あたる@"
+	db   "Lets NORMAL hit"
+	next "GHOST foes.@"
 
 DestinyBondDescription:
-	db   "このわざの　あとに　たおされると"
-	next "てきも　せんとうふのうになる@"
+	db   "If it faints, the"
+	next "foe faints too.@"
 
 PerishSongDescription:
-	db   "きいた　ポケモンは　３ターンごに"
-	next "せんとうふのうに　なってしまう@"
+	db   "All that hear it"
+	next "faint in 3 turns.@"
 
 SynchronizeDescription:
-	db   "シンクロじょうたいに　なると　てきも"
-	next "おなじ　ダメージを　うけるようになる@"
+	db   "The foe takes the"
+	next "same damage.@"
 
 DetectDescription:
-	db   "てきの　うごきを　みきることで"
-	next "つぎの　こうげきを　かならずあてる@"
+	db   "Blocks attacks"
+	next "this turn.@"
 
 BoneLockDescription:
-	db   "てにもった　ホネで　２ー５かい　"
-	next "れんぞくで　てきを　こうげきする@"
+	db   "Strikes with a"
+	next "bone 2-5 times.@"
 
 LockOnDescription:
-	db   "てきに　しょうじゅんを　あわせて"
-	next "つぎの　こうげきを　かならずあてる@"
+	db   "Ensures the next"
+	next "attack hits.@"
 
 OutrageDescription:
-	db   "２ー３ターンのあいだ　あばれつづける"
-	next "あばれたあとは　こんらんしてしまう@"
+	db   "Rampages, then"
+	next "gets confused.@"
 
 SandstormDescription:
-	db   "すなあらしを　はっせいさせて"
-	next "まいターン　ダメージを　あたえる@"
+	db   "A sandstorm hurts"
+	next "each turn.@"
 
 GigaDrainDescription:
-	db   "てきに　あたえた　ダメージの"
-	next "はんぶん　たいりょくを　かいふくする@"
+	db   "Drains half the"
+	next "damage as HP.@"
 
 EndureDescription:
-	db   "つぎのターンで　こうげきを　うけても"
-	next "かららず　たいりょくが　１のこる@"
+	db   "Survives a hit"
+	next "with 1 HP.@"
 
 CharmDescription:
-	db   "かわいくあまえて　てきを　ゆだんさせ"
-	next "こうげきを　ガクッとさげさせる　@"
+	db   "Harshly lowers"
+	next "the foe's ATTACK.@"
 
 RolloutDescription:
-	db   "５ターンのあいだ　てきを　こうげき"
-	next "あてるたびに　ダメージが　あがる@"
+	db   "Attacks 5 turns,"
+	next "harder each hit.@"
 
 FalseSwipeDescription:
-	db   "かならず　たいりょくが　１のこるよう"
-	next "てかげんして　こうげき@"
+	db   "Always leaves the"
+	next "foe with 1 HP.@"
 
 SwaggerDescription:
-	db   "てきを　おこらせて　こんらんさせるが"
-	next "こうげきも　グーンと　あげてしまう@"
+	db   "Confuses, but"
+	next "raises ATTACK.@"
 
 MilkDrinkDescription:
-	db   "キズついた　からだを　たいりょくの"
-	next "はんぶんだけ　かいふくする@"
+	db   "Restores half of"
+	next "max HP.@"
 
 SparkDescription:
-	db   "でんきを　まとって　とっしんする"
-	next "てきを　マヒさせることがある@"
+	db   "A charged tackle."
+	next "May paralyze.@"
 
 FuryCutterDescription:
-	db   "するどいカマや　ツメなどで　てきを"
-	next "２かい　れんぞくで　こうげき@"
+	db   "Slashes with a"
+	next "scythe twice.@"
 
 SteelWingDescription:
-	db   "つばさを　おおきく　ひろげて"
-	next "そのまま　てきに　たいあたりする@"
+	db   "Body-slams with"
+	next "wide wings.@"
 
 StalkerDescription:
-	db   "てきを　じーっと　みていると　なぜか"
-	next "てきは　にげられなく　なってしまう@"
+	db   "Keeps the foe"
+	next "from fleeing.@"
 
 AttractDescription:
-	db   "オスなら　メスに　メスなら　オスに"
-	next "こうげきが　できなくなってしまう@"
+	db   "The foe may be"
+	next "unable to attack.@"
 
 SleepTalkDescription:
-	db   "ねているときだけ　つかえる　わざ"
-	next "ランダムで　じぶんのわざを　くりだす@"
+	db   "Uses a move while"
+	next "asleep.@"
 
 BellChimeDescription:
-	db   "ここちよい　すずのねを　きかせて"
-	next "すべての　じょうたいを　かいふくする@"
+	db   "Cures all status"
+	next "with a bell.@"
 
 ReturnDescription:
-	db   "よくしてくれる　かいぬしの　ために"
-	next "ぜんりょくで　てきを　こうげき@"
+	db   "Stronger the more"
+	next "the mon likes you.@"
 
 PresentDescription:
-	db   "てきに　ばくだんを　プレゼントする"
-	next "たまに　かいふくしてしまうことがある@"
+	db   "A gift bomb that"
+	next "may heal instead.@"
 
 FrustrationDescription:
-	db   "むごい　しうちの　うさばらしに　"
-	next "てきを　ぜんりょくで　こうげき@"
+	db   "Stronger the less"
+	next "it likes you.@"
 
 SafeguardDescription:
-	db   "ふしぎな　ちからで　まもられて"
-	next "とくしゅ　じょうたいに　ならなくなる@"
+	db   "Prevents status"
+	next "problems.@"
 
 PainSplitDescription:
-	db   "てきと　じぶんの　たいりょくを"
-	next "たして　それを　なかよく　わける@"
+	db   "Adds and splits"
+	next "both HP totals.@"
 
 SacredFireDescription:
-	db   "しんぴてきな　ほのおで　こうげき"
-	next "てきを　ひるませることがある@"
+	db   "A mystic flame."
+	next "May burn.@"
 
 MagnitudeDescription:
-	db   "じめんを　ゆらして　てきを　こうげき"
-	next "ダメージは　ランダムで　かわる@"
+	db   "A quake of random"
+	next "power.@"
 
 DynamicpunchDescription:
-	db   "あたりにくいが　ダメージは　おおきい"
-	next "あたれば　かならず　こんらんさせる@"
+	db   "Big damage."
+	next "Always confuses.@"
 
 MegaphoneDescription:
-	db   "すごいおとで　てきの　きをちらせて　"
-	next "とくしゅこうげきを　さげさせる@"
+	db   "A loud sound that"
+	next "lowers SP.ATK.@"
 
 DragonbreathDescription:
-	db   "くちから　ものすごい　いきをはいて"
-	next "てきを　こうげき@"
+	db   "A powerful breath"
+	next "attack.@"
 
 BatonPassDescription:
-	db   "ついかこうかを　のこしたまま"
-	next "ほかの　ポケモンと　いれかわる@"
+	db   "Switches, passing"
+	next "on stat changes.@"
 
 EncoreDescription:
-	db   "てきが　さいごに　つかった　わざを"
-	next "２ー５かい　れんぞくで　ださせる@"
+	db   "Forces the foe to"
+	next "repeat a move.@"
 
 PursuitDescription:
-	db   "てきが　にげるときに　つかうと"
-	next "だいダメージを　あたえることができる@"
+	db   "Hits a foe that"
+	next "switches out.@"
 
 RapidSpinDescription:
-	db   "からだを　はやく　かいてんさせて"
-	next "てきを　こうげき@"
+	db   "Spins fast to"
+	next "attack.@"
 
 TemptDescription:
-	db   "てきに　エサをなげて　きを　そらせて"
-	next "てきの　かいひりつを　さげさせる@"
+	db   "Lowers the foe's"
+	next "evasiveness.@"
 
 IronTailDescription:
-	db   "かたい　シッポで　てきを　こうげき"
-	next "てきの　ぼうぎょを　さげることがある@"
+	db   "A hard tail. May"
+	next "lower DEFENSE.@"
 
 RockHeadDescription:
-	db   "かたい　あたまで　てきを　こうげき"
-	next "てきを　ひるませることがある@"
+	db   "A hard headbutt."
+	next "May flinch.@"
 
 VitalThrowDescription:
-	db   "こうげきを　うけずに　こうげきできる"
-	next "はずれると　だいダメージを　うける@"
+	db   "Always hits, but"
+	next "strikes last.@"
 
 MorningSunDescription:
-	db   "たいりょくを　かいふくする"
-	next "じかんで　かいふくりょうが　かわる@"
+	db   "Heals HP. Varies"
+	next "with the time.@"
 
 SynthesisDescription:
-	db   "たいりょくを　かいふくする"
-	next "じかんで　かいふくりょうが　かわる@"
+	db   "Heals HP. Varies"
+	next "with the time.@"
 
 MoonlightDescription:
-	db   "たいりょくを　かいふくする"
-	next "じかんで　かいふくりょうが　かわる@"
+	db   "Heals HP. Varies"
+	next "with the time.@"
 
 HiddenPowerDescription:
-	db   "ポケモンによって　てきに　あたえる"
-	next "ダメージの　りょうが　へんかする@"
+	db   "Damage varies by"
+	next "the POKéMON.@"
 
 CrossCutterDescription:
-	db   "ハサミを　こうさ　させて　こうげき"
-	next "クリティカルヒットが　でやすい@"
+	db   "Crosses pincers."
+	next "High crit rate.@"
 
 TwisterDescription:
-	db   "ものすごい　かぜを　おこして"
-	next "てきを　こうげき@"
+	db   "A fierce wind"
+	next "attacks.@"
 
 RainDanceDescription:
-	db   "５ターンのあいだ　みずタイプの"
-	next "わざの　いりょくが　あがる@"
+	db   "Boosts WATER moves"
+	next "5 turns.@"
 
 SunnyDayDescription:
-	db   "５ターンのあいだ　ほのおタイプの"
-	next "わざの　いりょくが　あがる@"
+	db   "Boosts FIRE moves"
+	next "5 turns.@"
 
 F2Description:
-	db   "コメントさくせいちゅう@"
+	db   "?@"
 
 F3Description:
-	db   "コメントさくせいちゅう@"
+	db   "?@"
 
 F4Description:
-	db   "コメントさくせいちゅう@"
+	db   "?@"
 
 UprootDescription:
-	db   "てきを　つかんで　ほうりなげて"
-	next "だいダメージを　あたえる@"
+	db   "Hurls the foe for"
+	next "big damage.@"
 
 WindRideDescription:
-	db   "かぜと　ともに　てきに　たいあたり"
-	next "クリティカルヒットが　でやすい@"
+	db   "Body-slams on the"
+	next "wind.@"
 
 WaterSportDescription:
-	db   "コメントさくせいちゅう@"
+	db   "Weakens FIRE-type"
+	next "moves.@"
 
 StrongArmDescription:
-	db   "ふとい　うでで　てきを　こうげき"
-	next "こうげきが　あがることがある@"
+	db   "Strikes hard. May"
+	next "raise ATTACK.@"
 
 BrightMossDescription:
-	db   "あたりを　あかるくして"
-	next "わざの　めいちゅうりつを　あげる@"
+	db   "Raises accuracy"
+	next "of moves.@"
 
 WhirlpoolDescription:
-	db   "２ー５ターンのあいだ　てきを"
-	next "うずの　ちゅうしんに　とじこめる@"
+	db   "Traps the foe for"
+	next "2-5 turns.@"
 
 BounceDescription:
-	db   "はねるだけで　なにもおこらない⋯@"
+	db   "Bounces up, then"
+	next "comes down.@"

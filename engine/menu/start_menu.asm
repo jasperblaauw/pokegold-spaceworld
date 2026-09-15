@@ -1995,17 +1995,24 @@ HandleTrainerCardJumptable:
 
 TrainerCardMainPage:
 	call ClearPalettes
-; feature/completion: DisableLCD moved above TrainerCardDrawProtag so the protag
-; pic's decompress + VRAM upload run with the LCD off. Get2bpp (home/copy2.asm) does
-; a direct copy when the LCD is off instead of the ~8-frame VBlank queue, so the card
-; no longer sits on a cleared (white) screen while it loads. The BADGES->CARD reverse
-; slide now reveals the finished card instantly, matching the CARD->BADGES flip (whose
-; TrainerCardBadgePage already draws entirely under LCD-off). Also cleans up the white
-; flash on the very first card open. Everything here is VRAM/tilemap work that is safe
-; (and faster) with the LCD off -- the badge page proves the same call set works.
+; feature/completion: the card's VRAM/tilemap work runs with the LCD off so Get2bpp
+; (home/copy2.asm) does a direct copy instead of the ~8-frame VBlank queue -- the card
+; no longer sits on a cleared (white) screen while it loads, and the BADGES->CARD
+; reverse slide reveals the finished card at once (matching the CARD->BADGES flip,
+; whose TrainerCardBadgePage draws entirely under LCD-off). This also fixed the white
+; flash on the very first card open.
+; feature/completion follow-up: the protagonist pic's LZ decompress + SRAM copy
+; touch no VRAM, so they don't need the LCD off -- but running them inside the
+; LCD-off window froze VBlank (and thus UpdateSound) for their whole duration, and
+; that decompress is the one heavy step the badge page lacks, which is why only the
+; BADGES->CARD flip audibly stalled the music. Do the decompress with the LCD on
+; (screen already blanked by ClearPalettes, so no flash), then disable the LCD only
+; for the actual VRAM work: the merge (its Get2bpp does a direct, sub-frame copy
+; while off) plus the GFX copy and tilemap draw.
+	call TrainerCardDecompressProtag
 	call DisableLCD
 	call ClearTileMap
-	call TrainerCardDrawProtag
+	call TrainerCardMergeProtag
 	call PlaceMiscTilesTrainerCard
 	ld hl, AllTrainerCardGFX
 	ld de, vTileset
@@ -2192,7 +2199,12 @@ TrainerCardSetClearFlag:
 	scf
 	ret
 
-TrainerCardDrawProtag:
+; feature/completion: split from the old TrainerCardDrawProtag so the caller can run
+; the (VRAM-free) decompress with the LCD on and only the merge with it off -- see
+; TrainerCardMainPage. TrainerCardDecompressProtag writes only to the SRAM sprite
+; buffers; TrainerCardMergeProtag is the sole VRAM-touching half (InterlaceMerge ->
+; Get2bpp), so it is the only part that needs the LCD disabled.
+TrainerCardDecompressProtag:
 	ld de, ProtagonistPic
 	ld a, BANK(ProtagonistPic)
 	call UncompressSpriteFromDE
@@ -2203,6 +2215,9 @@ TrainerCardDrawProtag:
 	ld bc, 7 * 7 tiles
 	call CopyBytes
 	call CloseSRAM
+	ret
+
+TrainerCardMergeProtag:
 	ld de, vChars2 tile $30
 	call InterlaceMergeSpriteBuffers
 	ret
