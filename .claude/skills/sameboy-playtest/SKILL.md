@@ -156,5 +156,7 @@ Example: the trainer card hang was found by breaking (stuck in `PrintLetterDelay
   expected), or **NOT REACHED** (why). Never upgrade an unobserved behaviour to PASS.
 - Anything you couldn't judge visually (sound, timing feel, colours on real hardware) stays
   PLAYTEST-PENDING for the user.
-- Restore the `.sav` backup if you changed it, and leave SameBoy open unless the user wants it closed.
+- **Always close the game window with cmd+W when the playtest is finished** (click its title bar
+  first so the window, not the Debug Console, has focus). This flushes the `.sav`, so restore the
+  `.sav` backup *after* closing if you changed it. Leave the SameBoy app itself running.
 - Update `docs/completion/HANDOVER.md` "NEXT UP" if the result changes what's pending.

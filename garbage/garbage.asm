@@ -573,17 +573,17 @@ SECTION "Bank 09 Garbage", ROMX
 
 if DEF(_DEBUG)
 	if DEF(_GOLD)
-INCBIN "garbage/debug/bank09_gold.2bpp", 145 ; feature/completion: +3 for battle menu translation, +7 English AI item text, +name-table stride fix
+INCBIN "garbage/debug/bank09_gold.2bpp", 177 ; feature/completion: +3 for battle menu translation, +7 English AI item text, +name-table stride fix, +32 SelectQuantityToSell (+margin)
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/debug/bank09_silver.2bpp", 145 ; feature/completion: +3 for battle menu translation, +7 English AI item text, +name-table stride fix
+INCBIN "garbage/debug/bank09_silver.2bpp", 177 ; feature/completion: +3 for battle menu translation, +7 English AI item text, +name-table stride fix, +32 SelectQuantityToSell (+margin)
 	endc
 else
 	if DEF(_GOLD)
-INCBIN "garbage/bank09_gold.2bpp", 145 ; feature/completion: +3 for battle menu translation, +7 English AI item text, +name-table stride fix
+INCBIN "garbage/bank09_gold.2bpp", 177 ; feature/completion: +3 for battle menu translation, +7 English AI item text, +name-table stride fix, +32 SelectQuantityToSell (+margin)
 	endc
 	if DEF(_SILVER)
-INCBIN "garbage/bank09_silver.2bpp", 145 ; feature/completion: +3 for battle menu translation, +7 English AI item text, +name-table stride fix
+INCBIN "garbage/bank09_silver.2bpp", 177 ; feature/completion: +3 for battle menu translation, +7 English AI item text, +name-table stride fix, +32 SelectQuantityToSell (+margin)
 	endc
 endc
 

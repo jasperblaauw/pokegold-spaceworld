@@ -4,8 +4,16 @@ SelectQuantityToToss::
 	call Toss_Sell_Loop
 	ret
 
+SelectQuantityToSell::
+; feature/completion: shops buy items back at half price (retail behaviour).
+	callfar GetItemPrice
+	srl d
+	rr e
+	jr SelectQuantity_PricedLoop
+
 SelectQuantityToBuy::
 	callfar GetItemPrice
+SelectQuantity_PricedLoop:
 	ld a, d
 	ld [wBuySellItemPrice], a
 	ld a, e

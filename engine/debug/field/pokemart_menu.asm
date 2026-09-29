@@ -277,44 +277,63 @@ RunMartBuyMenu::
 INCLUDE "data/debug/field_debug_pokemart_items.asm"
 
 DebugMart_Sell:
-	call DebugMart_ShowPlaceholderText
+	call RunMartSellMenu
 	and a
 	ret
 
-; unused
+RunMartSellMenu::
+; feature/completion: the demo's SELL printed "Under development." and fell into
+; an unfinished, unreferenced PACK-based sell loop (item picked, quantity asked,
+; nothing sold). This finishes that loop, retail-style: sell straight from the
+; PACK screen at half the item's price. Shared with maps/OldCityMart.asm (callfar).
+; Structure follows PlayerDepositItemMenu (engine/events/pokecenter_pc.asm), the
+; other PACK-driven "pick an item and give it away" screen.
 	callfar CheckItemsQuantity
-	jp c, .no_items
+	jr nc, .has_items
+	callfar DrawNoItemsText
+	ret
+
+.has_items
+; Full-screen menu over a live overworld: keep tile animation off (see RunMartBuyMenu).
+	ldh a, [hMapAnims]
+	push af
+	xor a
+	ldh [hMapAnims], a
 	call LoadStandardMenuHeader
 	xor a
-	ld [wActiveBackpackPocket], a
-.bag_loop
+	ld [wSelectedSwapPosition], a
+	callfar GetPocket2Status
 	callfar DrawBackpack
+.bag_loop
 	callfar BackpackLoop
 	jr c, .close_bag
-	call .DoBagFunctions
-	jr nc, .bag_loop
+	call .SellFromPocket
+	jr .bag_loop
+
 .close_bag
-	call ClearBGPalettes
-	call CloseWindow
-	call UpdateTimePals
-	and a
+	ld hl, wStateFlags
+	set SPRITE_UPDATES_DISABLED_F, [hl]
+	call ExitMenu
+; LoadBackpackGraphics overwrote the font-extra tiles in vChars2.
+	call LoadFontExtra
+	pop af
+	ldh [hMapAnims], a
 	ret
 
-.DoBagFunctions:
+.SellFromPocket:
 	callfar CheckItemMenu
 	ld a, [wItemAttributeValue]
-	ld hl, .BagJumptable
-	call CallJumptable
-	ret
+	ld hl, .SellJumptable
+	jp CallJumptable
 
-.BagJumptable:
-	dw .CheckSellableItem
-	dw .CannotSellItem
+.SellJumptable:
+	dw .SellItem
+	dw .CantSell ; TM holder
 	dw .BallPocket
 	dw .FlipPocket
-	dw .CheckSellableItem
-	dw .CheckSellableItem
-	dw .CheckSellableItem
+	dw .SellItem
+	dw .SellItem
+	dw .SellItem
 
 .FlipPocket:
 	callfar FlipPocket2Status
@@ -322,66 +341,94 @@ DebugMart_Sell:
 	ld [wSelectedSwapPosition], a
 	ret
 
-.CannotSellItem:
-	ld hl, .CannotSellText
-	call MenuTextBoxBackup
-	and a
-	ret
-
-.CannotSellText:
-	text "That can't be"
-	line "used!"
-	prompt
-
 .BallPocket:
 	callfar BallPocket
-	jr nc, .CheckSellableItem
-	and a
-	ret
+	ret c
+	call .SellItem
+	jr .BallPocket
 
-.CheckSellableItem:
+.CantSell:
+	ld hl, .CantSellText
+	jp MenuTextBoxBackup
+
+.SellItem:
 	callfar _CheckTossableItem
 	ld a, [wItemAttributeValue]
 	and a
-	jr nz, .not_sellable
-	jp .ItemQuantityPrompt
-
-.not_sellable
-	ld hl, .ImportantItemText
-	call MenuTextBoxBackup
+	jr nz, .CantSell
+; An item whose half price rounds to 0 (MAIL, the evolution stones: base price
+; 0) would otherwise be offered for ¥0.
+	callfar GetItemPrice
+	ld a, d
 	and a
-	ret
+	jr nz, .has_price
+	ld a, e
+	cp 2
+	jr c, .CantSell
+.has_price
+; ScrollingMenu left the held quantity in wItemQuantityBuffer, which caps the
+; counter; SelectQuantityToSell leaves (price / 2) * quantity in hMoneyTemp.
+	ld hl, RunMartBuyMenu.HowManyText
+	call MenuTextBox
+	callfar SelectQuantityToSell
+	push af
+	call CloseWindow
+	call ExitMenu
+	pop af
+	ret c
+	ld hl, .ConfirmSellText
+	call MenuTextBox
+	call YesNoBox
+	push af
+	call ExitMenu
+	pop af
+	ret c
 
-.ImportantItemText:
-	text "That item is vital"
-	line "and can't be sold!"
+; _TossItem routes by the item's pocket attribute when given wNumBagItems, so a
+; ball is taken out of the ball pocket (same reasoning as ReceiveItem in BUY).
+	ld hl, wNumBagItems
+	ld a, [wItemIndex]
+	call TossItem
+
+; wMoney += hMoneyTemp (both 3-byte big-endian), capped at 999999.
+	ld hl, hMoneyTemp + 2
+	ld de, wMoney + 2
+	ld c, 3
+	and a
+.add_loop
+	ld a, [de]
+	adc [hl]
+	ld [de], a
+	dec de
+	dec hl
+	dec c
+	jr nz, .add_loop
+	ld hl, .MaxMoney
+	ld de, wMoney
+	ld c, 3
+	call CompareBytes
+	jr c, .sold
+	ld hl, .MaxMoney
+	ld de, wMoney
+	ld bc, 3
+	call CopyBytes
+.sold
+	ld hl, RunMartBuyMenu.ThanksText
+	jp MenuTextBoxBackup
+
+.MaxMoney:
+	db HIGH(999999 >> 8), HIGH(999999), LOW(999999)
+
+.CantSellText:
+	text "Sorry, I can't"
+	line "buy that."
 	prompt
 
-.no_items
-	ld hl, .NoItemsText
-	call MenuTextBoxBackup
-	and a
-	ret
-
-.NoItemsText:
-	text "You don't have a"
-	next "single item!"
-	prompt
-
-.ItemQuantityPrompt:
-	ld hl, .HowManyItemsText
-	call PrintText
-	callfar SelectQuantityToBuy
-	jr c, .got_quantity
-	jp .CannotSellItem
-
-.got_quantity
-	and a
-	ret
-
-.HowManyItemsText:
-	text "How many will"
-	line "you sell?"
+.ConfirmSellText:
+	text "I can pay ¥@"
+	deciram hMoneyTemp, 3, 6
+	text_start
+	line "for that. OK?"
 	done
 
 DebugMart_LoadItems:
@@ -443,7 +490,7 @@ DebugMart_LoadItems:
 	sub '０'
 	ret
 
-DebugMart_ShowPlaceholderText:
+DebugMart_ShowPlaceholderText: ; unreferenced (see DebugMart_Sell)
 	ld hl, .PlaceholderText
 	call MenuTextBox
 	call ExitMenu

@@ -81,14 +81,19 @@ OldCityMartMenu:
 	pop af
 	jr c, .goodbye
 	ld a, [wMenuCursorY]
-	cp 1
-	jr nz, .goodbye
+	cp 2
+	jr z, .sell
+	jr nc, .goodbye
 ; OldCityMartItemList lives in bank $3f (data/debug/field_debug_pokemart_items.asm),
 ; NOT here in the maps bank ($25): DebugMart_LoadItems reads it with `ld a,[de]` after
 ; callfar has mapped bank $3f, so the list must be resident in $3f at read time. Loading
 ; its address here with `ld de` is bank-agnostic and fine.
 	ld de, OldCityMartItemList
 	callfar RunMartBuyMenu
+	jp OldCityMartMenu
+
+.sell
+	callfar RunMartSellMenu
 	jp OldCityMartMenu
 
 .goodbye
@@ -109,14 +114,15 @@ OldCityMartMenu:
 
 .MenuHeader:
 	db MENU_BACKUP_TILES
-	menu_coords 0, 0, 10, 5
+	menu_coords 0, 0, 10, 7
 	dw .MenuData
 	db 1 ; default
 
 .MenuData:
 	db STATICMENU_CURSOR
-	db 2 ; items
+	db 3 ; items
 	db "BUY@"
+	db "SELL@"
 	db "CANCEL@"
 
 OldCityMartTextString3:

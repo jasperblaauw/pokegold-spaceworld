@@ -305,7 +305,10 @@ PLAYTEST-CONFIRMED (see `git log` for the specifics). New work below.
   - **Mart: DONE** (real BUY with money + pocket handling, PLAYTEST-CONFIRMED). `RunMartBuyMenu::`
     (`engine/debug/field/pokemart_menu.asm`) is now shared, reusable infrastructure — a second real town
     mart just needs its own item list (**in bank `$3f`**, see the cross-bank pitfall) + a few lines of
-    script calling it via `callfar`, not a UI rewrite.
+    script calling it via `callfar`, not a UI rewrite. **SELL: DONE** in both Old City and the debug
+    FRIENDLY SHOP (PLAYTEST-CONFIRMED): `RunMartSellMenu::` (same file) sells from the PACK screen at
+    half price (`SelectQuantityToSell`), refuses CANT_TOSS items and items worth under ¥2 (MAIL,
+    stones), handles the ball pocket, and caps money at 999999. It needs no per-mart data.
   - **Still needed: Gym #1.** `OldCityGym.asm` already has `SPRITE_HAYATO` (presumably the
     Brock-equivalent leader), a `SPRITE_GYM_GUY` guide, and 4 trainer-shaped NPCs already placed. Needs
     a new `TRAINER_*` class/party + a badge bit consumed by `PrintNumBadges` + script. Plus the first §3
