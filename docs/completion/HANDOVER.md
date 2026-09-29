@@ -15,8 +15,9 @@ a downstream romhack now. Correctness = **builds warning-clean + boots & plays i
 **not** touch `roms.sha1`.
 
 - **BUILD-VERIFIED** = assembles, links, bytes confirmed in the symbol map / decoded from the ROM.
-- **PLAYTEST-PENDING** = needs SameBoy. Claude cannot run the emulator — **the user playtests.**
-  Never claim a gameplay behaviour "works" without a playtest.
+- **PLAYTEST-PENDING** = needs SameBoy. Claude can playtest itself via the `sameboy-playtest` skill
+  (`.claude/skills/sameboy-playtest/`, computer-use); anything it couldn't observe stays pending for
+  the user. Never claim a gameplay behaviour "works" without a playtest.
 
 ---
 
@@ -66,6 +67,10 @@ a downstream romhack now. Correctness = **builds warning-clean + boots & plays i
 - **The rule that will bite you:** a bare `line`/`cont`/`para` directly after `text_from_ram`/`deciram`
   is **broken** — the `<LINE>` byte is read as a top-level opcode (garbage jump / halted script).
   Insert a bare `text_start` between them. Grep a file for `text_start` before `line` as the template.
+  Symptom when it bites: `TEXT_DELAY_F` is left set in `wTextboxFlags`, and every later `PlaceString`
+  waits a frame per letter, so an LCD-off screen (the trainer card) hangs white. The debug WARP text
+  had this. Scan the whole tree with: `awk` for `text_from_ram|deciram` directly followed by
+  `line|cont|para|next|prompt|done` (0 hits as of the WARP fix).
 - `TEXTBOX_INNERW` = **18** columns. Inline dict tokens expand at render time: `<PLAYER>`/`<RIVAL>`/
   `<MOM>`/`<TRAINER>`/`#` = 7, `<USER>`/`<TARGET>`/any mon name = 10, `<ROCKET>` = 6, `<PC>`/`<TM>` = 2,
   `<⋯⋯>` = **2** (it's two three-dot glyphs). Item/move/trainer-class names = up to 12.

@@ -134,6 +134,7 @@ RunMartBuyMenu::
 	call DebugMart_LoadItems
 	call LoadStandardMenuHeader
 	call ClearTileMap
+	ld a, 1 ; start on the first item
 .buy_loop
 	call .BuyMenu
 	jr nc, .buy_loop
@@ -143,10 +144,25 @@ RunMartBuyMenu::
 	ret
 
 .BuyMenu:
+; IN/OUT: a = cursor row. CopyMenuHeader resets wMenuCursorPosition to the
+; header's default every pass, which snapped the cursor back to the top row after
+; each purchase (wMenuScrollPosition survives on its own). Carry the row across
+; passes in a, on the stack while .BuySelected runs -- pop bc keeps its flags.
+	push af
 	call UpdateSprites
 	ld hl, DebugMart_BuyMenuHeader
 	call CopyMenuHeader
+	pop af
+	ld [wMenuCursorPosition], a
 	call ScrollingMenu
+	ld a, [wMenuCursorY]
+	push af
+	call .BuySelected
+	pop bc
+	ld a, b
+	ret
+
+.BuySelected:
 	ld a, [wMenuJoypad]
 	cp PAD_B
 	jr z, .cancel_buy
@@ -229,8 +245,9 @@ RunMartBuyMenu::
 	done
 
 .HowManyText:
-	text "How many would"
-	line "you like?"
+; One short line: SelectQuantityToBuy's ×NN/price box sits over the right half
+; of the second line and would cover anything printed there.
+	text "How many?"
 	done
 
 .ConfirmPurchaseText:
@@ -240,7 +257,7 @@ RunMartBuyMenu::
 	text_start
 	line "¥@"
 	deciram hMoneyTemp, 3, 6
-	text " Buy them?"
+	text ". OK?"
 	done
 
 .ThanksText:

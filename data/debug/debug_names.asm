@@ -1,5 +1,5 @@
 DebugPlayerName:
-	db "コージ@"
+	db "KOJI@" ; コージ
 
 DebugRivalName:
-	db "レッド@"
+	db "RED@" ; レッド

@@ -94,7 +94,13 @@ FieldDebug_ShowWarpToText:
 	ret
 
 .WarpToText:
+; feature/completion: text_start is required between text_from_ram and line --
+; without it the <LINE> byte ran as a top-level text command, left the text stream
+; without TextCommandProcessor restoring wTextboxFlags, and so left TEXT_DELAY_F
+; set. Every later PlaceString then letter-delayed; the trainer card (drawn with
+; the LCD off, so no frames tick) hung on a white screen after any debug WARP.
 	text_from_ram wStringBuffer2
+	text_start
 	line "Warp there!"
 	done
 

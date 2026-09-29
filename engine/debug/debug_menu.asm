@@ -37,7 +37,7 @@ DebugJumpTable::
 
 DebugMenuHeader:
 	db MENU_BACKUP_TILES ; flags
-	menu_coords 5, 2, SCREEN_WIDTH - 7, SCREEN_HEIGHT - 1
+	menu_coords 4, 2, SCREEN_WIDTH - 7, SCREEN_HEIGHT - 1 ; widened left (was 5) for 7-char SUBGAME/MONSTER
 	dw .MenuData
 	db 1 ; default option
 
@@ -49,12 +49,12 @@ DebugMenuHeader:
 	dw .Strings
 
 .Strings
-	db "ファイト@"
-	db "フィールド@"
-	db "サウンド@"
-	db "サブゲーム@"
-	db "モンスター@"
-	db "なまえ@"
+	db "FIGHT@"
+	db "FIELD@"
+	db "SOUND@"
+	db "SUBGAME@"
+	db "MONSTER@"
+	db "NAME@"
 
 DebugMenuItems:
 	db 6 ; items

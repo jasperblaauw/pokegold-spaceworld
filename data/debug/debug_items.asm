@@ -1,5 +1,6 @@
 DebugBagItems::
-	db ITEM_IMPORTANT_BAG, 1
+; feature/completion: no IMPORTANT BAG -- it isn't in the final game, and the
+; key items are already one RIGHT press away from the ITEMS pocket.
 	db ITEM_BAG,           1
 	db ITEM_TM_HOLDER,     1
 	db ITEM_BALL_HOLDER,   1

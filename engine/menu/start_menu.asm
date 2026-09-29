@@ -293,13 +293,13 @@ UnusedToolPocketData:
 
 ToolsPocketHeader:
 	db MENU_BACKUP_TILES ; flags
-	menu_coords 03, 03, $11, $0A
+	menu_coords 1, 3, SCREEN_WIDTH - 2, $0A
 	dw .ToolsPocketData
 	db 1
 
 .ToolsPocketData
 	db $AD
-	db 4, 9, 2, 0
+	db 4, 13, 2, 0
 	dw wNumBagItems
 
 	dba PlacePackItems
@@ -312,13 +312,13 @@ ToolsPocketHeader:
 
 KeyItemsPocketHeader:
 	db MENU_BACKUP_TILES ; flags
-	menu_coords 03, 03, $11, $0A
+	menu_coords 1, 3, SCREEN_WIDTH - 2, $0A
 	dw .KeyPocketData
 	db 1
 
 .KeyPocketData
 	db $AD
-	db 4, 9, 1, 0
+	db 4, 13, 1, 0
 	dw wNumKeyItems
 
 	dba PlacePackItems
@@ -327,13 +327,13 @@ KeyItemsPocketHeader:
 
 BackpackMenuHeader:
 	db MENU_BACKUP_TILES ; flags
-	menu_coords 3, 3, $11, $0A
+	menu_coords 1, 3, SCREEN_WIDTH - 2, $0A
 	dw .BackpackData
 	db 1 ; default option
 
 .BackpackData
 	db $A1
-	db 4, 9, 2, 0
+	db 4, 13, 2, 0
 	dw wNumBagItems
 
 	dba PlacePackItems
@@ -381,14 +381,19 @@ CheckItemsQuantity:
 	ret
 
 DrawBackpack:
+; feature/completion: full-width box (was cols 2-18). English item names run to
+; 12 tiles; with cursor + pocket icon + name + gap + "×99" that is 17 columns, and
+; the old 15-column interior let the quantity overwrite the name (RARE CANx20).
+; Pocket headers now span cols 1-18: cursor 1, icon 2, name 3-14, quantity 15-17
+; (column offset 13), scroll arrow 18.
 	ld hl, wStateFlags
 	res SPRITE_UPDATES_DISABLED_F, [hl]
 	call ClearSprites
 	call ClearTileMap
 	callfar LoadBackpackGraphics
-	hlcoord 2, 2
+	hlcoord 0, 2
 	ld b, 8
-	ld c, $0F
+	ld c, SCREEN_WIDTH - 2
 	call DrawTextBox
 	ret
 
@@ -811,9 +816,9 @@ BallPocket:
 	call CopyMenuHeader
 	ld de, .BallHolderText
 	call DrawBackpackTitleRow
-	hlcoord 2, 2
+	hlcoord 0, 2
 	ld b, 8
-	ld c, $F
+	ld c, SCREEN_WIDTH - 2
 	call DrawTextBox
 	call ScrollingMenu
 	ld a, [wMenuJoypad]
@@ -834,13 +839,13 @@ BallPocket:
 
 .BallPocketHeader:
 	db MENU_BACKUP_TILES
-	menu_coords 03, 03, $11, $0A
+	menu_coords 1, 3, SCREEN_WIDTH - 2, $0A
 	dw .MenuData
 	db 1
 
 .MenuData:
 	db SCROLLINGMENU_ENABLE_FUNCTION3 ; flags
-	db 4, 8 ; rows, columns
+	db 4, 13 ; rows, columns
 	db SCROLLINGMENU_BALL_POCKET
 	dbw 0, wNumBallItems
 	dba PlaceMenuItemName
