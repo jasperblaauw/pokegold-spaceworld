@@ -27,10 +27,6 @@ There are **no tests** beyond the SHA1 comparison — a green `make compare` is 
 
 The same `.asm` sources compile into four ROMs via `-D` defines set in the `Makefile`: `_GOLD` / `_SILVER` select the game, `_DEBUG` selects the debug build. Guard version-specific code with these symbols. `make DEBUG=1` additionally emits `.sym`/`.map` files (via rgbasm `-E`) for debugging — it does not change the ROM bytes.
 
-### Tools
-
-`tools/` contains C helpers built automatically during the ROM build (`scan_includes` for dependency scanning, `gfx` for post-processing 2bpp/1bpp graphics, `pkmncompress` for `.pic` sprite compression). `make tools` builds them standalone.
-
 ## Architecture
 
 RGBDS links object files into a fixed ROM layout defined by `layout.link`. The four top-level `.asm` files each become one object per variant:
@@ -43,11 +39,7 @@ RGBDS links object files into a fixed ROM layout defined by `layout.link`. The f
 
 Supporting source trees:
 
-- **`engine/`** — game logic, grouped by system (`battle/`, `overworld/`, `pokemon/`, `menu/`, `items/`, `movie/`, `games/` for minigames, `debug/` for debug menus, etc.).
-- **`data/`** — read-only game data tables (base stats, moves, trainers, maps, sprites, text).
-- **`constants/`** — symbolic names for everything; all included via `constants/` list in `includes.asm`. `hardware.inc` is the standard gbdev Game Boy hardware register definitions.
 - **`macros/`** — assembler macros. `macros/scripts/` defines the DSLs for map/event/text/movement/battle/audio scripting; script data files read like a mini-language built from these macros.
-- **`gfx/`** — PNG source art compiled to `.2bpp`/`.1bpp`/`.pic` by the Makefile's catch-all rules. Per-file `tools/gfx` flags (trim/interleave/remove-duplicates/etc.) are set explicitly in the Makefile.
 - **`garbage/`** — padding/leftover data present in the original ROMs, preserved verbatim for byte-matching.
 
 ### How includes fit together
